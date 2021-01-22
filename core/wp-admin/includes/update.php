@@ -245,7 +245,7 @@ function core_update_footer( $msg = '' ) {
 	}
 
 	// Include an unmodified $wp_version.
-	require ABSPATH . WPINC . '/version.php';
+	require ABSPATH_CORE . WPINC . '/version.php';
 
 	$is_development_version = preg_match( '/alpha|beta|RC/', $wp_version );
 
@@ -800,7 +800,7 @@ function wp_theme_update_row( $theme_key, $theme ) {
  */
 function maintenance_nag() {
 	// Include an unmodified $wp_version.
-	require ABSPATH . WPINC . '/version.php';
+	require ABSPATH_CORE . WPINC . '/version.php';
 	global $upgrading;
 	$nag = isset( $upgrading );
 	if ( ! $nag ) {

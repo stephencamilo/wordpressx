@@ -42,7 +42,7 @@ require_once ABSPATH_CORE . 'wp-admin/includes/upgrade.php';
 require_once ABSPATH_CORE . 'wp-admin/includes/translation-install.php';
 
 /** Load wpdb */
-require_once ABSPATH . WPINC . '/wp-db.php';
+require_once ABSPATH_CORE . WPINC . '/wp-db.php';
 
 nocache_headers();
 

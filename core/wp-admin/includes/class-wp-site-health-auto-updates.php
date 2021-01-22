@@ -307,7 +307,7 @@ class WP_Site_Health_Auto_Updates {
 	function test_all_files_writable() {
 		global $wp_filesystem;
 
-		require ABSPATH . WPINC . '/version.php'; // $wp_version; // x.y.z
+		require ABSPATH_CORE . WPINC . '/version.php'; // $wp_version; // x.y.z
 
 		$skin    = new Automatic_Upgrader_Skin;
 		$success = $skin->request_filesystem_credentials( false, ABSPATH );
@@ -390,7 +390,7 @@ class WP_Site_Health_Auto_Updates {
 	 * @return array|bool The test results. False if it isn't a development version.
 	 */
 	function test_accepts_dev_updates() {
-		require ABSPATH . WPINC . '/version.php'; // $wp_version; // x.y.z
+		require ABSPATH_CORE . WPINC . '/version.php'; // $wp_version; // x.y.z
 		// Only for dev versions.
 		if ( false === strpos( $wp_version, '-' ) ) {
 			return false;

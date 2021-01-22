@@ -232,7 +232,7 @@ function core_upgrade_preamble() {
 	$updates = get_core_updates();
 
 	// Include an unmodified $wp_version.
-	require ABSPATH . WPINC . '/version.php';
+	require ABSPATH_CORE . WPINC . '/version.php';
 
 	$is_development_version = preg_match( '/alpha|beta|RC/', $wp_version );
 

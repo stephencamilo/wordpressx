@@ -78,7 +78,7 @@ if ( get_option( 'db_upgraded' ) ) {
 		 * attempt to do no more than threshold value, with some +/- allowed.
 		 */
 		if ( $c <= 50 || ( $c > 50 && mt_rand( 0, (int) ( $c / 50 ) ) === 1 ) ) {
-			require_once ABSPATH . WPINC . '/http.php';
+			require_once ABSPATH_CORE . WPINC . '/http.php';
 			$response = wp_remote_get(
 				admin_url( 'upgrade.php?step=1' ),
 				array(

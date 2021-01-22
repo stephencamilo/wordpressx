@@ -20,7 +20,7 @@
 function wp_credits( $version = '', $locale = '' ) {
 	if ( ! $version ) {
 		// Include an unmodified $wp_version.
-		require ABSPATH . WPINC . '/version.php';
+		require ABSPATH_CORE . WPINC . '/version.php';
 
 		$version = $wp_version;
 	}

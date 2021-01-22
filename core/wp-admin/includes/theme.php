@@ -464,7 +464,7 @@ function get_theme_feature_list( $api = true ) {
  */
 function themes_api( $action, $args = array() ) {
 	// Include an unmodified $wp_version.
-	require ABSPATH . WPINC . '/version.php';
+	require ABSPATH_CORE . WPINC . '/version.php';
 
 	if ( is_array( $args ) ) {
 		$args = (object) $args;

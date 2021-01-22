@@ -1692,7 +1692,7 @@ function wp_check_browser_version() {
 	$response = get_site_transient( 'browser_' . $key );
 	if ( false === $response ) {
 		// Include an unmodified $wp_version.
-		require ABSPATH . WPINC . '/version.php';
+		require ABSPATH_CORE . WPINC . '/version.php';
 
 		$url     = 'http://api.wordpress.org/core/browse-happy/1.1/';
 		$options = array(

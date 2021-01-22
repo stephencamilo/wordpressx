@@ -15,8 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WPINC', '/wp-includes/' );
 
 require ABSPATH_CORE . 'wp-admin/includes/noop.php';
-require ABSPATH . WPINC . '/script-loader.php';
-require ABSPATH . WPINC . '/version.php';
+require ABSPATH_CORE . WPINC . '/script-loader.php';
+require ABSPATH_CORE . WPINC . '/version.php';
 
 $protocol = $_SERVER['SERVER_PROTOCOL'];
 if ( ! in_array( $protocol, array( 'HTTP/1.1', 'HTTP/2', 'HTTP/2.0' ), true ) ) {

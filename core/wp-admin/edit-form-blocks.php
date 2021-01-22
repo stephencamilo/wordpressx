@@ -185,7 +185,7 @@ if ( ! $max_upload_size ) {
 $styles = array(
 	array(
 		'css' => file_get_contents(
-			ABSPATH . WPINC . '/css/dist/editor/editor-styles.css'
+			ABSPATH_CORE . WPINC . '/css/dist/editor/editor-styles.css'
 		),
 	),
 );

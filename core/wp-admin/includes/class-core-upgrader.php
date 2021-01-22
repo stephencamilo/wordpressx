@@ -62,7 +62,7 @@ class Core_Upgrader extends WP_Upgrader {
 	public function upgrade( $current, $args = array() ) {
 		global $wp_filesystem;
 
-		require ABSPATH . WPINC . '/version.php'; // $wp_version;
+		require ABSPATH_CORE . WPINC . '/version.php'; // $wp_version;
 
 		$start_time = time();
 
@@ -271,7 +271,7 @@ class Core_Upgrader extends WP_Upgrader {
 	 * @return bool True if we should update to the offered version, otherwise false.
 	 */
 	public static function should_update_to_version( $offered_ver ) {
-		require ABSPATH . WPINC . '/version.php'; // $wp_version; // x.y.z
+		require ABSPATH_CORE . WPINC . '/version.php'; // $wp_version; // x.y.z
 
 		$current_branch = implode( '.', array_slice( preg_split( '/[.-]/', $wp_version ), 0, 2 ) ); // x.y
 		$new_branch     = implode( '.', array_slice( preg_split( '/[.-]/', $offered_ver ), 0, 2 ) ); // x.y

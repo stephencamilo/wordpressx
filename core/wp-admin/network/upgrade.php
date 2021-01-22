@@ -10,7 +10,7 @@
 /** Load WordPress Administration Bootstrap */
 require_once __DIR__ . '/admin.php';
 
-require_once ABSPATH . WPINC . '/http.php';
+require_once ABSPATH_CORE . WPINC . '/http.php';
 
 $title       = __( 'Upgrade Network' );
 $parent_file = 'upgrade.php';
