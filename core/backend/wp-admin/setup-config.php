@@ -26,7 +26,7 @@ define( 'WP_SETUP_CONFIG', true );
  */
 error_reporting( -1 );
 if ( ! defined( 'ABSPATH' ) ) {
-	define( 'ABSPATH', dirname( __DIR__ ) . '/../..' );
+	define( 'ABSPATH', dirname( __DIR__ ) . '/../../' );
 }
 
 if ( ! defined( 'ABSPATH_CORE' ) ) {

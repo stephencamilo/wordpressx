@@ -370,6 +370,7 @@ class WP_Scripts extends WP_Dependencies {
 		}
 
 		if ( ! preg_match( '|^(https?:)?//|', $src ) && ! ( $this->content_url && 0 === strpos( $src, $this->content_url ) ) ) {
+		    //@TODO use a better $this->base_url
 			$src = $this->base_url . $src;
 		}
 

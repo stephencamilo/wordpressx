@@ -8,4 +8,4 @@
  * @since Twenty Twenty 1.0
  */
 
-get_template_part( 'singular' );
+get_template_part('singular');

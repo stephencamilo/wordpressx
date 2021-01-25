@@ -229,7 +229,7 @@ class WP_Dependencies {
 	 *                                 equal to current installed WordPress version.
 	 *                                 If set to null, no version is added.
 	 * @param mixed            $args   Optional. Custom property of the item. NOT the class property $args.
-	 *                                 Examples: $media, $in_footer.
+	 *                                 Examples: $media, $in_footer.f
 	 * @return bool Whether the item has been registered. True on success, false on failure.
 	 */
 	public function add( $handle, $src, $deps = array(), $ver = false, $args = null ) {

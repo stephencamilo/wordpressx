@@ -11,14 +11,14 @@
  *
  * @var bool
  */
-define( 'WP_USE_THEMES', true );
+define('WP_USE_THEMES', true);
 
-if ( ! defined( 'ABSPATH' ) ) {
-	define( 'ABSPATH', dirname( __DIR__ ) . $_SERVER["REQUEST_URI"] );
+if (! defined('ABSPATH')) {
+    define('ABSPATH', dirname(__DIR__) . $_SERVER["REQUEST_URI"]);
 }
 
-if ( ! defined( 'ABSPATH_CORE' ) ) {
-	define( 'ABSPATH_CORE', dirname( __DIR__ ) . $_SERVER["REQUEST_URI"] . 'core/backend/' );
+if (! defined('ABSPATH_CORE')) {
+    define('ABSPATH_CORE', dirname(__DIR__) . $_SERVER["REQUEST_URI"] . 'core/backend/');
 }
 
 /** Loads the WordPress Environment and Template */
