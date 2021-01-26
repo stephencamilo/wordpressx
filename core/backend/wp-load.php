@@ -17,19 +17,19 @@
  */
 
 /** Define ABSPATH as this file's directory */
-if ( ! defined( 'ABSPATH' ) ) {
-    define( 'ABSPATH', __DIR__ . '/../../' );
+if (! defined( 'ABSPATH' ) ) {
+    define( 'ABSPATH', __DIR__ . '/../../../' );
 }
 
-if ( ! defined( 'ABSPATH_CORE' ) ) {
+if (! defined( 'ABSPATH_CORE' ) ) {
     define( 'ABSPATH_CORE', __DIR__ . '/../' );
 }
 
-if ( ! defined( 'ABSPATH_BACKEND' ) ) {
+if (! defined( 'ABSPATH_BACKEND' ) ) {
     define( 'ABSPATH_BACKEND', __DIR__ . '/');
 }
 
-if ( ! defined( 'ABSPATH_FRONTEND' ) ) {
+if (! defined( 'ABSPATH_FRONTEND' ) ) {
     define( 'ABSPATH_FRONTEND',  '/core/frontend/');
 }
 
@@ -43,12 +43,12 @@ error_reporting( E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_W
  *
  * If neither set of conditions is true, initiate loading the setup process.
  */
-if ( file_exists( ABSPATH . 'wp-config.php' ) ) {
+if (file_exists( ABSPATH . 'wp-config.php' )) {
 
 	/** The config file resides in ABSPATH */
 	require_once ABSPATH . 'wp-config.php';
 
-} elseif ( @file_exists( dirname( ABSPATH ) . '/wp-config.php' ) && ! @file_exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
+} elseif (@file_exists(dirname( ABSPATH ) . '/wp-config.php' ) && ! @file_exists(dirname( ABSPATH ) . '/wp-settings.php' ) ) {
 
 	/** The config file resides one level above ABSPATH but is not part of another installation */
 	require_once dirname( ABSPATH ) . '/wp-config.php';

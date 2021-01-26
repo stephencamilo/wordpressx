@@ -153,6 +153,8 @@ function wp_initial_constants() {
  */
 function wp_plugin_directory_constants() {
 	if ( ! defined( 'WP_CONTENT_URL' ) ) {
+	    //@todo find where is adding the wrong siteurl option
+	    //update_option('siteurl','https://wordpressx.lndo.site');
 		define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' ); // Full URL - WP_CONTENT_DIR is defined further up.
 	}
 

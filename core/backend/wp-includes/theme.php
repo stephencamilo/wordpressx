@@ -351,7 +351,7 @@ function get_template_directory_uri() {
 	$theme_root_uri   = get_theme_root_uri( $template );
 	$template_dir_uri = "$theme_root_uri/$template";
 
-	/**
+    /**
 	 * Filters the current theme directory URI.
 	 *
 	 * @since 1.5.0
@@ -631,21 +631,22 @@ function get_theme_root_uri( $stylesheet_or_template = '', $theme_root = '' ) {
 		$theme_root = get_raw_theme_root( $stylesheet_or_template );
 	}
 
-	if ( $stylesheet_or_template && $theme_root ) {
-		if ( in_array( $theme_root, (array) $wp_theme_directories, true ) ) {
-			// Absolute path. Make an educated guess. YMMV -- but note the filter below.
-			if ( 0 === strpos( $theme_root, WP_CONTENT_DIR ) ) {
-				$theme_root_uri = content_url( str_replace( WP_CONTENT_DIR, '', $theme_root ) );
-			} elseif ( 0 === strpos( $theme_root, ABSPATH ) ) {
-				$theme_root_uri = site_url( str_replace( ABSPATH, '', $theme_root ) );
-			} elseif ( 0 === strpos( $theme_root, WP_PLUGIN_DIR ) || 0 === strpos( $theme_root, WPMU_PLUGIN_DIR ) ) {
-				$theme_root_uri = plugins_url( basename( $theme_root ), $theme_root );
-			} else {
-				$theme_root_uri = $theme_root;
-			}
-		} else {
-			$theme_root_uri = content_url( $theme_root );
-		}
+
+    if ( $stylesheet_or_template && $theme_root ) {
+        if ( in_array( $theme_root, (array) $wp_theme_directories, true ) ) {
+            // Absolute path. Make an educated guess. YMMV -- but note the filter below.
+            if ( 0 === strpos( $theme_root, WP_CONTENT_DIR ) ) {
+                $theme_root_uri = content_url( str_replace( WP_CONTENT_DIR, '', $theme_root ) );
+            } elseif ( 0 === strpos( $theme_root, ABSPATH ) ) {
+                $theme_root_uri = site_url( str_replace( ABSPATH, '', $theme_root ) );
+            } elseif ( 0 === strpos( $theme_root, WP_PLUGIN_DIR ) || 0 === strpos( $theme_root, WPMU_PLUGIN_DIR ) ) {
+                $theme_root_uri = plugins_url( basename( $theme_root ), $theme_root );
+            } else {
+                $theme_root_uri = $theme_root;
+            }
+        } else {
+            $theme_root_uri = content_url( $theme_root );
+        }
 	} else {
 		$theme_root_uri = content_url( 'themes' );
 	}

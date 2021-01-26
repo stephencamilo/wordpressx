@@ -12,7 +12,6 @@ if ( wp_using_themes() ) {
 	 */
 	do_action( 'template_redirect' );
 }
-
 /**
  * Filters whether to allow 'HEAD' requests to generate content.
  *
@@ -24,37 +23,37 @@ if ( wp_using_themes() ) {
  * @param bool $exit Whether to exit without generating any content for 'HEAD' requests. Default true.
  */
 if ( 'HEAD' === $_SERVER['REQUEST_METHOD'] && apply_filters( 'exit_on_http_head', true ) ) {
-	exit;
+    exit;
 }
 
 // Process feeds and trackbacks even if not using themes.
 if ( is_robots() ) {
-	/**
+    /**
 	 * Fired when the template loader determines a robots.txt request.
 	 *
 	 * @since 2.1.0
 	 */
-	do_action( 'do_robots' );
-	return;
+    do_action( 'do_robots' );
+    return;
 } elseif ( is_favicon() ) {
-	/**
+    /**
 	 * Fired when the template loader determines a favicon.ico request.
 	 *
 	 * @since 5.4.0
 	 */
-	do_action( 'do_favicon' );
-	return;
+    do_action( 'do_favicon' );
+    return;
 } elseif ( is_feed() ) {
-	do_feed();
-	return;
+    do_feed();
+    return;
 } elseif ( is_trackback() ) {
-	require ABSPATH . 'wp-trackback.php';
-	return;
+    require ABSPATH . 'wp-trackback.php';
+    return;
 }
 
 if ( wp_using_themes() ) {
 
-	$tag_templates = array(
+    $tag_templates = array(
 		'is_embed'             => 'get_embed_template',
 		'is_404'               => 'get_404_template',
 		'is_search'            => 'get_search_template',
@@ -73,42 +72,42 @@ if ( wp_using_themes() ) {
 		'is_date'              => 'get_date_template',
 		'is_archive'           => 'get_archive_template',
 	);
-	$template      = false;
+    $template      = false;
 
-	// Loop through each of the template conditionals, and find the appropriate template file.
-	foreach ( $tag_templates as $tag => $template_getter ) {
-		if ( call_user_func( $tag ) ) {
-			$template = call_user_func( $template_getter );
-		}
+    // Loop through each of the template conditionals, and find the appropriate template file.
+    foreach ( $tag_templates as $tag => $template_getter ) {
+        if ( call_user_func( $tag ) ) {
+            $template = call_user_func( $template_getter );
+        }
 
-		if ( $template ) {
-			if ( 'is_attachment' === $tag ) {
-				remove_filter( 'the_content', 'prepend_attachment' );
-			}
+        if ( $template ) {
+            if ( 'is_attachment' === $tag ) {
+                remove_filter( 'the_content', 'prepend_attachment' );
+            }
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 
-	if ( ! $template ) {
-		$template = get_index_template();
-	}
+    if ( ! $template ) {
+        $template = get_index_template();
+    }
 
-	/**
+    /**
 	 * Filters the path of the current template before including it.
 	 *
 	 * @since 3.0.0
 	 *
 	 * @param string $template The path of the template to include.
 	 */
-	$template = apply_filters( 'template_include', $template );
-	if ( $template ) {
-		include $template;
-	} elseif ( current_user_can( 'switch_themes' ) ) {
-		$theme = wp_get_theme();
-		if ( $theme->errors() ) {
-			wp_die( $theme->errors() );
-		}
-	}
-	return;
+    $template = apply_filters( 'template_include', $template );
+    if ( $template ) {
+        include $template;
+    } elseif ( current_user_can( 'switch_themes' ) ) {
+        $theme = wp_get_theme();
+        if ( $theme->errors() ) {
+            wp_die( $theme->errors() );
+        }
+    }
+    return;
 }

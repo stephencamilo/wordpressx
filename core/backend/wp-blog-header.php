@@ -10,13 +10,12 @@ if ( ! isset( $wp_did_header ) ) {
 	$wp_did_header = true;
 
 	// Load the WordPress library.
-	
-	require_once ABSPATH_BACKEND . '/wp-load.php';
 
-	// Set up the WordPress query.
-	wp();
+    require_once ABSPATH_BACKEND . '/wp-load.php';
 
-	// Load the theme template.
-	require_once ABSPATH_BACKEND . WPINC . '/template-loader.php';
+    // Set up the WordPress query.
+    wp();
 
+    // Load the theme template.
+    require_once ABSPATH_BACKEND . WPINC . '/template-loader.php';
 }

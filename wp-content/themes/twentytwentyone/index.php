@@ -16,6 +16,7 @@
 
 get_header();
 
+
 if (have_posts()) {
     // Load posts loop.
     while (have_posts()) {
