@@ -918,9 +918,9 @@ function delete_plugins( $plugins, $deprecated = '' ) {
 
 	if ( false === $credentials ) {
 		if ( ! empty( $data ) ) {
-			require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 			echo $data;
-			require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 			exit;
 		}
 		return;
@@ -933,9 +933,9 @@ function delete_plugins( $plugins, $deprecated = '' ) {
 		$data = ob_get_clean();
 
 		if ( ! empty( $data ) ) {
-			require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 			echo $data;
-			require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 			exit;
 		}
 		return;
@@ -2351,7 +2351,7 @@ function wp_add_privacy_policy_content( $plugin_name, $policy_text ) {
 	}
 
 	if ( ! class_exists( 'WP_Privacy_Policy_Content' ) ) {
-		require_once ABSPATH_CORE . 'wp-admin/includes/class-wp-privacy-policy-content.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-privacy-policy-content.php';
 	}
 
 	WP_Privacy_Policy_Content::add( $plugin_name, $policy_text );

@@ -33,10 +33,10 @@ if ( empty( $_REQUEST['action'] ) ) {
 }
 
 /** Load WordPress Administration APIs */
-require_once ABSPATH_CORE . 'wp-admin/includes/admin.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/admin.php';
 
 /** Load Ajax Handlers for WordPress Core */
-require_once ABSPATH_CORE . 'wp-admin/includes/ajax-actions.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/ajax-actions.php';
 
 send_nosniff_header();
 nocache_headers();

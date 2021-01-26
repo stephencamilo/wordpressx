@@ -85,7 +85,7 @@ get_current_screen()->set_screen_reader_content(
 	)
 );
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 if ( ! current_user_can( 'manage_links' ) ) {
 	wp_die( __( 'Sorry, you are not allowed to edit the links for this site.' ) );
@@ -139,4 +139,4 @@ if ( isset( $_REQUEST['deleted'] ) ) {
 </div>
 
 <?php
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

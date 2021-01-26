@@ -32,7 +32,7 @@ get_current_screen()->set_help_sidebar(
 	'<p>' . __( '<a href="https://wordpress.org/support/">Support</a>' ) . '</p>'
 );
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 ?>
 
 <div class="wrap">
@@ -328,4 +328,4 @@ echo apply_filters( 'default_avatar_select', $avatar_list );
 </form>
 </div>
 
-<?php require_once ABSPATH_CORE . 'wp-admin/admin-footer.php'; ?>
+<?php require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php'; ?>

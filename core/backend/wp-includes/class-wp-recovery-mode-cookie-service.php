@@ -202,7 +202,7 @@ final class WP_Recovery_Mode_Cookie_Service {
 
 			if ( ! $auth_key ) {
 				if ( ! function_exists( 'wp_generate_password' ) ) {
-					require_once ABSPATH_CORE . WPINC . '/pluggable.php';
+					require_once ABSPATH_BACKEND . WPINC . '/pluggable.php';
 				}
 
 				$auth_key = wp_generate_password( 64, true, true );
@@ -217,7 +217,7 @@ final class WP_Recovery_Mode_Cookie_Service {
 
 			if ( ! $auth_salt ) {
 				if ( ! function_exists( 'wp_generate_password' ) ) {
-					require_once ABSPATH_CORE . WPINC . '/pluggable.php';
+					require_once ABSPATH_BACKEND . WPINC . '/pluggable.php';
 				}
 
 				$auth_salt = wp_generate_password( 64, true, true );

@@ -1632,7 +1632,7 @@ function _unzip_file_pclzip( $file, $to, $needed_dirs = array() ) {
 
 	mbstring_binary_safe_encoding();
 
-	require_once ABSPATH_CORE . 'wp-admin/includes/class-pclzip.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/includes/class-pclzip.php';
 
 	$archive = new PclZip( $file );
 
@@ -1811,7 +1811,7 @@ function copy_dir( $from, $to, $skip_list = array() ) {
 function WP_Filesystem( $args = false, $context = false, $allow_relaxed_file_ownership = false ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
 	global $wp_filesystem;
 
-	require_once ABSPATH_CORE . 'wp-admin/includes/class-wp-filesystem-base.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-filesystem-base.php';
 
 	$method = get_filesystem_method( $args, $context, $allow_relaxed_file_ownership );
 
@@ -1831,7 +1831,7 @@ function WP_Filesystem( $args = false, $context = false, $allow_relaxed_file_own
 		 * @param string $path   Path to the specific filesystem method class file.
 		 * @param string $method The filesystem method to use.
 		 */
-		$abstraction_file = apply_filters( 'filesystem_method_file', ABSPATH_CORE . 'wp-admin/includes/class-wp-filesystem-' . $method . '.php', $method );
+		$abstraction_file = apply_filters( 'filesystem_method_file', ABSPATH_BACKEND . 'wp-admin/includes/class-wp-filesystem-' . $method . '.php', $method );
 
 		if ( ! file_exists( $abstraction_file ) ) {
 			return;

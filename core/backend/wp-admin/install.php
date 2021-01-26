@@ -1,4 +1,10 @@
 <?php
+
+define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', true);
+define('WP_DEBUG_DISPLAY', false);
+@ini_set('display_errors', 0);
+
 /**
  * WordPress Installer
  *
@@ -36,13 +42,13 @@ define( 'WP_INSTALLING', true );
 require_once dirname( __DIR__ ) . '/wp-load.php';
 
 /** Load WordPress Administration Upgrade API */
-require_once ABSPATH_CORE . 'wp-admin/includes/upgrade.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/upgrade.php';
 
 /** Load WordPress Translation Install API */
-require_once ABSPATH_CORE . 'wp-admin/includes/translation-install.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/translation-install.php';
 
 /** Load wpdb */
-require_once ABSPATH_CORE . WPINC . '/wp-db.php';
+require_once ABSPATH_BACKEND . WPINC . '/wp-db.php';
 
 nocache_headers();
 

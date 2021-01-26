@@ -220,7 +220,7 @@ final class _WP_Editors {
 				self::$has_medialib = true;
 
 				if ( ! function_exists( 'media_buttons' ) ) {
-					require ABSPATH_CORE . 'wp-admin/includes/media.php';
+					require ABSPATH_BACKEND . 'wp-admin/includes/media.php';
 				}
 
 				echo '<div id="wp-' . $editor_id_attr . '-media-buttons" class="wp-media-buttons">';

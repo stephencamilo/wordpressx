@@ -9,4 +9,4 @@
  */
 
 _deprecated_file( basename( __FILE__ ), '2.5.0', 'wp-admin/includes/upgrade.php' );
-require_once ABSPATH_CORE . 'wp-admin/includes/upgrade.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/upgrade.php';

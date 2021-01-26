@@ -90,7 +90,7 @@ function find_core_auto_update() {
 		return false;
 	}
 
-	require_once ABSPATH_CORE . 'wp-admin/includes/class-wp-upgrader.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-upgrader.php';
 
 	$auto_update = false;
 	$upgrader    = new WP_Automatic_Updater;
@@ -245,7 +245,7 @@ function core_update_footer( $msg = '' ) {
 	}
 
 	// Include an unmodified $wp_version.
-	require ABSPATH_CORE . WPINC . '/version.php';
+	require ABSPATH_BACKEND . WPINC . '/version.php';
 
 	$is_development_version = preg_match( '/alpha|beta|RC/', $wp_version );
 
@@ -800,7 +800,7 @@ function wp_theme_update_row( $theme_key, $theme ) {
  */
 function maintenance_nag() {
 	// Include an unmodified $wp_version.
-	require ABSPATH_CORE . WPINC . '/version.php';
+	require ABSPATH_BACKEND . WPINC . '/version.php';
 	global $upgrading;
 	$nag = isset( $upgrading );
 	if ( ! $nag ) {
@@ -1020,7 +1020,7 @@ function wp_recovery_mode_nag() {
  */
 function wp_is_auto_update_enabled_for_type( $type ) {
 	if ( ! class_exists( 'WP_Automatic_Updater' ) ) {
-		require_once ABSPATH_CORE . 'wp-admin/includes/class-wp-automatic-updater.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-automatic-updater.php';
 	}
 
 	$updater = new WP_Automatic_Updater();

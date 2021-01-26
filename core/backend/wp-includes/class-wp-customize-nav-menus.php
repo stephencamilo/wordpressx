@@ -761,7 +761,7 @@ final class WP_Customize_Nav_Menus {
 
 		// Used to denote post states for special pages.
 		if ( ! function_exists( 'get_post_states' ) ) {
-			require_once ABSPATH_CORE . 'wp-admin/includes/template.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/includes/template.php';
 		}
 
 		// Register each menu as a Customizer section, and add each menu item to each menu.

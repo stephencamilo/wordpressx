@@ -666,8 +666,8 @@ function locate_template( $template_names, $load = false, $require_once = true, 
 		} elseif ( file_exists( TEMPLATEPATH . '/' . $template_name ) ) {
 			$located = TEMPLATEPATH . '/' . $template_name;
 			break;
-		} elseif ( file_exists( ABSPATH_CORE . WPINC . '/theme-compat/' . $template_name ) ) {
-			$located = ABSPATH_CORE . WPINC . '/theme-compat/' . $template_name;
+		} elseif ( file_exists( ABSPATH_BACKEND . WPINC . '/theme-compat/' . $template_name ) ) {
+			$located = ABSPATH_BACKEND . WPINC . '/theme-compat/' . $template_name;
 			break;
 		}
 	}

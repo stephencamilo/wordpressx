@@ -20,12 +20,12 @@ if ( defined( 'ABSPATH' ) ) {
 	require_once dirname( __DIR__ ) . '/wp-load.php';
 }
 
-require_once ABSPATH_CORE . 'wp-admin/admin.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin.php';
 
 header( 'Content-Type: text/plain; charset=' . get_option( 'blog_charset' ) );
 
 if ( isset( $_REQUEST['action'] ) && 'upload-attachment' === $_REQUEST['action'] ) {
-	require ABSPATH_CORE . 'wp-admin/includes/ajax-actions.php';
+	require ABSPATH_BACKEND . 'wp-admin/includes/ajax-actions.php';
 
 	send_nosniff_header();
 	nocache_headers();

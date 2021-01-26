@@ -12,6 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', dirname( __DIR__ ) . '/' );
 }
 
+
+if ( ! defined( 'ABSPATH_BACKEND' ) ) {
+	define( 'ABSPATH_BACKEND', dirname( __DIR__ ) . '/' );
+}
+
 define( 'WPINC', '/wp-includes/' );
 
 $protocol = $_SERVER['SERVER_PROTOCOL'];
@@ -33,9 +38,9 @@ if ( empty( $load ) ) {
 	exit;
 }
 
-require ABSPATH_CORE . 'wp-admin/includes/noop.php';
-require ABSPATH_CORE . WPINC . '/script-loader.php';
-require ABSPATH_CORE . WPINC . '/version.php';
+require ABSPATH_BACKEND . '/wp-admin/includes/noop.php';
+require ABSPATH_BACKEND . WPINC . '/script-loader.php';
+require ABSPATH_BACKEND . WPINC . '/version.php';
 
 $expires_offset = 31536000; // 1 year.
 $out            = '';

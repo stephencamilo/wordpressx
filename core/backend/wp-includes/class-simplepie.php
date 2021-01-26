@@ -2,19 +2,19 @@
 if ( ! class_exists( 'SimplePie', false ) ) :
 
 // Load classes we will need.
-require ABSPATH_CORE . WPINC . '/SimplePie/Misc.php';
-require ABSPATH_CORE . WPINC . '/SimplePie/Cache.php';
-require ABSPATH_CORE . WPINC . '/SimplePie/File.php';
-require ABSPATH_CORE . WPINC . '/SimplePie/Sanitize.php';
-require ABSPATH_CORE . WPINC . '/SimplePie/Registry.php';
-require ABSPATH_CORE . WPINC . '/SimplePie/IRI.php';
-require ABSPATH_CORE . WPINC . '/SimplePie/Locator.php';
-require ABSPATH_CORE . WPINC . '/SimplePie/Content/Type/Sniffer.php';
-require ABSPATH_CORE . WPINC . '/SimplePie/XML/Declaration/Parser.php';
-require ABSPATH_CORE . WPINC . '/SimplePie/Parser.php';
-require ABSPATH_CORE . WPINC . '/SimplePie/Item.php';
-require ABSPATH_CORE . WPINC . '/SimplePie/Parse/Date.php';
-require ABSPATH_CORE . WPINC . '/SimplePie/Author.php';
+require ABSPATH_BACKEND . WPINC . '/SimplePie/Misc.php';
+require ABSPATH_BACKEND . WPINC . '/SimplePie/Cache.php';
+require ABSPATH_BACKEND . WPINC . '/SimplePie/File.php';
+require ABSPATH_BACKEND . WPINC . '/SimplePie/Sanitize.php';
+require ABSPATH_BACKEND . WPINC . '/SimplePie/Registry.php';
+require ABSPATH_BACKEND . WPINC . '/SimplePie/IRI.php';
+require ABSPATH_BACKEND . WPINC . '/SimplePie/Locator.php';
+require ABSPATH_BACKEND . WPINC . '/SimplePie/Content/Type/Sniffer.php';
+require ABSPATH_BACKEND . WPINC . '/SimplePie/XML/Declaration/Parser.php';
+require ABSPATH_BACKEND . WPINC . '/SimplePie/Parser.php';
+require ABSPATH_BACKEND . WPINC . '/SimplePie/Item.php';
+require ABSPATH_BACKEND . WPINC . '/SimplePie/Parse/Date.php';
+require ABSPATH_BACKEND . WPINC . '/SimplePie/Author.php';
 
 /**
  * WordPress autoloader for SimplePie.
@@ -25,7 +25,7 @@ function wp_simplepie_autoload( $class ) {
 	if ( 0 !== strpos( $class, 'SimplePie_' ) )
 		return;
 
-	$file = ABSPATH_CORE . WPINC . '/' . str_replace( '_', '/', $class ) . '.php';
+	$file = ABSPATH_BACKEND . WPINC . '/' . str_replace( '_', '/', $class ) . '.php';
 	include $file;
 }
 

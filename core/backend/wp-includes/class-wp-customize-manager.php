@@ -294,44 +294,44 @@ final class WP_Customize_Manager {
 			}
 		}
 
-		require_once ABSPATH_CORE . WPINC . '/class-wp-customize-setting.php';
-		require_once ABSPATH_CORE . WPINC . '/class-wp-customize-panel.php';
-		require_once ABSPATH_CORE . WPINC . '/class-wp-customize-section.php';
-		require_once ABSPATH_CORE . WPINC . '/class-wp-customize-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/class-wp-customize-setting.php';
+		require_once ABSPATH_BACKEND . WPINC . '/class-wp-customize-panel.php';
+		require_once ABSPATH_BACKEND . WPINC . '/class-wp-customize-section.php';
+		require_once ABSPATH_BACKEND . WPINC . '/class-wp-customize-control.php';
 
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-color-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-media-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-upload-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-image-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-background-image-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-background-position-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-cropped-image-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-site-icon-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-header-image-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-theme-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-code-editor-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-widget-area-customize-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-widget-form-customize-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-nav-menu-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-nav-menu-item-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-nav-menu-location-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-nav-menu-name-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-nav-menu-locations-control.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-nav-menu-auto-add-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-color-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-media-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-upload-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-image-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-background-image-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-background-position-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-cropped-image-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-site-icon-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-header-image-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-theme-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-code-editor-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-widget-area-customize-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-widget-form-customize-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-nav-menu-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-nav-menu-item-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-nav-menu-location-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-nav-menu-name-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-nav-menu-locations-control.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-nav-menu-auto-add-control.php';
 
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-nav-menus-panel.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-nav-menus-panel.php';
 
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-themes-panel.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-themes-section.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-sidebar-section.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-nav-menu-section.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-themes-panel.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-themes-section.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-sidebar-section.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-nav-menu-section.php';
 
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-custom-css-setting.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-filter-setting.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-header-image-setting.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-background-image-setting.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-nav-menu-item-setting.php';
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-nav-menu-setting.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-custom-css-setting.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-filter-setting.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-header-image-setting.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-background-image-setting.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-nav-menu-item-setting.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-nav-menu-setting.php';
 
 		/**
 		 * Filters the core Customizer components to load.
@@ -350,16 +350,16 @@ final class WP_Customize_Manager {
 		 */
 		$components = apply_filters( 'customize_loaded_components', $this->components, $this );
 
-		require_once ABSPATH_CORE . WPINC . '/customize/class-wp-customize-selective-refresh.php';
+		require_once ABSPATH_BACKEND . WPINC . '/customize/class-wp-customize-selective-refresh.php';
 		$this->selective_refresh = new WP_Customize_Selective_Refresh( $this );
 
 		if ( in_array( 'widgets', $components, true ) ) {
-			require_once ABSPATH_CORE . WPINC . '/class-wp-customize-widgets.php';
+			require_once ABSPATH_BACKEND . WPINC . '/class-wp-customize-widgets.php';
 			$this->widgets = new WP_Customize_Widgets( $this );
 		}
 
 		if ( in_array( 'nav_menus', $components, true ) ) {
-			require_once ABSPATH_CORE . WPINC . '/class-wp-customize-nav-menus.php';
+			require_once ABSPATH_BACKEND . WPINC . '/class-wp-customize-nav-menus.php';
 			$this->nav_menus = new WP_Customize_Nav_Menus( $this );
 		}
 
@@ -401,7 +401,7 @@ final class WP_Customize_Manager {
 
 		// Add theme update notices.
 		if ( current_user_can( 'install_themes' ) || current_user_can( 'update_themes' ) ) {
-			require_once ABSPATH_CORE . 'wp-admin/includes/update.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/includes/update.php';
 			add_action( 'customize_controls_print_footer_scripts', 'wp_print_admin_notice_templates' );
 		}
 	}
@@ -1648,9 +1648,9 @@ final class WP_Customize_Manager {
 		}
 
 		// Such is The WordPress Way.
-		require_once ABSPATH_CORE . 'wp-admin/includes/file.php';
-		require_once ABSPATH_CORE . 'wp-admin/includes/media.php';
-		require_once ABSPATH_CORE . 'wp-admin/includes/image.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/includes/file.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/includes/media.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/includes/image.php';
 
 		foreach ( $attachments as $symbol => $attachment ) {
 
@@ -5801,7 +5801,7 @@ final class WP_Customize_Manager {
 			$args['page'] = absint( $_POST['page'] );
 		}
 
-		require_once ABSPATH_CORE . 'wp-admin/includes/theme.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/includes/theme.php';
 
 		if ( 'installed' === $theme_action ) {
 

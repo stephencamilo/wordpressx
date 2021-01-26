@@ -1695,7 +1695,7 @@ class WP_Site_Health {
 		);
 
 		if ( ! class_exists( 'WP_Site_Health_Auto_Updates' ) ) {
-			require_once ABSPATH_CORE . 'wp-admin/includes/class-wp-site-health-auto-updates.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-site-health-auto-updates.php';
 		}
 
 		// Run the auto-update tests in a separate class,
@@ -2113,7 +2113,7 @@ class WP_Site_Health {
 		$result['status'] = 'recommended';
 
 		if ( ! function_exists( 'got_mod_rewrite' ) ) {
-			require_once ABSPATH_CORE . 'wp-admin/includes/misc.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/includes/misc.php';
 		}
 
 		if ( got_mod_rewrite() ) {

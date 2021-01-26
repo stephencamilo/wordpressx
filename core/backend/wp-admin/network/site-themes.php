@@ -172,7 +172,7 @@ $title = sprintf( __( 'Edit Site: %s' ), esc_html( $details->blogname ) );
 $parent_file  = 'sites.php';
 $submenu_file = 'sites.php';
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php'; ?>
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php'; ?>
 
 <div class="wrap">
 <h1 id="edit-site"><?php echo $title; ?></h1>
@@ -226,4 +226,4 @@ if ( isset( $_GET['enabled'] ) ) {
 </form>
 
 </div>
-<?php require_once ABSPATH_CORE . 'wp-admin/admin-footer.php'; ?>
+<?php require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php'; ?>

@@ -61,9 +61,9 @@ if ( isset( $_GET['rsd'] ) ) { // http://cyber.law.harvard.edu/blogs/gems/tech/r
 	exit;
 }
 
-require_once ABSPATH_CORE . 'wp-admin/includes/admin.php';
-require_once ABSPATH_CORE . WPINC . '/class-IXR.php';
-require_once ABSPATH_CORE . WPINC . '/class-wp-xmlrpc-server.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/admin.php';
+require_once ABSPATH_BACKEND . WPINC . '/class-IXR.php';
+require_once ABSPATH_BACKEND . WPINC . '/class-wp-xmlrpc-server.php';
 
 /**
  * Posts submitted via the XML-RPC interface get that title

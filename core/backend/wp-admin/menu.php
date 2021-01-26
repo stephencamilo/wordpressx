@@ -324,4 +324,4 @@ $compat = array(
 	'themes'          => 'appearance',
 );
 
-require_once ABSPATH_CORE . 'wp-admin/includes/menu.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/menu.php';

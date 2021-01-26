@@ -158,7 +158,7 @@ function wp_check_php_mysql_versions() {
 		&& ( defined( 'WP_CONTENT_DIR' ) && ! file_exists( WP_CONTENT_DIR . '/db.php' )
 			|| ! file_exists( ABSPATH . 'wp-content/db.php' ) )
 	) {
-		require_once ABSPATH_CORE . WPINC . '/functions.php';
+		require_once ABSPATH_BACKEND . WPINC . '/functions.php';
 		wp_load_translations_early();
 		$args = array(
 			'exit' => false,
@@ -274,7 +274,7 @@ function wp_maintenance() {
 		die();
 	}
 
-	require_once ABSPATH_CORE . WPINC . '/functions.php';
+	require_once ABSPATH_BACKEND . WPINC . '/functions.php';
 	wp_load_translations_early();
 
 	header( 'Retry-After: 600' );
@@ -470,7 +470,7 @@ function wp_debug_mode() {
  */
 function wp_set_lang_dir() {
 	if ( ! defined( 'WP_LANG_DIR' ) ) {
-		if ( file_exists( WP_CONTENT_DIR . '/languages' ) && @is_dir( WP_CONTENT_DIR . '/languages' ) || ! @is_dir( ABSPATH_CORE . WPINC . '/languages' ) ) {
+		if ( file_exists( WP_CONTENT_DIR . '/languages' ) && @is_dir( WP_CONTENT_DIR . '/languages' ) || ! @is_dir( ABSPATH_BACKEND . WPINC . '/languages' ) ) {
 			/**
 			 * Server path of the language directory.
 			 *
@@ -491,7 +491,7 @@ function wp_set_lang_dir() {
 			 *
 			 * @since 2.1.0
 			 */
-			define( 'WP_LANG_DIR', ABSPATH_CORE . WPINC . '/languages' );
+			define( 'WP_LANG_DIR', ABSPATH_BACKEND . WPINC . '/languages' );
 			if ( ! defined( 'LANGDIR' ) ) {
 				// Old relative path maintained for backward compatibility.
 				define( 'LANGDIR', WPINC . '/languages' );
@@ -510,7 +510,7 @@ function wp_set_lang_dir() {
 function require_wp_db() {
 	global $wpdb;
 
-	require_once ABSPATH_CORE . WPINC . '/wp-db.php';
+	require_once ABSPATH_BACKEND . WPINC . '/wp-db.php';
 	if ( file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
 		require_once WP_CONTENT_DIR . '/db.php';
 	}
@@ -667,10 +667,10 @@ function wp_start_object_cache() {
 	}
 
 	if ( ! wp_using_ext_object_cache() ) {
-		require_once ABSPATH_CORE . WPINC . '/cache.php';
+		require_once ABSPATH_BACKEND . WPINC . '/cache.php';
 	}
 
-	require_once ABSPATH_CORE . WPINC . '/cache-compat.php';
+	require_once ABSPATH_BACKEND . WPINC . '/cache-compat.php';
 
 	/*
 	 * If cache supports reset, reset instead of init if already
@@ -709,11 +709,12 @@ function wp_not_installed() {
 	} elseif ( ! is_blog_installed() && ! wp_installing() ) {
 		nocache_headers();
 
-		require ABSPATH_CORE . WPINC . '/kses.php';
-		require ABSPATH_CORE . WPINC . '/pluggable.php';
+		require ABSPATH_BACKEND . WPINC . '/kses.php';
+		require ABSPATH_BACKEND . WPINC . '/pluggable.php';
 
-		$link = wp_guess_url() . '/wp-admin/install.php';
-
+		// $link = wp_guess_url() . '/wp-admin/install.php';
+		$link = wp_guess_url() . '/core/backend/wp-admin/install.php';
+		
 		wp_redirect( $link );
 		die();
 	}
@@ -1252,16 +1253,16 @@ function wp_load_translations_early() {
 	}
 
 	// We need $wp_local_package.
-	require ABSPATH_CORE . WPINC . '/version.php';
+	require ABSPATH_BACKEND . WPINC . '/version.php';
 
 	// Translation and localization.
-	require_once ABSPATH_CORE . WPINC . '/pomo/mo.php';
-	require_once ABSPATH_CORE . WPINC . '/l10n.php';
-	require_once ABSPATH_CORE . WPINC . '/class-wp-locale.php';
-	require_once ABSPATH_CORE . WPINC . '/class-wp-locale-switcher.php';
+	require_once ABSPATH_BACKEND . WPINC . '/pomo/mo.php';
+	require_once ABSPATH_BACKEND . WPINC . '/l10n.php';
+	require_once ABSPATH_BACKEND . WPINC . '/class-wp-locale.php';
+	require_once ABSPATH_BACKEND . WPINC . '/class-wp-locale-switcher.php';
 
 	// General libraries.
-	require_once ABSPATH_CORE . WPINC . '/plugin.php';
+	require_once ABSPATH_BACKEND . WPINC . '/plugin.php';
 
 	$locales   = array();
 	$locations = array();
@@ -1294,8 +1295,8 @@ function wp_load_translations_early() {
 			$locations[] = ABSPATH . 'wp-content/languages';
 		}
 
-		if ( @is_dir( ABSPATH_CORE . WPINC . '/languages' ) ) {
-			$locations[] = ABSPATH_CORE . WPINC . '/languages';
+		if ( @is_dir( ABSPATH_BACKEND . WPINC . '/languages' ) ) {
+			$locations[] = ABSPATH_BACKEND . WPINC . '/languages';
 		}
 
 		if ( ! $locations ) {
@@ -1620,7 +1621,7 @@ function wp_is_jsonp_request() {
 	}
 
 	if ( ! function_exists( 'wp_check_jsonp_callback' ) ) {
-		require_once ABSPATH_CORE . WPINC . '/functions.php';
+		require_once ABSPATH_BACKEND . WPINC . '/functions.php';
 	}
 
 	$jsonp_callback = $_GET['_jsonp'];

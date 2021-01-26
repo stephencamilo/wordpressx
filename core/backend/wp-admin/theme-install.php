@@ -8,7 +8,7 @@
 
 /** WordPress Administration Bootstrap */
 require_once __DIR__ . '/admin.php';
-require ABSPATH_CORE . 'wp-admin/includes/theme-install.php';
+require ABSPATH_BACKEND . 'wp-admin/includes/theme-install.php';
 
 wp_reset_vars( array( 'tab' ) );
 
@@ -132,7 +132,7 @@ get_current_screen()->set_help_sidebar(
 	'<p>' . __( '<a href="https://wordpress.org/support/">Support</a>' ) . '</p>'
 );
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 ?>
 <div class="wrap">
@@ -537,4 +537,4 @@ if ( $tab ) {
 wp_print_request_filesystem_credentials_modal();
 wp_print_admin_notice_templates();
 
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

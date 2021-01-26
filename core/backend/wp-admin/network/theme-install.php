@@ -14,4 +14,4 @@ if ( isset( $_GET['tab'] ) && ( 'theme-information' === $_GET['tab'] ) ) {
 /** Load WordPress Administration Bootstrap */
 require_once __DIR__ . '/admin.php';
 
-require ABSPATH_CORE . 'wp-admin/theme-install.php';
+require ABSPATH_BACKEND . 'wp-admin/theme-install.php';

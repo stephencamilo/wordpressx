@@ -1531,7 +1531,7 @@ function wp_dropdown_languages( $args = array() ) {
 
 	$translations = $parsed_args['translations'];
 	if ( empty( $translations ) ) {
-		require_once ABSPATH_CORE . 'wp-admin/includes/translation-install.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/includes/translation-install.php';
 		$translations = wp_get_available_translations();
 	}
 

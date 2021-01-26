@@ -196,7 +196,7 @@ if ( $structure_updated ) {
 
 flush_rewrite_rules();
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 ?>
 <div class="wrap">
 <h1><?php echo esc_html( $title ); ?></h1>
@@ -436,4 +436,4 @@ else :
 
 </div>
 
-<?php require_once ABSPATH_CORE . 'wp-admin/admin-footer.php'; ?>
+<?php require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php'; ?>

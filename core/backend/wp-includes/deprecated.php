@@ -3413,7 +3413,7 @@ function rich_edit_exists() {
 	_deprecated_function( __FUNCTION__, '3.9.0' );
 
 	if ( ! isset( $wp_rich_edit_exists ) )
-		$wp_rich_edit_exists = file_exists( ABSPATH_CORE . WPINC . '/js/tinymce/tinymce.js' );
+		$wp_rich_edit_exists = file_exists( ABSPATH_FRONTEND . WPINC . '/js/tinymce/tinymce.js' );
 
 	return $wp_rich_edit_exists;
 }

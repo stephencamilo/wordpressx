@@ -11,7 +11,7 @@
 require_once __DIR__ . '/admin.php';
 
 /** WordPress Translation Installation API */
-require_once ABSPATH_CORE . 'wp-admin/includes/translation-install.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/translation-install.php';
 
 if ( ! current_user_can( 'create_sites' ) ) {
 	wp_die( __( 'Sorry, you are not allowed to add sites to this network.' ) );
@@ -179,7 +179,7 @@ $parent_file = 'sites.php';
 
 wp_enqueue_script( 'user-suggest' );
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 ?>
 
@@ -277,4 +277,4 @@ printf(
 	</form>
 </div>
 <?php
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

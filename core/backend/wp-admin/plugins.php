@@ -157,7 +157,7 @@ if ( $action ) {
 			$parent_file = 'plugins.php';
 
 			wp_enqueue_script( 'updates' );
-			require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 			echo '<div class="wrap">';
 			echo '<h1>' . esc_html( $title ) . '</h1>';
@@ -167,7 +167,7 @@ if ( $action ) {
 
 			echo "<iframe src='$url' style='width: 100%; height:100%; min-height:850px;'></iframe>";
 			echo '</div>';
-			require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 			exit;
 
 		case 'error_scrape':
@@ -291,13 +291,13 @@ if ( $action ) {
 				exit;
 			}
 
-			require ABSPATH_CORE . 'wp-admin/update.php';
+			require ABSPATH_BACKEND . 'wp-admin/update.php';
 
 			$parent_file = 'plugins.php';
 
 			if ( ! isset( $_REQUEST['verify-delete'] ) ) {
 				wp_enqueue_script( 'jquery' );
-				require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+				require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 				?>
 				<div class="wrap">
@@ -402,7 +402,7 @@ if ( $action ) {
 				</div>
 				<?php
 
-				require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+				require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 				exit;
 			} else {
 				$plugins_to_delete = count( $plugins );
@@ -600,7 +600,7 @@ get_current_screen()->set_screen_reader_content(
 $title       = __( 'Plugins' );
 $parent_file = 'plugins.php';
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 $invalid = validate_active_plugins();
 if ( ! empty( $invalid ) ) {
@@ -777,4 +777,4 @@ wp_print_request_filesystem_credentials_modal();
 wp_print_admin_notice_templates();
 wp_print_update_row_templates();
 
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

@@ -81,7 +81,7 @@ get_current_screen()->set_help_sidebar(
 	'<p>' . __( '<a href="https://wordpress.org/support/">Support</a>' ) . '</p>'
 );
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 ?>
 <div class="wrap">
 <h1><?php echo esc_html( $title ); ?></h1>
@@ -91,7 +91,7 @@ if ( $_POST ) {
 
 	check_admin_referer( 'install-network-1' );
 
-	require_once ABSPATH_CORE . 'wp-admin/includes/upgrade.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/includes/upgrade.php';
 	// Create network tables.
 	install_network();
 	$base              = parse_url( trailingslashit( get_option( 'home' ) ), PHP_URL_PATH );
@@ -118,4 +118,4 @@ if ( $_POST ) {
 ?>
 </div>
 
-<?php require_once ABSPATH_CORE . 'wp-admin/admin-footer.php'; ?>
+<?php require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php'; ?>

@@ -8,7 +8,7 @@
  */
 
 /** Walker_Nav_Menu class */
-require_once ABSPATH_CORE . WPINC . '/class-walker-nav-menu.php';
+require_once ABSPATH_BACKEND . WPINC . '/class-walker-nav-menu.php';
 
 /**
  * Displays a navigation menu.

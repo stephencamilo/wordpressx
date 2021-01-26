@@ -130,7 +130,7 @@ wp_localize_script(
 	)
 );
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 ?>
 <div class="wrap">
@@ -305,4 +305,4 @@ require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
 </div>
 <?php
 
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

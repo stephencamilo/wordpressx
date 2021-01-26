@@ -12,7 +12,7 @@
 /** WordPress Administration Bootstrap */
 require_once __DIR__ . '/admin.php';
 
-require ABSPATH_CORE . 'wp-admin/includes/revision.php';
+require ABSPATH_BACKEND . 'wp-admin/includes/revision.php';
 
 /**
  * @global int    $revision Optional. The revision ID.
@@ -158,7 +158,7 @@ $revisions_sidebar .= '<p>' . __( '<a href="https://wordpress.org/support/">Supp
 
 get_current_screen()->set_help_sidebar( $revisions_sidebar );
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 ?>
 
@@ -169,4 +169,4 @@ require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
 <?php
 wp_print_revision_templates();
 
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

@@ -13,7 +13,7 @@ $title = __( 'Privacy' );
 
 list( $display_version ) = explode( '-', get_bloginfo( 'version' ) );
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 ?>
 <div class="wrap about__container">
 
@@ -80,4 +80,4 @@ require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
 	</div>
 
 </div>
-<?php require_once ABSPATH_CORE . 'wp-admin/admin-footer.php'; ?>
+<?php require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php'; ?>

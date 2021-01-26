@@ -85,7 +85,7 @@ $title = sprintf( __( 'Edit Site: %s' ), esc_html( $details->blogname ) );
 $parent_file  = 'sites.php';
 $submenu_file = 'sites.php';
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 ?>
 
@@ -178,4 +178,4 @@ if ( ! empty( $messages ) ) {
 
 </div>
 <?php
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

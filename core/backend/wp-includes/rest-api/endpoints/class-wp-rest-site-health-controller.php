@@ -220,7 +220,7 @@ class WP_REST_Site_Health_Controller extends WP_REST_Controller {
 	 */
 	public function get_directory_sizes() {
 		if ( ! class_exists( 'WP_Debug_Data' ) ) {
-			require_once ABSPATH_CORE . 'wp-admin/includes/class-wp-debug-data.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-debug-data.php';
 		}
 
 		$this->load_admin_textdomain();

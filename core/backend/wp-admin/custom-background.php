@@ -12,4 +12,4 @@
 _deprecated_file( basename( __FILE__ ), '5.3.0', 'wp-admin/includes/class-custom-background.php' );
 
 /** Custom_Background class */
-require_once ABSPATH_CORE . 'wp-admin/includes/class-custom-background.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/class-custom-background.php';

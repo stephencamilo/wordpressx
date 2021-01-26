@@ -185,7 +185,7 @@ if ( ! $max_upload_size ) {
 $styles = array(
 	array(
 		'css' => file_get_contents(
-			ABSPATH_CORE . WPINC . '/css/dist/editor/editor-styles.css'
+			ABSPATH_FRONTEND . WPINC . '/css/dist/editor/editor-styles.css'
 		),
 	),
 );
@@ -395,7 +395,7 @@ wp_enqueue_style( 'wp-format-library' );
 do_action( 'enqueue_block_editor_assets' );
 
 // In order to duplicate classic meta box behaviour, we need to run the classic meta box actions.
-require_once ABSPATH_CORE . 'wp-admin/includes/meta-boxes.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/meta-boxes.php';
 register_and_do_post_meta_boxes( $post );
 
 // Check if the Custom Fields meta box has been removed at some point.
@@ -433,7 +433,7 @@ $script = sprintf(
 );
 wp_add_inline_script( 'wp-edit-post', $script );
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 ?>
 
 <div class="block-editor">

@@ -49,7 +49,7 @@ if ( ! empty( $action ) ) {
 	} elseif ( 'create-privacy-page' === $action ) {
 
 		if ( ! class_exists( 'WP_Privacy_Policy_Content' ) ) {
-			require_once ABSPATH_CORE . 'wp-admin/includes/class-wp-privacy-policy-content.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-privacy-policy-content.php';
 		}
 
 		$privacy_policy_page_content = WP_Privacy_Policy_Content::get_default_content();
@@ -115,7 +115,7 @@ if ( ! empty( $privacy_policy_page_id ) ) {
 $title       = __( 'Privacy Settings' );
 $parent_file = 'options-general.php';
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 ?>
 <div class="wrap">
@@ -252,4 +252,4 @@ require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
 </div>
 <?php
 
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

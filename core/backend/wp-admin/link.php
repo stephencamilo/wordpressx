@@ -117,8 +117,8 @@ switch ( $action ) {
 			wp_die( __( 'Link not found.' ) );
 		}
 
-		require ABSPATH_CORE . 'wp-admin/edit-link-form.php';
-		require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+		require ABSPATH_BACKEND . 'wp-admin/edit-link-form.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 		break;
 
 	default:

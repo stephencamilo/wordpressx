@@ -293,7 +293,7 @@ When seeking help with this issue, you may be asked for some of the following in
 	 */
 	private function get_plugin( $extension ) {
 		if ( ! function_exists( 'get_plugins' ) ) {
-			require_once ABSPATH_CORE . 'wp-admin/includes/plugin.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/includes/plugin.php';
 		}
 
 		$plugins = get_plugins();

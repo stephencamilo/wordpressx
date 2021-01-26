@@ -35,9 +35,9 @@ function delete_theme( $stylesheet, $redirect = '' ) {
 
 	if ( false === $credentials ) {
 		if ( ! empty( $data ) ) {
-			require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 			echo $data;
-			require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 			exit;
 		}
 		return;
@@ -50,9 +50,9 @@ function delete_theme( $stylesheet, $redirect = '' ) {
 		$data = ob_get_clean();
 
 		if ( ! empty( $data ) ) {
-			require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 			echo $data;
-			require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 			exit;
 		}
 		return;
@@ -464,7 +464,7 @@ function get_theme_feature_list( $api = true ) {
  */
 function themes_api( $action, $args = array() ) {
 	// Include an unmodified $wp_version.
-	require ABSPATH_CORE . WPINC . '/version.php';
+	require ABSPATH_BACKEND . WPINC . '/version.php';
 
 	if ( is_array( $args ) ) {
 		$args = (object) $args;

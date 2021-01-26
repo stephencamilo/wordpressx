@@ -74,8 +74,8 @@ class WP_REST_Block_Directory_Controller extends WP_REST_Controller {
 	 * @return WP_Error|WP_REST_Response Response object on success, or WP_Error object on failure.
 	 */
 	public function get_items( $request ) {
-		require_once ABSPATH_CORE . 'wp-admin/includes/plugin-install.php';
-		require_once ABSPATH_CORE . 'wp-admin/includes/plugin.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/includes/plugin-install.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/includes/plugin.php';
 
 		$response = plugins_api(
 			'query_plugins',
@@ -188,7 +188,7 @@ class WP_REST_Block_Directory_Controller extends WP_REST_Controller {
 	 * @return string The plugin file found matching it.
 	 */
 	protected function find_plugin_for_slug( $slug ) {
-		require_once ABSPATH_CORE . 'wp-admin/includes/plugin.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/includes/plugin.php';
 
 		$plugin_files = get_plugins( '/' . $slug );
 

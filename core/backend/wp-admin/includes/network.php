@@ -119,7 +119,7 @@ function network_step1( $errors = false ) {
 			'<code>DO_NOT_UPGRADE_GLOBAL_TABLES</code>'
 		) . '</p></div>';
 		echo '</div>';
-		require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 		die();
 	}
 
@@ -132,7 +132,7 @@ function network_step1( $errors = false ) {
 		) . '</p></div>';
 		echo '<p>' . __( 'Once the network is created, you may reactivate your plugins.' ) . '</p>';
 		echo '</div>';
-		require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 		die();
 	}
 
@@ -147,7 +147,7 @@ function network_step1( $errors = false ) {
 		) . '</p>';
 		echo '<a href="' . esc_url( admin_url() ) . '">' . __( 'Go to Dashboard' ) . '</a>';
 		echo '</div>';
-		require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 		die();
 	}
 

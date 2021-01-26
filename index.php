@@ -14,11 +14,19 @@
 define('WP_USE_THEMES', true);
 
 if (! defined('ABSPATH')) {
-    define('ABSPATH', dirname(__DIR__) . $_SERVER["REQUEST_URI"]);
+    define('ABSPATH', __DIR__ . $_SERVER["REQUEST_URI"]);
 }
 
 if (! defined('ABSPATH_CORE')) {
-    define('ABSPATH_CORE', dirname(__DIR__) . $_SERVER["REQUEST_URI"] . 'core/backend/');
+    define('ABSPATH_CORE', ABSPATH . $_SERVER["REQUEST_URI"] . 'core/');
+}
+
+if (! defined('ABSPATH_BACKEND')) {
+    define('ABSPATH_BACKEND', ABSPATH . $_SERVER["REQUEST_URI"] . 'core/backend/');
+}
+
+if (! defined('ABSPATH_FRONTEND')) {
+    define('ABSPATH_FRONTEND', ABSPATH . $_SERVER["REQUEST_URI"] . 'core/frontend/');
 }
 
 /** Loads the WordPress Environment and Template */

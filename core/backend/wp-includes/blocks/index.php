@@ -6,17 +6,17 @@
  */
 
 // Include files required for core blocks registration.
-require ABSPATH_CORE . WPINC . '/blocks/archives.php';
-require ABSPATH_CORE . WPINC . '/blocks/block.php';
-require ABSPATH_CORE . WPINC . '/blocks/calendar.php';
-require ABSPATH_CORE . WPINC . '/blocks/categories.php';
-require ABSPATH_CORE . WPINC . '/blocks/latest-comments.php';
-require ABSPATH_CORE . WPINC . '/blocks/latest-posts.php';
-require ABSPATH_CORE . WPINC . '/blocks/rss.php';
-require ABSPATH_CORE . WPINC . '/blocks/search.php';
-require ABSPATH_CORE . WPINC . '/blocks/shortcode.php';
-require ABSPATH_CORE . WPINC . '/blocks/social-link.php';
-require ABSPATH_CORE . WPINC . '/blocks/tag-cloud.php';
+require ABSPATH_BACKEND . WPINC . '/blocks/archives.php';
+require ABSPATH_BACKEND . WPINC . '/blocks/block.php';
+require ABSPATH_BACKEND . WPINC . '/blocks/calendar.php';
+require ABSPATH_BACKEND . WPINC . '/blocks/categories.php';
+require ABSPATH_BACKEND . WPINC . '/blocks/latest-comments.php';
+require ABSPATH_BACKEND . WPINC . '/blocks/latest-posts.php';
+require ABSPATH_BACKEND . WPINC . '/blocks/rss.php';
+require ABSPATH_BACKEND . WPINC . '/blocks/search.php';
+require ABSPATH_BACKEND . WPINC . '/blocks/shortcode.php';
+require ABSPATH_BACKEND . WPINC . '/blocks/social-link.php';
+require ABSPATH_BACKEND . WPINC . '/blocks/tag-cloud.php';
 
 /**
  * Registers core block types using metadata files.
@@ -61,7 +61,7 @@ function register_core_block_types_from_metadata() {
 
 	foreach ( $block_folders as $block_folder ) {
 		register_block_type_from_metadata(
-			ABSPATH_CORE . WPINC . '/blocks/' . $block_folder
+			ABSPATH_BACKEND . WPINC . '/blocks/' . $block_folder
 		);
 	}
 }

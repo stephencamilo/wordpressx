@@ -121,7 +121,7 @@ get_current_screen()->set_screen_reader_content(
 /**
  * WordPress Administration Template Header.
  */
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 ?>
 <div class="wrap <?php echo esc_attr( "plugin-install-tab-$tab" ); ?>">
 <h1 class="wp-heading-inline">
@@ -183,4 +183,4 @@ wp_print_admin_notice_templates();
 /**
  * WordPress Administration Template Footer.
  */
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

@@ -178,7 +178,7 @@ class WP_Recovery_Mode {
 			}
 
 			if ( ! function_exists( 'wp_generate_password' ) ) {
-				require_once ABSPATH_CORE . WPINC . '/pluggable.php';
+				require_once ABSPATH_BACKEND . WPINC . '/pluggable.php';
 			}
 
 			return $this->email_service->maybe_send_recovery_mode_email( $this->get_email_rate_limit(), $error, $extension );
@@ -458,7 +458,7 @@ class WP_Recovery_Mode {
 	protected function redirect_protected() {
 		// Pluggable is usually loaded after plugins, so we manually include it here for redirection functionality.
 		if ( ! function_exists( 'wp_safe_redirect' ) ) {
-			require_once ABSPATH_CORE . WPINC . '/pluggable.php';
+			require_once ABSPATH_BACKEND . WPINC . '/pluggable.php';
 		}
 
 		$scheme = is_ssl() ? 'https://' : 'http://';

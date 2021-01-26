@@ -14,14 +14,14 @@ if ( ! current_user_can( 'manage_privacy_options' ) ) {
 }
 
 if ( ! class_exists( 'WP_Privacy_Policy_Content' ) ) {
-	include_once ABSPATH_CORE . 'wp-admin/includes/class-wp-privacy-policy-content.php';
+	include_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-privacy-policy-content.php';
 }
 
 $title = __( 'Privacy Policy Guide' );
 
 wp_enqueue_script( 'privacy-tools' );
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 ?>
 <div class="wrap">
@@ -33,4 +33,4 @@ require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
 </div>
 <?php
 
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

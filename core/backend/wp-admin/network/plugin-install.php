@@ -14,4 +14,4 @@ if ( isset( $_GET['tab'] ) && ( 'plugin-information' === $_GET['tab'] ) ) {
 /** Load WordPress Administration Bootstrap */
 require_once __DIR__ . '/admin.php';
 
-require ABSPATH_CORE . 'wp-admin/plugin-install.php';
+require ABSPATH_BACKEND . 'wp-admin/plugin-install.php';

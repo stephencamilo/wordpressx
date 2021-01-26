@@ -275,7 +275,7 @@ if ( 'update' === $action ) { // We are saving settings sent from a settings pag
 
 		// Handle translation installation.
 		if ( ! empty( $_POST['WPLANG'] ) && current_user_can( 'install_languages' ) ) {
-			require_once ABSPATH_CORE . 'wp-admin/includes/translation-install.php';
+			require_once ABSPATH_BACKEND . 'wp-admin/includes/translation-install.php';
 
 			if ( wp_can_install_language_pack() ) {
 				$language = wp_download_language_pack( $_POST['WPLANG'] );
@@ -342,7 +342,7 @@ if ( 'update' === $action ) { // We are saving settings sent from a settings pag
 	exit;
 }
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php'; ?>
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php'; ?>
 
 <div class="wrap">
 	<h1><?php esc_html_e( 'All Settings' ); ?></h1>
@@ -405,4 +405,4 @@ foreach ( (array) $options as $option ) :
 </div>
 
 <?php
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

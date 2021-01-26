@@ -10,7 +10,7 @@
 /** Load WordPress Administration Bootstrap */
 require_once __DIR__ . '/admin.php';
 
-require_once ABSPATH_CORE . WPINC . '/http.php';
+require_once ABSPATH_BACKEND . WPINC . '/http.php';
 
 $title       = __( 'Upgrade Network' );
 $parent_file = 'upgrade.php';
@@ -32,7 +32,7 @@ get_current_screen()->set_help_sidebar(
 	'<p>' . __( '<a href="https://wordpress.org/support/">Support</a>' ) . '</p>'
 );
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 if ( ! current_user_can( 'upgrade_network' ) ) {
 	wp_die( __( 'Sorry, you are not allowed to access this page.' ), 403 );
@@ -154,4 +154,4 @@ switch ( $action ) {
 ?>
 </div>
 
-<?php require_once ABSPATH_CORE . 'wp-admin/admin-footer.php'; ?>
+<?php require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php'; ?>

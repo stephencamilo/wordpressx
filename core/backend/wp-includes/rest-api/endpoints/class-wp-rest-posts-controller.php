@@ -1815,7 +1815,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 
 			if ( $permalink_template_requested || $generated_slug_requested ) {
 				if ( ! function_exists( 'get_sample_permalink' ) ) {
-					require_once ABSPATH_CORE . 'wp-admin/includes/post.php';
+					require_once ABSPATH_BACKEND . 'wp-admin/includes/post.php';
 				}
 
 				$sample_permalink = get_sample_permalink( $post->ID, $post->post_title, '' );

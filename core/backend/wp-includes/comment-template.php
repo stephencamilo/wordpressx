@@ -1555,7 +1555,7 @@ function comments_template( $file = '/comments.php', $separate_comments = false 
 	} elseif ( file_exists( TEMPLATEPATH . $file ) ) {
 		require TEMPLATEPATH . $file;
 	} else { // Backward compat code will be removed in a future release.
-		require ABSPATH_CORE . WPINC . '/theme-compat/comments.php';
+		require ABSPATH_BACKEND . WPINC . '/theme-compat/comments.php';
 	}
 }
 

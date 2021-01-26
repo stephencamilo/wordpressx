@@ -19,4 +19,4 @@ $_wp_real_parent_file['users.php'] = 'profile.php';
 $compat                            = array();
 $submenu                           = array();
 
-require_once ABSPATH_CORE . 'wp-admin/includes/menu.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/menu.php';

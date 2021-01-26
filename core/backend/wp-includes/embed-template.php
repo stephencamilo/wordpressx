@@ -10,4 +10,4 @@
 
 _deprecated_file( basename( __FILE__ ), '4.5.0', 'wp-includes/theme-compat/embed.php' );
 
-require ABSPATH_CORE . WPINC . '/theme-compat/embed.php';
+require ABSPATH_BACKEND . WPINC . '/theme-compat/embed.php';

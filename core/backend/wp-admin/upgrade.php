@@ -19,7 +19,7 @@ require dirname( __DIR__ ) . '/wp-load.php';
 
 nocache_headers();
 
-require_once ABSPATH_CORE . 'wp-admin/includes/upgrade.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/upgrade.php';
 
 delete_site_transient( 'update_core' );
 

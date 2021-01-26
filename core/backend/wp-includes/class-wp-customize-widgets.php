@@ -946,7 +946,7 @@ final class WP_Customize_Widgets {
 		}
 
 		global $wp_registered_widgets, $wp_registered_widget_controls;
-		require_once ABSPATH_CORE . 'wp-admin/includes/widgets.php'; // For next_widget_id_number().
+		require_once ABSPATH_BACKEND . 'wp-admin/includes/widgets.php'; // For next_widget_id_number().
 
 		$sort = $wp_registered_widgets;
 		usort( $sort, array( $this, '_sort_name_callback' ) );

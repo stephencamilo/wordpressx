@@ -10,4 +10,4 @@
 /** Load WordPress Administration Bootstrap */
 require_once __DIR__ . '/admin.php';
 
-require ABSPATH_CORE . 'wp-admin/plugin-editor.php';
+require ABSPATH_BACKEND . 'wp-admin/plugin-editor.php';

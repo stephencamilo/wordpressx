@@ -14,10 +14,10 @@ if ( file_exists( WP_CONTENT_DIR . '/install.php' ) ) {
 }
 
 /** WordPress Administration API */
-require_once ABSPATH_CORE . 'wp-admin/includes/admin.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/admin.php';
 
 /** WordPress Schema API */
-require_once ABSPATH_CORE . 'wp-admin/includes/schema.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/schema.php';
 
 if ( ! function_exists( 'wp_install' ) ) :
 	/**
@@ -359,7 +359,7 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.'
 			$privacy_policy_content = get_site_option( 'default_privacy_policy_content' );
 		} else {
 			if ( ! class_exists( 'WP_Privacy_Policy_Content' ) ) {
-				include_once ABSPATH_CORE . 'wp-admin/includes/class-wp-privacy-policy-content.php';
+				include_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-privacy-policy-content.php';
 			}
 
 			$privacy_policy_content = WP_Privacy_Policy_Content::get_default_content();

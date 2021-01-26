@@ -3376,6 +3376,35 @@ function includes_url( $path = '', $scheme = null ) {
 }
 
 /**
+ * Retrieves the URL to the includes directory.
+ *
+ * @since 2.6.0
+ *
+ * @param string $path   Optional. Path relative to the includes URL. Default empty.
+ * @param string $scheme Optional. Scheme to give the includes URL context. Accepts
+ *                       'http', 'https', or 'relative'. Default null.
+ * @return string Includes URL link with optional path appended.
+ */
+function frontend_includes_url( $path = '', $scheme = null ) {
+	$url = ABSPATH_FRONTEND . WPINC.'/';
+
+	if ( $path && is_string( $path ) ) {
+		$url .= ltrim( $path, '/' );
+	}
+
+	/**
+	 * Filters the URL to the includes directory.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $url  The complete URL to the includes directory including scheme and path.
+	 * @param string $path Path relative to the URL to the wp-includes directory. Blank string
+	 *                     if no path is specified.
+	 */
+	return apply_filters( 'frontend_includes_url', $url, $path );
+}
+
+/**
  * Retrieves the URL to the content directory.
  *
  * @since 2.6.0

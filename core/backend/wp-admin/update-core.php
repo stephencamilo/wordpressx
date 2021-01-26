@@ -232,7 +232,7 @@ function core_upgrade_preamble() {
 	$updates = get_core_updates();
 
 	// Include an unmodified $wp_version.
-	require ABSPATH_CORE . WPINC . '/version.php';
+	require ABSPATH_BACKEND . WPINC . '/version.php';
 
 	$is_development_version = preg_match( '/alpha|beta|RC/', $wp_version );
 
@@ -295,7 +295,7 @@ function core_auto_updates_settings() {
 		}
 	}
 
-	require_once ABSPATH_CORE . 'wp-admin/includes/class-wp-upgrader.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-upgrader.php';
 	$updater = new WP_Automatic_Updater();
 
 	// Defaults:
@@ -425,7 +425,7 @@ function list_plugin_updates() {
 	$wp_version     = get_bloginfo( 'version' );
 	$cur_wp_version = preg_replace( '/-.*$/', '', $wp_version );
 
-	require_once ABSPATH_CORE . 'wp-admin/includes/plugin-install.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/includes/plugin-install.php';
 	$plugins = get_plugin_updates();
 	if ( empty( $plugins ) ) {
 		echo '<h2>' . __( 'Plugins' ) . '</h2>';
@@ -781,7 +781,7 @@ function list_translation_updates() {
 function do_core_upgrade( $reinstall = false ) {
 	global $wp_filesystem;
 
-	require_once ABSPATH_CORE . 'wp-admin/includes/class-wp-upgrader.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-upgrader.php';
 
 	if ( $reinstall ) {
 		$url = 'update-core.php?action=do-core-reinstall';
@@ -976,7 +976,7 @@ if ( 'upgrade-core' === $action ) {
 	$force_check = ! empty( $_GET['force-check'] );
 	wp_version_check( array(), $force_check );
 
-	require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 	?>
 	<div class="wrap">
 	<h1><?php _e( 'WordPress Updates' ); ?></h1>
@@ -1041,7 +1041,7 @@ if ( 'upgrade-core' === $action ) {
 		)
 	);
 
-	require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 
 } elseif ( 'do-core-upgrade' === $action || 'do-core-reinstall' === $action ) {
 
@@ -1058,7 +1058,7 @@ if ( 'upgrade-core' === $action ) {
 		do_undismiss_core_update();
 	}
 
-	require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 	if ( 'do-core-reinstall' === $action ) {
 		$reinstall = true;
 	} else {
@@ -1077,7 +1077,7 @@ if ( 'upgrade-core' === $action ) {
 		)
 	);
 
-	require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 
 } elseif ( 'do-plugin-upgrade' === $action ) {
 
@@ -1101,7 +1101,7 @@ if ( 'upgrade-core' === $action ) {
 
 	$title = __( 'Update Plugins' );
 
-	require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 	?>
 	<div class="wrap">
 		<h1><?php _e( 'Update Plugins' ); ?></h1>
@@ -1117,7 +1117,7 @@ if ( 'upgrade-core' === $action ) {
 		)
 	);
 
-	require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 
 } elseif ( 'do-theme-upgrade' === $action ) {
 
@@ -1141,7 +1141,7 @@ if ( 'upgrade-core' === $action ) {
 
 	$title = __( 'Update Themes' );
 
-	require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 	?>
 	<div class="wrap">
 		<h1><?php _e( 'Update Themes' ); ?></h1>
@@ -1157,7 +1157,7 @@ if ( 'upgrade-core' === $action ) {
 		)
 	);
 
-	require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 
 } elseif ( 'do-translation-upgrade' === $action ) {
 
@@ -1167,8 +1167,8 @@ if ( 'upgrade-core' === $action ) {
 
 	check_admin_referer( 'upgrade-translations' );
 
-	require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
-	require_once ABSPATH_CORE . 'wp-admin/includes/class-wp-upgrader.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-upgrader.php';
 
 	$url     = 'update-core.php?action=do-translation-upgrade';
 	$nonce   = 'upgrade-translations';
@@ -1186,7 +1186,7 @@ if ( 'upgrade-core' === $action ) {
 		)
 	);
 
-	require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 
 } elseif ( 'core-major-auto-updates-settings' === $action ) {
 

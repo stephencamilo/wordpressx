@@ -1,4 +1,10 @@
 <?php
+
+
+define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', true);
+define('WP_DEBUG_DISPLAY', false);
+@ini_set('display_errors', 0);
 /**
  * Retrieves and creates the wp-config.php file.
  *
@@ -26,20 +32,28 @@ define( 'WP_SETUP_CONFIG', true );
  */
 error_reporting( -1 );
 if ( ! defined( 'ABSPATH' ) ) {
-	define( 'ABSPATH', dirname( __DIR__ ) . '/../../' );
+	define( 'ABSPATH', dirname(  __DIR__  ). '/../../../' );
 }
 
 if ( ! defined( 'ABSPATH_CORE' ) ) {
-	define( 'ABSPATH_CORE', dirname( __DIR__ ) . '/');
+	define( 'ABSPATH_CORE', dirname( __DIR__ ) . '/../../');
 }
 
-require ABSPATH . '/wp-settings.php';
+if ( ! defined( 'ABSPATH_BACKEND' ) ) {
+	define( 'ABSPATH_BACKEND', dirname( __DIR__ ) . '/');
+}
+
+if ( ! defined( 'ABSPATH_FRONTEND' ) ) {
+	define( 'ABSPATH_FRONTEND', dirname( __DIR__ ) . '/');
+}
+
+require ABSPATH_BACKEND . 'wp-settings.php';
 
 /** Load WordPress Administration Upgrade API */
-require_once ABSPATH_CORE . 'wp-admin/includes/upgrade.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/upgrade.php';
 
 /** Load WordPress Translation Installation API */
-require_once ABSPATH_CORE . 'wp-admin/includes/translation-install.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/translation-install.php';
 
 nocache_headers();
 

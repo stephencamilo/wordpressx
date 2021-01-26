@@ -318,10 +318,10 @@ if ( 'category' === $taxonomy || 'link_category' === $taxonomy || 'post_tag' ===
 	unset( $help );
 }
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 /** Also used by the Edit Tag  form */
-require_once ABSPATH_CORE . 'wp-admin/includes/edit-tag-messages.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/edit-tag-messages.php';
 
 $class = ( isset( $_REQUEST['error'] ) ) ? 'error' : 'updated';
 
@@ -663,4 +663,4 @@ endif;
 
 $wp_list_table->inline_edit();
 
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

@@ -326,11 +326,11 @@ endif;
 
 // random_int() was introduced in PHP 7.0.
 if ( ! function_exists( 'random_int' ) ) {
-	require ABSPATH_CORE . WPINC . '/random_compat/random.php';
+	require ABSPATH_BACKEND . WPINC . '/random_compat/random.php';
 }
 // sodium_crypto_box() was introduced in PHP 7.2.
 if ( ! function_exists( 'sodium_crypto_box' ) ) {
-	require ABSPATH_CORE . WPINC . '/sodium_compat/autoload.php';
+	require ABSPATH_BACKEND . WPINC . '/sodium_compat/autoload.php';
 }
 
 if ( ! function_exists( 'is_countable' ) ) {

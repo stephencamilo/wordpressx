@@ -14,7 +14,7 @@ if ( ! current_user_can( 'export' ) ) {
 }
 
 /** Load WordPress export API */
-require_once ABSPATH_CORE . 'wp-admin/includes/export.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/export.php';
 $title = __( 'Export' );
 
 /**
@@ -122,7 +122,7 @@ if ( isset( $_GET['download'] ) ) {
 	die();
 }
 
-require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 /**
  * Create the date options fields for exporting a given post type.
@@ -321,4 +321,4 @@ do_action( 'export_filters' );
 </form>
 </div>
 
-<?php require_once ABSPATH_CORE . 'wp-admin/admin-footer.php'; ?>
+<?php require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php'; ?>

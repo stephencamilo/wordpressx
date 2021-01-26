@@ -1,0 +1,216 @@
+[25-Jan-2021 21:23:35 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 21:23:35 UTC] PHP Stack trace:
+[25-Jan-2021 21:23:35 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 21:23:35 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 21:23:35 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 21:23:35 UTC] PHP   4. require_once() /var/www/html/wp-config.php:105
+[25-Jan-2021 21:23:37 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 21:23:37 UTC] PHP Stack trace:
+[25-Jan-2021 21:23:37 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 21:23:37 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 21:23:37 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 21:23:37 UTC] PHP   4. require_once() /var/www/html/wp-config.php:105
+[25-Jan-2021 21:23:53 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 21:23:53 UTC] PHP Stack trace:
+[25-Jan-2021 21:23:53 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 21:23:53 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 21:23:53 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 21:23:53 UTC] PHP   4. require_once() /var/www/html/wp-config.php:105
+[25-Jan-2021 21:23:58 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 21:23:58 UTC] PHP Stack trace:
+[25-Jan-2021 21:23:58 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 21:23:58 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 21:23:58 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 21:23:58 UTC] PHP   4. require_once() /var/www/html/wp-config.php:105
+[25-Jan-2021 21:23:58 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 21:23:58 UTC] PHP Stack trace:
+[25-Jan-2021 21:23:58 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 21:23:58 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 21:23:58 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 21:23:58 UTC] PHP   4. require_once() /var/www/html/wp-config.php:105
+[25-Jan-2021 21:24:38 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 21:24:38 UTC] PHP Stack trace:
+[25-Jan-2021 21:24:38 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 21:24:38 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 21:24:38 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 21:24:38 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 21:24:38 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 21:24:38 UTC] PHP Stack trace:
+[25-Jan-2021 21:24:38 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 21:24:38 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 21:24:38 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 21:24:38 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 21:24:42 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 21:24:42 UTC] PHP Stack trace:
+[25-Jan-2021 21:24:42 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 21:24:42 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 21:24:42 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 21:24:42 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 21:24:42 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 21:24:42 UTC] PHP Stack trace:
+[25-Jan-2021 21:24:42 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 21:24:42 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 21:24:42 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 21:24:42 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 21:24:53 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 21:24:53 UTC] PHP Stack trace:
+[25-Jan-2021 21:24:53 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 21:24:53 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 21:24:53 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 21:24:53 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 21:24:53 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 21:24:53 UTC] PHP Stack trace:
+[25-Jan-2021 21:24:53 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 21:24:53 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 21:24:53 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 21:24:53 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:46:02 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:46:02 UTC] PHP Stack trace:
+[25-Jan-2021 22:46:02 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:46:02 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:46:02 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:46:02 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:46:02 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:46:02 UTC] PHP Stack trace:
+[25-Jan-2021 22:46:02 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:46:02 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:46:02 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:46:02 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:46:10 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:46:10 UTC] PHP Stack trace:
+[25-Jan-2021 22:46:10 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:46:10 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:46:10 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:46:10 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:46:10 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:46:10 UTC] PHP Stack trace:
+[25-Jan-2021 22:46:10 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:46:10 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:46:10 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:46:10 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:47:03 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:47:03 UTC] PHP Stack trace:
+[25-Jan-2021 22:47:03 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:47:03 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:47:03 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:47:03 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:47:03 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:47:03 UTC] PHP Stack trace:
+[25-Jan-2021 22:47:03 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:47:03 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:47:03 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:47:03 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:47:08 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:47:08 UTC] PHP Stack trace:
+[25-Jan-2021 22:47:08 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:47:08 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:47:08 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:47:08 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:47:08 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:47:08 UTC] PHP Stack trace:
+[25-Jan-2021 22:47:08 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:47:08 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:47:08 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:47:08 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:47:17 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:47:17 UTC] PHP Stack trace:
+[25-Jan-2021 22:47:17 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:47:17 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:47:17 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:47:17 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:47:17 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:47:17 UTC] PHP Stack trace:
+[25-Jan-2021 22:47:17 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:47:17 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:47:17 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:47:17 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:47:21 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:47:21 UTC] PHP Stack trace:
+[25-Jan-2021 22:47:21 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:47:21 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:47:21 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:47:21 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:47:21 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:47:21 UTC] PHP Stack trace:
+[25-Jan-2021 22:47:21 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:47:21 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:47:21 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:47:21 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:47:27 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:47:27 UTC] PHP Stack trace:
+[25-Jan-2021 22:47:27 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:47:27 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:47:27 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:47:27 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:48:00 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:48:00 UTC] PHP Stack trace:
+[25-Jan-2021 22:48:00 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:48:00 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:48:00 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:48:00 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:48:00 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:48:00 UTC] PHP Stack trace:
+[25-Jan-2021 22:48:00 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:48:00 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:48:00 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:48:00 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:48:15 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:48:15 UTC] PHP Stack trace:
+[25-Jan-2021 22:48:15 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:48:15 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:48:15 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:48:15 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:48:15 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:48:15 UTC] PHP Stack trace:
+[25-Jan-2021 22:48:15 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:48:15 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:48:15 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:48:15 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:48:44 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:48:44 UTC] PHP Stack trace:
+[25-Jan-2021 22:48:44 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:48:44 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:48:44 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:48:44 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:48:44 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:48:44 UTC] PHP Stack trace:
+[25-Jan-2021 22:48:44 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:48:44 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:48:44 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:48:44 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:56:30 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:56:30 UTC] PHP Stack trace:
+[25-Jan-2021 22:56:30 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:56:30 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:56:30 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:56:30 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:56:30 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:56:30 UTC] PHP Stack trace:
+[25-Jan-2021 22:56:30 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:56:30 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:56:30 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:56:30 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:56:37 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:56:37 UTC] PHP Stack trace:
+[25-Jan-2021 22:56:37 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:56:37 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:56:37 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:56:37 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:56:37 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:56:37 UTC] PHP Stack trace:
+[25-Jan-2021 22:56:37 UTC] PHP   1. {main}() /var/www/html/core/backend/wp-admin/install.php:0
+[25-Jan-2021 22:56:37 UTC] PHP   2. require_once() /var/www/html/core/backend/wp-admin/install.php:36
+[25-Jan-2021 22:56:37 UTC] PHP   3. require_once() /var/www/html/core/backend/wp-load.php:45
+[25-Jan-2021 22:56:37 UTC] PHP   4. require_once() /var/www/html/wp-config.php:96
+[25-Jan-2021 22:57:21 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:57:21 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:57:29 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:57:29 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:57:33 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:57:33 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:58:08 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:58:08 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:58:13 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 22:58:13 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 23:01:03 UTC] PHP Warning:  require_once(/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php): failed to open stream: No such file or directory in /var/www/html/core/backend/wp-settings.php on line 543
+[25-Jan-2021 23:01:03 UTC] PHP Fatal error:  require_once(): Failed opening required '/var/www/html/core/backend/../wp-admin/includes/class-wp-site-health.php' (include_path='.:/usr/share/php') in /var/www/html/core/backend/wp-settings.php on line 543

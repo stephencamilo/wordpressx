@@ -49,7 +49,7 @@ final class WP_Recovery_Mode_Key_Service {
 		$key = wp_generate_password( 22, false );
 
 		if ( empty( $wp_hasher ) ) {
-			require_once ABSPATH_CORE . WPINC . '/class-phpass.php';
+			require_once ABSPATH_BACKEND . WPINC . '/class-phpass.php';
 			$wp_hasher = new PasswordHash( 8, true );
 		}
 

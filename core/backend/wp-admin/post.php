@@ -76,7 +76,7 @@ switch ( $action ) {
 		$error_msg = false;
 
 		// For output of the Quick Draft dashboard widget.
-		require_once ABSPATH_CORE . 'wp-admin/includes/dashboard.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/includes/dashboard.php';
 
 		if ( ! wp_verify_nonce( $nonce, 'add-post' ) ) {
 			$error_msg = __( 'Unable to submit this form, please refresh and try again.' );
@@ -184,7 +184,7 @@ switch ( $action ) {
 		}
 
 		if ( use_block_editor_for_post( $post ) ) {
-			require ABSPATH_CORE . 'wp-admin/edit-form-blocks.php';
+			require ABSPATH_BACKEND . 'wp-admin/edit-form-blocks.php';
 			break;
 		}
 
@@ -203,7 +203,7 @@ switch ( $action ) {
 			enqueue_comment_hotkeys_js();
 		}
 
-		require ABSPATH_CORE . 'wp-admin/edit-form-advanced.php';
+		require ABSPATH_BACKEND . 'wp-admin/edit-form-advanced.php';
 
 		break;
 
@@ -366,4 +366,4 @@ switch ( $action ) {
 		exit;
 } // End switch.
 
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

@@ -8,5 +8,5 @@
 
 _deprecated_file( basename( __FILE__ ), '4.7.0' );
 
-require_once ABSPATH_CORE . WPINC . '/class-wp-session-tokens.php';
-require_once ABSPATH_CORE . WPINC . '/class-wp-user-meta-session-tokens.php';
+require_once ABSPATH_BACKEND . WPINC . '/class-wp-session-tokens.php';
+require_once ABSPATH_BACKEND . WPINC . '/class-wp-user-meta-session-tokens.php';

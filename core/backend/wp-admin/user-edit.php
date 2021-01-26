@@ -188,7 +188,7 @@ switch ( $action ) {
 		$title    = sprintf( $title, $profileuser->display_name );
 		$sessions = WP_Session_Tokens::get_instance( $profileuser->ID );
 
-		require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 		?>
 
 		<?php if ( ! IS_PROFILE_PAGE && is_super_admin( $profileuser->ID ) && current_user_can( 'manage_network_options' ) ) { ?>
@@ -890,4 +890,4 @@ endif;
 	</script>
 <?php endif; ?>
 <?php
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

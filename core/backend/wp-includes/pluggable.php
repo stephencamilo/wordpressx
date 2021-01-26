@@ -212,9 +212,9 @@ if ( ! function_exists( 'wp_mail' ) ) :
 
 		// (Re)create it, if it's gone missing.
 		if ( ! ( $phpmailer instanceof PHPMailer\PHPMailer\PHPMailer ) ) {
-			require_once ABSPATH_CORE . WPINC . '/PHPMailer/PHPMailer.php';
-			require_once ABSPATH_CORE . WPINC . '/PHPMailer/SMTP.php';
-			require_once ABSPATH_CORE . WPINC . '/PHPMailer/Exception.php';
+			require_once ABSPATH_BACKEND . WPINC . '/PHPMailer/PHPMailer.php';
+			require_once ABSPATH_BACKEND . WPINC . '/PHPMailer/SMTP.php';
+			require_once ABSPATH_BACKEND . WPINC . '/PHPMailer/Exception.php';
 			$phpmailer = new PHPMailer\PHPMailer\PHPMailer( true );
 
 			$phpmailer::$validator = static function ( $email ) {
@@ -2348,7 +2348,7 @@ if ( ! function_exists( 'wp_hash_password' ) ) :
 		global $wp_hasher;
 
 		if ( empty( $wp_hasher ) ) {
-			require_once ABSPATH_CORE . WPINC . '/class-phpass.php';
+			require_once ABSPATH_BACKEND . WPINC . '/class-phpass.php';
 			// By default, use the portable hash from phpass.
 			$wp_hasher = new PasswordHash( 8, true );
 		}
@@ -2408,7 +2408,7 @@ if ( ! function_exists( 'wp_check_password' ) ) :
 		// If the stored hash is longer than an MD5,
 		// presume the new style phpass portable hash.
 		if ( empty( $wp_hasher ) ) {
-			require_once ABSPATH_CORE . WPINC . '/class-phpass.php';
+			require_once ABSPATH_BACKEND . WPINC . '/class-phpass.php';
 			// By default, use the portable hash from phpass.
 			$wp_hasher = new PasswordHash( 8, true );
 		}
@@ -2789,7 +2789,7 @@ if ( ! function_exists( 'wp_text_diff' ) ) :
 		$args     = wp_parse_args( $args, $defaults );
 
 		if ( ! class_exists( 'WP_Text_Diff_Renderer_Table', false ) ) {
-			require ABSPATH_CORE . WPINC . '/wp-diff.php';
+			require ABSPATH_BACKEND . WPINC . '/wp-diff.php';
 		}
 
 		$left_string  = normalize_whitespace( $left_string );

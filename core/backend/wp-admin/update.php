@@ -15,7 +15,7 @@ if ( ! defined( 'IFRAME_REQUEST' )
 /** WordPress Administration Bootstrap */
 require_once __DIR__ . '/admin.php';
 
-require_once ABSPATH_CORE . 'wp-admin/includes/class-wp-upgrader.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-upgrader.php';
 
 wp_enqueue_script( 'wp-a11y' );
 
@@ -64,7 +64,7 @@ if ( isset( $_GET['action'] ) ) {
 		$submenu_file = 'plugins.php';
 
 		wp_enqueue_script( 'updates' );
-		require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 		$nonce = 'upgrade-plugin_' . $plugin;
 		$url   = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin );
@@ -72,7 +72,7 @@ if ( isset( $_GET['action'] ) ) {
 		$upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
 		$upgrader->upgrade( $plugin );
 
-		require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 
 	} elseif ( 'activate-plugin' === $action ) {
 		if ( ! current_user_can( 'update_plugins' ) ) {
@@ -106,7 +106,7 @@ if ( isset( $_GET['action'] ) ) {
 			wp_die( __( 'Sorry, you are not allowed to install plugins on this site.' ) );
 		}
 
-		include_once ABSPATH_CORE . 'wp-admin/includes/plugin-install.php'; // For plugins_api().
+		include_once ABSPATH_BACKEND . 'wp-admin/includes/plugin-install.php'; // For plugins_api().
 
 		check_admin_referer( 'install-plugin_' . $plugin );
 		$api = plugins_api(
@@ -126,7 +126,7 @@ if ( isset( $_GET['action'] ) ) {
 		$title        = __( 'Plugin Installation' );
 		$parent_file  = 'plugins.php';
 		$submenu_file = 'plugin-install.php';
-		require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 		/* translators: %s: Plugin name and version. */
 		$title = sprintf( __( 'Installing Plugin: %s' ), $api->name . ' ' . $api->version );
@@ -141,7 +141,7 @@ if ( isset( $_GET['action'] ) ) {
 		$upgrader = new Plugin_Upgrader( new Plugin_Installer_Skin( compact( 'title', 'url', 'nonce', 'plugin', 'api' ) ) );
 		$upgrader->install( $api->download_link );
 
-		require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 
 	} elseif ( 'upload-plugin' === $action ) {
 
@@ -156,7 +156,7 @@ if ( isset( $_GET['action'] ) ) {
 		$title        = __( 'Upload Plugin' );
 		$parent_file  = 'plugins.php';
 		$submenu_file = 'plugin-install.php';
-		require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 		/* translators: %s: File name. */
 		$title = sprintf( __( 'Installing plugin from uploaded file: %s' ), esc_html( basename( $file_upload->filename ) ) );
@@ -174,7 +174,7 @@ if ( isset( $_GET['action'] ) ) {
 			$file_upload->cleanup();
 		}
 
-		require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 
 	} elseif ( 'upload-plugin-cancel-overwrite' === $action ) {
 		if ( ! current_user_can( 'upload_plugins' ) ) {
@@ -209,7 +209,7 @@ if ( isset( $_GET['action'] ) ) {
 		$title        = __( 'Update Theme' );
 		$parent_file  = 'themes.php';
 		$submenu_file = 'themes.php';
-		require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 		$nonce = 'upgrade-theme_' . $theme;
 		$url   = 'update.php?action=upgrade-theme&theme=' . urlencode( $theme );
@@ -217,7 +217,7 @@ if ( isset( $_GET['action'] ) ) {
 		$upgrader = new Theme_Upgrader( new Theme_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'theme' ) ) );
 		$upgrader->upgrade( $theme );
 
-		require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 	} elseif ( 'update-selected-themes' === $action ) {
 		if ( ! current_user_can( 'update_themes' ) ) {
 			wp_die( __( 'Sorry, you are not allowed to update themes for this site.' ) );
@@ -251,7 +251,7 @@ if ( isset( $_GET['action'] ) ) {
 			wp_die( __( 'Sorry, you are not allowed to install themes on this site.' ) );
 		}
 
-		include_once ABSPATH_CORE . 'wp-admin/includes/class-wp-upgrader.php'; // For themes_api().
+		include_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-upgrader.php'; // For themes_api().
 
 		check_admin_referer( 'install-theme_' . $theme );
 		$api = themes_api(
@@ -272,7 +272,7 @@ if ( isset( $_GET['action'] ) ) {
 		$title        = __( 'Install Themes' );
 		$parent_file  = 'themes.php';
 		$submenu_file = 'themes.php';
-		require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 		/* translators: %s: Theme name and version. */
 		$title = sprintf( __( 'Installing Theme: %s' ), $api->name . ' ' . $api->version );
@@ -283,7 +283,7 @@ if ( isset( $_GET['action'] ) ) {
 		$upgrader = new Theme_Upgrader( new Theme_Installer_Skin( compact( 'title', 'url', 'nonce', 'plugin', 'api' ) ) );
 		$upgrader->install( $api->download_link );
 
-		require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 
 	} elseif ( 'upload-theme' === $action ) {
 
@@ -299,7 +299,7 @@ if ( isset( $_GET['action'] ) ) {
 		$parent_file  = 'themes.php';
 		$submenu_file = 'theme-install.php';
 
-		require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 		/* translators: %s: File name. */
 		$title = sprintf( __( 'Installing theme from uploaded file: %s' ), esc_html( basename( $file_upload->filename ) ) );
@@ -317,7 +317,7 @@ if ( isset( $_GET['action'] ) ) {
 			$file_upload->cleanup();
 		}
 
-		require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';
 
 	} elseif ( 'upload-theme-cancel-overwrite' === $action ) {
 		if ( ! current_user_can( 'upload_themes' ) ) {

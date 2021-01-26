@@ -244,7 +244,7 @@ if ( current_user_can( 'customize' ) ) {
 ?>
 
 <div id="wpwrap">
-<?php require ABSPATH_CORE . 'wp-admin/menu-header.php'; ?>
+<?php require ABSPATH_BACKEND . 'wp-admin/menu-header.php'; ?>
 <div id="wpcontent">
 
 <?php
@@ -300,5 +300,5 @@ if ( is_network_admin() ) {
 do_action( 'all_admin_notices' );
 
 if ( 'options-general.php' === $parent_file ) {
-	require ABSPATH_CORE . 'wp-admin/options-head.php';
+	require ABSPATH_BACKEND . 'wp-admin/options-head.php';
 }

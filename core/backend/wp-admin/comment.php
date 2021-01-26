@@ -72,7 +72,7 @@ switch ( $action ) {
 		);
 
 		wp_enqueue_script( 'comment' );
-		require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 		if ( ! $comment ) {
 			comment_footer_die( __( 'Invalid comment ID.' ) . sprintf( ' <a href="%s">' . __( 'Go back' ) . '</a>.', 'javascript:history.go(-1)' ) );
@@ -88,7 +88,7 @@ switch ( $action ) {
 
 		$comment = get_comment_to_edit( $comment_id );
 
-		require ABSPATH_CORE . 'wp-admin/edit-form-comment.php';
+		require ABSPATH_BACKEND . 'wp-admin/edit-form-comment.php';
 
 		break;
 
@@ -114,7 +114,7 @@ switch ( $action ) {
 			die();
 		}
 
-		require_once ABSPATH_CORE . 'wp-admin/admin-header.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/admin-header.php';
 
 		$formaction    = $action . 'comment';
 		$nonce_action  = ( 'approve' === $action ) ? 'approve-comment_' : 'delete-comment_';
@@ -368,4 +368,4 @@ switch ( $action ) {
 
 } // End switch.
 
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

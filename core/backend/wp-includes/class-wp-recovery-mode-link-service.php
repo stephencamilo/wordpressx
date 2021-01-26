@@ -77,7 +77,7 @@ class WP_Recovery_Mode_Link_Service {
 		}
 
 		if ( ! function_exists( 'wp_generate_password' ) ) {
-			require_once ABSPATH_CORE . WPINC . '/pluggable.php';
+			require_once ABSPATH_BACKEND . WPINC . '/pluggable.php';
 		}
 
 		$validated = $this->key_service->validate_recovery_mode_key( $_GET['rm_token'], $_GET['rm_key'], $ttl );

@@ -9,7 +9,7 @@
  */
 
 /** WP_Object_Cache class */
-require_once ABSPATH_CORE . WPINC . '/class-wp-object-cache.php';
+require_once ABSPATH_BACKEND . WPINC . '/class-wp-object-cache.php';
 
 /**
  * Adds data to the cache, if the cache key doesn't already exist.

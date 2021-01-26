@@ -959,7 +959,7 @@ function wp_get_attachment_image_src( $attachment_id, $size = 'thumbnail', $icon
 
 			if ( $src ) {
 				/** This filter is documented in wp-includes/post.php */
-				$icon_dir = apply_filters( 'icon_dir', ABSPATH_CORE . WPINC . '/images/media' );
+				$icon_dir = apply_filters( 'icon_dir', ABSPATH_BACKEND . WPINC . '/images/media' );
 
 				$src_file               = $icon_dir . '/' . wp_basename( $src );
 				list( $width, $height ) = @getimagesize( $src_file );
@@ -3634,9 +3634,9 @@ function wp_image_editor_supports( $args = array() ) {
  *                     editor claims to support the request.
  */
 function _wp_image_editor_choose( $args = array() ) {
-	require_once ABSPATH_CORE . WPINC . '/class-wp-image-editor.php';
-	require_once ABSPATH_CORE . WPINC . '/class-wp-image-editor-gd.php';
-	require_once ABSPATH_CORE . WPINC . '/class-wp-image-editor-imagick.php';
+	require_once ABSPATH_BACKEND . WPINC . '/class-wp-image-editor.php';
+	require_once ABSPATH_BACKEND . WPINC . '/class-wp-image-editor-gd.php';
+	require_once ABSPATH_BACKEND . WPINC . '/class-wp-image-editor-imagick.php';
 	/**
 	 * Filters the list of image editing library classes.
 	 *
@@ -4431,7 +4431,7 @@ function wp_enqueue_media( $args = array() ) {
 	wp_enqueue_style( 'imgareaselect' );
 	wp_plupload_default_settings();
 
-	require_once ABSPATH_CORE . WPINC . '/media-template.php';
+	require_once ABSPATH_BACKEND . WPINC . '/media-template.php';
 	add_action( 'admin_footer', 'wp_print_media_templates' );
 	add_action( 'wp_footer', 'wp_print_media_templates' );
 	add_action( 'customize_controls_print_footer_scripts', 'wp_print_media_templates' );

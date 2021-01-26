@@ -173,11 +173,11 @@ class WP_Fatal_Error_Handler {
 		}
 
 		if ( ! function_exists( 'wp_die' ) ) {
-			require_once ABSPATH_CORE . WPINC . '/functions.php';
+			require_once ABSPATH_BACKEND . WPINC . '/functions.php';
 		}
 
 		if ( ! class_exists( 'WP_Error' ) ) {
-			require_once ABSPATH_CORE . WPINC . '/class-wp-error.php';
+			require_once ABSPATH_BACKEND . WPINC . '/class-wp-error.php';
 		}
 
 		if ( true === $handled && wp_is_recovery_mode() ) {

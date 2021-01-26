@@ -3096,7 +3096,7 @@ function edit_form_image_editor( $post ) {
 	$open = isset( $_GET['image-editor'] );
 
 	if ( $open ) {
-		require_once ABSPATH_CORE . 'wp-admin/includes/image-edit.php';
+		require_once ABSPATH_BACKEND . 'wp-admin/includes/image-edit.php';
 	}
 
 	$thumb_url     = false;
@@ -3540,7 +3540,7 @@ function wp_read_video_metadata( $file ) {
 	}
 
 	if ( ! class_exists( 'getID3', false ) ) {
-		require ABSPATH_CORE . WPINC . '/ID3/getid3.php';
+		require ABSPATH_BACKEND . WPINC . '/ID3/getid3.php';
 	}
 
 	$id3  = new getID3();
@@ -3651,7 +3651,7 @@ function wp_read_audio_metadata( $file ) {
 	}
 
 	if ( ! class_exists( 'getID3', false ) ) {
-		require ABSPATH_CORE . WPINC . '/ID3/getid3.php';
+		require ABSPATH_BACKEND . WPINC . '/ID3/getid3.php';
 	}
 
 	$id3  = new getID3();

@@ -26,6 +26,6 @@ if ( wp_is_mobile() ) {
 }
 
 $link = get_default_link_to_edit();
-require ABSPATH_CORE . 'wp-admin/edit-link-form.php';
+require ABSPATH_BACKEND . 'wp-admin/edit-link-form.php';
 
-require_once ABSPATH_CORE . 'wp-admin/admin-footer.php';
+require_once ABSPATH_BACKEND . 'wp-admin/admin-footer.php';

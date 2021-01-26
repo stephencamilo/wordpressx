@@ -5,7 +5,7 @@
  * @package WordPress
  */
 
-require ABSPATH_CORE . WPINC . '/option.php';
+require ABSPATH_BACKEND . WPINC . '/option.php';
 
 /**
  * Convert given MySQL date string into a different format.
@@ -843,7 +843,7 @@ function do_enclose( $content, $post ) {
 	global $wpdb;
 
 	// @todo Tidy this code and make the debug code optional.
-	include_once ABSPATH_CORE . WPINC . '/class-IXR.php';
+	include_once ABSPATH_BACKEND . WPINC . '/class-IXR.php';
 
 	$post = get_post( $post );
 	if ( ! $post ) {
@@ -1587,7 +1587,7 @@ function do_feed() {
  * @see load_template()
  */
 function do_feed_rdf() {
-	load_template( ABSPATH_CORE . WPINC . '/feed-rdf.php' );
+	load_template( ABSPATH_BACKEND . WPINC . '/feed-rdf.php' );
 }
 
 /**
@@ -1598,7 +1598,7 @@ function do_feed_rdf() {
  * @see load_template()
  */
 function do_feed_rss() {
-	load_template( ABSPATH_CORE . WPINC . '/feed-rss.php' );
+	load_template( ABSPATH_BACKEND . WPINC . '/feed-rss.php' );
 }
 
 /**
@@ -1612,9 +1612,9 @@ function do_feed_rss() {
  */
 function do_feed_rss2( $for_comments ) {
 	if ( $for_comments ) {
-		load_template( ABSPATH_CORE . WPINC . '/feed-rss2-comments.php' );
+		load_template( ABSPATH_BACKEND . WPINC . '/feed-rss2-comments.php' );
 	} else {
-		load_template( ABSPATH_CORE . WPINC . '/feed-rss2.php' );
+		load_template( ABSPATH_BACKEND . WPINC . '/feed-rss2.php' );
 	}
 }
 
@@ -1629,9 +1629,9 @@ function do_feed_rss2( $for_comments ) {
  */
 function do_feed_atom( $for_comments ) {
 	if ( $for_comments ) {
-		load_template( ABSPATH_CORE . WPINC . '/feed-atom-comments.php' );
+		load_template( ABSPATH_BACKEND . WPINC . '/feed-atom-comments.php' );
 	} else {
-		load_template( ABSPATH_CORE . WPINC . '/feed-atom.php' );
+		load_template( ABSPATH_BACKEND . WPINC . '/feed-atom.php' );
 	}
 }
 
@@ -4719,7 +4719,7 @@ function wp_maybe_load_widgets() {
 		return;
 	}
 
-	require_once ABSPATH_CORE . WPINC . '/default-widgets.php';
+	require_once ABSPATH_BACKEND . WPINC . '/default-widgets.php';
 
 	add_action( '_admin_menu', 'wp_widgets_add_menu' );
 }
@@ -7395,7 +7395,7 @@ function wp_privacy_delete_old_export_files() {
 		return;
 	}
 
-	require_once ABSPATH_CORE . 'wp-admin/includes/file.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/includes/file.php';
 	$export_files = list_files( $exports_dir, 100, array( 'index.html' ) );
 
 	/**

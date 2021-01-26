@@ -763,7 +763,7 @@ switch ( $action ) {
 			exit;
 		}
 
-		require_once ABSPATH_CORE . WPINC . '/class-phpass.php';
+		require_once ABSPATH_BACKEND . WPINC . '/class-phpass.php';
 		$hasher = new PasswordHash( 8, true );
 
 		/**

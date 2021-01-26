@@ -77,7 +77,7 @@ function wp_initial_constants() {
 		if ( 'development' === wp_get_environment_type() ) {
 			define( 'WP_DEBUG', true );
 		} else {
-			define( 'WP_DEBUG', false );
+			define( 'WP_DEBUG', true );
 		}
 	}
 

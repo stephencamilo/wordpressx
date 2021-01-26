@@ -786,12 +786,12 @@ function feed_content_type( $type = '' ) {
  */
 function fetch_feed( $url ) {
 	if ( ! class_exists( 'SimplePie', false ) ) {
-		require_once ABSPATH_CORE . WPINC . '/class-simplepie.php';
+		require_once ABSPATH_BACKEND . WPINC . '/class-simplepie.php';
 	}
 
-	require_once ABSPATH_CORE . WPINC . '/class-wp-feed-cache-transient.php';
-	require_once ABSPATH_CORE . WPINC . '/class-wp-simplepie-file.php';
-	require_once ABSPATH_CORE . WPINC . '/class-wp-simplepie-sanitize-kses.php';
+	require_once ABSPATH_BACKEND . WPINC . '/class-wp-feed-cache-transient.php';
+	require_once ABSPATH_BACKEND . WPINC . '/class-wp-simplepie-file.php';
+	require_once ABSPATH_BACKEND . WPINC . '/class-wp-simplepie-sanitize-kses.php';
 
 	$feed = new SimplePie();
 
@@ -806,7 +806,7 @@ function fetch_feed( $url ) {
 		$feed->set_cache_location( 'wp_transient' );
 	} else {
 		// Back-compat for SimplePie 1.2.x.
-		require_once ABSPATH_CORE . WPINC . '/class-wp-feed-cache.php';
+		require_once ABSPATH_BACKEND . WPINC . '/class-wp-feed-cache.php';
 		$feed->set_cache_class( 'WP_Feed_Cache' );
 	}
 

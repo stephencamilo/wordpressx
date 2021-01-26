@@ -22,7 +22,7 @@ if ( defined( 'ABSPATH' ) ) {
 /** Allow for cross-domain requests (from the front end). */
 send_origin_headers();
 
-require_once ABSPATH_CORE . 'wp-admin/includes/admin.php';
+require_once ABSPATH_BACKEND . 'wp-admin/includes/admin.php';
 
 nocache_headers();
 

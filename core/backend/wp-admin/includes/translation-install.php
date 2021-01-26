@@ -18,7 +18,7 @@
  */
 function translations_api( $type, $args = null ) {
 	// Include an unmodified $wp_version.
-	require ABSPATH_CORE . WPINC . '/version.php';
+	require ABSPATH_BACKEND . WPINC . '/version.php';
 
 	if ( ! in_array( $type, array( 'plugins', 'themes', 'core' ), true ) ) {
 		return new WP_Error( 'invalid_type', __( 'Invalid translation type.' ) );
@@ -128,7 +128,7 @@ function wp_get_available_translations() {
 	}
 
 	// Include an unmodified $wp_version.
-	require ABSPATH_CORE . WPINC . '/version.php';
+	require ABSPATH_BACKEND . WPINC . '/version.php';
 
 	$api = translations_api( 'core', array( 'version' => $wp_version ) );
 
@@ -236,7 +236,7 @@ function wp_download_language_pack( $download ) {
 	}
 	$translation = (object) $translation;
 
-	require_once ABSPATH_CORE . 'wp-admin/includes/class-wp-upgrader.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-upgrader.php';
 	$skin              = new Automatic_Upgrader_Skin;
 	$upgrader          = new Language_Pack_Upgrader( $skin );
 	$translation->type = 'core';
@@ -262,7 +262,7 @@ function wp_can_install_language_pack() {
 		return false;
 	}
 
-	require_once ABSPATH_CORE . 'wp-admin/includes/class-wp-upgrader.php';
+	require_once ABSPATH_BACKEND . 'wp-admin/includes/class-wp-upgrader.php';
 	$skin     = new Automatic_Upgrader_Skin;
 	$upgrader = new Language_Pack_Upgrader( $skin );
 	$upgrader->init();
