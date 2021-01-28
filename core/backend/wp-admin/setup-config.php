@@ -32,11 +32,11 @@ define( 'WP_SETUP_CONFIG', true );
  */
 error_reporting( -1 );
 if ( ! defined( 'ABSPATH' ) ) {
-	define( 'ABSPATH', dirname(  __DIR__  ). '/../../../' );
+	define( 'ABSPATH', dirname(  __DIR__  ). '/../../' );
 }
 
 if ( ! defined( 'ABSPATH_CORE' ) ) {
-	define( 'ABSPATH_CORE', dirname( __DIR__ ) . '/../../');
+	define( 'ABSPATH_CORE', dirname( __DIR__ ) . '/../');
 }
 
 if ( ! defined( 'ABSPATH_BACKEND' ) ) {
@@ -47,7 +47,11 @@ if ( ! defined( 'ABSPATH_FRONTEND' ) ) {
 	define( 'ABSPATH_FRONTEND', dirname( __DIR__ ) . '/');
 }
 
-require ABSPATH_BACKEND . 'wp-settings.php';
+var_dump(ABSPATH . 'wp-settings.php');
+
+;
+
+require ABSPATH . 'wp-settings.php';
 
 /** Load WordPress Administration Upgrade API */
 require_once ABSPATH_BACKEND . 'wp-admin/includes/upgrade.php';

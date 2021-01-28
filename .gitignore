@@ -8,3 +8,4 @@
 .ddev/
 .ddev/*
 .lando*
+wp-config.php
