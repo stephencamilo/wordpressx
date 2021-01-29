@@ -7,36 +7,37 @@
  * @since Twenty Twenty 1.0
  */
 
-if (has_post_thumbnail() && ! post_password_required()) {
-    $featured_media_inner_classes = '';
+if ( has_post_thumbnail() && ! post_password_required() ) {
 
-    // Make the featured media thinner on archive pages.
-    if (! is_singular()) {
-        $featured_media_inner_classes .= ' medium';
-    }
-    ?>
+	$featured_media_inner_classes = '';
 
-    <figure class="featured-media">
+	// Make the featured media thinner on archive pages.
+	if ( ! is_singular() ) {
+		$featured_media_inner_classes .= ' medium';
+	}
+	?>
 
-        <div class="featured-media-inner section-inner<?php echo $featured_media_inner_classes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static output ?>">
+	<figure class="featured-media">
 
-            <?php
-            the_post_thumbnail();
+		<div class="featured-media-inner section-inner<?php echo $featured_media_inner_classes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static output ?>">
 
-            $caption = get_the_post_thumbnail_caption();
+			<?php
+			the_post_thumbnail();
 
-            if ($caption) {
-                ?>
+			$caption = get_the_post_thumbnail_caption();
 
-                <figcaption class="wp-caption-text"><?php echo wp_kses_post($caption); ?></figcaption>
+			if ( $caption ) {
+				?>
 
-                <?php
-            }
-            ?>
+				<figcaption class="wp-caption-text"><?php echo wp_kses_post( $caption ); ?></figcaption>
 
-        </div><!-- .featured-media-inner -->
+				<?php
+			}
+			?>
 
-    </figure><!-- .featured-media -->
+		</div><!-- .featured-media-inner -->
 
-    <?php
+	</figure><!-- .featured-media -->
+
+	<?php
 }

@@ -11,23 +11,7 @@
  *
  * @var bool
  */
-define('WP_USE_THEMES', true);
-
-if (! defined('ABSPATH')) {
-    define('ABSPATH', __DIR__ . '/');
-}
-
-if (! defined('ABSPATH_CORE')) {
-    define('ABSPATH_CORE', ABSPATH  . 'core/');
-}
-
-if (! defined('ABSPATH_BACKEND')) {
-    define('ABSPATH_BACKEND', ABSPATH  . 'core/backend/');
-}
-
-if (! defined('ABSPATH_FRONTEND')) {
-    define('ABSPATH_FRONTEND', ABSPATH  . 'core/frontend/');
-}
+define( 'WP_USE_THEMES', true );
 
 /** Loads the WordPress Environment and Template */
-require __DIR__ . '/core/backend/wp-blog-header.php';
+require __DIR__ . '/wp-blog-header.php';
