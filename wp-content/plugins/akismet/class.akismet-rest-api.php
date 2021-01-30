@@ -1,382 +1,366 @@
 <?php
 
-class Akismet_REST_API
-{
-    /**
-     * Register the REST API routes.
-     */
-    public static function init()
-    {
-        if (! function_exists('register_rest_route')) {
-            // The REST API wasn't integrated into core until 4.4, and we support 4.0+ (for now).
-            return false;
-        }
+class Akismet_REST_API {
+	/**
+	 * Register the REST API routes.
+	 */
+	public static function init() {
+		if ( ! function_exists( 'register_rest_route' ) ) {
+			// The REST API wasn't integrated into core until 4.4, and we support 4.0+ (for now).
+			return false;
+		}
 
-        register_rest_route('akismet/v1', '/key', array(
-            array(
-                'methods' => WP_REST_Server::READABLE,
-                'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
-                'callback' => array( 'Akismet_REST_API', 'get_key' ),
-            ), array(
-                'methods' => WP_REST_Server::EDITABLE,
-                'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
-                'callback' => array( 'Akismet_REST_API', 'set_key' ),
-                'args' => array(
-                    'key' => array(
-                        'required' => true,
-                        'type' => 'string',
-                        'sanitize_callback' => array( 'Akismet_REST_API', 'sanitize_key' ),
-                        'description' => __('A 12-character Akismet API key. Available at akismet.com/get/', 'akismet'),
-                    ),
-                ),
-            ), array(
-                'methods' => WP_REST_Server::DELETABLE,
-                'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
-                'callback' => array( 'Akismet_REST_API', 'delete_key' ),
-            )
-        ));
+		register_rest_route( 'akismet/v1', '/key', array(
+			array(
+				'methods' => WP_REST_Server::READABLE,
+				'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
+				'callback' => array( 'Akismet_REST_API', 'get_key' ),
+			), array(
+				'methods' => WP_REST_Server::EDITABLE,
+				'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
+				'callback' => array( 'Akismet_REST_API', 'set_key' ),
+				'args' => array(
+					'key' => array(
+						'required' => true,
+						'type' => 'string',
+						'sanitize_callback' => array( 'Akismet_REST_API', 'sanitize_key' ),
+						'description' => __( 'A 12-character Akismet API key. Available at akismet.com/get/', 'akismet' ),
+					),
+				),
+			), array(
+				'methods' => WP_REST_Server::DELETABLE,
+				'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
+				'callback' => array( 'Akismet_REST_API', 'delete_key' ),
+			)
+		) );
 
-        register_rest_route('akismet/v1', '/settings/', array(
-            array(
-                'methods' => WP_REST_Server::READABLE,
-                'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
-                'callback' => array( 'Akismet_REST_API', 'get_settings' ),
-            ),
-            array(
-                'methods' => WP_REST_Server::EDITABLE,
-                'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
-                'callback' => array( 'Akismet_REST_API', 'set_boolean_settings' ),
-                'args' => array(
-                    'akismet_strictness' => array(
-                        'required' => false,
-                        'type' => 'boolean',
-                        'description' => __('If true, Akismet will automatically discard the worst spam automatically rather than putting it in the spam folder.', 'akismet'),
-                    ),
-                    'akismet_show_user_comments_approved' => array(
-                        'required' => false,
-                        'type' => 'boolean',
-                        'description' => __('If true, show the number of approved comments beside each comment author in the comments list page.', 'akismet'),
-                    ),
-                ),
-            )
-        ));
+		register_rest_route( 'akismet/v1', '/settings/', array(
+			array(
+				'methods' => WP_REST_Server::READABLE,
+				'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
+				'callback' => array( 'Akismet_REST_API', 'get_settings' ),
+			),
+			array(
+				'methods' => WP_REST_Server::EDITABLE,
+				'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
+				'callback' => array( 'Akismet_REST_API', 'set_boolean_settings' ),
+				'args' => array(
+					'akismet_strictness' => array(
+						'required' => false,
+						'type' => 'boolean',
+						'description' => __( 'If true, Akismet will automatically discard the worst spam automatically rather than putting it in the spam folder.', 'akismet' ),
+					),
+					'akismet_show_user_comments_approved' => array(
+						'required' => false,
+						'type' => 'boolean',
+						'description' => __( 'If true, show the number of approved comments beside each comment author in the comments list page.', 'akismet' ),
+					),
+				),
+			)
+		) );
 
-        register_rest_route('akismet/v1', '/stats', array(
-            'methods' => WP_REST_Server::READABLE,
-            'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
-            'callback' => array( 'Akismet_REST_API', 'get_stats' ),
-            'args' => array(
-                'interval' => array(
-                    'required' => false,
-                    'type' => 'string',
-                    'sanitize_callback' => array( 'Akismet_REST_API', 'sanitize_interval' ),
-                    'description' => __('The time period for which to retrieve stats. Options: 60-days, 6-months, all', 'akismet'),
-                    'default' => 'all',
-                ),
-            ),
-        ));
+		register_rest_route( 'akismet/v1', '/stats', array(
+			'methods' => WP_REST_Server::READABLE,
+			'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
+			'callback' => array( 'Akismet_REST_API', 'get_stats' ),
+			'args' => array(
+				'interval' => array(
+					'required' => false,
+					'type' => 'string',
+					'sanitize_callback' => array( 'Akismet_REST_API', 'sanitize_interval' ),
+					'description' => __( 'The time period for which to retrieve stats. Options: 60-days, 6-months, all', 'akismet' ),
+					'default' => 'all',
+				),
+			),
+		) );
 
-        register_rest_route('akismet/v1', '/stats/(?P<interval>[\w+])', array(
-            'args' => array(
-                'interval' => array(
-                    'description' => __('The time period for which to retrieve stats. Options: 60-days, 6-months, all', 'akismet'),
-                    'type' => 'string',
-                ),
-            ),
-            array(
-                'methods' => WP_REST_Server::READABLE,
-                'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
-                'callback' => array( 'Akismet_REST_API', 'get_stats' ),
-            )
-        ));
+		register_rest_route( 'akismet/v1', '/stats/(?P<interval>[\w+])', array(
+			'args' => array(
+				'interval' => array(
+					'description' => __( 'The time period for which to retrieve stats. Options: 60-days, 6-months, all', 'akismet' ),
+					'type' => 'string',
+				),
+			),
+			array(
+				'methods' => WP_REST_Server::READABLE,
+				'permission_callback' => array( 'Akismet_REST_API', 'privileged_permission_callback' ),
+				'callback' => array( 'Akismet_REST_API', 'get_stats' ),
+			)
+		) );
 
-        register_rest_route('akismet/v1', '/alert', array(
-            array(
-                'methods' => WP_REST_Server::READABLE,
-                'permission_callback' => array( 'Akismet_REST_API', 'remote_call_permission_callback' ),
-                'callback' => array( 'Akismet_REST_API', 'get_alert' ),
-                'args' => array(
-                    'key' => array(
-                        'required' => false,
-                        'type' => 'string',
-                        'sanitize_callback' => array( 'Akismet_REST_API', 'sanitize_key' ),
-                        'description' => __('A 12-character Akismet API key. Available at akismet.com/get/', 'akismet'),
-                    ),
-                ),
-            ),
-            array(
-                'methods' => WP_REST_Server::EDITABLE,
-                'permission_callback' => array( 'Akismet_REST_API', 'remote_call_permission_callback' ),
-                'callback' => array( 'Akismet_REST_API', 'set_alert' ),
-                'args' => array(
-                    'key' => array(
-                        'required' => false,
-                        'type' => 'string',
-                        'sanitize_callback' => array( 'Akismet_REST_API', 'sanitize_key' ),
-                        'description' => __('A 12-character Akismet API key. Available at akismet.com/get/', 'akismet'),
-                    ),
-                ),
-            ),
-            array(
-                'methods' => WP_REST_Server::DELETABLE,
-                'permission_callback' => array( 'Akismet_REST_API', 'remote_call_permission_callback' ),
-                'callback' => array( 'Akismet_REST_API', 'delete_alert' ),
-                'args' => array(
-                    'key' => array(
-                        'required' => false,
-                        'type' => 'string',
-                        'sanitize_callback' => array( 'Akismet_REST_API', 'sanitize_key' ),
-                        'description' => __('A 12-character Akismet API key. Available at akismet.com/get/', 'akismet'),
-                    ),
-                ),
-            )
-        ));
-    }
+		register_rest_route( 'akismet/v1', '/alert', array(
+			array(
+				'methods' => WP_REST_Server::READABLE,
+				'permission_callback' => array( 'Akismet_REST_API', 'remote_call_permission_callback' ),
+				'callback' => array( 'Akismet_REST_API', 'get_alert' ),
+				'args' => array(
+					'key' => array(
+						'required' => false,
+						'type' => 'string',
+						'sanitize_callback' => array( 'Akismet_REST_API', 'sanitize_key' ),
+						'description' => __( 'A 12-character Akismet API key. Available at akismet.com/get/', 'akismet' ),
+					),
+				),
+			),
+			array(
+				'methods' => WP_REST_Server::EDITABLE,
+				'permission_callback' => array( 'Akismet_REST_API', 'remote_call_permission_callback' ),
+				'callback' => array( 'Akismet_REST_API', 'set_alert' ),
+				'args' => array(
+					'key' => array(
+						'required' => false,
+						'type' => 'string',
+						'sanitize_callback' => array( 'Akismet_REST_API', 'sanitize_key' ),
+						'description' => __( 'A 12-character Akismet API key. Available at akismet.com/get/', 'akismet' ),
+					),
+				),
+			),
+			array(
+				'methods' => WP_REST_Server::DELETABLE,
+				'permission_callback' => array( 'Akismet_REST_API', 'remote_call_permission_callback' ),
+				'callback' => array( 'Akismet_REST_API', 'delete_alert' ),
+				'args' => array(
+					'key' => array(
+						'required' => false,
+						'type' => 'string',
+						'sanitize_callback' => array( 'Akismet_REST_API', 'sanitize_key' ),
+						'description' => __( 'A 12-character Akismet API key. Available at akismet.com/get/', 'akismet' ),
+					),
+				),
+			)
+		) );
+	}
 
-    /**
-     * Get the current Akismet API key.
-     *
-     * @param WP_REST_Request $request
-     * @return WP_Error|WP_REST_Response
-     */
-    public static function get_key($request = null)
-    {
-        return rest_ensure_response(Akismet::get_api_key());
-    }
+	/**
+	 * Get the current Akismet API key.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public static function get_key( $request = null ) {
+		return rest_ensure_response( Akismet::get_api_key() );
+	}
 
-    /**
-     * Set the API key, if possible.
-     *
-     * @param WP_REST_Request $request
-     * @return WP_Error|WP_REST_Response
-     */
-    public static function set_key($request)
-    {
-        if (defined('WPCOM_API_KEY')) {
-            return rest_ensure_response(new WP_Error('hardcoded_key', __('This site\'s API key is hardcoded and cannot be changed via the API.', 'akismet'), array( 'status'=> 409 )));
-        }
+	/**
+	 * Set the API key, if possible.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public static function set_key( $request ) {
+		if ( defined( 'WPCOM_API_KEY' ) ) {
+			return rest_ensure_response( new WP_Error( 'hardcoded_key', __( 'This site\'s API key is hardcoded and cannot be changed via the API.', 'akismet' ), array( 'status'=> 409 ) ) );
+		}
 
-        $new_api_key = $request->get_param('key');
+		$new_api_key = $request->get_param( 'key' );
 
-        if (! self::key_is_valid($new_api_key)) {
-            return rest_ensure_response(new WP_Error('invalid_key', __('The value provided is not a valid and registered API key.', 'akismet'), array( 'status' => 400 )));
-        }
+		if ( ! self::key_is_valid( $new_api_key ) ) {
+			return rest_ensure_response( new WP_Error( 'invalid_key', __( 'The value provided is not a valid and registered API key.', 'akismet' ), array( 'status' => 400 ) ) );
+		}
 
-        update_option('wordpress_api_key', $new_api_key);
+		update_option( 'wordpress_api_key', $new_api_key );
 
-        return self::get_key();
-    }
+		return self::get_key();
+	}
 
-    /**
-     * Unset the API key, if possible.
-     *
-     * @param WP_REST_Request $request
-     * @return WP_Error|WP_REST_Response
-     */
-    public static function delete_key($request)
-    {
-        if (defined('WPCOM_API_KEY')) {
-            return rest_ensure_response(new WP_Error('hardcoded_key', __('This site\'s API key is hardcoded and cannot be deleted.', 'akismet'), array( 'status'=> 409 )));
-        }
+	/**
+	 * Unset the API key, if possible.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public static function delete_key( $request ) {
+		if ( defined( 'WPCOM_API_KEY' ) ) {
+			return rest_ensure_response( new WP_Error( 'hardcoded_key', __( 'This site\'s API key is hardcoded and cannot be deleted.', 'akismet' ), array( 'status'=> 409 ) ) );
+		}
 
-        delete_option('wordpress_api_key');
+		delete_option( 'wordpress_api_key' );
 
-        return rest_ensure_response(true);
-    }
+		return rest_ensure_response( true );
+	}
 
-    /**
-     * Get the Akismet settings.
-     *
-     * @param WP_REST_Request $request
-     * @return WP_Error|WP_REST_Response
-     */
-    public static function get_settings($request = null)
-    {
-        return rest_ensure_response(array(
-            'akismet_strictness' => ( get_option('akismet_strictness', '1') === '1' ),
-            'akismet_show_user_comments_approved' => ( get_option('akismet_show_user_comments_approved', '1') === '1' ),
-        ));
-    }
+	/**
+	 * Get the Akismet settings.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public static function get_settings( $request = null ) {
+		return rest_ensure_response( array(
+			'akismet_strictness' => ( get_option( 'akismet_strictness', '1' ) === '1' ),
+			'akismet_show_user_comments_approved' => ( get_option( 'akismet_show_user_comments_approved', '1' ) === '1' ),
+		) );
+	}
 
-    /**
-     * Update the Akismet settings.
-     *
-     * @param WP_REST_Request $request
-     * @return WP_Error|WP_REST_Response
-     */
-    public static function set_boolean_settings($request)
-    {
-        foreach (array(
-            'akismet_strictness',
-            'akismet_show_user_comments_approved',
-        ) as $setting_key) {
-            $setting_value = $request->get_param($setting_key);
-            if (is_null($setting_value)) {
-                // This setting was not specified.
-                continue;
-            }
+	/**
+	 * Update the Akismet settings.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public static function set_boolean_settings( $request ) {
+		foreach ( array(
+			'akismet_strictness',
+			'akismet_show_user_comments_approved',
+		) as $setting_key ) {
 
-            // From 4.7+, WP core will ensure that these are always boolean
-            // values because they are registered with 'type' => 'boolean',
-            // but we need to do this ourselves for prior versions.
-            $setting_value = Akismet_REST_API::parse_boolean($setting_value);
+			$setting_value = $request->get_param( $setting_key );
+			if ( is_null( $setting_value ) ) {
+				// This setting was not specified.
+				continue;
+			}
 
-            update_option($setting_key, $setting_value ? '1' : '0');
-        }
+			// From 4.7+, WP core will ensure that these are always boolean
+			// values because they are registered with 'type' => 'boolean',
+			// but we need to do this ourselves for prior versions.
+			$setting_value = Akismet_REST_API::parse_boolean( $setting_value );
 
-        return self::get_settings();
-    }
+			update_option( $setting_key, $setting_value ? '1' : '0' );
+		}
 
-    /**
-     * Parse a numeric or string boolean value into a boolean.
-     *
-     * @param mixed $value The value to convert into a boolean.
-     * @return bool The converted value.
-     */
-    public static function parse_boolean($value)
-    {
-        switch ($value) {
-            case true:
-            case 'true':
-            case '1':
-            case 1:
-                return true;
+		return self::get_settings();
+	}
 
-            case false:
-            case 'false':
-            case '0':
-            case 0:
-                return false;
+	/**
+	 * Parse a numeric or string boolean value into a boolean.
+	 *
+	 * @param mixed $value The value to convert into a boolean.
+	 * @return bool The converted value.
+	 */
+	public static function parse_boolean( $value ) {
+		switch ( $value ) {
+			case true:
+			case 'true':
+			case '1':
+			case 1:
+				return true;
 
-            default:
-                return (bool) $value;
-        }
-    }
+			case false:
+			case 'false':
+			case '0':
+			case 0:
+				return false;
 
-    /**
-     * Get the Akismet stats for a given time period.
-     *
-     * Possible `interval` values:
-     * - all
-     * - 60-days
-     * - 6-months
-     *
-     * @param WP_REST_Request $request
-     * @return WP_Error|WP_REST_Response
-     */
-    public static function get_stats($request)
-    {
-        $api_key = Akismet::get_api_key();
+			default:
+				return (bool) $value;
+		}
+	}
 
-        $interval = $request->get_param('interval');
+	/**
+	 * Get the Akismet stats for a given time period.
+	 *
+	 * Possible `interval` values:
+	 * - all
+	 * - 60-days
+	 * - 6-months
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public static function get_stats( $request ) {
+		$api_key = Akismet::get_api_key();
 
-        $stat_totals = array();
+		$interval = $request->get_param( 'interval' );
 
-        $response = Akismet::http_post(Akismet::build_query(array( 'blog' => get_option('home'), 'key' => $api_key, 'from' => $interval )), 'get-stats');
+		$stat_totals = array();
 
-        if (! empty($response[1])) {
-            $stat_totals[$interval] = json_decode($response[1]);
-        }
+		$response = Akismet::http_post( Akismet::build_query( array( 'blog' => get_option( 'home' ), 'key' => $api_key, 'from' => $interval ) ), 'get-stats' );
 
-        return rest_ensure_response($stat_totals);
-    }
+		if ( ! empty( $response[1] ) ) {
+			$stat_totals[$interval] = json_decode( $response[1] );
+		}
 
-    /**
-     * Get the current alert code and message. Alert codes are used to notify the site owner
-     * if there's a problem, like a connection issue between their site and the Akismet API,
-     * invalid requests being sent, etc.
-     *
-     * @param WP_REST_Request $request
-     * @return WP_Error|WP_REST_Response
-     */
-    public static function get_alert($request)
-    {
-        return rest_ensure_response(array(
-            'code' => get_option('akismet_alert_code'),
-            'message' => get_option('akismet_alert_msg'),
-        ));
-    }
+		return rest_ensure_response( $stat_totals );
+	}
 
-    /**
-     * Update the current alert code and message by triggering a call to the Akismet server.
-     *
-     * @param WP_REST_Request $request
-     * @return WP_Error|WP_REST_Response
-     */
-    public static function set_alert($request)
-    {
-        delete_option('akismet_alert_code');
-        delete_option('akismet_alert_msg');
+	/**
+	 * Get the current alert code and message. Alert codes are used to notify the site owner
+	 * if there's a problem, like a connection issue between their site and the Akismet API,
+	 * invalid requests being sent, etc.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public static function get_alert( $request ) {
+		return rest_ensure_response( array(
+			'code' => get_option( 'akismet_alert_code' ),
+			'message' => get_option( 'akismet_alert_msg' ),
+		) );
+	}
 
-        // Make a request so the most recent alert code and message are retrieved.
-        Akismet::verify_key(Akismet::get_api_key());
+	/**
+	 * Update the current alert code and message by triggering a call to the Akismet server.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public static function set_alert( $request ) {
+		delete_option( 'akismet_alert_code' );
+		delete_option( 'akismet_alert_msg' );
 
-        return self::get_alert($request);
-    }
+		// Make a request so the most recent alert code and message are retrieved.
+		Akismet::verify_key( Akismet::get_api_key() );
 
-    /**
-     * Clear the current alert code and message.
-     *
-     * @param WP_REST_Request $request
-     * @return WP_Error|WP_REST_Response
-     */
-    public static function delete_alert($request)
-    {
-        delete_option('akismet_alert_code');
-        delete_option('akismet_alert_msg');
+		return self::get_alert( $request );
+	}
 
-        return self::get_alert($request);
-    }
+	/**
+	 * Clear the current alert code and message.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public static function delete_alert( $request ) {
+		delete_option( 'akismet_alert_code' );
+		delete_option( 'akismet_alert_msg' );
 
-    private static function key_is_valid($key)
-    {
-        $response = Akismet::http_post(
-            Akismet::build_query(
-                array(
-                    'key' => $key,
-                    'blog' => get_option('home')
-                )
-            ),
-            'verify-key'
-        );
+		return self::get_alert( $request );
+	}
 
-        if ($response[1] == 'valid') {
-            return true;
-        }
+	private static function key_is_valid( $key ) {
+		$response = Akismet::http_post(
+			Akismet::build_query(
+				array(
+					'key' => $key,
+					'blog' => get_option( 'home' )
+				)
+			),
+			'verify-key'
+		);
 
-        return false;
-    }
+		if ( $response[1] == 'valid' ) {
+			return true;
+		}
 
-    public static function privileged_permission_callback()
-    {
-        return current_user_can('manage_options');
-    }
+		return false;
+	}
 
-    /**
-     * For calls that Akismet.com makes to the site to clear outdated alert codes, use the API key for authorization.
-     */
-    public static function remote_call_permission_callback($request)
-    {
-        $local_key = Akismet::get_api_key();
+	public static function privileged_permission_callback() {
+		return current_user_can( 'manage_options' );
+	}
 
-        return $local_key && ( strtolower($request->get_param('key')) === strtolower($local_key) );
-    }
+	/**
+	 * For calls that Akismet.com makes to the site to clear outdated alert codes, use the API key for authorization.
+	 */
+	public static function remote_call_permission_callback( $request ) {
+		$local_key = Akismet::get_api_key();
 
-    public static function sanitize_interval($interval, $request, $param)
-    {
-        $interval = trim($interval);
+		return $local_key && ( strtolower( $request->get_param( 'key' ) ) === strtolower( $local_key ) );
+	}
 
-        $valid_intervals = array( '60-days', '6-months', 'all', );
+	public static function sanitize_interval( $interval, $request, $param ) {
+		$interval = trim( $interval );
 
-        if (! in_array($interval, $valid_intervals)) {
-            $interval = 'all';
-        }
+		$valid_intervals = array( '60-days', '6-months', 'all', );
 
-        return $interval;
-    }
+		if ( ! in_array( $interval, $valid_intervals ) ) {
+			$interval = 'all';
+		}
 
-    public static function sanitize_key($key, $request, $param)
-    {
-        return trim($key);
-    }
+		return $interval;
+	}
+
+	public static function sanitize_key( $key, $request, $param ) {
+		return trim( $key );
+	}
 }
