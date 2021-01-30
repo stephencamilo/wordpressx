@@ -1,4 +1,10 @@
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Core\Admin\Index;
+$ndx = new Index();
+$ndx->stop();
+
 /**
  * Front to the WordPress application. This file doesn't do anything, but loads
  * wp-blog-header.php which does and tells WordPress to load the theme.
