@@ -9,3 +9,6 @@
 .ddev/*
 .lando*
 wp-config.php
+vendor
+/vendor
+vendor/
