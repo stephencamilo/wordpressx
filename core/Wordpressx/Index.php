@@ -5,12 +5,6 @@ class Index {
     const WP_USE_THEMES = true;
     public $wp_did_header = true;
 
-    function debug($msg = true)
-    {
-        var_dump($msg);
-        die;
-    }
-
     function blog_header(){
         if ( ! isset( $wp_did_header ) ) {
             $this->load();
