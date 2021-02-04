@@ -1,7 +1,7 @@
 {
     "require": {
         "symfony/http-kernel": "^5.2",
-        "symfony/profiler-pack": "^1.0"
+        "maximebf/debugbar": "^1.16"
     },
     "autoload": {
         "psr-4": {
