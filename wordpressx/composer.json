@@ -1,0 +1,12 @@
+{
+    "require": {
+        "symfony/http-kernel": "^5.2",
+        "maximebf/debugbar": "^1.16",
+        "klein/klein": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\": "Core/"
+        }
+    }
+}
