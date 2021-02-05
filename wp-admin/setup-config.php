@@ -1,30 +1,15 @@
 <?php
-/**
- * Retrieves and creates the wp-config.php file.
- *
- * The permissions for the base directory must allow for writing files in order
- * for the wp-config.php to be created using this page.
- *
- * @package WordPress
- * @subpackage Administration
- */
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+error_reporting( -1 );
 
-/**
- * We are installing.
- */
+require_once __DIR__ . '/../vendor/autoload.php';
+use DebugBar\StandardDebugBar;
+
 define( 'WP_INSTALLING', true );
 
-/**
- * We are blissfully unaware of anything.
- */
 define( 'WP_SETUP_CONFIG', true );
 
-/**
- * Disable error reporting
- *
- * Set this to error_reporting( -1 ) for debugging
- */
-error_reporting( 0 );
 
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', dirname( __DIR__ ) . '/' );
@@ -95,6 +80,7 @@ $step = isset( $_GET['step'] ) ? (int) $_GET['step'] : -1;
  * @param string|array $body_classes
  */
 function setup_config_display_header( $body_classes = array() ) {
+
 	$body_classes   = (array) $body_classes;
 	$body_classes[] = 'wp-core-ui';
 	$dir_attr       = '';
@@ -113,6 +99,13 @@ function setup_config_display_header( $body_classes = array() ) {
 	<meta name="robots" content="noindex,nofollow" />
 	<title><?php _e( 'WordPress &rsaquo; Setup Configuration File' ); ?></title>
 	<?php wp_admin_css( 'install', true ); ?>
+    <?php
+$debugbar = new StandardDebugBar();
+$debugbar["messages"]->addMessage("hello world!");
+    $debugbar["messages"]->addMessage("hello world!");
+    $debugbarRenderer = $debugbar->getJavascriptRenderer();
+    echo $debugbarRenderer->renderHead();
+    ?>
 </head>
 <body class="<?php echo implode( ' ', $body_classes ); ?>">
 <p id="logo"><?php _e( 'WordPress' ); ?></p>
@@ -454,6 +447,10 @@ if ( ! /iPad|iPod|iPhone/.test( navigator.userAgent ) ) {
 		break;
 }
 ?>
-<?php wp_print_scripts( 'language-chooser' ); ?>
+<?php wp_print_scripts( 'language-chooser' );
+$debugbar = new StandardDebugBar();
+$debugbar["messages"]->addMessage("hello world!");
+$debugbarRenderer = $debugbar->getJavascriptRenderer();
+echo $debugbarRenderer->render();?>
 </body>
 </html>
