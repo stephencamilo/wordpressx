@@ -1,7 +1,7 @@
 <?php
-namespace WPIncludes;
+namespace Core\WPIncludes;
 
-class load;
+class Load {
 function wp_get_server_protocol() {
 	$protocol = isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : '';
 	if ( ! in_array( $protocol, array( 'HTTP/1.1', 'HTTP/2', 'HTTP/2.0' ), true ) ) {

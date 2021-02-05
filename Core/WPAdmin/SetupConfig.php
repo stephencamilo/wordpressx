@@ -1,15 +1,13 @@
 <?php
 namespace Core\WPAdmin;
 
+use Core;
 use Core\WPIncludes;
 use DebugBar\StandardDebugBar;
 
 class SetupConfig {
 function render() {
-
-    error_reporting(E_ALL);
-    ini_set('display_errors', '1');
-    error_reporting( -1 );
+    $wp_settings = new \Core\WPSettings();
 
     define( 'WP_INSTALLING', true );
 
@@ -19,8 +17,6 @@ function render() {
     if ( ! defined( 'ABSPATH' ) ) {
         define( 'ABSPATH', dirname( __DIR__ ) . '/../' );
     }
-
-    require ABSPATH . 'wp-settings.php';
 
     /** Load WordPress Administration Upgrade API */
     require_once ABSPATH . 'wp-admin/includes/upgrade.php';
