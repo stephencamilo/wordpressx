@@ -13,7 +13,7 @@ class Routes {
 
         $klein->respond('GET', '/admin/setup/config', function () {
             $WPX_setup_config = new \Core\WPAdmin\SetupConfig;
-            $WPX_setup_config->blog_header();
+            $WPX_setup_config->render();
         });
         
         $klein->respond('GET', '/hello-world', function () {
