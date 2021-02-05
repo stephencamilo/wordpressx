@@ -1,39 +1,15 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
+error_reporting( -1 );
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
 use DebugBar\StandardDebugBar;
 
-
-
-/**
- * Retrieves and creates the wp-config.php file.
- *
- * The permissions for the base directory must allow for writing files in order
- * for the wp-config.php to be created using this page.
- *
- * @package WordPress
- * @subpackage Administration
- */
-
-/**
- * We are installing.
- */
 define( 'WP_INSTALLING', true );
 
-/**
- * We are blissfully unaware of anything.
- */
 define( 'WP_SETUP_CONFIG', true );
 
-/**
- * Disable error reporting
- *
- * Set this to error_reporting( -1 ) for debugging
- */
-error_reporting( 0 );
 
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', dirname( __DIR__ ) . '/' );

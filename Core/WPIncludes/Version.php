@@ -1,4 +1,6 @@
 <?php
+namespace Core\WPIncludes;
+
 class Version {
     public $wp_version = '5.6';
     public $wp_db_version = 49752;

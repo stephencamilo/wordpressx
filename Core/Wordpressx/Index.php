@@ -2,7 +2,7 @@
 namespace Core\Wordpressx;
 
 class Index {
-    const WP_USE_THEMES = true;
+    public $wp_use_themes = true;
     public $wp_did_header = true;
 
     function blog_header(){
@@ -27,8 +27,9 @@ class Index {
             require_once ABSPATH . WPINC . '/load.php';
             wp_fix_server_vars();
             require_once ABSPATH . WPINC . '/functions.php';
-            $path = wp_guess_url() . '/wp-admin/setup-config.php';
-            if ( false === strpos( $_SERVER['REQUEST_URI'], 'setup-config' ) ) {
+            // $path = wp_guess_url() . '/wp-admin/setup-config.php';
+            $path = wp_guess_url() . '/admin/setup/config';
+            if ( false === strpos( $_SERVER['REQUEST_URI'], '/admin/setup/config' ) ) {
                 header( 'Location: ' . $path );
                 exit;
             }
