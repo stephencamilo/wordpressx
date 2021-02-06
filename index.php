@@ -1,3 +1,4 @@
 <?php
-define( 'WP_USE_THEMES', true );
-require __DIR__ . '/wp-blog-header.php';
+require_once 'vendor/autoload.php';
+
+$WPBlogHeader = new Core\WPBlogHeader;
