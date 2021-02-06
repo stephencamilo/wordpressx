@@ -10,7 +10,7 @@
 require_once __DIR__ . '/admin.php';
 
 /** WordPress Translation Installation API */
-require_once ABSPATH . 'wp-admin/includes/translation-install.php';
+require_once ABSPATH . 'wp-admin/includes/TranslationInstall.php';
 
 if ( ! current_user_can( 'manage_options' ) ) {
 	wp_die( __( 'Sorry, you are not allowed to manage options for this site.' ) );
