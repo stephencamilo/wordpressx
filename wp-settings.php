@@ -124,7 +124,11 @@ global $wpdb;
 require_wp_db();
 
 // Set the database table prefix and the format specifiers for database table columns.
-$GLOBALS['table_prefix'] = $table_prefix;
+if(isset($table_prefix)){
+	$GLOBALS['table_prefix'] = $table_prefix;
+} else {
+	$GLOBALS['table_prefix'] = 'wp_';
+}
 wp_set_wpdb_vars();
 
 // Start the WordPress object cache, or an external object cache if the drop-in is present.

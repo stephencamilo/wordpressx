@@ -1,4 +1,5 @@
 <?php
+require_once 'class-wp-upgrader.php';
 /**
  * Upgrade API: Plugin_Upgrader class
  *

@@ -515,14 +515,12 @@ class Load
 	 */
 	static function require_wp_db()
 	{
-		global $wpdb;
-
 		require_once ABSPATH . WPINC . '/wp-db.php';
 		if (file_exists(WP_CONTENT_DIR . '/db.php')) {
 			require_once WP_CONTENT_DIR . '/db.php';
 		}
 
-		if (isset($wpdb)) {
+		if (isset($GLOBALS['wpdb'])) {
 			return;
 		}
 
@@ -531,7 +529,7 @@ class Load
 		$dbname     = defined('DB_NAME') ? DB_NAME : '';
 		$dbhost     = defined('DB_HOST') ? DB_HOST : '';
 
-		$wpdb = new wpdb($dbuser, $dbpassword, $dbname, $dbhost);
+		$GLOBALS['wpdb'] = new wpdb($dbuser, $dbpassword, $dbname, $dbhost);
 	}
 
 	/**
@@ -723,7 +721,7 @@ class Load
 			require ABSPATH . WPINC . '/kses.php';
 			require ABSPATH . WPINC . '/pluggable.php';
 
-			$link = wp_guess_url() . '/wp-admin/install.php';
+			$link = wp_guess_url() . '/wp-admin/install';
 
 			wp_redirect($link);
 			die();

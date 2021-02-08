@@ -14,7 +14,7 @@ class Functions
 	 * 'U' and 'G' formats will return a sum of timestamp with timezone offset.
 	 * `$date` is expected to be local time in MySQL format (`Y-m-d H:i:s`).
 	 *
-	 * Historically UTC time could be passed to the function to produce Unix timestamp.
+	 * Historically UTC time could be passed to the static function to produce Unix timestamp.
 	 *
 	 * If `$translate` is true then the given date and format string will
 	 * be passed to `wp_date()` for translation.
@@ -27,7 +27,7 @@ class Functions
 	 * @return string|int|false Formatted date string or sum of Unix timestamp and timezone offset.
 	 *                          False on failure.
 	 */
-	function mysql2date($format, $date, $translate = true)
+	static function mysql2date($format, $date, $translate = true)
 	{
 		if (empty($date)) {
 			return false;
@@ -69,7 +69,7 @@ class Functions
 	 * @param int|bool $gmt  Optional. Whether to use GMT timezone. Default false.
 	 * @return int|string Integer if $type is 'timestamp', string otherwise.
 	 */
-	function current_time($type, $gmt = 0)
+	static function current_time($type, $gmt = 0)
 	{
 		// Don't use non-GMT timestamp, unless you know the difference and really need to.
 		if ('timestamp' === $type || 'U' === $type) {
@@ -93,7 +93,7 @@ class Functions
 	 *
 	 * @return DateTimeImmutable Date and time object.
 	 */
-	function current_datetime()
+	static function current_datetime()
 	{
 		return new DateTimeImmutable('now', wp_timezone());
 	}
@@ -108,7 +108,7 @@ class Functions
 	 *
 	 * @return string PHP timezone string or a ±HH:MM offset.
 	 */
-	function wp_timezone_string()
+	static function wp_timezone_string()
 	{
 		$timezone_string = get_option('timezone_string');
 
@@ -137,7 +137,7 @@ class Functions
 	 *
 	 * @return DateTimeZone Timezone object.
 	 */
-	function wp_timezone()
+	static function wp_timezone()
 	{
 		return new DateTimeZone(wp_timezone_string());
 	}
@@ -167,7 +167,7 @@ class Functions
 	 *                                        if timestamp is not provided. Default false.
 	 * @return string The date, translated if locale specifies it.
 	 */
-	function date_i18n($format, $timestamp_with_offset = false, $gmt = false)
+	static function date_i18n($format, $timestamp_with_offset = false, $gmt = false)
 	{
 		$timestamp = $timestamp_with_offset;
 
@@ -178,7 +178,7 @@ class Functions
 
 		/*
 	 * This is a legacy implementation quirk that the returned timestamp is also with offset.
-	 * Ideally this function should never be used to produce a timestamp.
+	 * Ideally this static function should never be used to produce a timestamp.
 	 */
 		if ('U' === $format) {
 			$date = $timestamp;
@@ -219,7 +219,7 @@ class Functions
 	 *
 	 * This is a newer function, intended to replace `date_i18n()` without legacy quirks in it.
 	 *
-	 * Note that, unlike `date_i18n()`, this function accepts a true Unix timestamp, not summed
+	 * Note that, unlike `date_i18n()`, this static function accepts a true Unix timestamp, not summed
 	 * with timezone offset.
 	 *
 	 * @since 5.3.0
@@ -230,7 +230,7 @@ class Functions
 	 *                                from site settings.
 	 * @return string|false The date, translated if locale specifies it. False on invalid timestamp input.
 	 */
-	function wp_date($format, $timestamp = null, $timezone = null)
+	static function wp_date($format, $timestamp = null, $timezone = null)
 	{
 		global $wp_locale;
 
@@ -326,7 +326,7 @@ class Functions
 	 * @param string $format Optional. Date format to check. Default empty string.
 	 * @return string The date, declined if locale specifies it.
 	 */
-	function wp_maybe_decline_date($date, $format = '')
+	static function wp_maybe_decline_date($date, $format = '')
 	{
 		global $wp_locale;
 
@@ -413,7 +413,7 @@ class Functions
 	 * @param int   $decimals Optional. Precision of the number of decimal places. Default 0.
 	 * @return string Converted number in string format.
 	 */
-	function number_format_i18n($number, $decimals = 0)
+	static function number_format_i18n($number, $decimals = 0)
 	{
 		global $wp_locale;
 
@@ -456,7 +456,7 @@ class Functions
 	 * @param int        $decimals Optional. Precision of number of decimal places. Default 0.
 	 * @return string|false Number string on success, false on failure.
 	 */
-	function size_format($bytes, $decimals = 0)
+	static function size_format($bytes, $decimals = 0)
 	{
 		$quant = array(
 			/* translators: Unit symbol for terabyte. */
@@ -494,7 +494,7 @@ class Functions
 	 *                         with a possible prepended negative sign (-).
 	 * @return string|false A human readable duration string, false on failure.
 	 */
-	function human_readable_duration($duration = '')
+	static function human_readable_duration($duration = '')
 	{
 		if ((empty($duration) || !is_string($duration))) {
 			return false;
@@ -565,7 +565,7 @@ class Functions
 	 * @param int|string $start_of_week Optional. Start of the week as an integer. Default empty string.
 	 * @return array Keys are 'start' and 'end'.
 	 */
-	function get_weekstartend($mysqlstring, $start_of_week = '')
+	static function get_weekstartend($mysqlstring, $start_of_week = '')
 	{
 		// MySQL string year.
 		$my = substr($mysqlstring, 0, 4);
@@ -606,7 +606,7 @@ class Functions
 	 * @param string|array|object $data Data that might be serialized.
 	 * @return mixed A scalar data.
 	 */
-	function maybe_serialize($data)
+	static function maybe_serialize($data)
 	{
 		if (is_array($data) || is_object($data)) {
 			return serialize($data);
@@ -632,7 +632,7 @@ class Functions
 	 * @param string $data Data that might be unserialized.
 	 * @return mixed Unserialized data can be any type.
 	 */
-	function maybe_unserialize($data)
+	static function maybe_unserialize($data)
 	{
 		if (is_serialized($data)) { // Don't attempt to unserialize data that wasn't serialized going in.
 			return @unserialize(trim($data));
@@ -653,7 +653,7 @@ class Functions
 	 * @param bool   $strict Optional. Whether to be strict about the end of the string. Default true.
 	 * @return bool False if not serialized and true if it was.
 	 */
-	function is_serialized($data, $strict = true)
+	static function is_serialized($data, $strict = true)
 	{
 		// If it isn't a string, it isn't serialized.
 		if (!is_string($data)) {
@@ -720,7 +720,7 @@ class Functions
 	 * @param string $data Serialized data.
 	 * @return bool False if not a serialized string, true if it is.
 	 */
-	function is_serialized_string($data)
+	static function is_serialized_string($data)
 	{
 		// if it isn't a string, it isn't a serialized string.
 		if (!is_string($data)) {
@@ -755,7 +755,7 @@ class Functions
 	 * @param string $content XMLRPC XML Request content
 	 * @return string Post title
 	 */
-	function xmlrpc_getposttitle($content)
+	static function xmlrpc_getposttitle($content)
 	{
 		global $post_default_title;
 		if (preg_match('/<title>(.+?)<\/title>/is', $content, $matchtitle)) {
@@ -780,7 +780,7 @@ class Functions
 	 * @param string $content XMLRPC XML Request content
 	 * @return string|array List of categories or category name.
 	 */
-	function xmlrpc_getpostcategory($content)
+	static function xmlrpc_getpostcategory($content)
 	{
 		global $post_default_category;
 		if (preg_match('/<category>(.+?)<\/category>/is', $content, $matchcat)) {
@@ -800,7 +800,7 @@ class Functions
 	 * @param string $content XML-RPC XML Request content.
 	 * @return string XMLRPC XML Request content without title and category elements.
 	 */
-	function xmlrpc_removepostdata($content)
+	static function xmlrpc_removepostdata($content)
 	{
 		$content = preg_replace('/<title>(.+?)<\/title>/si', '', $content);
 		$content = preg_replace('/<category>(.+?)<\/category>/si', '', $content);
@@ -816,7 +816,7 @@ class Functions
 	 * @param string $content Content to extract URLs from.
 	 * @return string[] Array of URLs found in passed string.
 	 */
-	function wp_extract_urls($content)
+	static function wp_extract_urls($content)
 	{
 		preg_match_all(
 			"#([\"']?)("
@@ -859,7 +859,7 @@ class Functions
 	 * @param int|WP_Post $post    Post ID or post object.
 	 * @return null|bool Returns false if post is not found.
 	 */
-	function do_enclose($content, $post)
+	static function do_enclose($content, $post)
 	{
 		global $wpdb;
 
@@ -961,7 +961,7 @@ class Functions
 	 * @param bool   $deprecated Not Used.
 	 * @return bool|string False on failure, headers on success.
 	 */
-	function wp_get_http_headers($url, $deprecated = false)
+	static function wp_get_http_headers($url, $deprecated = false)
 	{
 		if (!empty($deprecated)) {
 			_deprecated_argument(__FUNCTION__, '2.7.0');
@@ -991,7 +991,7 @@ class Functions
 	 *
 	 * @return int 1 when new day, 0 if not a new day.
 	 */
-	function is_new_day()
+	static function is_new_day()
 	{
 		global $currentday, $previousday;
 
@@ -1005,7 +1005,7 @@ class Functions
 	/**
 	 * Build URL query based on an associative and, or indexed array.
 	 *
-	 * This is a convenient function for easily building url queries. It sets the
+	 * This is a convenient static function for easily building url queries. It sets the
 	 * separator to '&' and uses _http_build_query() function.
 	 *
 	 * @since 2.3.0
@@ -1017,7 +1017,7 @@ class Functions
 	 * @param array $data URL-encode key/value pairs.
 	 * @return string URL-encoded string.
 	 */
-	function build_query($data)
+	static function build_query($data)
 	{
 		return _http_build_query($data, null, '&', '', false);
 	}
@@ -1039,7 +1039,7 @@ class Functions
 	 * @param bool         $urlencode Optional. Whether to use urlencode() in the result. Default true.
 	 * @return string The query string.
 	 */
-	function _http_build_query($data, $prefix = null, $sep = null, $key = '', $urlencode = true)
+	static function _http_build_query($data, $prefix = null, $sep = null, $key = '', $urlencode = true)
 	{
 		$ret = array();
 
@@ -1105,14 +1105,14 @@ class Functions
 	 *
 	 * @since 1.5.0
 	 * @since 5.3.0 Formalized the existing and already documented parameters
-	 *              by adding `...$args` to the function signature.
+	 *              by adding `...$args` to the static function signature.
 	 *
 	 * @param string|array $key   Either a query variable key, or an associative array of query variables.
 	 * @param string       $value Optional. Either a query variable value, or a URL to act upon.
 	 * @param string       $url   Optional. A URL to act upon.
 	 * @return string New URL query string (unescaped).
 	 */
-	function add_query_arg(...$args)
+	static function add_query_arg(...$args)
 	{
 		if (is_array($args[0])) {
 			if (count($args) < 2 || false === $args[1]) {
@@ -1189,7 +1189,7 @@ class Functions
 	 * @param bool|string  $query Optional. When false uses the current URL. Default false.
 	 * @return string New URL query string.
 	 */
-	function remove_query_arg($key, $query = false)
+	static function remove_query_arg($key, $query = false)
 	{
 		if (is_array($key)) { // Removing multiple keys.
 			foreach ($key as $k) {
@@ -1207,7 +1207,7 @@ class Functions
 	 *
 	 * @return string[] An array of parameters to remove from the URL.
 	 */
-	function wp_removable_query_args()
+	static function wp_removable_query_args()
 	{
 		$removable_query_args = array(
 			'activate',
@@ -1259,7 +1259,7 @@ class Functions
 	 * @param array $array Array to walk while sanitizing contents.
 	 * @return array Sanitized $array.
 	 */
-	function add_magic_quotes($array)
+	static function add_magic_quotes($array)
 	{
 		foreach ((array) $array as $k => $v) {
 			if (is_array($v)) {
@@ -1284,7 +1284,7 @@ class Functions
 	 * @param string $uri URI/URL of web page to retrieve.
 	 * @return string|false HTTP content. False on failure.
 	 */
-	function wp_remote_fopen($uri)
+	static function wp_remote_fopen($uri)
 	{
 		$parsed_url = parse_url($uri);
 
@@ -1315,7 +1315,7 @@ class Functions
 	 *
 	 * @param string|array $query_vars Default WP_Query arguments.
 	 */
-	function wp($query_vars = '')
+	static function wp($query_vars = '')
 	{
 		global $wp, $wp_query, $wp_the_query;
 
@@ -1339,7 +1339,7 @@ class Functions
 	 * @param int $code HTTP status code.
 	 * @return string Status description if found, an empty string otherwise.
 	 */
-	function get_status_header_desc($code)
+	static function get_status_header_desc($code)
 	{
 		global $wp_header_to_desc;
 
@@ -1432,7 +1432,7 @@ class Functions
 	 * @param int    $code        HTTP status code.
 	 * @param string $description Optional. A custom description for the HTTP status.
 	 */
-	function status_header($code, $description = '')
+	static function status_header($code, $description = '')
 	{
 		if (!$description) {
 			$description = get_status_header_desc($code);
@@ -1474,7 +1474,7 @@ class Functions
 	 *
 	 * @return array The associative array of header names and field values.
 	 */
-	function wp_get_nocache_headers()
+	static function wp_get_nocache_headers()
 	{
 		$headers = array(
 			'Expires'       => 'Wed, 11 Jan 1984 05:00:00 GMT',
@@ -1513,7 +1513,7 @@ class Functions
 	 *
 	 * @see wp_get_nocache_headers()
 	 */
-	function nocache_headers()
+	static function nocache_headers()
 	{
 		if (headers_sent()) {
 			return;
@@ -1535,7 +1535,7 @@ class Functions
 	 *
 	 * @since 2.1.0
 	 */
-	function cache_javascript_headers()
+	static function cache_javascript_headers()
 	{
 		$expiresOffset = 10 * DAY_IN_SECONDS;
 
@@ -1553,7 +1553,7 @@ class Functions
 	 *
 	 * @return int Number of database queries.
 	 */
-	function get_num_queries()
+	static function get_num_queries()
 	{
 		global $wpdb;
 		return $wpdb->num_queries;
@@ -1569,7 +1569,7 @@ class Functions
 	 * @param string $yn Character string containing either 'y' (yes) or 'n' (no).
 	 * @return bool True if yes, false on anything else.
 	 */
-	function bool_from_yn($yn)
+	static function bool_from_yn($yn)
 	{
 		return ('y' === strtolower($yn));
 	}
@@ -1577,7 +1577,7 @@ class Functions
 	/**
 	 * Load the feed template from the use of an action hook.
 	 *
-	 * If the feed action does not have a hook, then the function will die with a
+	 * If the feed action does not have a hook, then the static function will die with a
 	 * message telling the visitor that the feed is not valid.
 	 *
 	 * It is better to only have one hook for each feed.
@@ -1586,7 +1586,7 @@ class Functions
 	 *
 	 * @global WP_Query $wp_query WordPress Query object.
 	 */
-	function do_feed()
+	static function do_feed()
 	{
 		global $wp_query;
 
@@ -1625,7 +1625,7 @@ class Functions
 	 *
 	 * @see load_template()
 	 */
-	function do_feed_rdf()
+	static function do_feed_rdf()
 	{
 		load_template(self::ABSPATH . WPINC . '/feed-rdf.php');
 	}
@@ -1637,7 +1637,7 @@ class Functions
 	 *
 	 * @see load_template()
 	 */
-	function do_feed_rss()
+	static function do_feed_rss()
 	{
 		load_template(self::ABSPATH . WPINC . '/feed-rss.php');
 	}
@@ -1651,7 +1651,7 @@ class Functions
 	 *
 	 * @param bool $for_comments True for the comment feed, false for normal feed.
 	 */
-	function do_feed_rss2($for_comments)
+	static function do_feed_rss2($for_comments)
 	{
 		if ($for_comments) {
 			load_template(self::ABSPATH . WPINC . '/feed-rss2-comments.php');
@@ -1669,7 +1669,7 @@ class Functions
 	 *
 	 * @param bool $for_comments True for the comment feed, false for normal feed.
 	 */
-	function do_feed_atom($for_comments)
+	static function do_feed_atom($for_comments)
 	{
 		if ($for_comments) {
 			load_template(self::ABSPATH . WPINC . '/feed-atom-comments.php');
@@ -1685,7 +1685,7 @@ class Functions
 	 * @since 5.3.0 Remove the "Disallow: /" output if search engine visiblity is
 	 *              discouraged in favor of robots meta HTML tag in wp_no_robots().
 	 */
-	function do_robots()
+	static function do_robots()
 	{
 		header('Content-Type: text/plain; charset=utf-8');
 
@@ -1720,7 +1720,7 @@ class Functions
 	 *
 	 * @since 5.4.0
 	 */
-	function do_favicon()
+	static function do_favicon()
 	{
 		/**
 		 * Fires when serving the favicon.ico file.
@@ -1752,7 +1752,7 @@ class Functions
 	 *
 	 * @return bool Whether the site is already installed.
 	 */
-	function is_blog_installed()
+	static function is_blog_installed()
 	{
 		global $wpdb;
 
@@ -1844,7 +1844,7 @@ class Functions
 	 * @param string     $name      Optional. Nonce name. Default '_wpnonce'.
 	 * @return string Escaped URL with nonce action added.
 	 */
-	function wp_nonce_url($actionurl, $action = -1, $name = '_wpnonce')
+	static function wp_nonce_url($actionurl, $action = -1, $name = '_wpnonce')
 	{
 		$actionurl = str_replace('&amp;', '&', $actionurl);
 		return esc_html(add_query_arg($name, wp_create_nonce($action), $actionurl));
@@ -1860,7 +1860,7 @@ class Functions
 	 *
 	 * The $action and $name are optional, but if you want to have better security,
 	 * it is strongly suggested to set those two parameters. It is easier to just
-	 * call the function without any parameters, because validation of the nonce
+	 * call the static function without any parameters, because validation of the nonce
 	 * doesn't require any parameters, but since crackers know what the default is
 	 * it won't be difficult for them to find a way around your nonce and cause
 	 * damage.
@@ -1876,7 +1876,7 @@ class Functions
 	 * @param bool       $echo    Optional. Whether to display or return hidden form field. Default true.
 	 * @return string Nonce field HTML markup.
 	 */
-	function wp_nonce_field($action = -1, $name = '_wpnonce', $referer = true, $echo = true)
+	static function wp_nonce_field($action = -1, $name = '_wpnonce', $referer = true, $echo = true)
 	{
 		$name        = esc_attr($name);
 		$nonce_field = '<input type="hidden" id="' . $name . '" name="' . $name . '" value="' . wp_create_nonce($action) . '" />';
@@ -1903,7 +1903,7 @@ class Functions
 	 * @param bool $echo Optional. Whether to echo or return the referer field. Default true.
 	 * @return string Referer field HTML markup.
 	 */
-	function wp_referer_field($echo = true)
+	static function wp_referer_field($echo = true)
 	{
 		$referer_field = '<input type="hidden" name="_wp_http_referer" value="' . esc_attr(wp_unslash($_SERVER['REQUEST_URI'])) . '" />';
 
@@ -1928,7 +1928,7 @@ class Functions
 	 *                             Default 'current'.
 	 * @return string Original referer field.
 	 */
-	function wp_original_referer_field($echo = true, $jump_back_to = 'current')
+	static function wp_original_referer_field($echo = true, $jump_back_to = 'current')
 	{
 		$ref = wp_get_original_referer();
 
@@ -1954,7 +1954,7 @@ class Functions
 	 *
 	 * @return string|false Referer URL on success, false on failure.
 	 */
-	function wp_get_referer()
+	static function wp_get_referer()
 	{
 		if (!function_exists('wp_validate_redirect')) {
 			return false;
@@ -1978,7 +1978,7 @@ class Functions
 	 *
 	 * @return string|false Referer URL on success, false on failure.
 	 */
-	function wp_get_raw_referer()
+	static function wp_get_raw_referer()
 	{
 		if (!empty($_REQUEST['_wp_http_referer'])) {
 			return wp_unslash($_REQUEST['_wp_http_referer']);
@@ -1996,7 +1996,7 @@ class Functions
 	 *
 	 * @return string|false Original referer URL on success, false on failure.
 	 */
-	function wp_get_original_referer()
+	static function wp_get_original_referer()
 	{
 		if (!empty($_REQUEST['_wp_original_http_referer']) && function_exists('wp_validate_redirect')) {
 			return wp_validate_redirect(wp_unslash($_REQUEST['_wp_original_http_referer']), false);
@@ -2015,7 +2015,7 @@ class Functions
 	 * @param string $target Full path to attempt to create.
 	 * @return bool Whether the path was created. True if path already exists.
 	 */
-	function wp_mkdir_p($target)
+	static function wp_mkdir_p($target)
 	{
 		$wrapper = null;
 
@@ -2093,7 +2093,7 @@ class Functions
 	 * @param string $path File path.
 	 * @return bool True if path is absolute, false is not absolute.
 	 */
-	function path_is_absolute($path)
+	static function path_is_absolute($path)
 	{
 		/*
 	 * Check to see if the path is a stream and check to see if its an actual
@@ -2136,7 +2136,7 @@ class Functions
 	 * @param string $path Path relative to $base.
 	 * @return string The path with the base or absolute path.
 	 */
-	function path_join($base, $path)
+	static function path_join($base, $path)
 	{
 		if (path_is_absolute($path)) {
 			return $path;
@@ -2161,7 +2161,7 @@ class Functions
 	 * @param string $path Path to normalize.
 	 * @return string Normalized path.
 	 */
-	function wp_normalize_path($path)
+	static function wp_normalize_path($path)
 	{
 		$wrapper = '';
 
@@ -2192,14 +2192,14 @@ class Functions
 	 * followed by your PHP temporary upload directory, followed by WP_CONTENT_DIR,
 	 * before finally defaulting to /tmp/
 	 *
-	 * In the event that this function does not find a writable location,
+	 * In the event that this static function does not find a writable location,
 	 * It may be overridden by the WP_TEMP_DIR constant in your wp-config.php file.
 	 *
 	 * @since 2.5.0
 	 *
 	 * @return string Writable temporary directory.
 	 */
-	function get_temp_dir()
+	static function get_temp_dir()
 	{
 		static $temp = '';
 		if (defined('WP_TEMP_DIR')) {
@@ -2233,7 +2233,7 @@ class Functions
 	/**
 	 * Determine if a directory is writable.
 	 *
-	 * This function is used to work around certain ACL issues in PHP primarily
+	 * This static function is used to work around certain ACL issues in PHP primarily
 	 * affecting Windows Servers.
 	 *
 	 * @since 3.6.0
@@ -2243,7 +2243,7 @@ class Functions
 	 * @param string $path Path to check for write-ability.
 	 * @return bool Whether the path is writable.
 	 */
-	function wp_is_writable($path)
+	static function wp_is_writable($path)
 	{
 		if ('WIN' === strtoupper(substr(PHP_OS, 0, 3))) {
 			return win_is_writable($path);
@@ -2268,7 +2268,7 @@ class Functions
 	 * @param string $path Windows path to check for write-ability.
 	 * @return bool Whether the path is writable.
 	 */
-	function win_is_writable($path)
+	static function win_is_writable($path)
 	{
 		if ('/' === $path[strlen($path) - 1]) {
 			// If it looks like a directory, check a random file within the directory.
@@ -2307,7 +2307,7 @@ class Functions
 	 *
 	 * @return array See wp_upload_dir() for description.
 	 */
-	function wp_get_upload_dir()
+	static function wp_get_upload_dir()
 	{
 		return wp_upload_dir(null, false);
 	}
@@ -2349,7 +2349,7 @@ class Functions
 	 *     @type string|false $error   False or error message.
 	 * }
 	 */
-	function wp_upload_dir($time = null, $create_dir = true, $refresh_cache = false)
+	static function wp_upload_dir($time = null, $create_dir = true, $refresh_cache = false)
 	{
 		static $cache = array(), $tested_paths = array();
 
@@ -2413,7 +2413,7 @@ class Functions
 	 * @param string $time Optional. Time formatted in 'yyyy/mm'. Default null.
 	 * @return array See wp_upload_dir()
 	 */
-	function _wp_upload_dir($time = null)
+	static function _wp_upload_dir($time = null)
 	{
 		$siteurl     = get_option('siteurl');
 		$upload_path = trim(get_option('upload_path'));
@@ -2524,7 +2524,7 @@ class Functions
 	 * before the extension, and will continue adding numbers until the filename
 	 * is unique.
 	 *
-	 * The callback function allows the caller to use their own method to create
+	 * The callback static function allows the caller to use their own method to create
 	 * unique file names. If defined, the callback should take three arguments:
 	 * - directory, base filename, and extension - and return a unique filename.
 	 *
@@ -2535,7 +2535,7 @@ class Functions
 	 * @param callable $unique_filename_callback Callback. Default null.
 	 * @return string New filename, if given wasn't unique.
 	 */
-	function wp_unique_filename($dir, $filename, $unique_filename_callback = null)
+	static function wp_unique_filename($dir, $filename, $unique_filename_callback = null)
 	{
 		// Sanitize the file name before we begin processing.
 		$filename = sanitize_file_name($filename);
@@ -2658,13 +2658,13 @@ class Functions
 		 * @param string        $filename                 Unique file name.
 		 * @param string        $ext                      File extension, eg. ".png".
 		 * @param string        $dir                      Directory path.
-		 * @param callable|null $unique_filename_callback Callback function that generates the unique file name.
+		 * @param callable|null $unique_filename_callback Callback static function that generates the unique file name.
 		 */
 		return apply_filters('wp_unique_filename', $filename, $ext, $dir, $unique_filename_callback);
 	}
 
 	/**
-	 * Helper function to check if a file name could match an existing image sub-size file name.
+	 * Helper static function to check if a file name could match an existing image sub-size file name.
 	 *
 	 * @since 5.3.1
 	 * @access private
@@ -2673,7 +2673,7 @@ class Functions
 	 * @param array  $files    An array of existing files in the directory.
 	 * @return bool True if the tested file name could match an existing file, false otherwise.
 	 */
-	function _wp_check_existing_file_names($filename, $files)
+	static function _wp_check_existing_file_names($filename, $files)
 	{
 		$fname = pathinfo($filename, PATHINFO_FILENAME);
 		$ext   = pathinfo($filename, PATHINFO_EXTENSION);
@@ -2705,7 +2705,7 @@ class Functions
 	 * If success, then the key 'file' will have the unique file path, the 'url' key
 	 * will have the link to the new file. and the 'error' key will be set to false.
 	 *
-	 * This function will not move an uploaded file to the upload folder. It will
+	 * This static function will not move an uploaded file to the upload folder. It will
 	 * create a new file with the content in $bits parameter. If you move the upload
 	 * file, read the content of the uploaded file, and then you can give the
 	 * filename and content to this function, which will add it to the upload
@@ -2728,7 +2728,7 @@ class Functions
 	 *     @type string|false $error Error message, if there has been an error.
 	 * }
 	 */
-	function wp_upload_bits($name, $deprecated, $bits, $time = null)
+	static function wp_upload_bits($name, $deprecated, $bits, $time = null)
 	{
 		if (!empty($deprecated)) {
 			_deprecated_argument(__FUNCTION__, '2.0.0');
@@ -2837,7 +2837,7 @@ class Functions
 	 * @param string $ext The extension to search.
 	 * @return string|void The file type, example: audio, video, document, spreadsheet, etc.
 	 */
-	function wp_ext2type($ext)
+	static function wp_ext2type($ext)
 	{
 		$ext = strtolower($ext);
 
@@ -2865,7 +2865,7 @@ class Functions
 	 *     @type string|false $type File mime type, or false if the file doesn't match a mime type.
 	 * }
 	 */
-	function wp_check_filetype($filename, $mimes = null)
+	static function wp_check_filetype($filename, $mimes = null)
 	{
 		if (empty($mimes)) {
 			$mimes = get_allowed_mime_types();
@@ -2893,7 +2893,7 @@ class Functions
 	 * If it's determined that the extension does not match the file's real type,
 	 * then the "proper_filename" value will be set with a proper filename and extension.
 	 *
-	 * Currently this function only supports renaming images validated via wp_get_image_mime().
+	 * Currently this static function only supports renaming images validated via wp_get_image_mime().
 	 *
 	 * @since 3.0.0
 	 *
@@ -2909,7 +2909,7 @@ class Functions
 	 *     @type string|false $proper_filename File name with its correct extension, or false if it cannot be determined.
 	 * }
 	 */
-	function wp_check_filetype_and_ext($file, $filename, $mimes = null)
+	static function wp_check_filetype_and_ext($file, $filename, $mimes = null)
 	{
 		$proper_filename = false;
 
@@ -3105,11 +3105,11 @@ class Functions
 	 * @param string $file Full path to the file.
 	 * @return string|false The actual mime type or false if the type cannot be determined.
 	 */
-	function wp_get_image_mime($file)
+	static function wp_get_image_mime($file)
 	{
 		/*
 	 * Use exif_imagetype() to check the mimetype if available or fall back to
-	 * getimagesize() if exif isn't avaialbe. If either function throws an Exception
+	 * getimagesize() if exif isn't avaialbe. If either static function throws an Exception
 	 * we assume the file could not be validated.
 	 */
 		try {
@@ -3139,7 +3139,7 @@ class Functions
 	 *
 	 * @return string[] Array of mime types keyed by the file extension regex corresponding to those types.
 	 */
-	function wp_get_mime_types()
+	static function wp_get_mime_types()
 	{
 		/**
 		 * Filters the list of mime types and file extensions.
@@ -3268,7 +3268,7 @@ class Functions
 	 *
 	 * @return array[] Multi-dimensional array of file extensions types keyed by the type of file.
 	 */
-	function wp_get_ext_types()
+	static function wp_get_ext_types()
 	{
 
 		/**
@@ -3305,7 +3305,7 @@ class Functions
 	 * @return string[] Array of mime types keyed by the file extension regex corresponding
 	 *                  to those types.
 	 */
-	function get_allowed_mime_types($user = null)
+	static function get_allowed_mime_types($user = null)
 	{
 		$t = wp_get_mime_types();
 
@@ -3339,7 +3339,7 @@ class Functions
 	 *
 	 * @param string $action The nonce action.
 	 */
-	function wp_nonce_ays($action)
+	static function wp_nonce_ays($action)
 	{
 		if ('log-out' === $action) {
 			$html = sprintf(
@@ -3372,10 +3372,10 @@ class Functions
 	/**
 	 * Kills WordPress execution and displays HTML page with an error message.
 	 *
-	 * This function complements the `die()` PHP function. The difference is that
+	 * This static function complements the `die()` PHP function. The difference is that
 	 * HTML will be displayed to the user. It is recommended to use this function
 	 * only when the execution should not continue any further. It is not recommended
-	 * to call this function very often, and try to handle as many errors as possible
+	 * to call this static function very often, and try to handle as many errors as possible
 	 * silently or more gracefully.
 	 *
 	 * As a shorthand, the desired HTTP response code may be passed as an integer to
@@ -3417,7 +3417,7 @@ class Functions
 	 *     @type bool   $exit           Whether to exit the process after completion. Default true.
 	 * }
 	 */
-	function wp_die($message = '', $title = '', $args = array())
+	static function wp_die($message = '', $title = '', $args = array())
 	{
 		global $wp_query;
 
@@ -3434,7 +3434,7 @@ class Functions
 			 *
 			 * @since 3.4.0
 			 *
-			 * @param callable $function Callback function name.
+			 * @param callable $static function Callback static function name.
 			 */
 			$function = apply_filters('wp_die_ajax_handler', '_ajax_wp_die_handler');
 		} elseif (wp_is_json_request()) {
@@ -3443,7 +3443,7 @@ class Functions
 			 *
 			 * @since 5.1.0
 			 *
-			 * @param callable $function Callback function name.
+			 * @param callable $static function Callback static function name.
 			 */
 			$function = apply_filters('wp_die_json_handler', '_json_wp_die_handler');
 		} elseif (wp_is_jsonp_request()) {
@@ -3452,7 +3452,7 @@ class Functions
 			 *
 			 * @since 5.2.0
 			 *
-			 * @param callable $function Callback function name.
+			 * @param callable $static function Callback static function name.
 			 */
 			$function = apply_filters('wp_die_jsonp_handler', '_jsonp_wp_die_handler');
 		} elseif (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST) {
@@ -3461,7 +3461,7 @@ class Functions
 			 *
 			 * @since 3.4.0
 			 *
-			 * @param callable $function Callback function name.
+			 * @param callable $static function Callback static function name.
 			 */
 			$function = apply_filters('wp_die_xmlrpc_handler', '_xmlrpc_wp_die_handler');
 		} elseif (
@@ -3476,7 +3476,7 @@ class Functions
 			 *
 			 * @since 5.2.0
 			 *
-			 * @param callable $function Callback function name.
+			 * @param callable $static function Callback static function name.
 			 */
 			$function = apply_filters('wp_die_xml_handler', '_xml_wp_die_handler');
 		} else {
@@ -3485,7 +3485,7 @@ class Functions
 			 *
 			 * @since 3.0.0
 			 *
-			 * @param callable $function Callback function name.
+			 * @param callable $static function Callback static function name.
 			 */
 			$function = apply_filters('wp_die_handler', '_default_wp_die_handler');
 		}
@@ -3506,7 +3506,7 @@ class Functions
 	 * @param string          $title   Optional. Error title. Default empty.
 	 * @param string|array    $args    Optional. Arguments to control behavior. Default empty array.
 	 */
-	function _default_wp_die_handler($message, $title = '', $args = array())
+	static function _default_wp_die_handler($message, $title = '', $args = array())
 	{
 		list($message, $title, $parsed_args) = _wp_die_process_input($message, $title, $args);
 
@@ -3723,7 +3723,7 @@ class Functions
 		 * @param string       $title   Optional. Error title (unused). Default empty.
 		 * @param string|array $args    Optional. Arguments to control behavior. Default empty array.
 		 */
-		function _ajax_wp_die_handler($message, $title = '', $args = array())
+		static function _ajax_wp_die_handler($message, $title = '', $args = array())
 		{
 			// Set default 'response' to 200 for Ajax requests.
 			$args = wp_parse_args(
@@ -3766,7 +3766,7 @@ class Functions
 		 * @param string       $title   Optional. Error title. Default empty.
 		 * @param string|array $args    Optional. Arguments to control behavior. Default empty array.
 		 */
-		function _json_wp_die_handler($message, $title = '', $args = array())
+		static function _json_wp_die_handler($message, $title = '', $args = array())
 		{
 			list($message, $title, $parsed_args) = _wp_die_process_input($message, $title, $args);
 
@@ -3805,7 +3805,7 @@ class Functions
 		 * @param string       $title   Optional. Error title. Default empty.
 		 * @param string|array $args    Optional. Arguments to control behavior. Default empty array.
 		 */
-		function _jsonp_wp_die_handler($message, $title = '', $args = array())
+		static function _jsonp_wp_die_handler($message, $title = '', $args = array())
 		{
 			list($message, $title, $parsed_args) = _wp_die_process_input($message, $title, $args);
 
@@ -3850,7 +3850,7 @@ class Functions
 		 * @param string       $title   Optional. Error title. Default empty.
 		 * @param string|array $args    Optional. Arguments to control behavior. Default empty array.
 		 */
-		function _xmlrpc_wp_die_handler($message, $title = '', $args = array())
+		static function _xmlrpc_wp_die_handler($message, $title = '', $args = array())
 		{
 			global $wp_xmlrpc_server;
 
@@ -3881,7 +3881,7 @@ class Functions
 		 * @param string       $title   Optional. Error title. Default empty.
 		 * @param string|array $args    Optional. Arguments to control behavior. Default empty array.
 		 */
-		function _xml_wp_die_handler($message, $title = '', $args = array())
+		static function _xml_wp_die_handler($message, $title = '', $args = array())
 		{
 			list($message, $title, $parsed_args) = _wp_die_process_input($message, $title, $args);
 
@@ -3927,7 +3927,7 @@ EOD;
 		 * @param string       $title   Optional. Error title (unused). Default empty.
 		 * @param string|array $args    Optional. Arguments to control behavior. Default empty array.
 		 */
-		function _scalar_wp_die_handler($message = '', $title = '', $args = array())
+		static function _scalar_wp_die_handler($message = '', $title = '', $args = array())
 		{
 			list($message, $title, $parsed_args) = _wp_die_process_input($message, $title, $args);
 
@@ -3960,7 +3960,7 @@ EOD;
 		 *     @type array  $2 Arguments to control behavior.
 		 * }
 		 */
-		function _wp_die_process_input($message, $title = '', $args = array())
+		static function _wp_die_process_input($message, $title = '', $args = array())
 		{
 			$defaults = array(
 				'response'          => 0,
@@ -4045,7 +4045,7 @@ EOD;
 		 *                       greater than 0. Default 512.
 		 * @return string|false The JSON encoded string, or false if it cannot be encoded.
 		 */
-		function wp_json_encode($data, $options = 0, $depth = 512)
+		static function wp_json_encode($data, $options = 0, $depth = 512)
 		{
 			$json = json_encode($data, $options, $depth);
 
@@ -4078,7 +4078,7 @@ EOD;
 		 * @param int   $depth Maximum depth to walk through $data. Must be greater than 0.
 		 * @return mixed The sanitized data that shall be encoded to JSON.
 		 */
-		function _wp_json_sanity_check($data, $depth)
+		static function _wp_json_sanity_check($data, $depth)
 		{
 			if ($depth < 0) {
 				throw new Exception('Reached depth limit');
@@ -4141,7 +4141,7 @@ EOD;
 		 * @param string $string The string which is to be converted.
 		 * @return string The checked string.
 		 */
-		function _wp_json_convert_string($string)
+		static function _wp_json_convert_string($string)
 		{
 			static $use_mb = null;
 			if (is_null($use_mb)) {
@@ -4167,14 +4167,14 @@ EOD;
 		 *
 		 * @ignore
 		 * @since 4.4.0
-		 * @deprecated 5.3.0 This function is no longer needed as support for PHP 5.2-5.3
+		 * @deprecated 5.3.0 This static function is no longer needed as support for PHP 5.2-5.3
 		 *                   has been dropped.
 		 * @access private
 		 *
 		 * @param mixed $data Native representation.
 		 * @return bool|int|float|null|string|array Data ready for `json_encode()`.
 		 */
-		function _wp_json_prepare_data($data)
+		static function _wp_json_prepare_data($data)
 		{
 			_deprecated_function(__FUNCTION__, '5.3.0');
 			return $data;
@@ -4192,7 +4192,7 @@ EOD;
 		 * @param int   $status_code Optional. The HTTP status code to output. Default null.
 		 * @param int   $options     Optional. Options to be passed to json_encode(). Default 0.
 		 */
-		function wp_send_json($response, $status_code = null, $options = 0)
+		static function wp_send_json($response, $status_code = null, $options = 0)
 		{
 			if (defined('REST_REQUEST') && REST_REQUEST) {
 				_doing_it_wrong(
@@ -4240,7 +4240,7 @@ EOD;
 		 * @param int   $status_code Optional. The HTTP status code to output. Default null.
 		 * @param int   $options     Optional. Options to be passed to json_encode(). Default 0.
 		 */
-		function wp_send_json_success($data = null, $status_code = null, $options = 0)
+		static function wp_send_json_success($data = null, $status_code = null, $options = 0)
 		{
 			$response = array('success' => true);
 
@@ -4268,7 +4268,7 @@ EOD;
 		 * @param int   $status_code Optional. The HTTP status code to output. Default null.
 		 * @param int   $options     Optional. Options to be passed to json_encode(). Default 0.
 		 */
-		function wp_send_json_error($data = null, $status_code = null, $options = 0)
+		static function wp_send_json_error($data = null, $status_code = null, $options = 0)
 		{
 			$response = array('success' => false);
 
@@ -4297,15 +4297,15 @@ EOD;
 		 * Checks that a JSONP callback is a valid JavaScript callback name.
 		 *
 		 * Only allows alphanumeric characters and the dot character in callback
-		 * function names. This helps to mitigate XSS attacks caused by directly
+		 * static function names. This helps to mitigate XSS attacks caused by directly
 		 * outputting user input.
 		 *
 		 * @since 4.6.0
 		 *
-		 * @param string $callback Supplied JSONP callback function name.
-		 * @return bool Whether the callback function name is valid.
+		 * @param string $callback Supplied JSONP callback static function name.
+		 * @return bool Whether the callback static function name is valid.
 		 */
-		function wp_check_jsonp_callback($callback)
+		static function wp_check_jsonp_callback($callback)
 		{
 			if (!is_string($callback)) {
 				return false;
@@ -4331,7 +4331,7 @@ EOD;
 		 * @param string $url URL for the home location.
 		 * @return string Homepage location.
 		 */
-		function _config_wp_home($url = '')
+		static function _config_wp_home($url = '')
 		{
 			if (defined('WP_HOME')) {
 				return untrailingslashit(WP_HOME);
@@ -4354,7 +4354,7 @@ EOD;
 		 * @param string $url URL to set the WordPress site location.
 		 * @return string The WordPress Site URL.
 		 */
-		function _config_wp_siteurl($url = '')
+		static function _config_wp_siteurl($url = '')
 		{
 			if (defined('WP_SITEURL')) {
 				return untrailingslashit(WP_SITEURL);
@@ -4368,7 +4368,7 @@ EOD;
 		 * @since 4.7.0
 		 * @access private
 		 */
-		function _delete_option_fresh_site()
+		static function _delete_option_fresh_site()
 		{
 			update_option('fresh_site', '0');
 		}
@@ -4390,7 +4390,7 @@ EOD;
 		 * @param array $mce_init MCE settings array.
 		 * @return array Direction set for 'rtl', if needed by locale.
 		 */
-		function _mce_set_direction($mce_init)
+		static function _mce_set_direction($mce_init)
 		{
 			if (is_rtl()) {
 				$mce_init['directionality'] = 'rtl';
@@ -4420,9 +4420,9 @@ EOD;
 		 * image file.
 		 *
 		 * The $wp_smiliessearch global is for the regular expression and is set each
-		 * time the function is called.
+		 * time the static function is called.
 		 *
-		 * The full list of smilies can be found in the function and won't be listed in
+		 * The full list of smilies can be found in the static function and won't be listed in
 		 * the description. Probably should create a Codex page for it, so that it is
 		 * available.
 		 *
@@ -4431,7 +4431,7 @@ EOD;
 		 *
 		 * @since 2.2.0
 		 */
-		function smilies_init()
+		static function smilies_init()
 		{
 			global $wpsmiliestrans, $wp_smiliessearch;
 
@@ -4543,7 +4543,7 @@ EOD;
 		/**
 		 * Merge user defined arguments into defaults array.
 		 *
-		 * This function is used throughout WordPress to allow for both string or array
+		 * This static function is used throughout WordPress to allow for both string or array
 		 * to be merged into another array.
 		 *
 		 * @since 2.2.0
@@ -4554,7 +4554,7 @@ EOD;
 		 *                                      Default empty array.
 		 * @return array Merged user defined values with defaults.
 		 */
-		function wp_parse_args($args, $defaults = array())
+		static function wp_parse_args($args, $defaults = array())
 		{
 			if (is_object($args)) {
 				$parsed_args = get_object_vars($args);
@@ -4578,7 +4578,7 @@ EOD;
 		 * @param array|string $list List of values.
 		 * @return array Sanitized array of values.
 		 */
-		function wp_parse_list($list)
+		static function wp_parse_list($list)
 		{
 			if (!is_array($list)) {
 				return preg_split('/[\s,]+/', $list, -1, PREG_SPLIT_NO_EMPTY);
@@ -4595,7 +4595,7 @@ EOD;
 		 * @param array|string $list List of IDs.
 		 * @return int[] Sanitized array of IDs.
 		 */
-		function wp_parse_id_list($list)
+		static function wp_parse_id_list($list)
 		{
 			$list = wp_parse_list($list);
 
@@ -4610,7 +4610,7 @@ EOD;
 		 * @param array|string $list List of slugs.
 		 * @return string[] Sanitized array of slugs.
 		 */
-		function wp_parse_slug_list($list)
+		static function wp_parse_slug_list($list)
 		{
 			$list = wp_parse_list($list);
 
@@ -4626,7 +4626,7 @@ EOD;
 		 * @param array $keys  The list of keys.
 		 * @return array The array slice.
 		 */
-		function wp_array_slice_assoc($array, $keys)
+		static function wp_array_slice_assoc($array, $keys)
 		{
 			$slice = array();
 
@@ -4667,7 +4667,7 @@ EOD;
 		 *                       or if `$array` or `$path` are not arrays.
 		 * @return mixed The value from the path specified.
 		 */
-		function _wp_array_get($array, $path, $default = null)
+		static function _wp_array_get($array, $path, $default = null)
 		{
 			// Confirm $path is valid.
 			if (!is_array($path) || 0 === count($path)) {
@@ -4696,7 +4696,7 @@ EOD;
 		 * @param mixed $data Variable to check.
 		 * @return bool Whether the variable is a list.
 		 */
-		function wp_is_numeric_array($data)
+		static function wp_is_numeric_array($data)
 		{
 			if (!is_array($data)) {
 				return false;
@@ -4725,7 +4725,7 @@ EOD;
 		 *                              Default false.
 		 * @return array A list of objects or object fields.
 		 */
-		function wp_filter_object_list($list, $args = array(), $operator = 'and', $field = false)
+		static function wp_filter_object_list($list, $args = array(), $operator = 'and', $field = false)
 		{
 			if (!is_array($list)) {
 				return array();
@@ -4757,7 +4757,7 @@ EOD;
 		 *                         match. Default 'AND'.
 		 * @return array Array of found values.
 		 */
-		function wp_list_filter($list, $args = array(), $operator = 'AND')
+		static function wp_list_filter($list, $args = array(), $operator = 'AND')
 		{
 			if (!is_array($list)) {
 				return array();
@@ -4785,7 +4785,7 @@ EOD;
 		 *               corresponding to `$index_key`. If `$index_key` is null, array keys from the original
 		 *               `$list` will be preserved in the results.
 		 */
-		function wp_list_pluck($list, $field, $index_key = null)
+		static function wp_list_pluck($list, $field, $index_key = null)
 		{
 			$util = new WP_List_Util($list);
 			return $util->pluck($field, $index_key);
@@ -4804,7 +4804,7 @@ EOD;
 		 * @param bool         $preserve_keys Optional. Whether to preserve keys. Default false.
 		 * @return array The sorted array.
 		 */
-		function wp_list_sort($list, $orderby = array(), $order = 'ASC', $preserve_keys = false)
+		static function wp_list_sort($list, $orderby = array(), $order = 'ASC', $preserve_keys = false)
 		{
 			if (!is_array($list)) {
 				return array();
@@ -4822,7 +4822,7 @@ EOD;
 		 *
 		 * @since 2.2.0
 		 */
-		function wp_maybe_load_widgets()
+		static function wp_maybe_load_widgets()
 		{
 			/**
 			 * Filters whether to load the Widgets library.
@@ -4851,7 +4851,7 @@ EOD;
 		 *
 		 * @global array $submenu
 		 */
-		function wp_widgets_add_menu()
+		static function wp_widgets_add_menu()
 		{
 			global $submenu;
 
@@ -4870,7 +4870,7 @@ EOD;
 		 *
 		 * @since 2.2.0
 		 */
-		function wp_ob_end_flush_all()
+		static function wp_ob_end_flush_all()
 		{
 			$levels = ob_get_level();
 			for ($i = 0; $i < $levels; $i++) {
@@ -4889,14 +4889,14 @@ EOD;
 		 * search engines from caching the message. Custom DB messages should do the
 		 * same.
 		 *
-		 * This function was backported to WordPress 2.3.2, but originally was added
+		 * This static function was backported to WordPress 2.3.2, but originally was added
 		 * in WordPress 2.5.0.
 		 *
 		 * @since 2.3.2
 		 *
 		 * @global wpdb $wpdb WordPress database abstraction object.
 		 */
-		function dead_db()
+		static function dead_db()
 		{
 			global $wpdb;
 
@@ -4925,40 +4925,40 @@ EOD;
 		 * @param mixed $maybeint Data you wish to have converted to a non-negative integer.
 		 * @return int A non-negative integer.
 		 */
-		function absint($maybeint)
+		static function absint($maybeint)
 		{
 			return abs((int) $maybeint);
 		}
 
 		/**
-		 * Mark a function as deprecated and inform when it has been used.
+		 * Mark a static function as deprecated and inform when it has been used.
 		 *
 		 * There is a {@see 'hook deprecated_function_run'} that will be called that can be used
-		 * to get the backtrace up to what file and function called the deprecated
+		 * to get the backtrace up to what file and static function called the deprecated
 		 * function.
 		 *
 		 * The current behavior is to trigger a user error if `WP_DEBUG` is true.
 		 *
-		 * This function is to be used in every function that is deprecated.
+		 * This static function is to be used in every static function that is deprecated.
 		 *
 		 * @since 2.5.0
-		 * @since 5.4.0 This function is no longer marked as "private".
+		 * @since 5.4.0 This static function is no longer marked as "private".
 		 * @since 5.4.0 The error type is now classified as E_USER_DEPRECATED (used to default to E_USER_NOTICE).
 		 *
-		 * @param string $function    The function that was called.
+		 * @param string $static function    The static function that was called.
 		 * @param string $version     The version of WordPress that deprecated the function.
-		 * @param string $replacement Optional. The function that should have been called. Default empty.
+		 * @param string $replacement Optional. The static function that should have been called. Default empty.
 		 */
-		function _deprecated_function($function, $version, $replacement = '')
+		static function _deprecated_function($function, $version, $replacement = '')
 		{
 
 			/**
-			 * Fires when a deprecated function is called.
+			 * Fires when a deprecated static function is called.
 			 *
 			 * @since 2.5.0
 			 *
-			 * @param string $function    The function that was called.
-			 * @param string $replacement The function that should have been called.
+			 * @param string $static function    The static function that was called.
+			 * @param string $replacement The static function that should have been called.
 			 * @param string $version     The version of WordPress that deprecated the function.
 			 */
 			do_action('deprecated_function_run', $function, $replacement, $version);
@@ -4975,7 +4975,7 @@ EOD;
 					if ($replacement) {
 						trigger_error(
 							sprintf(
-								/* translators: 1: PHP function name, 2: Version number, 3: Alternative function name. */
+								/* translators: 1: PHP static function name, 2: Version number, 3: Alternative static function name. */
 								__('%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.'),
 								$function,
 								$version,
@@ -4986,7 +4986,7 @@ EOD;
 					} else {
 						trigger_error(
 							sprintf(
-								/* translators: 1: PHP function name, 2: Version number. */
+								/* translators: 1: PHP static function name, 2: Version number. */
 								__('%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.'),
 								$function,
 								$version
@@ -5027,11 +5027,11 @@ EOD;
 		 *
 		 * The current behavior is to trigger a user error if `WP_DEBUG` is true.
 		 *
-		 * This function is to be used in every PHP4 style constructor method that is deprecated.
+		 * This static function is to be used in every PHP4 style constructor method that is deprecated.
 		 *
 		 * @since 4.3.0
 		 * @since 4.5.0 Added the `$parent_class` parameter.
-		 * @since 5.4.0 This function is no longer marked as "private".
+		 * @since 5.4.0 This static function is no longer marked as "private".
 		 * @since 5.4.0 The error type is now classified as E_USER_DEPRECATED (used to default to E_USER_NOTICE).
 		 *
 		 * @param string $class        The class containing the deprecated constructor.
@@ -5039,7 +5039,7 @@ EOD;
 		 * @param string $parent_class Optional. The parent class calling the deprecated constructor.
 		 *                             Default empty string.
 		 */
-		function _deprecated_constructor($class, $version, $parent_class = '')
+		static function _deprecated_constructor($class, $version, $parent_class = '')
 		{
 
 			/**
@@ -5120,15 +5120,15 @@ EOD;
 		 * Mark a file as deprecated and inform when it has been used.
 		 *
 		 * There is a hook {@see 'deprecated_file_included'} that will be called that can be used
-		 * to get the backtrace up to what file and function included the deprecated
+		 * to get the backtrace up to what file and static function included the deprecated
 		 * file.
 		 *
 		 * The current behavior is to trigger a user error if `WP_DEBUG` is true.
 		 *
-		 * This function is to be used in every file that is deprecated.
+		 * This static function is to be used in every file that is deprecated.
 		 *
 		 * @since 2.5.0
-		 * @since 5.4.0 This function is no longer marked as "private".
+		 * @since 5.4.0 This static function is no longer marked as "private".
 		 * @since 5.4.0 The error type is now classified as E_USER_DEPRECATED (used to default to E_USER_NOTICE).
 		 *
 		 * @param string $file        The file that was included.
@@ -5137,7 +5137,7 @@ EOD;
 		 *                            Default empty.
 		 * @param string $message     Optional. A message regarding the change. Default empty.
 		 */
-		function _deprecated_file($file, $version, $replacement = '', $message = '')
+		static function _deprecated_file($file, $version, $replacement = '', $message = '')
 		{
 
 			/**
@@ -5210,10 +5210,10 @@ EOD;
 			}
 		}
 		/**
-		 * Mark a function argument as deprecated and inform when it has been used.
+		 * Mark a static function argument as deprecated and inform when it has been used.
 		 *
-		 * This function is to be used whenever a deprecated function argument is used.
-		 * Before this function is called, the argument must be checked for whether it was
+		 * This static function is to be used whenever a deprecated static function argument is used.
+		 * Before this static function is called, the argument must be checked for whether it was
 		 * used by comparing it to its default value or evaluating whether it is empty.
 		 * For example:
 		 *
@@ -5222,20 +5222,20 @@ EOD;
 		 *     }
 		 *
 		 * There is a hook deprecated_argument_run that will be called that can be used
-		 * to get the backtrace up to what file and function used the deprecated
+		 * to get the backtrace up to what file and static function used the deprecated
 		 * argument.
 		 *
 		 * The current behavior is to trigger a user error if WP_DEBUG is true.
 		 *
 		 * @since 3.0.0
-		 * @since 5.4.0 This function is no longer marked as "private".
+		 * @since 5.4.0 This static function is no longer marked as "private".
 		 * @since 5.4.0 The error type is now classified as E_USER_DEPRECATED (used to default to E_USER_NOTICE).
 		 *
-		 * @param string $function The function that was called.
+		 * @param string $static function The static function that was called.
 		 * @param string $version  The version of WordPress that deprecated the argument used.
 		 * @param string $message  Optional. A message regarding the change. Default empty.
 		 */
-		function _deprecated_argument($function, $version, $message = '')
+		static function _deprecated_argument($function, $version, $message = '')
 		{
 
 			/**
@@ -5243,7 +5243,7 @@ EOD;
 			 *
 			 * @since 3.0.0
 			 *
-			 * @param string $function The function that was called.
+			 * @param string $static function The static function that was called.
 			 * @param string $message  A message regarding the change.
 			 * @param string $version  The version of WordPress that deprecated the argument used.
 			 */
@@ -5261,7 +5261,7 @@ EOD;
 					if ($message) {
 						trigger_error(
 							sprintf(
-								/* translators: 1: PHP function name, 2: Version number, 3: Optional message regarding the change. */
+								/* translators: 1: PHP static function name, 2: Version number, 3: Optional message regarding the change. */
 								__('%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s! %3$s'),
 								$function,
 								$version,
@@ -5272,7 +5272,7 @@ EOD;
 					} else {
 						trigger_error(
 							sprintf(
-								/* translators: 1: PHP function name, 2: Version number. */
+								/* translators: 1: PHP static function name, 2: Version number. */
 								__('%1$s was called with an argument that is <strong>deprecated</strong> since version %2$s with no alternative available.'),
 								$function,
 								$version
@@ -5313,7 +5313,7 @@ EOD;
 		 *
 		 * Default behavior is to trigger a user error if `WP_DEBUG` is true.
 		 *
-		 * This function is called by the do_action_deprecated() and apply_filters_deprecated()
+		 * This static function is called by the do_action_deprecated() and apply_filters_deprecated()
 		 * functions, and so generally does not need to be called directly.
 		 *
 		 * @since 4.6.0
@@ -5325,7 +5325,7 @@ EOD;
 		 * @param string $replacement Optional. The hook that should have been used. Default empty.
 		 * @param string $message     Optional. A message regarding the change. Default empty.
 		 */
-		function _deprecated_hook($hook, $version, $replacement = '', $message = '')
+		static function _deprecated_hook($hook, $version, $replacement = '', $message = '')
 		{
 			/**
 			 * Fires when a deprecated hook is called.
@@ -5379,27 +5379,27 @@ EOD;
 		 * Mark something as being incorrectly called.
 		 *
 		 * There is a hook {@see 'doing_it_wrong_run'} that will be called that can be used
-		 * to get the backtrace up to what file and function called the deprecated
+		 * to get the backtrace up to what file and static function called the deprecated
 		 * function.
 		 *
 		 * The current behavior is to trigger a user error if `WP_DEBUG` is true.
 		 *
 		 * @since 3.1.0
-		 * @since 5.4.0 This function is no longer marked as "private".
+		 * @since 5.4.0 This static function is no longer marked as "private".
 		 *
-		 * @param string $function The function that was called.
+		 * @param string $static function The static function that was called.
 		 * @param string $message  A message explaining what has been done incorrectly.
 		 * @param string $version  The version of WordPress where the message was added.
 		 */
-		function _doing_it_wrong($function, $message, $version)
+		static function _doing_it_wrong($function, $message, $version)
 		{
 
 			/**
-			 * Fires when the given function is being used incorrectly.
+			 * Fires when the given static function is being used incorrectly.
 			 *
 			 * @since 3.1.0
 			 *
-			 * @param string $function The function that was called.
+			 * @param string $static function The static function that was called.
 			 * @param string $message  A message explaining what has been done incorrectly.
 			 * @param string $version  The version of WordPress where the message was added.
 			 */
@@ -5412,7 +5412,7 @@ EOD;
 			 * @since 5.1.0 Added the $function, $message and $version parameters.
 			 *
 			 * @param bool   $trigger  Whether to trigger the error for _doing_it_wrong() calls. Default true.
-			 * @param string $function The function that was called.
+			 * @param string $static function The static function that was called.
 			 * @param string $message  A message explaining what has been done incorrectly.
 			 * @param string $version  The version of WordPress where the message was added.
 			 */
@@ -5431,7 +5431,7 @@ EOD;
 
 					trigger_error(
 						sprintf(
-							/* translators: Developer debugging message. 1: PHP function name, 2: Explanatory message, 3: WordPress version number. */
+							/* translators: Developer debugging message. 1: PHP static function name, 2: Explanatory message, 3: WordPress version number. */
 							__('%1$s was called <strong>incorrectly</strong>. %2$s %3$s'),
 							$function,
 							$message,
@@ -5469,7 +5469,7 @@ EOD;
 		 *
 		 * @return bool Whether the server is running lighttpd < 1.5.0.
 		 */
-		function is_lighttpd_before_150()
+		static function is_lighttpd_before_150()
 		{
 			$server_parts    = explode('/', isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : '');
 			$server_parts[1] = isset($server_parts[1]) ? $server_parts[1] : '';
@@ -5488,7 +5488,7 @@ EOD;
 		 * @param bool   $default Optional. The default return value if the module is not found. Default false.
 		 * @return bool Whether the specified module is loaded.
 		 */
-		function apache_mod_loaded($mod, $default = false)
+		static function apache_mod_loaded($mod, $default = false)
 		{
 			global $is_apache;
 
@@ -5522,7 +5522,7 @@ EOD;
 		 *
 		 * @return bool Whether IIS7 supports permalinks.
 		 */
-		function iis7_supports_permalinks()
+		static function iis7_supports_permalinks()
 		{
 			global $is_iis7;
 
@@ -5565,7 +5565,7 @@ EOD;
 		 * @param string[] $allowed_files Optional. Array of allowed files.
 		 * @return int 0 means nothing is wrong, greater than 0 means something was wrong.
 		 */
-		function validate_file($file, $allowed_files = array())
+		static function validate_file($file, $allowed_files = array())
 		{
 			// `../` on its own is not allowed:
 			if ('../' === $file) {
@@ -5603,7 +5603,7 @@ EOD;
 		 * @param string|bool $force Optional. Whether to force SSL in admin screens. Default null.
 		 * @return bool True if forced, false if not forced.
 		 */
-		function force_ssl_admin($force = null)
+		static function force_ssl_admin($force = null)
 		{
 			static $forced = false;
 
@@ -5626,7 +5626,7 @@ EOD;
 		 *
 		 * @return string The guessed URL.
 		 */
-		function wp_guess_url()
+		static function wp_guess_url()
 		{
 			if (defined('WP_SITEURL') && '' !== WP_SITEURL) {
 				$url = WP_SITEURL;
@@ -5673,14 +5673,14 @@ EOD;
 		 * be almost uselessly added to the cache.
 		 *
 		 * Suspension lasts for a single page load at most. Remember to call this
-		 * function again if you wish to re-enable cache adds earlier.
+		 * static function again if you wish to re-enable cache adds earlier.
 		 *
 		 * @since 3.3.0
 		 *
 		 * @param bool $suspend Optional. Suspends additions if true, re-enables them if false.
 		 * @return bool The current suspend setting
 		 */
-		function wp_suspend_cache_addition($suspend = null)
+		static function wp_suspend_cache_addition($suspend = null)
 		{
 			static $_suspend = false;
 
@@ -5705,7 +5705,7 @@ EOD;
 		 * @param bool $suspend Optional. Whether to suspend or enable cache invalidation. Default true.
 		 * @return bool The current suspend setting.
 		 */
-		function wp_suspend_cache_invalidation($suspend = true)
+		static function wp_suspend_cache_invalidation($suspend = true)
 		{
 			global $_wp_suspend_cache_invalidation;
 
@@ -5726,7 +5726,7 @@ EOD;
 		 * @return bool True if $site_id is the main site of the network, or if not
 		 *              running Multisite.
 		 */
-		function is_main_site($site_id = null, $network_id = null)
+		static function is_main_site($site_id = null, $network_id = null)
 		{
 			if (!is_multisite()) {
 				return true;
@@ -5750,7 +5750,7 @@ EOD;
 		 *                        Defaults to the current network.
 		 * @return int The ID of the main site.
 		 */
-		function get_main_site_id($network_id = null)
+		static function get_main_site_id($network_id = null)
 		{
 			if (!is_multisite()) {
 				return get_current_blog_id();
@@ -5772,7 +5772,7 @@ EOD;
 		 * @param int $network_id Optional. Network ID to test. Defaults to current network.
 		 * @return bool True if $network_id is the main network, or if not running Multisite.
 		 */
-		function is_main_network($network_id = null)
+		static function is_main_network($network_id = null)
 		{
 			if (!is_multisite()) {
 				return true;
@@ -5794,7 +5794,7 @@ EOD;
 		 *
 		 * @return int The ID of the main network.
 		 */
-		function get_main_network_id()
+		static function get_main_network_id()
 		{
 			if (!is_multisite()) {
 				return 1;
@@ -5834,7 +5834,7 @@ EOD;
 		 *
 		 * @return bool True if multisite and global terms enabled.
 		 */
-		function global_terms_enabled()
+		static function global_terms_enabled()
 		{
 			if (!is_multisite()) {
 				return false;
@@ -5866,7 +5866,7 @@ EOD;
 		/**
 		 * Determines whether site meta is enabled.
 		 *
-		 * This function checks whether the 'blogmeta' database table exists. The result is saved as
+		 * This static function checks whether the 'blogmeta' database table exists. The result is saved as
 		 * a setting for the main network, making it essentially a global setting. Subsequent requests
 		 * will refer to this setting instead of running the query.
 		 *
@@ -5876,7 +5876,7 @@ EOD;
 		 *
 		 * @return bool True if site meta is supported, false otherwise.
 		 */
-		function is_site_meta_supported()
+		static function is_site_meta_supported()
 		{
 			global $wpdb;
 
@@ -5905,7 +5905,7 @@ EOD;
 		 *
 		 * @return float|false Timezone GMT offset, false otherwise.
 		 */
-		function wp_timezone_override_offset()
+		static function wp_timezone_override_offset()
 		{
 			$timezone_string = get_option('timezone_string');
 			if (!$timezone_string) {
@@ -5930,7 +5930,7 @@ EOD;
 		 * @param array $b
 		 * @return int
 		 */
-		function _wp_timezone_choice_usort_callback($a, $b)
+		static function _wp_timezone_choice_usort_callback($a, $b)
 		{
 			// Don't use translated versions of Etc.
 			if ('Etc' === $a['continent'] && 'Etc' === $b['continent']) {
@@ -5979,7 +5979,7 @@ EOD;
 		 * @param string $locale        Optional. Locale to load the timezones in. Default current site locale.
 		 * @return string
 		 */
-		function wp_timezone_choice($selected_zone, $locale = null)
+		static function wp_timezone_choice($selected_zone, $locale = null)
 		{
 			static $mo_loaded = false, $locale_loaded = null;
 
@@ -6172,7 +6172,7 @@ EOD;
 		 * @param string $str Header comment to clean up.
 		 * @return string
 		 */
-		function _cleanup_header_comment($str)
+		static function _cleanup_header_comment($str)
 		{
 			return trim(preg_replace('/\s*(?:\*\/|\?>).*/', '', $str));
 		}
@@ -6187,7 +6187,7 @@ EOD;
 		 *
 		 * @global wpdb $wpdb WordPress database abstraction object.
 		 */
-		function wp_scheduled_delete()
+		static function wp_scheduled_delete()
 		{
 			global $wpdb;
 
@@ -6250,7 +6250,7 @@ EOD;
 		 *                                Default empty.
 		 * @return string[] Array of file header values keyed by header name.
 		 */
-		function get_file_data($file, $default_headers, $context = '')
+		static function get_file_data($file, $default_headers, $context = '')
 		{
 			// We don't need to write to the file, so just open for reading.
 			$fp = fopen($file, 'r');
@@ -6308,7 +6308,7 @@ EOD;
 		 *
 		 * @return true True.
 		 */
-		function __return_true()
+		static function __return_true()
 		{ // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionDoubleUnderscore,PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.FunctionDoubleUnderscore
 			return true;
 		}
@@ -6324,7 +6324,7 @@ EOD;
 		 *
 		 * @return false False.
 		 */
-		function __return_false()
+		static function __return_false()
 		{ // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionDoubleUnderscore,PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.FunctionDoubleUnderscore
 			return false;
 		}
@@ -6338,7 +6338,7 @@ EOD;
 		 *
 		 * @return int 0.
 		 */
-		function __return_zero()
+		static function __return_zero()
 		{ // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionDoubleUnderscore,PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.FunctionDoubleUnderscore
 			return 0;
 		}
@@ -6352,7 +6352,7 @@ EOD;
 		 *
 		 * @return array Empty array.
 		 */
-		function __return_empty_array()
+		static function __return_empty_array()
 		{ // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionDoubleUnderscore,PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.FunctionDoubleUnderscore
 			return array();
 		}
@@ -6366,7 +6366,7 @@ EOD;
 		 *
 		 * @return null Null value.
 		 */
-		function __return_null()
+		static function __return_null()
 		{ // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionDoubleUnderscore,PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.FunctionDoubleUnderscore
 			return null;
 		}
@@ -6382,7 +6382,7 @@ EOD;
 		 *
 		 * @return string Empty string.
 		 */
-		function __return_empty_string()
+		static function __return_empty_string()
 		{ // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionDoubleUnderscore,PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.FunctionDoubleUnderscore
 			return '';
 		}
@@ -6395,7 +6395,7 @@ EOD;
 		 * @see https://blogs.msdn.com/ie/archive/2008/07/02/ie8-security-part-v-comprehensive-protection.aspx
 		 * @see https://src.chromium.org/viewvc/chrome?view=rev&revision=6985
 		 */
-		function send_nosniff_header()
+		static function send_nosniff_header()
 		{
 			header('X-Content-Type-Options: nosniff');
 		}
@@ -6409,7 +6409,7 @@ EOD;
 		 * @param string $column Database column.
 		 * @return string SQL clause.
 		 */
-		function _wp_mysql_week($column)
+		static function _wp_mysql_week($column)
 		{
 			$start_of_week = (int) get_option('start_of_week');
 			switch ($start_of_week) {
@@ -6428,7 +6428,7 @@ EOD;
 		}
 
 		/**
-		 * Find hierarchy loops using a callback function that maps object IDs to parent IDs.
+		 * Find hierarchy loops using a callback static function that maps object IDs to parent IDs.
 		 *
 		 * @since 3.1.0
 		 * @access private
@@ -6440,7 +6440,7 @@ EOD;
 		 * @param array    $callback_args Optional. Additional arguments to send to $callback.
 		 * @return array IDs of all members of loop.
 		 */
-		function wp_find_hierarchy_loop($callback, $start, $start_parent, $callback_args = array())
+		static function wp_find_hierarchy_loop($callback, $start, $start_parent, $callback_args = array())
 		{
 			$override = is_null($start_parent) ? array() : array($start => $start_parent);
 
@@ -6472,7 +6472,7 @@ EOD;
 		 * @return mixed Scalar ID of some arbitrary member of the loop, or array of IDs of all members of loop if
 		 *               $_return_loop
 		 */
-		function wp_find_hierarchy_loop_tortoise_hare($callback, $start, $override = array(), $callback_args = array(), $_return_loop = false)
+		static function wp_find_hierarchy_loop_tortoise_hare($callback, $start, $override = array(), $callback_args = array(), $_return_loop = false)
 		{
 			$tortoise        = $start;
 			$hare            = $start;
@@ -6513,7 +6513,7 @@ EOD;
 		 *
 		 * @see https://developer.mozilla.org/en/the_x-frame-options_response_header
 		 */
-		function send_frame_options_header()
+		static function send_frame_options_header()
 		{
 			header('X-Frame-Options: SAMEORIGIN');
 		}
@@ -6536,7 +6536,7 @@ EOD;
 		 *                  This covers all common link protocols, except for 'javascript' which should not
 		 *                  be allowed for untrusted users.
 		 */
-		function wp_allowed_protocols()
+		static function wp_allowed_protocols()
 		{
 			static $protocols = array();
 
@@ -6566,7 +6566,7 @@ EOD;
 		 *
 		 * @see https://core.trac.wordpress.org/ticket/19589
 		 *
-		 * @param string $ignore_class Optional. A class to ignore all function calls within - useful
+		 * @param string $ignore_class Optional. A class to ignore all static function calls within - useful
 		 *                             when you want to just give info about the callee. Default null.
 		 * @param int    $skip_frames  Optional. A number of stack frames to skip - useful for unwinding
 		 *                             back to the source of the issue. Default 0.
@@ -6575,7 +6575,7 @@ EOD;
 		 * @return string|array Either a string containing a reversed comma separated trace or an array
 		 *                      of individual calls.
 		 */
-		function wp_debug_backtrace_summary($ignore_class = null, $skip_frames = 0, $pretty = true)
+		static function wp_debug_backtrace_summary($ignore_class = null, $skip_frames = 0, $pretty = true)
 		{
 			static $truncate_paths;
 
@@ -6628,7 +6628,7 @@ EOD;
 		 * @param string $cache_key  The cache bucket to check against.
 		 * @return int[] Array of IDs not present in the cache.
 		 */
-		function _get_non_cached_ids($object_ids, $cache_key)
+		static function _get_non_cached_ids($object_ids, $cache_key)
 		{
 			$non_cached_ids = array();
 			$cache_values   = wp_cache_get_multiple($object_ids, $cache_key);
@@ -6650,7 +6650,7 @@ EOD;
 		 *
 		 * @return bool Whether the device is able to upload files.
 		 */
-		function _device_can_upload()
+		static function _device_can_upload()
 		{
 			if (!wp_is_mobile()) {
 				return true;
@@ -6677,7 +6677,7 @@ EOD;
 		 * @param string $path The resource path or URL.
 		 * @return bool True if the path is a stream URL.
 		 */
-		function wp_is_stream($path)
+		static function wp_is_stream($path)
 		{
 			$scheme_separator = strpos($path, '://');
 
@@ -6704,7 +6704,7 @@ EOD;
 		 * @param string $source_date The date to filter.
 		 * @return bool True if valid date, false if not valid date.
 		 */
-		function wp_checkdate($month, $day, $year, $source_date)
+		static function wp_checkdate($month, $day, $year, $source_date)
 		{
 			/**
 			 * Filters whether the given date is valid for the Gregorian calendar.
@@ -6728,7 +6728,7 @@ EOD;
 		 *
 		 * @since 3.6.0
 		 */
-		function wp_auth_check_load()
+		static function wp_auth_check_load()
 		{
 			if (!is_admin() && !is_user_logged_in()) {
 				return;
@@ -6767,7 +6767,7 @@ EOD;
 		 *
 		 * @since 3.6.0
 		 */
-		function wp_auth_check_html()
+		static function wp_auth_check_html()
 		{
 			$login_url      = wp_login_url();
 			$current_domain = (is_ssl() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'];
@@ -6827,7 +6827,7 @@ EOD;
 		 * @param array $response  The Heartbeat response.
 		 * @return array The Heartbeat response with 'wp-auth-check' value set.
 		 */
-		function wp_auth_check($response)
+		static function wp_auth_check($response)
 		{
 			$response['wp-auth-check'] = is_user_logged_in() && empty($GLOBALS['login_grace_period']);
 			return $response;
@@ -6849,7 +6849,7 @@ EOD;
 		 * @param string $tag An HTML tag name. Example: 'video'.
 		 * @return string Tag RegEx.
 		 */
-		function get_tag_regex($tag)
+		static function get_tag_regex($tag)
 		{
 			if (empty($tag)) {
 				return '';
@@ -6869,7 +6869,7 @@ EOD;
 		 * @param string $charset A charset name.
 		 * @return string The canonical form of the charset.
 		 */
-		function _canonical_charset($charset)
+		static function _canonical_charset($charset)
 		{
 			if ('utf-8' === strtolower($charset) || 'utf8' === strtolower($charset)) {
 
@@ -6892,7 +6892,7 @@ EOD;
 		 * strlen() and similar functions respect the utf8 characters, causing binary data
 		 * to return incorrect lengths.
 		 *
-		 * This function overrides the mbstring encoding to a binary-safe encoding, and
+		 * This static function overrides the mbstring encoding to a binary-safe encoding, and
 		 * resets it to the users expected encoding afterwards through the
 		 * `reset_mbstring_encoding` function.
 		 *
@@ -6907,7 +6907,7 @@ EOD;
 		 * @param bool $reset Optional. Whether to reset the encoding back to a previously-set encoding.
 		 *                    Default false.
 		 */
-		function mbstring_binary_safe_encoding($reset = false)
+		static function mbstring_binary_safe_encoding($reset = false)
 		{
 			static $encodings  = array();
 			static $overloaded = null;
@@ -6939,7 +6939,7 @@ EOD;
 		 *
 		 * @since 3.7.0
 		 */
-		function reset_mbstring_encoding()
+		static function reset_mbstring_encoding()
 		{
 			mbstring_binary_safe_encoding(true);
 		}
@@ -6954,7 +6954,7 @@ EOD;
 		 * @param mixed $var Boolean value to validate.
 		 * @return bool Whether the value is validated.
 		 */
-		function wp_validate_boolean($var)
+		static function wp_validate_boolean($var)
 		{
 			if (is_bool($var)) {
 				return $var;
@@ -6974,7 +6974,7 @@ EOD;
 		 *
 		 * @param string $file The path to the file to delete.
 		 */
-		function wp_delete_file($file)
+		static function wp_delete_file($file)
 		{
 			/**
 			 * Filters the path of the file to delete.
@@ -6998,7 +6998,7 @@ EOD;
 		 * @param string $directory Absolute path to a directory.
 		 * @return bool True on success, false on failure.
 		 */
-		function wp_delete_file_from_directory($file, $directory)
+		static function wp_delete_file_from_directory($file, $directory)
 		{
 			if (wp_is_stream($file)) {
 				$real_file      = $file;
@@ -7034,7 +7034,7 @@ EOD;
 		 *
 		 * @global WP_Post $post Global post object.
 		 */
-		function wp_post_preview_js()
+		static function wp_post_preview_js()
 		{
 			global $post;
 
@@ -7070,7 +7070,7 @@ EOD;
 		 * Explicitly strips timezones, as datetimes are not saved with any timezone
 		 * information. Including any information on the offset could be misleading.
 		 *
-		 * Despite historical function name, the output does not conform to RFC3339 format,
+		 * Despite historical static function name, the output does not conform to RFC3339 format,
 		 * which must contain timezone.
 		 *
 		 * @since 4.4.0
@@ -7078,7 +7078,7 @@ EOD;
 		 * @param string $date_string Date string to parse and format.
 		 * @return string Date formatted for ISO8601 without time zone.
 		 */
-		function mysql_to_rfc3339($date_string)
+		static function mysql_to_rfc3339($date_string)
 		{
 			return mysql2date('Y-m-d\TH:i:s', $date_string, false);
 		}
@@ -7090,13 +7090,13 @@ EOD;
 		 *
 		 * @since 4.6.0
 		 *
-		 * @param string $context Optional. Context in which the function is called. Accepts either 'admin',
+		 * @param string $context Optional. Context in which the static function is called. Accepts either 'admin',
 		 *                        'image', or an arbitrary other context. If an arbitrary context is passed,
 		 *                        the similarly arbitrary {@see '$context_memory_limit'} filter will be
 		 *                        invoked. Default 'admin'.
 		 * @return bool|int|string The limit that was set or false on failure.
 		 */
-		function wp_raise_memory_limit($context = 'admin')
+		static function wp_raise_memory_limit($context = 'admin')
 		{
 			// Exit early if the limit cannot be changed.
 			if (false === wp_is_ini_value_changeable('memory_limit')) {
@@ -7198,7 +7198,7 @@ EOD;
 		 *
 		 * @return string UUID.
 		 */
-		function wp_generate_uuid4()
+		static function wp_generate_uuid4()
 		{
 			return sprintf(
 				'%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
@@ -7223,7 +7223,7 @@ EOD;
 		 *                       to accept any UUID version. Otherwise, only version allowed is `4`.
 		 * @return bool The string is a valid UUID or false on failure.
 		 */
-		function wp_is_uuid($uuid, $version = null)
+		static function wp_is_uuid($uuid, $version = null)
 		{
 
 			if (!is_string($uuid)) {
@@ -7256,7 +7256,7 @@ EOD;
 		 * @param string $prefix Prefix for the returned ID.
 		 * @return string Unique ID.
 		 */
-		function wp_unique_id($prefix = '')
+		static function wp_unique_id($prefix = '')
 		{
 			static $id_counter = 0;
 			return $prefix . (string) ++$id_counter;
@@ -7270,7 +7270,7 @@ EOD;
 		 * @param string $group Where the cache contents are grouped.
 		 * @return string UNIX timestamp with microseconds representing when the group was last changed.
 		 */
-		function wp_cache_get_last_changed($group)
+		static function wp_cache_get_last_changed($group)
 		{
 			$last_changed = wp_cache_get('last_changed', $group);
 
@@ -7291,7 +7291,7 @@ EOD;
 		 * @param string $new_email   The new site admin email address.
 		 * @param string $option_name The relevant database option name.
 		 */
-		function wp_site_admin_email_change_notification($old_email, $new_email, $option_name)
+		static function wp_site_admin_email_change_notification($old_email, $new_email, $option_name)
 		{
 			$send = true;
 
@@ -7390,7 +7390,7 @@ All at ###SITENAME###
 		 *                              to anonymize it are not present. Default false, return `::` (unspecified address).
 		 * @return string  The anonymized IP address.
 		 */
-		function wp_privacy_anonymize_ip($ip_addr, $ipv6_fallback = false)
+		static function wp_privacy_anonymize_ip($ip_addr, $ipv6_fallback = false)
 		{
 			// Detect what kind of IP address this is.
 			$ip_prefix = '';
@@ -7460,7 +7460,7 @@ All at ###SITENAME###
 		 * @param string $data Optional The data to be anonymized.
 		 * @return string The anonymous data for the requested type.
 		 */
-		function wp_privacy_anonymize_data($type, $data = '')
+		static function wp_privacy_anonymize_data($type, $data = '')
 		{
 
 			switch ($type) {
@@ -7510,7 +7510,7 @@ All at ###SITENAME###
 		 *
 		 * @return string Exports directory.
 		 */
-		function wp_privacy_exports_dir()
+		static function wp_privacy_exports_dir()
 		{
 			$upload_dir  = wp_upload_dir();
 			$exports_dir = trailingslashit($upload_dir['basedir']) . 'wp-personal-data-exports/';
@@ -7536,7 +7536,7 @@ All at ###SITENAME###
 		 *
 		 * @return string Exports directory URL.
 		 */
-		function wp_privacy_exports_url()
+		static function wp_privacy_exports_url()
 		{
 			$upload_dir  = wp_upload_dir();
 			$exports_url = trailingslashit($upload_dir['baseurl']) . 'wp-personal-data-exports/';
@@ -7558,7 +7558,7 @@ All at ###SITENAME###
 		 *
 		 * @since 4.9.6
 		 */
-		function wp_schedule_delete_old_privacy_export_files()
+		static function wp_schedule_delete_old_privacy_export_files()
 		{
 			if (wp_installing()) {
 				return;
@@ -7580,7 +7580,7 @@ All at ###SITENAME###
 		 *
 		 * @since 4.9.6
 		 */
-		function wp_privacy_delete_old_export_files()
+		static function wp_privacy_delete_old_export_files()
 		{
 			$exports_dir = wp_privacy_exports_dir();
 			if (!is_dir($exports_dir)) {
@@ -7623,7 +7623,7 @@ All at ###SITENAME###
 		 *
 		 * @return string URL to learn more about updating PHP.
 		 */
-		function wp_get_update_php_url()
+		static function wp_get_update_php_url()
 		{
 			$default_url = wp_get_default_update_php_url();
 
@@ -7654,8 +7654,8 @@ All at ###SITENAME###
 		/**
 		 * Gets the default URL to learn more about updating the PHP version the site is running on.
 		 *
-		 * Do not use this function to retrieve this URL. Instead, use {@see wp_get_update_php_url()} when relying on the URL.
-		 * This function does not allow modifying the returned URL, and is only used to compare the actually used URL with the
+		 * Do not use this static function to retrieve this URL. Instead, use {@see wp_get_update_php_url()} when relying on the URL.
+		 * This static function does not allow modifying the returned URL, and is only used to compare the actually used URL with the
 		 * default one.
 		 *
 		 * @since 5.1.0
@@ -7663,7 +7663,7 @@ All at ###SITENAME###
 		 *
 		 * @return string Default URL to learn more about updating PHP.
 		 */
-		function wp_get_default_update_php_url()
+		static function wp_get_default_update_php_url()
 		{
 			return _x('https://wordpress.org/support/update-php/', 'localized PHP upgrade information page');
 		}
@@ -7671,7 +7671,7 @@ All at ###SITENAME###
 		/**
 		 * Prints the default annotation for the web host altering the "Update PHP" page URL.
 		 *
-		 * This function is to be used after {@see wp_get_update_php_url()} to display a consistent
+		 * This static function is to be used after {@see wp_get_update_php_url()} to display a consistent
 		 * annotation if the web host has altered the default "Update PHP" page URL.
 		 *
 		 * @since 5.1.0
@@ -7680,7 +7680,7 @@ All at ###SITENAME###
 		 * @param string $before Markup to output before the annotation. Default `<p class="description">`.
 		 * @param string $after  Markup to output after the annotation. Default `</p>`.
 		 */
-		function wp_update_php_annotation($before = '<p class="description">', $after = '</p>')
+		static function wp_update_php_annotation($before = '<p class="description">', $after = '</p>')
 		{
 			$annotation = wp_get_update_php_annotation();
 
@@ -7692,14 +7692,14 @@ All at ###SITENAME###
 		/**
 		 * Returns the default annotation for the web hosting altering the "Update PHP" page URL.
 		 *
-		 * This function is to be used after {@see wp_get_update_php_url()} to return a consistent
+		 * This static function is to be used after {@see wp_get_update_php_url()} to return a consistent
 		 * annotation if the web host has altered the default "Update PHP" page URL.
 		 *
 		 * @since 5.2.0
 		 *
 		 * @return string Update PHP page annotation. An empty string if no custom URLs are provided.
 		 */
-		function wp_get_update_php_annotation()
+		static function wp_get_update_php_annotation()
 		{
 			$update_url  = wp_get_update_php_url();
 			$default_url = wp_get_default_update_php_url();
@@ -7728,7 +7728,7 @@ All at ###SITENAME###
 		 *
 		 * @return string URL for directly updating PHP or empty string.
 		 */
-		function wp_get_direct_php_update_url()
+		static function wp_get_direct_php_update_url()
 		{
 			$direct_update_url = '';
 
@@ -7757,7 +7757,7 @@ All at ###SITENAME###
 		 *
 		 * @since 5.1.1
 		 */
-		function wp_direct_php_update_button()
+		static function wp_direct_php_update_button()
 		{
 			$direct_update_url = wp_get_direct_php_update_url();
 
@@ -7779,7 +7779,7 @@ All at ###SITENAME###
 		/**
 		 * Get the size of a directory.
 		 *
-		 * A helper function that is used primarily to check whether
+		 * A helper static function that is used primarily to check whether
 		 * a blog has exceeded its allowed upload space.
 		 *
 		 * @since MU (3.0.0)
@@ -7790,7 +7790,7 @@ All at ###SITENAME###
 		 *                                   The timeout is global and is measured from the moment WordPress started to load.
 		 * @return int|false|null Size in bytes if a valid directory. False if not. Null if timeout.
 		 */
-		function get_dirsize($directory, $max_execution_time = null)
+		static function get_dirsize($directory, $max_execution_time = null)
 		{
 
 			// Exclude individual site directories from the total when checking the main site of a network,
@@ -7823,7 +7823,7 @@ All at ###SITENAME###
 		 *
 		 * @return int|false|null Size in bytes if a valid directory. False if not. Null if timeout.
 		 */
-		function recurse_dirsize($directory, $exclude = null, $max_execution_time = null, &$directory_cache = null)
+		static function recurse_dirsize($directory, $exclude = null, $max_execution_time = null, &$directory_cache = null)
 		{
 			$directory  = untrailingslashit($directory);
 			$save_cache = false;
@@ -7922,7 +7922,7 @@ All at ###SITENAME###
 		 *
 		 * @param string $path Full path of a directory or file.
 		 */
-		function clean_dirsize_cache($path)
+		static function clean_dirsize_cache($path)
 		{
 			$directory_cache = get_transient('dirsize_cache');
 
@@ -7949,7 +7949,7 @@ All at ###SITENAME###
 		 * @param string $required Minimum required WordPress version.
 		 * @return bool True if required version is compatible or empty, false if not.
 		 */
-		function is_wp_version_compatible($required)
+		static function is_wp_version_compatible($required)
 		{
 			return empty($required) || version_compare(get_bloginfo('version'), $required, '>=');
 		}
@@ -7962,7 +7962,7 @@ All at ###SITENAME###
 		 * @param string $required Minimum required PHP version.
 		 * @return bool True if required version is compatible or empty, false if not.
 		 */
-		function is_php_version_compatible($required)
+		static function is_php_version_compatible($required)
 		{
 			return empty($required) || version_compare(phpversion(), $required, '>=');
 		}
@@ -7979,7 +7979,7 @@ All at ###SITENAME###
 		 * @param int|float $precision The allowed variation.
 		 * @return bool Whether the numbers match whithin the specified precision.
 		 */
-		function wp_fuzzy_number_match($expected, $actual, $precision = 1)
+		static function wp_fuzzy_number_match($expected, $actual, $precision = 1)
 		{
 			return abs((float) $expected - (float) $actual) <= $precision;
 		}

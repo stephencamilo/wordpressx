@@ -5,7 +5,7 @@ class WPLoad
 {
 	const ABSPATH =  __DIR__ . '/../';
 
-	function __construct()
+	static function __constructStatic()
 	{
 		error_reporting(E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR);
 
@@ -15,18 +15,14 @@ class WPLoad
 			require_once dirname(self::ABSPATH) . '/wp-config.php';
 		} else {
 			define('WPINC', 'wp-includes');
-			$Load = new \Core\WPIncludes\Load;
-			$Load->wp_fix_server_vars();
-			$Functions = new \Core\WPIncludes\Functions;
-			$path = $Functions->wp_guess_url() . '/wp-admin/setup-config.php';
-			if (false === strpos($_SERVER['REQUEST_URI'], 'setup-config')) {
+			WPIncludes\Load::wp_fix_server_vars();
+			$path = WPIncludes\Functions::wp_guess_url() . '/wp-admin/setup-config';
+			if (false === strpos($_SERVER['REQUEST_URI'], 'wp-admin/setup-config')) {
 				header('Location: ' . $path);
 				exit;
 			}
 
 			define('WP_CONTENT_DIR', self::ABSPATH . 'wp-content');
-
-			require_once self::ABSPATH . WPINC . '/version.php';
 
 			wp_check_php_mysql_versions();
 

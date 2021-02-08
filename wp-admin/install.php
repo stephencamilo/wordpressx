@@ -1,4 +1,12 @@
 <?php
+/**
+ * WordPress Installer
+ *
+ * @package WordPress
+ * @subpackage Administration
+ */
+
+// Sanity check.
 if ( false ) {
 	?>
 <!DOCTYPE html>
@@ -16,21 +24,37 @@ if ( false ) {
 	<?php
 }
 
-
+/**
+ * We are installing WordPress.
+ *
+ * @since 1.5.1
+ * @var bool
+ */
 define( 'WP_INSTALLING', true );
 
+/** Load WordPress Bootstrap */
 require_once dirname( __DIR__ ) . '/wp-load.php';
 
+/** Load WordPress Administration Upgrade API */
 require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-require_once ABSPATH . 'wp-admin/includes/TranslationInstall.php';
-$TranslationInstall = new TranslationInstall;
+/** Load WordPress Translation Install API */
+require_once ABSPATH . 'wp-admin/includes/translation-install.php';
+
+/** Load wpdb */
 require_once ABSPATH . WPINC . '/wp-db.php';
 
 nocache_headers();
 
 $step = isset( $_GET['step'] ) ? (int) $_GET['step'] : 0;
 
+/**
+ * Display installation header.
+ *
+ * @since 2.5.0
+ *
+ * @param string $body_classes
+ */
 function display_header( $body_classes = '' ) {
 	header( 'Content-Type: text/html; charset=utf-8' );
 	if ( is_rtl() ) {
@@ -303,13 +327,13 @@ $scripts_to_print = array( 'jquery' );
 
 switch ( $step ) {
 	case 0: // Step 0.
-		if ( $TranslationInstall->wp_can_install_language_pack() && empty( $language ) ) {
-			$languages = $TranslationInstall->wp_get_available_translations();
+		if ( wp_can_install_language_pack() && empty( $language ) ) {
+			$languages = wp_get_available_translations();
 			if ( $languages ) {
 				$scripts_to_print[] = 'language-chooser';
 				display_header( 'language-chooser' );
 				echo '<form id="setup" method="post" action="?step=1">';
-				$TranslationInstall->wp_install_language_form( $languages );
+				wp_install_language_form( $languages );
 				echo '</form>';
 				break;
 			}

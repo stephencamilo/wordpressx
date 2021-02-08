@@ -1,4 +1,4 @@
 <?php
 require_once 'vendor/autoload.php';
 
-$WPBlogHeader = new Core\WPBlogHeader;
+Core\WPBlogHeader::__constructStatic();
