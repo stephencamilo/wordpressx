@@ -1,4 +1,5 @@
 <?php
+namespace Core\WPadmin\Includes;
 /**
  * Class for looking up a site's health based on a user's WordPress environment.
  *
@@ -104,7 +105,7 @@ class WP_Site_Health {
 		}
 
 		if ( 'site-health' === $screen->id && ! isset( $_GET['tab'] ) ) {
-			$tests = WP_Site_Health::get_tests();
+			$tests = \Core\WPadmin\Includes\WP_Site_Health::get_tests();
 
 			// Don't run https test on development environments.
 			if ( $this->is_development_environment() ) {
@@ -2220,19 +2221,19 @@ class WP_Site_Health {
 					'label'             => __( 'Communication with WordPress.org' ),
 					'test'              => rest_url( 'wp-site-health/v1/tests/dotorg-communication' ),
 					'has_rest'          => true,
-					'async_direct_test' => array( WP_Site_Health::get_instance(), 'get_test_dotorg_communication' ),
+					'async_direct_test' => array( \Core\WPadmin\Includes\WP_Site_Health::get_instance(), 'get_test_dotorg_communication' ),
 				),
 				'background_updates'   => array(
 					'label'             => __( 'Background updates' ),
 					'test'              => rest_url( 'wp-site-health/v1/tests/background-updates' ),
 					'has_rest'          => true,
-					'async_direct_test' => array( WP_Site_Health::get_instance(), 'get_test_background_updates' ),
+					'async_direct_test' => array( \Core\WPadmin\Includes\WP_Site_Health::get_instance(), 'get_test_background_updates' ),
 				),
 				'loopback_requests'    => array(
 					'label'             => __( 'Loopback request' ),
 					'test'              => rest_url( 'wp-site-health/v1/tests/loopback-requests' ),
 					'has_rest'          => true,
-					'async_direct_test' => array( WP_Site_Health::get_instance(), 'get_test_loopback_requests' ),
+					'async_direct_test' => array( \Core\WPadmin\Includes\WP_Site_Health::get_instance(), 'get_test_loopback_requests' ),
 				),
 				'authorization_header' => array(
 					'label'     => __( 'Authorization header' ),
@@ -2588,7 +2589,7 @@ class WP_Site_Health {
 		// Bootstrap wp-admin, as WP_Cron doesn't do this for us.
 		require_once trailingslashit( ABSPATH ) . 'wp-admin/includes/admin.php';
 
-		$tests = WP_Site_Health::get_tests();
+		$tests = \Core\WPadmin\Includes\WP_Site_Health::get_tests();
 
 		$results = array();
 

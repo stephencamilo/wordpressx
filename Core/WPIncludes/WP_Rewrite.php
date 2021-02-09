@@ -1,4 +1,5 @@
 <?php
+namespace Core\WPIncludes;
 /**
  * Rewrite API: WP_Rewrite class
  *

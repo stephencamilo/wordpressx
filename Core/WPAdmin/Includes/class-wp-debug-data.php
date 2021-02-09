@@ -701,10 +701,10 @@ class WP_Debug_Data {
 				'value' => ini_get( 'max_execution_time' ),
 			);
 
-			if ( WP_Site_Health::get_instance()->php_memory_limit !== ini_get( 'memory_limit' ) ) {
+			if ( \Core\WPadmin\Includes\WP_Site_Health::get_instance()->php_memory_limit !== ini_get( 'memory_limit' ) ) {
 				$info['wp-server']['fields']['memory_limit']       = array(
 					'label' => __( 'PHP memory limit' ),
-					'value' => WP_Site_Health::get_instance()->php_memory_limit,
+					'value' => \Core\WPadmin\Includes\WP_Site_Health::get_instance()->php_memory_limit,
 				);
 				$info['wp-server']['fields']['admin_memory_limit'] = array(
 					'label' => __( 'PHP memory limit (only for admin screens)' ),

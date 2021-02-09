@@ -1,4 +1,5 @@
 <?php
+namespace Core\WPIncludes;
 /**
  * WordPress Error API.
  *

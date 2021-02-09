@@ -1,4 +1,5 @@
 <?php
+require 'vendor/autoload.php';
 
 define( 'DB_NAME', 'database_name_here' );
 define( 'DB_USER', 'username_here' );
@@ -14,13 +15,8 @@ define( 'AUTH_SALT',        'put your unique phrase here' );
 define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
 define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
 define( 'NONCE_SALT',       'put your unique phrase here' );
+define( 'WP_DEBUG', true );
 
 $table_prefix = 'wp_';
 
-define( 'WP_DEBUG', false );
-
-if ( ! defined( 'ABSPATH' ) ) {
-	define( 'ABSPATH', __DIR__ . '/' );
-}
-
-require_once ABSPATH . 'wp-settings.php';
+\Core\WPSettings::__constructStatic();

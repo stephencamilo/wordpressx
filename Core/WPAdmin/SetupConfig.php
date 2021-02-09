@@ -12,7 +12,7 @@ class SetupConfig
 		if (!defined('ABSPATH')) {
 			define('ABSPATH', dirname(__DIR__) . '/../');
 		}
-		require ABSPATH . 'wp-settings.php';
+		\Core\WPSettings::__constructStatic();
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 		nocache_headers();

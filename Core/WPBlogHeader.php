@@ -11,7 +11,7 @@ class WPBlogHeader
 	{
 		$klein = new \Klein\Klein();
 
-		$klein->respond('GET', '/?', function () {
+		$klein->respond('GET', '/', function () {
 			if (is_null(self::$wp_did_header)) {
 				self::$wp_did_header = true;
 				WPLoad::__constructStatic();

@@ -1,0 +1,11 @@
+{
+    "require": {
+        "schuhwerk/php-error-log-viewer": "^0.9.1",
+        "klein/klein": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\": "Core/"
+        }
+    }
+}

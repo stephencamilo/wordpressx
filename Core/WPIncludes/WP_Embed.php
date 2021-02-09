@@ -1,4 +1,5 @@
 <?php
+namespace Core\WPIncludes;
 /**
  * API for easily embedding rich media such as videos and images into content.
  *

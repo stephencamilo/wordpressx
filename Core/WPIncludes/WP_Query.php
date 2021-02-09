@@ -1,4 +1,5 @@
 <?php
+namespace Core\WPIncludes;
 /**
  * Query API: WP_Query class
  *

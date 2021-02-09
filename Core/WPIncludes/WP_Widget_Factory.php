@@ -1,4 +1,5 @@
 <?php
+namespace Core\WPIncludes;
 /**
  * Widget API: WP_Widget_Factory class
  *

@@ -1,4 +1,5 @@
 <?php
+namespace Core\WPIncludes;
 /**
  * WordPress environment setup class.
  *
