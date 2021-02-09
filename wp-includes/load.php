@@ -712,7 +712,7 @@ function wp_not_installed() {
 		require ABSPATH . WPINC . '/kses.php';
 		require ABSPATH . WPINC . '/pluggable.php';
 
-		$link = wp_guess_url() . '/wp-admin/install.php';
+		//$link = wp_guess_url() . '/wp-admin/install.php';
 
 		wp_redirect( $link );
 		die();

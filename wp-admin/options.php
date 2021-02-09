@@ -275,7 +275,7 @@ if ( 'update' === $action ) { // We are saving settings sent from a settings pag
 
 		// Handle translation installation.
 		if ( ! empty( $_POST['WPLANG'] ) && current_user_can( 'install_languages' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/TranslationInstall.php';
+			require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 
 			if ( wp_can_install_language_pack() ) {
 				$language = wp_download_language_pack( $_POST['WPLANG'] );
