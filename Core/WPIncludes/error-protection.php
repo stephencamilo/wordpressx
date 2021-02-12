@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Error Protection API: Functions
  *
@@ -11,11 +12,12 @@
  *
  * @return WP_Paused_Extensions_Storage
  */
-function wp_paused_plugins() {
+function wp_paused_plugins()
+{
 	static $storage = null;
 
-	if ( null === $storage ) {
-		$storage = new WP_Paused_Extensions_Storage( 'plugin' );
+	if (null === $storage) {
+		$storage = new WP_Paused_Extensions_Storage('plugin');
 	}
 
 	return $storage;
@@ -26,11 +28,12 @@ function wp_paused_plugins() {
  *
  * @return WP_Paused_Extensions_Storage
  */
-function wp_paused_themes() {
+function wp_paused_themes()
+{
 	static $storage = null;
 
-	if ( null === $storage ) {
-		$storage = new WP_Paused_Extensions_Storage( 'theme' );
+	if (null === $storage) {
+		$storage = new WP_Paused_Extensions_Storage('theme');
 	}
 
 	return $storage;
@@ -44,23 +47,24 @@ function wp_paused_themes() {
  * @param array $error Error details {@see error_get_last()}
  * @return string Formatted error description.
  */
-function wp_get_extension_error_description( $error ) {
-	$constants   = get_defined_constants( true );
-	$constants   = isset( $constants['Core'] ) ? $constants['Core'] : $constants['internal'];
+function wp_get_extension_error_description($error)
+{
+	$constants   = get_defined_constants(true);
+	$constants   = isset($constants['Core']) ? $constants['Core'] : $constants['internal'];
 	$core_errors = array();
 
-	foreach ( $constants as $constant => $value ) {
-		if ( 0 === strpos( $constant, 'E_' ) ) {
-			$core_errors[ $value ] = $constant;
+	foreach ($constants as $constant => $value) {
+		if (0 === strpos($constant, 'E_')) {
+			$core_errors[$value] = $constant;
 		}
 	}
 
-	if ( isset( $core_errors[ $error['type'] ] ) ) {
-		$error['type'] = $core_errors[ $error['type'] ];
+	if (isset($core_errors[$error['type']])) {
+		$error['type'] = $core_errors[$error['type']];
 	}
 
 	/* translators: 1: Error type, 2: Error line number, 3: Error file name, 4: Error message. */
-	$error_message = __( 'An error of type %1$s was caused in line %2$s of the file %3$s. Error message: %4$s' );
+	$error_message = __('An error of type %1$s was caused in line %2$s of the file %3$s. Error message: %4$s');
 
 	return sprintf(
 		$error_message,
@@ -78,21 +82,22 @@ function wp_get_extension_error_description( $error ) {
  *
  * @since 5.2.0
  */
-function wp_register_fatal_error_handler() {
-	if ( ! wp_is_fatal_error_handler_enabled() ) {
+function wp_register_fatal_error_handler()
+{
+	if (!wp_is_fatal_error_handler_enabled()) {
 		return;
 	}
 
 	$handler = null;
-	if ( defined( 'WP_CONTENT_DIR' ) && is_readable( WP_CONTENT_DIR . '/fatal-error-handler.php' ) ) {
+	if (defined('WP_CONTENT_DIR') && is_readable(WP_CONTENT_DIR . '/fatal-error-handler.php')) {
 		$handler = include WP_CONTENT_DIR . '/fatal-error-handler.php';
 	}
 
-	if ( ! is_object( $handler ) || ! is_callable( array( $handler, 'handle' ) ) ) {
+	if (!is_object($handler) || !is_callable(array($handler, 'handle'))) {
 		$handler = new WP_Fatal_Error_Handler();
 	}
 
-	register_shutdown_function( array( $handler, 'handle' ) );
+	register_shutdown_function(array($handler, 'handle'));
 }
 
 /**
@@ -105,8 +110,9 @@ function wp_register_fatal_error_handler() {
  *
  * @return bool True if the fatal error handler is enabled, false otherwise.
  */
-function wp_is_fatal_error_handler_enabled() {
-	$enabled = ! defined( 'WP_DISABLE_FATAL_ERROR_HANDLER' ) || ! WP_DISABLE_FATAL_ERROR_HANDLER;
+function wp_is_fatal_error_handler_enabled()
+{
+	$enabled = !defined('WP_DISABLE_FATAL_ERROR_HANDLER') || !WP_DISABLE_FATAL_ERROR_HANDLER;
 
 	/**
 	 * Filters whether the fatal error handler is enabled.
@@ -136,7 +142,7 @@ function wp_is_fatal_error_handler_enabled() {
 	 *
 	 * @param bool $enabled True if the fatal error handler is enabled, false otherwise.
 	 */
-	return apply_filters( 'wp_fatal_error_handler_enabled', $enabled );
+	return apply_filters('wp_fatal_error_handler_enabled', $enabled);
 }
 
 /**
@@ -146,10 +152,11 @@ function wp_is_fatal_error_handler_enabled() {
  *
  * @return WP_Recovery_Mode
  */
-function wp_recovery_mode() {
+function wp_recovery_mode()
+{
 	static $wp_recovery_mode;
 
-	if ( ! $wp_recovery_mode ) {
+	if (!$wp_recovery_mode) {
 		$wp_recovery_mode = new WP_Recovery_Mode();
 	}
 

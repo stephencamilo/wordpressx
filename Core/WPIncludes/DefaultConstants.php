@@ -4,7 +4,7 @@ namespace Core\WPIncludes;
 
 class DefaultConstants
 {
-	function wp_initial_constants()
+	static function wp_initial_constants()
 	{
 		global $blog_id, $wp_version;
 		define('KB_IN_BYTES', 1024);
@@ -82,7 +82,7 @@ class DefaultConstants
 		define('MONTH_IN_SECONDS', 30 * DAY_IN_SECONDS);
 		define('YEAR_IN_SECONDS', 365 * DAY_IN_SECONDS);
 	}
-	function wp_plugin_directory_constants()
+	static function wp_plugin_directory_constants()
 	{
 		if (!defined('WP_CONTENT_URL')) {
 			define('WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
@@ -106,7 +106,7 @@ class DefaultConstants
 			define('MUPLUGINDIR', 'wp-content/mu-plugins');
 		}
 	}
-	function wp_cookie_constants()
+	static function wp_cookie_constants()
 	{
 		if (!defined('COOKIEHASH')) {
 			$siteurl = get_site_option('siteurl');
@@ -153,7 +153,7 @@ class DefaultConstants
 			define('RECOVERY_MODE_COOKIE', 'wordpress_rec_' . COOKIEHASH);
 		}
 	}
-	function wp_ssl_constants()
+	static function wp_ssl_constants()
 	{
 		if (!defined('FORCE_SSL_ADMIN')) {
 			if ('https' === parse_url(get_option('siteurl'), PHP_URL_SCHEME)) {
@@ -167,7 +167,7 @@ class DefaultConstants
 			force_ssl_admin(true);
 		}
 	}
-	function wp_functionality_constants()
+	static function wp_functionality_constants()
 	{
 		if (!defined('AUTOSAVE_INTERVAL')) {
 			define('AUTOSAVE_INTERVAL', MINUTE_IN_SECONDS);
@@ -182,7 +182,7 @@ class DefaultConstants
 			define('WP_CRON_LOCK_TIMEOUT', MINUTE_IN_SECONDS);
 		}
 	}
-	function wp_templating_constants()
+	static function wp_templating_constants()
 	{
 		define('TEMPLATEPATH', get_template_directory());
 		define('STYLESHEETPATH', get_stylesheet_directory());

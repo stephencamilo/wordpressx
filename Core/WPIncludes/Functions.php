@@ -1760,13 +1760,13 @@ class Functions
 	 * Check cache first. If options table goes away and we have true
 	 * cached, oh well.
 	 */
-		if (wp_cache_get('is_blog_installed')) {
+		if (Cache::wp_cache_get('is_blog_installed')) {
 			return true;
 		}
 
 		$suppress = $wpdb->suppress_errors();
-		if (!wp_installing()) {
-			$alloptions = wp_load_alloptions();
+		if (!Load::wp_installing()) {
+			$alloptions = Option::wp_load_alloptions();
 		}
 		// If siteurl is not set to autoload, check it specifically.
 		if (!isset($alloptions['siteurl'])) {
@@ -4909,7 +4909,7 @@ EOD;
 			}
 
 			// If installing or in the admin, provide the verbose message.
-			if (wp_installing() || defined('WP_ADMIN')) {
+			if (Load::wp_installing() || defined('WP_ADMIN')) {
 				wp_die($wpdb->error);
 			}
 
@@ -7272,7 +7272,7 @@ EOD;
 		 */
 		static function wp_cache_get_last_changed($group)
 		{
-			$last_changed = wp_cache_get('last_changed', $group);
+			$last_changed = Cache::wp_cache_get('last_changed', $group);
 
 			if (!$last_changed) {
 				$last_changed = microtime();
@@ -7560,7 +7560,7 @@ All at ###SITENAME###
 		 */
 		static function wp_schedule_delete_old_privacy_export_files()
 		{
-			if (wp_installing()) {
+			if (Load::wp_installing()) {
 				return;
 			}
 

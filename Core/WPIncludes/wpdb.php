@@ -673,7 +673,7 @@ class wpdb
 		$charset = '';
 		$collate = '';
 
-		if (function_exists('is_multisite') && is_multisite()) {
+		if (function_exists('Load::is_multisite') && Load::is_multisite()) {
 			$charset = 'utf8';
 			if (defined('DB_COLLATE') && DB_COLLATE) {
 				$collate = DB_COLLATE;
@@ -837,7 +837,7 @@ class wpdb
 		 *
 		 * @param array $incompatible_modes An array of incompatible modes.
 		 */
-		$incompatible_modes = (array) apply_filters('incompatible_sql_modes', $this->incompatible_modes);
+		$incompatible_modes = (array) Plugin::apply_filters('incompatible_sql_modes', $this->incompatible_modes);
 
 		foreach ($modes as $i => $mode) {
 			if (in_array($mode, $incompatible_modes, true)) {
@@ -871,7 +871,7 @@ class wpdb
 			return new WP_Error('invalid_db_prefix', 'Invalid database prefix');
 		}
 
-		$old_prefix = is_multisite() ? '' : $prefix;
+		$old_prefix = Load::is_multisite() ? '' : $prefix;
 
 		if (isset($this->base_prefix)) {
 			$old_prefix = $this->base_prefix;
@@ -884,7 +884,7 @@ class wpdb
 				$this->$table = $prefixed_table;
 			}
 
-			if (is_multisite() && empty($this->blogid)) {
+			if (Load::is_multisite() && empty($this->blogid)) {
 				return $old_prefix;
 			}
 
@@ -942,7 +942,7 @@ class wpdb
 	 */
 	public function get_blog_prefix($blog_id = null)
 	{
-		if (is_multisite()) {
+		if (Load::is_multisite()) {
 			if (null === $blog_id) {
 				$blog_id = $this->blogid;
 			}
@@ -993,7 +993,7 @@ class wpdb
 		switch ($scope) {
 			case 'all':
 				$tables = array_merge($this->global_tables, $this->tables);
-				if (is_multisite()) {
+				if (Load::is_multisite()) {
 					$tables = array_merge($tables, $this->ms_global_tables);
 				}
 				break;
@@ -1002,7 +1002,7 @@ class wpdb
 				break;
 			case 'global':
 				$tables = $this->global_tables;
-				if (is_multisite()) {
+				if (Load::is_multisite()) {
 					$tables = array_merge($tables, $this->ms_global_tables);
 				}
 				break;
@@ -1071,27 +1071,27 @@ class wpdb
 			if (!did_action('template_redirect')) {
 				wp_load_translations_early();
 
-				$message = '<h1>' . __('Can&#8217;t select database') . "</h1>\n";
+				$message = '<h1>' . L10n::__('Can&#8217;t select database') . "</h1>\n";
 
 				$message .= '<p>' . sprintf(
 					/* translators: %s: Database name. */
-					__('We were able to connect to the database server (which means your username and password is okay) but not able to select the %s database.'),
+					L10n::__('We were able to connect to the database server (which means your username and password is okay) but not able to select the %s database.'),
 					'<code>' . htmlspecialchars($db, ENT_QUOTES) . '</code>'
 				) . "</p>\n";
 
 				$message .= "<ul>\n";
-				$message .= '<li>' . __('Are you sure it exists?') . "</li>\n";
+				$message .= '<li>' . L10n::__('Are you sure it exists?') . "</li>\n";
 
 				$message .= '<li>' . sprintf(
 					/* translators: 1: Database user, 2: Database name. */
-					__('Does the user %1$s have permission to use the %2$s database?'),
+					L10n::__('Does the user %1$s have permission to use the %2$s database?'),
 					'<code>' . htmlspecialchars($this->dbuser, ENT_QUOTES) . '</code>',
 					'<code>' . htmlspecialchars($db, ENT_QUOTES) . '</code>'
 				) . "</li>\n";
 
 				$message .= '<li>' . sprintf(
 					/* translators: %s: Database name. */
-					__('On some systems the name of your database is prefixed with your username, so it would be like <code>username_%1$s</code>. Could that be the problem?'),
+					L10n::__('On some systems the name of your database is prefixed with your username, so it would be like <code>username_%1$s</code>. Could that be the problem?'),
 					htmlspecialchars($db, ENT_QUOTES)
 				) . "</li>\n";
 
@@ -1099,8 +1099,8 @@ class wpdb
 
 				$message .= '<p>' . sprintf(
 					/* translators: %s: Support forums URL. */
-					__('If you don&#8217;t know how to set up a database you should <strong>contact your host</strong>. If all else fails you may find help at the <a href="%s">WordPress Support Forums</a>.'),
-					__('https://wordpress.org/support/forums/')
+					L10n::__('If you don&#8217;t know how to set up a database you should <strong>contact your host</strong>. If all else fails you may find help at the <a href="%s">WordPress Support Forums</a>.'),
+					L10n::__('https://wordpress.org/support/forums/')
 				) . "</p>\n";
 
 				$this->bail($message, 'db_select_fail');
@@ -1156,7 +1156,7 @@ class wpdb
 			$class = get_class($this);
 			if (function_exists('__')) {
 				/* translators: %s: Database access abstraction class, usually wpdb or a class extending wpdb. */
-				_doing_it_wrong($class, sprintf(__('%s must set a database connection for use with escaping.'), $class), '3.6.0');
+				_doing_it_wrong($class, sprintf(L10n::__('%s must set a database connection for use with escaping.'), $class), '3.6.0');
 			} else {
 				_doing_it_wrong($class, sprintf('%s must set a database connection for use with escaping.', $class), '3.6.0');
 			}
@@ -1298,7 +1298,7 @@ class wpdb
 				'wpdb::prepare',
 				sprintf(
 					/* translators: %s: wpdb::prepare() */
-					__('The query argument of %s must have a placeholder.'),
+					L10n::__('The query argument of %s must have a placeholder.'),
 					'wpdb::prepare()'
 				),
 				'3.9.0'
@@ -1319,7 +1319,7 @@ class wpdb
 					'wpdb::prepare',
 					sprintf(
 						/* translators: %s: Value type. */
-						__('Unsupported value type (%s).'),
+						L10n::__('Unsupported value type (%s).'),
 						gettype($arg)
 					),
 					'4.8.2'
@@ -1364,7 +1364,7 @@ class wpdb
 				wp_load_translations_early();
 				_doing_it_wrong(
 					'wpdb::prepare',
-					__('The query only expected one placeholder, but an array of multiple placeholders was sent.'),
+					L10n::__('The query only expected one placeholder, but an array of multiple placeholders was sent.'),
 					'4.9.0'
 				);
 
@@ -1379,7 +1379,7 @@ class wpdb
 					'wpdb::prepare',
 					sprintf(
 						/* translators: 1: Number of placeholders, 2: Number of arguments passed. */
-						__('The query does not contain the correct number of placeholders (%1$d) for the number of arguments passed (%2$d).'),
+						L10n::__('The query does not contain the correct number of placeholders (%1$d) for the number of arguments passed (%2$d).'),
 						$placeholders,
 						$args_count
 					),
@@ -1469,10 +1469,10 @@ class wpdb
 		$caller = $this->get_caller();
 		if ($caller) {
 			/* translators: 1: Database error message, 2: SQL query, 3: Name of the calling function. */
-			$error_str = sprintf(__('WordPress database error %1$s for query %2$s made by %3$s'), $str, $this->last_query, $caller);
+			$error_str = sprintf(L10n::__('WordPress database error %1$s for query %2$s made by %3$s'), $str, $this->last_query, $caller);
 		} else {
 			/* translators: 1: Database error message, 2: SQL query. */
-			$error_str = sprintf(__('WordPress database error %1$s for query %2$s'), $str, $this->last_query);
+			$error_str = sprintf(L10n::__('WordPress database error %1$s for query %2$s'), $str, $this->last_query);
 		}
 
 		error_log($error_str);
@@ -1483,10 +1483,10 @@ class wpdb
 		}
 
 		// If there is an error then take note of it.
-		if (is_multisite()) {
+		if (Load::is_multisite()) {
 			$msg = sprintf(
 				"%s [%s]\n%s\n",
-				__('WordPress database error:'),
+				L10n::__('WordPress database error:'),
 				$str,
 				$this->last_query
 			);
@@ -1503,7 +1503,7 @@ class wpdb
 
 			printf(
 				'<div id="error"><p class="wpdberror"><strong>%s</strong> [%s]<br /><code>%s</code></p></div>',
-				__('WordPress database error:'),
+				L10n::__('WordPress database error:'),
 				$str,
 				$query
 			);
@@ -1692,25 +1692,25 @@ class wpdb
 				die();
 			}
 
-			$message = '<h1>' . __('Error establishing a database connection') . "</h1>\n";
+			$message = '<h1>' . L10n::__('Error establishing a database connection') . "</h1>\n";
 
 			$message .= '<p>' . sprintf(
 				/* translators: 1: wp-config.php, 2: Database host. */
-				__('This either means that the username and password information in your %1$s file is incorrect or we can&#8217;t contact the database server at %2$s. This could mean your host&#8217;s database server is down.'),
+				L10n::__('This either means that the username and password information in your %1$s file is incorrect or we can&#8217;t contact the database server at %2$s. This could mean your host&#8217;s database server is down.'),
 				'<code>wp-config.php</code>',
 				'<code>' . htmlspecialchars($this->dbhost, ENT_QUOTES) . '</code>'
 			) . "</p>\n";
 
 			$message .= "<ul>\n";
-			$message .= '<li>' . __('Are you sure you have the correct username and password?') . "</li>\n";
-			$message .= '<li>' . __('Are you sure you have typed the correct hostname?') . "</li>\n";
-			$message .= '<li>' . __('Are you sure the database server is running?') . "</li>\n";
+			$message .= '<li>' . L10n::__('Are you sure you have the correct username and password?') . "</li>\n";
+			$message .= '<li>' . L10n::__('Are you sure you have typed the correct hostname?') . "</li>\n";
+			$message .= '<li>' . L10n::__('Are you sure the database server is running?') . "</li>\n";
 			$message .= "</ul>\n";
 
 			$message .= '<p>' . sprintf(
 				/* translators: %s: Support forums URL. */
-				__('If you&#8217;re unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href="%s">WordPress Support Forums</a>.'),
-				__('https://wordpress.org/support/forums/')
+				L10n::__('If you&#8217;re unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href="%s">WordPress Support Forums</a>.'),
+				L10n::__('https://wordpress.org/support/forums/')
 			) . "</p>\n";
 
 			$this->bail($message, 'db_connect_fail');
@@ -1853,23 +1853,23 @@ class wpdb
 
 		wp_load_translations_early();
 
-		$message = '<h1>' . __('Error reconnecting to the database') . "</h1>\n";
+		$message = '<h1>' . L10n::__('Error reconnecting to the database') . "</h1>\n";
 
 		$message .= '<p>' . sprintf(
 			/* translators: %s: Database host. */
-			__('This means that we lost contact with the database server at %s. This could mean your host&#8217;s database server is down.'),
+			L10n::__('This means that we lost contact with the database server at %s. This could mean your host&#8217;s database server is down.'),
 			'<code>' . htmlspecialchars($this->dbhost, ENT_QUOTES) . '</code>'
 		) . "</p>\n";
 
 		$message .= "<ul>\n";
-		$message .= '<li>' . __('Are you sure the database server is running?') . "</li>\n";
-		$message .= '<li>' . __('Are you sure the database server is not under particularly heavy load?') . "</li>\n";
+		$message .= '<li>' . L10n::__('Are you sure the database server is running?') . "</li>\n";
+		$message .= '<li>' . L10n::__('Are you sure the database server is not under particularly heavy load?') . "</li>\n";
 		$message .= "</ul>\n";
 
 		$message .= '<p>' . sprintf(
 			/* translators: %s: Support forums URL. */
-			__('If you&#8217;re unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href="%s">WordPress Support Forums</a>.'),
-			__('https://wordpress.org/support/forums/')
+			L10n::__('If you&#8217;re unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href="%s">WordPress Support Forums</a>.'),
+			L10n::__('https://wordpress.org/support/forums/')
 		) . "</p>\n";
 
 		// We weren't able to reconnect, so we better bail.
@@ -1910,7 +1910,7 @@ class wpdb
 		 *
 		 * @param string $query Database query.
 		 */
-		$query = apply_filters('query', $query);
+		$query = Plugin::apply_filters('query', $query);
 
 		if (!$query) {
 			$this->insert_id = 0;
@@ -1975,13 +1975,13 @@ class wpdb
 			if ($this->dbh instanceof mysqli) {
 				$this->last_error = mysqli_error($this->dbh);
 			} else {
-				$this->last_error = __('Unable to retrieve the error message from MySQL');
+				$this->last_error = L10n::__('Unable to retrieve the error message from MySQL');
 			}
 		} else {
 			if (is_resource($this->dbh)) {
 				$this->last_error = mysql_error($this->dbh);
 			} else {
-				$this->last_error = __('Unable to retrieve the error message from MySQL');
+				$this->last_error = L10n::__('Unable to retrieve the error message from MySQL');
 			}
 		}
 
@@ -2096,7 +2096,7 @@ class wpdb
 		 * @param string $query_callstack Comma-separated list of the calling functions.
 		 * @param float  $query_start     Unix timestamp of the time at the start of the query.
 		 */
-		$query_data = apply_filters('log_query_custom_data', $query_data, $query, $query_time, $query_callstack, $query_start);
+		$query_data = Plugin::apply_filters('log_query_custom_data', $query_data, $query, $query_time, $query_callstack, $query_start);
 
 		$this->queries[] = array(
 			$query,
@@ -2131,8 +2131,8 @@ class wpdb
 		 * Add the filter to remove the placeholder escaper. Uses priority 0, so that anything
 		 * else attached to this filter will receive the query with the placeholder string removed.
 		 */
-		if (false === has_filter('query', array($this, 'remove_placeholder_escape'))) {
-			add_filter('query', array($this, 'remove_placeholder_escape'), 0);
+		if (false === Plugin::has_filter('query', array($this, 'remove_placeholder_escape'))) {
+			Plugin::add_filter('query', array($this, 'remove_placeholder_escape'), 0);
 		}
 
 		return $placeholder;
@@ -2774,7 +2774,7 @@ class wpdb
 		 * @param string|null $charset The character set to use. Default null.
 		 * @param string      $table   The name of the table being checked.
 		 */
-		$charset = apply_filters('pre_get_table_charset', null, $table);
+		$charset = Plugin::apply_filters('pre_get_table_charset', null, $table);
 		if (null !== $charset) {
 			return $charset;
 		}
@@ -2880,7 +2880,7 @@ class wpdb
 		 * @param string      $table   The name of the table being checked.
 		 * @param string      $column  The name of the column being checked.
 		 */
-		$charset = apply_filters('pre_get_col_charset', null, $table, $column);
+		$charset = Plugin::apply_filters('pre_get_col_charset', null, $table, $column);
 		if (null !== $charset) {
 			return $charset;
 		}
@@ -3585,7 +3585,7 @@ class wpdb
 		// Make sure the server has the required MySQL version.
 		if (version_compare($this->db_version(), $required_mysql_version, '<')) {
 			/* translators: 1: WordPress version number, 2: Minimum required MySQL version number. */
-			return new WP_Error('database_version', sprintf(__('<strong>Error</strong>: WordPress %1$s requires MySQL %2$s or higher'), $wp_version, $required_mysql_version));
+			return new WP_Error('database_version', sprintf(L10n::__('<strong>Error</strong>: WordPress %1$s requires MySQL %2$s or higher'), $wp_version, $required_mysql_version));
 		}
 	}
 
