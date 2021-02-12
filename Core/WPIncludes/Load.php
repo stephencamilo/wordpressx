@@ -266,7 +266,7 @@ class Load
 	static function wp_maintenance()
 	{
 		// Return if maintenance mode is disabled.
-		if (!wp_is_maintenance_mode()) {
+		if (!self::wp_is_maintenance_mode()) {
 			return;
 		}
 
@@ -426,7 +426,7 @@ class Load
 		 *
 		 * @param bool $enable_debug_mode Whether to enable debug mode checks to occur. Default true.
 		 */
-		if (!apply_filters('enable_wp_debug_mode_checks', true)) {
+		if (!Plugin::apply_filters('enable_wp_debug_mode_checks', true)) {
 			return;
 		}
 
@@ -455,7 +455,7 @@ class Load
 			error_reporting(E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR);
 		}
 
-		if (defined('XMLRPC_REQUEST') || defined('REST_REQUEST') || (defined('WP_INSTALLING') && WP_INSTALLING) || wp_doing_ajax() || wp_is_json_request()) {
+		if (defined('XMLRPC_REQUEST') || defined('REST_REQUEST') || (defined('WP_INSTALLING') && WP_INSTALLING) || self::wp_doing_ajax() || self::wp_is_json_request()) {
 			ini_set('display_errors', 0);
 		}
 	}
@@ -591,7 +591,7 @@ class Load
 
 		$prefix = $wpdb->set_prefix($table_prefix);
 
-		if (is_wp_error($prefix)) {
+		if (self::is_wp_error($prefix)) {
 			wp_load_translations_early();
 			wp_die(
 				sprintf(
@@ -605,22 +605,22 @@ class Load
 	}
 
 	/**
-	 * Toggle `$_wp_using_ext_object_cache` on and off without directly
+	 * Toggle `$wp_using_ext_object_cache` on and off without directly
 	 * touching global.
 	 *
 	 * @since 3.7.0
 	 *
-	 * @global bool $_wp_using_ext_object_cache
+	 * @global bool $wp_using_ext_object_cache
 	 *
 	 * @param bool $using Whether external object cache is being used.
 	 * @return bool The current 'using' setting.
 	 */
 	static function wp_using_ext_object_cache($using = null)
 	{
-		global $_wp_using_ext_object_cache;
-		$current_using = $_wp_using_ext_object_cache;
+		global $wp_using_ext_object_cache;
+		$current_using = $wp_using_ext_object_cache;
 		if (null !== $using) {
-			$_wp_using_ext_object_cache = $using;
+			$wp_using_ext_object_cache = $using;
 		}
 		return $current_using;
 	}
@@ -641,60 +641,18 @@ class Load
 		global $wp_filter;
 		static $first_init = true;
 
-		// Only perform the following checks once.
 		if ($first_init) {
-			if (!function_exists('wp_cache_init')) {
-				/*
-			 * This is the normal situation. First-run of this function. No
-			 * caching backend has been loaded.
-			 *
-			 * We try to load a custom caching backend, and then, if it
-			 * results in a wp_cache_init() static function existing, we note
-			 * that an external object cache is being used.
-			 */
-				if (file_exists(WP_CONTENT_DIR . '/object-cache.php')) {
-					require_once WP_CONTENT_DIR . '/object-cache.php';
-					if (function_exists('wp_cache_init')) {
-						wp_using_ext_object_cache(true);
-					}
-
-					// Re-initialize any hooks added manually by object-cache.php.
-					if ($wp_filter) {
-						$wp_filter = WP_Hook::build_preinitialized_hooks($wp_filter);
-					}
-				}
-			} elseif (!wp_using_ext_object_cache() && file_exists(WP_CONTENT_DIR . '/object-cache.php')) {
-				/*
-			 * Sometimes advanced-cache.php can load object-cache.php before
-			 * this static function is run. This breaks the function_exists() check
-			 * above and can result in wp_using_ext_object_cache() returning
-			 * false when actually an external cache is in use.
-			 */
-				wp_using_ext_object_cache(true);
-			}
+			self::wp_using_ext_object_cache(true);
+			$GLOBALS['wp_filter'] = WP_Hook::build_preinitialized_hooks($wp_filter);
 		}
-
-		if (!wp_using_ext_object_cache()) {
-			require_once ABSPATH . WPINC . '/cache.php';
-		}
-
-		require_once ABSPATH . WPINC . '/cache-compat.php';
-
-		/*
-	 * If cache supports reset, reset instead of init if already
-	 * initialized. Reset signals to the cache that global IDs
-	 * have changed and it may need to update keys and cleanup caches.
-	 */
-		if (!$first_init && function_exists('wp_cache_switch_to_blog')) {
+		if (!$first_init) {
 			wp_cache_switch_to_blog(get_current_blog_id());
-		} elseif (function_exists('wp_cache_init')) {
-			wp_cache_init();
+		} else {
+			Cache::wp_cache_init();
 		}
 
-		if (function_exists('wp_cache_add_global_groups')) {
-			wp_cache_add_global_groups(array('users', 'userlogins', 'usermeta', 'user_meta', 'useremail', 'userslugs', 'site-transient', 'site-options', 'blog-lookup', 'blog-details', 'site-details', 'rss', 'global-posts', 'blog-id-cache', 'networks', 'sites', 'blog_meta'));
-			wp_cache_add_non_persistent_groups(array('counts', 'plugins'));
-		}
+		Cache::wp_cache_add_global_groups(array('users', 'userlogins', 'usermeta', 'user_meta', 'useremail', 'userslugs', 'site-transient', 'site-options', 'blog-lookup', 'blog-details', 'site-details', 'rss', 'global-posts', 'blog-id-cache', 'networks', 'sites', 'blog_meta'));
+		Cache::wp_cache_add_non_persistent_groups(array('counts', 'plugins'));
 
 		$first_init = false;
 	}
@@ -709,13 +667,13 @@ class Load
 	 */
 	static function wp_not_installed()
 	{
-		if (is_multisite()) {
-			if (!is_blog_installed() && !wp_installing()) {
+		if (self::is_multisite()) {
+			if (!Functions::is_blog_installed() && !wp_installing()) {
 				nocache_headers();
 
 				wp_die(__('The site you have requested is not installed properly. Please contact the system administrator.'));
 			}
-		} elseif (!is_blog_installed() && !wp_installing()) {
+		} elseif (!Functions::is_blog_installed() && !wp_installing()) {
 			nocache_headers();
 
 			require ABSPATH . WPINC . '/kses.php';
@@ -790,7 +748,7 @@ class Load
 			return $plugins;
 		}
 
-		$network_plugins = is_multisite() ? wp_get_active_network_plugins() : false;
+		$network_plugins = self::is_multisite() ? wp_get_active_network_plugins() : false;
 
 		foreach ($active_plugins as $plugin) {
 			if (
@@ -1150,7 +1108,7 @@ class Load
 	 * Does not check if the user is an administrator; use current_user_can()
 	 * for checking roles and capabilities.
 	 *
-	 * Does not check if the site is a Multisite network; use is_multisite()
+	 * Does not check if the site is a Multisite network; use self::is_multisite()
 	 * for checking if Multisite is enabled.
 	 *
 	 * @since 3.1.0
@@ -1239,7 +1197,7 @@ class Load
 	 */
 	static function get_current_network_id()
 	{
-		if (!is_multisite()) {
+		if (!self::is_multisite()) {
 			return 1;
 		}
 
@@ -1486,7 +1444,7 @@ class Load
 		 *
 		 * @param bool $wp_doing_ajax Whether the current request is a WordPress Ajax request.
 		 */
-		return apply_filters('wp_doing_ajax', defined('DOING_AJAX') && DOING_AJAX);
+		return Plugin::apply_filters('wp_doing_ajax', defined('DOING_AJAX') && DOING_AJAX);
 	}
 
 	/**
@@ -1543,11 +1501,11 @@ class Load
 
 		if ($is_wp_error) {
 			/**
-			 * Fires when `is_wp_error()` is called and its parameter is an instance of `WP_Error`.
+			 * Fires when `self::is_wp_error()` is called and its parameter is an instance of `WP_Error`.
 			 *
 			 * @since 5.6.0
 			 *
-			 * @param WP_Error $thing The error object passed to `is_wp_error()`.
+			 * @param WP_Error $thing The error object passed to `self::is_wp_error()`.
 			 */
 			do_action('is_wp_error_instance', $thing);
 		}
@@ -1637,11 +1595,11 @@ class Load
 	static function wp_is_json_request()
 	{
 
-		if (isset($_SERVER['HTTP_ACCEPT']) && wp_is_json_media_type($_SERVER['HTTP_ACCEPT'])) {
+		if (isset($_SERVER['HTTP_ACCEPT']) && self::wp_is_json_media_type($_SERVER['HTTP_ACCEPT'])) {
 			return true;
 		}
 
-		if (isset($_SERVER['CONTENT_TYPE']) && wp_is_json_media_type($_SERVER['CONTENT_TYPE'])) {
+		if (isset($_SERVER['CONTENT_TYPE']) && self::wp_is_json_media_type($_SERVER['CONTENT_TYPE'])) {
 			return true;
 		}
 

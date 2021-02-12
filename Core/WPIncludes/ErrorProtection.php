@@ -2,7 +2,7 @@
 namespace Core\WPIncludes;
 class ErrorProtection
 {
-	function wp_paused_plugins()
+	static function wp_paused_plugins()
 	{
 		static $storage = null;
 		if (null === $storage) {
@@ -10,7 +10,7 @@ class ErrorProtection
 		}
 		return $storage;
 	}
-	function wp_paused_themes()
+	static function wp_paused_themes()
 	{
 		static $storage = null;
 		if (null === $storage) {
@@ -18,7 +18,7 @@ class ErrorProtection
 		}
 		return $storage;
 	}
-	function wp_get_extension_error_description($error)
+	static function wp_get_extension_error_description($error)
 	{
 		$constants   = get_defined_constants(true);
 		$constants   = isset($constants['Core']) ? $constants['Core'] : $constants['internal'];
@@ -40,7 +40,7 @@ class ErrorProtection
 			"<code>{$error['message']}</code>"
 		);
 	}
-	function wp_register_fatal_error_handler()
+	static function wp_register_fatal_error_handler()
 	{
 		if (!self::wp_is_fatal_error_handler_enabled()) {
 			return;
@@ -54,12 +54,12 @@ class ErrorProtection
 		}
 		register_shutdown_function(array($handler, 'handle'));
 	}
-	function wp_is_fatal_error_handler_enabled()
+	static function wp_is_fatal_error_handler_enabled()
 	{
 		$enabled = !defined('WP_DISABLE_FATAL_ERROR_HANDLER') || !WP_DISABLE_FATAL_ERROR_HANDLER;
 		return Plugin::apply_filters('wp_fatal_error_handler_enabled', $enabled);
 	}
-	function wp_recovery_mode()
+	static function wp_recovery_mode()
 	{
 		static $wp_recovery_mode;
 		if (!$wp_recovery_mode) {

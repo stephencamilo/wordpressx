@@ -1,4 +1,5 @@
 <?php
+namespace Core\WPIncludes;
 /**
  * Object Cache API: WP_Object_Cache class
  *
@@ -77,7 +78,7 @@ class WP_Object_Cache {
 	 * @since 2.0.8
 	 */
 	public function __construct() {
-		$this->multisite   = is_multisite();
+		$this->multisite   = Load::is_multisite();
 		$this->blog_prefix = $this->multisite ? get_current_blog_id() . ':' : '';
 	}
 
