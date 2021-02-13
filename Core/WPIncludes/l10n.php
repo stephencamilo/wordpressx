@@ -1,5 +1,6 @@
 <?php
 namespace Core\WPIncludes;
+
 /**
  * Core Translation API
  *
@@ -43,7 +44,7 @@ class L10n
 			 *
 			 * @param string $locale The locale ID.
 			 */
-			return apply_filters('locale', $locale);
+			return Plugin::apply_filters('locale', $locale);
 		}
 
 		if (isset($wp_local_package)) {
@@ -82,7 +83,7 @@ class L10n
 		}
 
 		/** This filter is documented in wp-includes/l10n.php */
-		return apply_filters('locale', $locale);
+		return Plugin::apply_filters('locale', $locale);
 	}
 
 	/**
@@ -135,7 +136,7 @@ class L10n
 		 *
 		 * @param string|null $locale The locale to return and short-circuit. Default null.
 		 */
-		$determined_locale = apply_filters('pre_determine_locale', null);
+		$determined_locale = Plugin::apply_filters('pre_determine_locale', null);
 
 		if (!empty($determined_locale) && is_string($determined_locale)) {
 			return $determined_locale;
@@ -162,7 +163,7 @@ class L10n
 		 *
 		 * @param string $locale The locale.
 		 */
-		return apply_filters('determine_locale', $determined_locale);
+		return Plugin::apply_filters('determine_locale', $determined_locale);
 	}
 
 	/**
@@ -183,7 +184,7 @@ class L10n
 	function translate($text, $domain = 'default')
 	{
 		$translations = self::get_translations_for_domain($domain);
-		$translation  = $translations->self::translate($text);
+		$translation  = $translations->translate($text);
 
 		/**
 		 * Filters text with its translation.
@@ -194,7 +195,7 @@ class L10n
 		 * @param string $text        Text to translate.
 		 * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
 		 */
-		$translation = apply_filters('gettext', $translation, $text, $domain);
+		$translation = Plugin::apply_filters('gettext', $translation, $text, $domain);
 
 		/**
 		 * Filters text with its translation for a domain.
@@ -207,7 +208,7 @@ class L10n
 		 * @param string $text        Text to translate.
 		 * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
 		 */
-		$translation = apply_filters("gettext_{$domain}", $translation, $text, $domain);
+		$translation = Plugin::apply_filters("gettext_{$domain}", $translation, $text, $domain);
 
 		return $translation;
 	}
@@ -264,7 +265,7 @@ class L10n
 		 * @param string $context     Context information for the translators.
 		 * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
 		 */
-		$translation = apply_filters('gettext_with_context', $translation, $text, $context, $domain);
+		$translation = Plugin::apply_filters('gettext_with_context', $translation, $text, $context, $domain);
 
 		/**
 		 * Filters text with its translation based on context information for a domain.
@@ -278,7 +279,7 @@ class L10n
 		 * @param string $context     Context information for the translators.
 		 * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
 		 */
-		$translation = apply_filters("gettext_with_context_{$domain}", $translation, $text, $context, $domain);
+		$translation = Plugin::apply_filters("gettext_with_context_{$domain}", $translation, $text, $context, $domain);
 
 		return $translation;
 	}
@@ -499,7 +500,7 @@ class L10n
 		 * @param string $number      The number to compare against to use either the singular or plural form.
 		 * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
 		 */
-		$translation = apply_filters('ngettext', $translation, $single, $plural, $number, $domain);
+		$translation = Plugin::apply_filters('ngettext', $translation, $single, $plural, $number, $domain);
 
 		/**
 		 * Filters the singular or plural form of a string for a domain.
@@ -514,7 +515,7 @@ class L10n
 		 * @param string $number      The number to compare against to use either the singular or plural form.
 		 * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
 		 */
-		$translation = apply_filters("ngettext_{$domain}", $translation, $single, $plural, $number, $domain);
+		$translation = Plugin::apply_filters("ngettext_{$domain}", $translation, $single, $plural, $number, $domain);
 
 		return $translation;
 	}
@@ -560,7 +561,7 @@ class L10n
 		 * @param string $context     Context information for the translators.
 		 * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
 		 */
-		$translation = apply_filters('ngettext_with_context', $translation, $single, $plural, $number, $context, $domain);
+		$translation = Plugin::apply_filters('ngettext_with_context', $translation, $single, $plural, $number, $context, $domain);
 
 		/**
 		 * Filters the singular or plural form of a string with gettext context for a domain.
@@ -576,7 +577,7 @@ class L10n
 		 * @param string $context     Context information for the translators.
 		 * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
 		 */
-		$translation = apply_filters("ngettext_with_context_{$domain}", $translation, $single, $plural, $number, $context, $domain);
+		$translation = Plugin::apply_filters("ngettext_with_context_{$domain}", $translation, $single, $plural, $number, $context, $domain);
 
 		return $translation;
 	}
@@ -736,7 +737,7 @@ class L10n
 		 * @param string $domain   Text domain. Unique identifier for retrieving translated strings.
 		 * @param string $mofile   Path to the MO file.
 		 */
-		$plugin_override = apply_filters('override_load_textdomain', false, $domain, $mofile);
+		$plugin_override = Plugin::apply_filters('override_load_textdomain', false, $domain, $mofile);
 
 		if (true === (bool) $plugin_override) {
 			unset($l10n_unloaded[$domain]);
@@ -762,7 +763,7 @@ class L10n
 		 * @param string $mofile Path to the MO file.
 		 * @param string $domain Text domain. Unique identifier for retrieving translated strings.
 		 */
-		$mofile = apply_filters('load_textdomain_mofile', $mofile, $domain);
+		$mofile = Plugin::apply_filters('load_textdomain_mofile', $mofile, $domain);
 
 		if (!is_readable($mofile)) {
 			return false;
@@ -809,7 +810,7 @@ class L10n
 		 * @param bool   $override Whether to override the text domain unloading. Default false.
 		 * @param string $domain   Text domain. Unique identifier for retrieving translated strings.
 		 */
-		$plugin_override = apply_filters('override_unload_textdomain', false, $domain);
+		$plugin_override = Plugin::apply_filters('override_unload_textdomain', false, $domain);
 
 		if ($plugin_override) {
 			$l10n_unloaded[$domain] = true;
@@ -904,7 +905,7 @@ class L10n
 		 * @param string $locale The plugin's current locale.
 		 * @param string $domain Text domain. Unique identifier for retrieving translated strings.
 		 */
-		$locale = apply_filters('plugin_locale', determine_locale(), $domain);
+		$locale = Plugin::apply_filters('plugin_locale', determine_locale(), $domain);
 
 		$mofile = $domain . '-' . $locale . '.mo';
 
@@ -939,7 +940,7 @@ class L10n
 	function load_muplugin_textdomain($domain, $mu_plugin_rel_path = '')
 	{
 		/** This filter is documented in wp-includes/l10n.php */
-		$locale = apply_filters('plugin_locale', determine_locale(), $domain);
+		$locale = Plugin::apply_filters('plugin_locale', determine_locale(), $domain);
 
 		$mofile = $domain . '-' . $locale . '.mo';
 
@@ -979,7 +980,7 @@ class L10n
 		 * @param string $locale The theme's current locale.
 		 * @param string $domain Text domain. Unique identifier for retrieving translated strings.
 		 */
-		$locale = apply_filters('theme_locale', determine_locale(), $domain);
+		$locale = Plugin::apply_filters('theme_locale', determine_locale(), $domain);
 
 		$mofile = $domain . '-' . $locale . '.mo';
 
@@ -1123,7 +1124,7 @@ class L10n
 		 * @param string|false $relative The relative path of the script. False if it could not be determined.
 		 * @param string       $src      The full source URL of the script.
 		 */
-		$relative = apply_filters('load_script_textdomain_relative_path', $relative, $src);
+		$relative = Plugin::apply_filters('load_script_textdomain_relative_path', $relative, $src);
 
 		// If the source is not from WP.
 		if (false === $relative) {
@@ -1178,7 +1179,7 @@ class L10n
 		 * @param string            $handle       Name of the script to register a translation domain to.
 		 * @param string            $domain       The text domain.
 		 */
-		$translations = apply_filters('pre_load_script_translations', null, $file, $handle, $domain);
+		$translations = Plugin::apply_filters('pre_load_script_translations', null, $file, $handle, $domain);
 
 		if (null !== $translations) {
 			return $translations;
@@ -1193,7 +1194,7 @@ class L10n
 		 * @param string       $handle Name of the script to register a translation domain to.
 		 * @param string       $domain The text domain.
 		 */
-		$file = apply_filters('load_script_translation_file', $file, $handle, $domain);
+		$file = Plugin::apply_filters('load_script_translation_file', $file, $handle, $domain);
 
 		if (!$file || !is_readable($file)) {
 			return false;
@@ -1211,7 +1212,7 @@ class L10n
 		 * @param string $handle       Name of the script to register a translation domain to.
 		 * @param string $domain       The text domain.
 		 */
-		return apply_filters('load_script_translations', $translations, $file, $handle, $domain);
+		return Plugin::apply_filters('load_script_translations', $translations, $file, $handle, $domain);
 	}
 
 	/**
@@ -1348,7 +1349,7 @@ class L10n
 
 		static $noop_translations = null;
 		if (null === $noop_translations) {
-			$noop_translations = new NOOP_Translations;
+			$noop_translations = new \Core\WPIncludes\Pomo\NOOP_Translations;
 		}
 
 		return $noop_translations;
@@ -1432,7 +1433,7 @@ class L10n
 		 * @param string[] $languages An array of available language codes.
 		 * @param string   $dir       The directory where the language files were found.
 		 */
-		return apply_filters('get_available_languages', $languages, $dir);
+		return Plugin::apply_filters('get_available_languages', $languages, $dir);
 	}
 
 	/**
