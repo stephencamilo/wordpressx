@@ -305,7 +305,7 @@ class Load
 	{
 		global $upgrading;
 
-		if (!file_exists(ABSPATH . '.maintenance') || wp_installing()) {
+		if (!file_exists(ABSPATH . '.maintenance') || Load::wp_installing()) {
 			return false;
 		}
 
@@ -455,7 +455,7 @@ class Load
 			error_reporting(E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR);
 		}
 
-		if (defined('XMLRPC_REQUEST') || defined('REST_REQUEST') || (defined('WP_INSTALLING') && WP_INSTALLING) || self::wp_doing_ajax() || self::wp_is_json_request()) {
+		if (defined('XMLRPC_REQUEST') || defined('REST_REQUEST') || (defined('Load::WP_INSTALLING') && Load::WP_INSTALLING) || self::wp_doing_ajax() || self::wp_is_json_request()) {
 			ini_set('display_errors', 0);
 		}
 	}
@@ -668,20 +668,14 @@ class Load
 	static function wp_not_installed()
 	{
 		if (self::is_multisite()) {
-			if (!Functions::is_blog_installed() && !wp_installing()) {
-				nocache_headers();
-
+			if (!Functions::is_blog_installed() && !Load::wp_installing()) {
+				Functions::nocache_headers();
 				wp_die(__('The site you have requested is not installed properly. Please contact the system administrator.'));
 			}
-		} elseif (!Functions::is_blog_installed() && !wp_installing()) {
-			nocache_headers();
-
-			require ABSPATH . WPINC . '/kses.php';
-			require ABSPATH . WPINC . '/pluggable.php';
-
-			$link = wp_guess_url() . '/wp-admin/install';
-
-			wp_redirect($link);
+		} elseif (!Functions::is_blog_installed() && !Load::wp_installing()) {
+			Functions::nocache_headers();
+			$link = Functions::wp_guess_url() . '/wp-admin/install';
+			Pluggable::wp_redirect($link);
 			die();
 		}
 	}
@@ -744,7 +738,7 @@ class Load
 			array_unshift($plugins, ABSPATH . 'my-hacks.php');
 		}
 
-		if (empty($active_plugins) || wp_installing()) {
+		if (empty($active_plugins) || Load::wp_installing()) {
 			return $plugins;
 		}
 
@@ -819,7 +813,7 @@ class Load
 
 		$themes = array();
 
-		if (wp_installing() && 'wp-activate.php' !== $pagenow) {
+		if (Load::wp_installing() && 'wp-activate.php' !== $pagenow) {
 			return $themes;
 		}
 
@@ -1313,7 +1307,7 @@ class Load
 	/**
 	 * Check or set whether WordPress is in "installation" mode.
 	 *
-	 * If the `WP_INSTALLING` constant is defined during the bootstrap, `wp_installing()` will default to `true`.
+	 * If the `Load::WP_INSTALLING` constant is defined during the bootstrap, `Load::wp_installing()` will default to `true`.
 	 *
 	 * @since 4.4.0
 	 *
@@ -1326,9 +1320,9 @@ class Load
 	{
 		static $installing = null;
 
-		// Support for the `WP_INSTALLING` constant, defined before WP is loaded.
+		// Support for the `Load::WP_INSTALLING` constant, defined before WP is loaded.
 		if (is_null($installing)) {
-			$installing = defined('WP_INSTALLING') && WP_INSTALLING;
+			$installing = defined('Load::WP_INSTALLING') && Load::WP_INSTALLING;
 		}
 
 		if (!is_null($is_installing)) {
