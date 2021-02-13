@@ -27,6 +27,13 @@ class WPBlogHeader
 			WPAdmin\SetupConfig::__constructStatic();
 		});
 
+		$klein->respond('GET', '/wp-admin/install', function () {
+			WPAdmin\Install::__constructStatic();
+		});
+		$klein->respond('POST', '/wp-admin/install', function () {
+			WPAdmin\Install::__constructStatic();
+		});
+
 		$klein->dispatch();
 	}
 }

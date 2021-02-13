@@ -418,9 +418,9 @@ class Functions
 		global $wp_locale;
 
 		if (isset($wp_locale)) {
-			$formatted = number_format($number, absint($decimals), $wp_locale->number_format['decimal_point'], $wp_locale->number_format['thousands_sep']);
+			$formatted = number_format($number, self::absint($decimals), $wp_locale->number_format['decimal_point'], $wp_locale->number_format['thousands_sep']);
 		} else {
-			$formatted = number_format($number, absint($decimals));
+			$formatted = number_format($number, self::absint($decimals));
 		}
 
 		/**
@@ -1343,7 +1343,7 @@ class Functions
 	{
 		global $wp_header_to_desc;
 
-		$code = absint($code);
+		$code = self::absint($code);
 
 		if (!isset($wp_header_to_desc)) {
 			$wp_header_to_desc = array(
@@ -1435,14 +1435,14 @@ class Functions
 	static function status_header($code, $description = '')
 	{
 		if (!$description) {
-			$description = get_status_header_desc($code);
+			$description = self::get_status_header_desc($code);
 		}
 
 		if (empty($description)) {
 			return;
 		}
 
-		$protocol      = wp_get_server_protocol();
+		$protocol      = Load::wp_get_server_protocol();
 		$status_header = "$protocol $code $description";
 		if (function_exists('apply_filters')) {
 
@@ -1487,7 +1487,7 @@ class Functions
 			 *
 			 * @since 2.8.0
 			 *
-			 * @see wp_get_nocache_headers()
+			 * @see self::wp_get_nocache_headers()
 			 *
 			 * @param array $headers {
 			 *     Header names and field values.
@@ -1511,7 +1511,7 @@ class Functions
 	 *
 	 * @since 2.0.0
 	 *
-	 * @see wp_get_nocache_headers()
+	 * @see self::wp_get_nocache_headers()
 	 */
 	static function nocache_headers()
 	{
@@ -1519,7 +1519,7 @@ class Functions
 			return;
 		}
 
-		$headers = wp_get_nocache_headers();
+		$headers = self::wp_get_nocache_headers();
 
 		unset($headers['Last-Modified']);
 
@@ -1777,7 +1777,7 @@ class Functions
 		$wpdb->suppress_errors($suppress);
 
 		$installed = !empty($installed);
-		wp_cache_set('is_blog_installed', $installed);
+		Cache::wp_cache_set('is_blog_installed', $installed);
 
 		if ($installed) {
 			return true;
@@ -1829,7 +1829,7 @@ class Functions
 
 		$wpdb->suppress_errors($suppress);
 
-		wp_cache_set('is_blog_installed', false);
+		Cache::wp_cache_set('is_blog_installed', false);
 
 		return false;
 	}
@@ -7276,7 +7276,7 @@ EOD;
 
 			if (!$last_changed) {
 				$last_changed = microtime();
-				wp_cache_set('last_changed', $last_changed, $group);
+				Cache::wp_cache_set('last_changed', $last_changed, $group);
 			}
 
 			return $last_changed;

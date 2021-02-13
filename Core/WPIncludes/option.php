@@ -83,7 +83,7 @@ class Option
 		 * @param mixed  $default    The fallback value to return if the option does not exist.
 		 *                           Default false.
 		 */
-		$pre = apply_filters("pre_option_{$option}", false, $option, $default);
+		$pre = Plugin::apply_filters("pre_option_{$option}", false, $option, $default);
 
 		if (false !== $pre) {
 			return $pre;
@@ -115,7 +115,7 @@ class Option
 				 * @param string $option  Option name.
 				 * @param bool   $passed_default Was `get_option()` passed a default value?
 				 */
-				return apply_filters("default_option_{$option}", $default, $option, $passed_default);
+				return Plugin::apply_filters("default_option_{$option}", $default, $option, $passed_default);
 			}
 
 			$alloptions = wp_load_alloptions();
@@ -131,7 +131,7 @@ class Option
 					// Has to be get_row() instead of get_var() because of funkiness with 0, false, null values.
 					if (is_object($row)) {
 						$value = $row->option_value;
-						wp_cache_add($option, $value, 'options');
+						Cache::wp_cache_add($option, $value, 'options');
 					} else { // Option does not exist, so we must cache its non-existence.
 						if (!is_array($notoptions)) {
 							$notoptions = array();
@@ -141,7 +141,7 @@ class Option
 						wp_cache_set('notoptions', $notoptions, 'options');
 
 						/** This filter is documented in wp-includes/option.php */
-						return apply_filters("default_option_{$option}", $default, $option, $passed_default);
+						return Plugin::apply_filters("default_option_{$option}", $default, $option, $passed_default);
 					}
 				}
 			}
@@ -154,7 +154,7 @@ class Option
 				$value = $row->option_value;
 			} else {
 				/** This filter is documented in wp-includes/option.php */
-				return apply_filters("default_option_{$option}", $default, $option, $passed_default);
+				return Plugin::apply_filters("default_option_{$option}", $default, $option, $passed_default);
 			}
 		}
 
@@ -180,7 +180,7 @@ class Option
 		 *                       unserialized prior to being returned.
 		 * @param string $option Option name.
 		 */
-		return apply_filters("option_{$option}", maybe_unserialize($value), $option);
+		return Plugin::apply_filters("option_{$option}", maybe_unserialize($value), $option);
 	}
 
 	/**
@@ -261,9 +261,9 @@ class Option
 				 *
 				 * @param array $alloptions Array with all options.
 				 */
-				$alloptions = apply_filters('pre_cache_alloptions', $alloptions);
+				$alloptions = Plugin::apply_filters('pre_cache_alloptions', $alloptions);
 
-				wp_cache_add('alloptions', $alloptions, 'options');
+				Cache::wp_cache_add('alloptions', $alloptions, 'options');
 			}
 		}
 
@@ -274,7 +274,7 @@ class Option
 		 *
 		 * @param array $alloptions Array with all options.
 		 */
-		return apply_filters('alloptions', $alloptions);
+		return Plugin::apply_filters('alloptions', $alloptions);
 	}
 
 	/**
@@ -390,7 +390,7 @@ class Option
 		 * @param mixed  $old_value The old option value.
 		 * @param string $option    Option name.
 		 */
-		$value = apply_filters("pre_update_option_{$option}", $value, $old_value, $option);
+		$value = Plugin::apply_filters("pre_update_option_{$option}", $value, $old_value, $option);
 
 		/**
 		 * Filters an option before its value is (maybe) serialized and updated.
@@ -401,7 +401,7 @@ class Option
 		 * @param string $option    Name of the option.
 		 * @param mixed  $old_value The old option value.
 		 */
-		$value = apply_filters('pre_update_option', $value, $option, $old_value);
+		$value = Plugin::apply_filters('pre_update_option', $value, $option, $old_value);
 
 		/*
 	 * If the new and old values are the same, no need to update.
@@ -417,7 +417,7 @@ class Option
 		}
 
 		/** This filter is documented in wp-includes/option.php */
-		if (apply_filters("default_option_{$option}", false, $option, false) === $old_value) {
+		if (Plugin::apply_filters("default_option_{$option}", false, $option, false) === $old_value) {
 			// Default setting for new options is 'yes'.
 			if (null === $autoload) {
 				$autoload = 'yes';
@@ -571,7 +571,7 @@ class Option
 
 		if (!is_array($notoptions) || !isset($notoptions[$option])) {
 			/** This filter is documented in wp-includes/option.php */
-			if (apply_filters("default_option_{$option}", false, $option, false) !== get_option($option)) {
+			if (Plugin::apply_filters("default_option_{$option}", false, $option, false) !== get_option($option)) {
 				return false;
 			}
 		}
@@ -795,7 +795,7 @@ class Option
 		 *                              of the transient, and return that value.
 		 * @param string $transient     Transient name.
 		 */
-		$pre = apply_filters("pre_transient_{$transient}", false, $transient);
+		$pre = Plugin::apply_filters("pre_transient_{$transient}", false, $transient);
 
 		if (false !== $pre) {
 			return $pre;
@@ -835,7 +835,7 @@ class Option
 		 * @param mixed  $value     Value of transient.
 		 * @param string $transient Transient name.
 		 */
-		return apply_filters("transient_{$transient}", $value, $transient);
+		return Plugin::apply_filters("transient_{$transient}", $value, $transient);
 	}
 
 	/**
@@ -871,7 +871,7 @@ class Option
 		 * @param int    $expiration Time until expiration in seconds.
 		 * @param string $transient  Transient name.
 		 */
-		$value = apply_filters("pre_set_transient_{$transient}", $value, $expiration, $transient);
+		$value = Plugin::apply_filters("pre_set_transient_{$transient}", $value, $expiration, $transient);
 
 		/**
 		 * Filters the expiration for a transient before its value is set.
@@ -884,7 +884,7 @@ class Option
 		 * @param mixed  $value      New value of transient.
 		 * @param string $transient  Transient name.
 		 */
-		$expiration = apply_filters("expiration_of_transient_{$transient}", $expiration, $value, $transient);
+		$expiration = Plugin::apply_filters("expiration_of_transient_{$transient}", $expiration, $value, $transient);
 
 		if (wp_using_ext_object_cache()) {
 			$result = wp_cache_set($transient, $value, 'transient', $expiration);
@@ -1373,7 +1373,7 @@ class Option
 		 * @param mixed  $default    The fallback value to return if the option does not exist.
 		 *                           Default false.
 		 */
-		$pre = apply_filters("pre_site_option_{$option}", false, $option, $network_id, $default);
+		$pre = Plugin::apply_filters("pre_site_option_{$option}", false, $option, $network_id, $default);
 
 		if (false !== $pre) {
 			return $pre;
@@ -1399,12 +1399,12 @@ class Option
 			 * @param string $option     Option name.
 			 * @param int    $network_id ID of the network.
 			 */
-			return apply_filters("default_site_option_{$option}", $default, $option, $network_id);
+			return Plugin::apply_filters("default_site_option_{$option}", $default, $option, $network_id);
 		}
 
 		if (!is_multisite()) {
 			/** This filter is documented in wp-includes/option.php */
-			$default = apply_filters('default_site_option_' . $option, $default, $option, $network_id);
+			$default = Plugin::apply_filters('default_site_option_' . $option, $default, $option, $network_id);
 			$value   = get_option($option, $default);
 		} else {
 			$cache_key = "$network_id:$option";
@@ -1427,7 +1427,7 @@ class Option
 					wp_cache_set($notoptions_key, $notoptions, 'site-options');
 
 					/** This filter is documented in wp-includes/option.php */
-					$value = apply_filters('default_site_option_' . $option, $default, $option, $network_id);
+					$value = Plugin::apply_filters('default_site_option_' . $option, $default, $option, $network_id);
 				}
 			}
 		}
@@ -1451,7 +1451,7 @@ class Option
 		 * @param string $option     Option name.
 		 * @param int    $network_id ID of the network.
 		 */
-		return apply_filters("site_option_{$option}", $value, $option, $network_id);
+		return Plugin::apply_filters("site_option_{$option}", $value, $option, $network_id);
 	}
 
 	/**
@@ -1501,7 +1501,7 @@ class Option
 		 * @param string $option     Option name.
 		 * @param int    $network_id ID of the network.
 		 */
-		$value = apply_filters("pre_add_site_option_{$option}", $value, $option, $network_id);
+		$value = Plugin::apply_filters("pre_add_site_option_{$option}", $value, $option, $network_id);
 
 		$notoptions_key = "$network_id:notoptions";
 
@@ -1724,7 +1724,7 @@ class Option
 		 * @param string $option     Option name.
 		 * @param int    $network_id ID of the network.
 		 */
-		$value = apply_filters("pre_update_site_option_{$option}", $value, $old_value, $option, $network_id);
+		$value = Plugin::apply_filters("pre_update_site_option_{$option}", $value, $old_value, $option, $network_id);
 
 		/*
 	 * If the new and old values are the same, no need to update.
@@ -1890,7 +1890,7 @@ class Option
 		 *                                   of the transient, and return that value.
 		 * @param string $transient          Transient name.
 		 */
-		$pre = apply_filters("pre_site_transient_{$transient}", false, $transient);
+		$pre = Plugin::apply_filters("pre_site_transient_{$transient}", false, $transient);
 
 		if (false !== $pre) {
 			return $pre;
@@ -1928,7 +1928,7 @@ class Option
 		 * @param mixed  $value     Value of site transient.
 		 * @param string $transient Transient name.
 		 */
-		return apply_filters("site_transient_{$transient}", $value, $transient);
+		return Plugin::apply_filters("site_transient_{$transient}", $value, $transient);
 	}
 
 	/**
@@ -1961,7 +1961,7 @@ class Option
 		 * @param mixed  $value     New value of site transient.
 		 * @param string $transient Transient name.
 		 */
-		$value = apply_filters("pre_set_site_transient_{$transient}", $value, $transient);
+		$value = Plugin::apply_filters("pre_set_site_transient_{$transient}", $value, $transient);
 
 		$expiration = (int) $expiration;
 
@@ -1976,7 +1976,7 @@ class Option
 		 * @param mixed  $value      New value of site transient.
 		 * @param string $transient  Transient name.
 		 */
-		$expiration = apply_filters("expiration_of_site_transient_{$transient}", $expiration, $value, $transient);
+		$expiration = Plugin::apply_filters("expiration_of_site_transient_{$transient}", $expiration, $value, $transient);
 
 		if (wp_using_ext_object_cache()) {
 			$result = wp_cache_set($transient, $value, 'site-transient', $expiration);
@@ -2285,7 +2285,7 @@ class Option
 		 * @param string $option_group Setting group.
 		 * @param string $option_name  Setting name.
 		 */
-		$args = apply_filters('register_setting_args', $args, $defaults, $option_group, $option_name);
+		$args = Plugin::apply_filters('register_setting_args', $args, $defaults, $option_group, $option_name);
 
 		$args = wp_parse_args($args, $defaults);
 
