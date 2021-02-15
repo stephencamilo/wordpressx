@@ -1,9 +1,6 @@
 {
-    "require": {
-        "schuhwerk/php-error-log-viewer": "^0.9.1",
-        "maximebf/debugbar": "^1.16",
-        "klein/klein": "^2.1"
-    },
+    "name": "worpdressx/worpdressx",
+    "description": "worpdressx",
     "autoload": {
         "psr-4": {
             "Core\\": "Core/"
