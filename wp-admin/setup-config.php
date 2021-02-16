@@ -1,20 +1,18 @@
 <?php
 
-namespace Root;
-
-use SetupConfig;
-use Core\WPIncludes\Load;
 
 if (!defined('ABSPATH')) {
 	define('ABSPATH', dirname(__DIR__) . '/');
 }
 require_once ABSPATH . 'vendor/autoload.php';
 
+use Core\WPIncludes\Load;
+use Core\SetupConfig;
+
 define('WP_INSTALLING', true);
 define('WP_SETUP_CONFIG', true);
 error_reporting(-1);
 
-require_once ABSPATH . 'Core/SetupConfig.php';
 require_once ABSPATH . 'Core/wp-settings.php';
 require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 require_once ABSPATH . 'wp-admin/includes/translation-install.php';
