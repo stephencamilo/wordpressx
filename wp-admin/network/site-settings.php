@@ -52,11 +52,10 @@ if ( isset( $_REQUEST['action'] ) && 'update-site' === $_REQUEST['action'] && is
 	/**
 	 * Fires after the site options are updated.
 	 *
-	 * @param int $id The ID of the site being updated.
-	 *
+	 * @since 3.0.0
 	 * @since 4.4.0 Added `$id` parameter.
 	 *
-	 * @since 3.0.0
+	 * @param int $id The ID of the site being updated.
 	 */
 	do_action( 'wpmu_update_blog_options', $id );
 
@@ -90,110 +89,93 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 
 ?>
 
-    <div class="wrap">
-        <h1 id="edit-site"><?php echo $title; ?></h1>
-        <p class="edit-site-actions"><a
-                    href="<?php echo esc_url( get_home_url( $id, '/' ) ); ?>"><?php _e( 'Visit' ); ?></a> | <a
-                    href="<?php echo esc_url( get_admin_url( $id ) ); ?>"><?php _e( 'Dashboard' ); ?></a></p>
+<div class="wrap">
+<h1 id="edit-site"><?php echo $title; ?></h1>
+<p class="edit-site-actions"><a href="<?php echo esc_url( get_home_url( $id, '/' ) ); ?>"><?php _e( 'Visit' ); ?></a> | <a href="<?php echo esc_url( get_admin_url( $id ) ); ?>"><?php _e( 'Dashboard' ); ?></a></p>
 
+<?php
+
+network_edit_site_nav(
+	array(
+		'blog_id'  => $id,
+		'selected' => 'site-settings',
+	)
+);
+
+if ( ! empty( $messages ) ) {
+	foreach ( $messages as $msg ) {
+		echo '<div id="message" class="updated notice is-dismissible"><p>' . $msg . '</p></div>';
+	}
+}
+?>
+<form method="post" action="site-settings.php?action=update-site">
+	<?php wp_nonce_field( 'edit-site' ); ?>
+	<input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>" />
+	<table class="form-table" role="presentation">
 		<?php
-
-		network_edit_site_nav(
-			array(
-				'blog_id'  => $id,
-				'selected' => 'site-settings',
-			)
-		);
-
-		if ( ! empty( $messages ) ) {
-			foreach ( $messages as $msg ) {
-				echo '<div id="message" class="updated notice is-dismissible"><p>' . $msg . '</p></div>';
-			}
-		}
-		?>
-        <form method="post" action="site-settings.php?action=update-site">
-			<?php wp_nonce_field( 'edit-site' ); ?>
-            <input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>"/>
-            <table class="form-table" role="presentation">
-				<?php
-				$blog_prefix = $wpdb->get_blog_prefix( $id );
-				$sql         = "SELECT * FROM {$blog_prefix}options
+		$blog_prefix = $wpdb->get_blog_prefix( $id );
+		$sql         = "SELECT * FROM {$blog_prefix}options
 			WHERE option_name NOT LIKE %s
 			AND option_name NOT LIKE %s";
-				$query       = $wpdb->prepare(
-					$sql,
-					$wpdb->esc_like( '_' ) . '%',
-					'%' . $wpdb->esc_like( 'user_roles' )
-				);
-				$options     = $wpdb->get_results( $query );
+		$query       = $wpdb->prepare(
+			$sql,
+			$wpdb->esc_like( '_' ) . '%',
+			'%' . $wpdb->esc_like( 'user_roles' )
+		);
+		$options     = $wpdb->get_results( $query );
 
-				foreach ( $options as $option ) {
-					if ( 'default_role' === $option->option_name ) {
-						$editblog_default_role = $option->option_value;
-					}
+		foreach ( $options as $option ) {
+			if ( 'default_role' === $option->option_name ) {
+				$editblog_default_role = $option->option_value;
+			}
 
-					$disabled = false;
-					$class    = 'all-options';
+			$disabled = false;
+			$class    = 'all-options';
 
-					if ( is_serialized( $option->option_value ) ) {
-						if ( is_serialized_string( $option->option_value ) ) {
-							$option->option_value = esc_html( maybe_unserialize( $option->option_value ) );
-						} else {
-							$option->option_value = 'SERIALIZED DATA';
-							$disabled             = true;
-							$class                = 'all-options disabled';
-						}
-					}
+			if ( is_serialized( $option->option_value ) ) {
+				if ( is_serialized_string( $option->option_value ) ) {
+					$option->option_value = esc_html( maybe_unserialize( $option->option_value ) );
+				} else {
+					$option->option_value = 'SERIALIZED DATA';
+					$disabled             = true;
+					$class                = 'all-options disabled';
+				}
+			}
 
-					if ( strpos( $option->option_value, "\n" ) !== false ) {
-						?>
-                        <tr class="form-field">
-                            <th scope="row"><label
-                                        for="<?php echo esc_attr( $option->option_name ); ?>"><?php echo ucwords( str_replace( '_', ' ', $option->option_name ) ); ?></label>
-                            </th>
-                            <td><textarea class="<?php echo $class; ?>" rows="5" cols="40"
-                                          name="option[<?php echo esc_attr( $option->option_name ); ?>]"
-                                          id="<?php echo esc_attr( $option->option_name ); ?>"<?php disabled( $disabled ); ?>><?php echo esc_textarea( $option->option_value ); ?></textarea>
-                            </td>
-                        </tr>
-						<?php
-					} else {
-						?>
-                        <tr class="form-field">
-                            <th scope="row"><label
-                                        for="<?php echo esc_attr( $option->option_name ); ?>"><?php echo esc_html( ucwords( str_replace( '_', ' ', $option->option_name ) ) ); ?></label>
-                            </th>
-							<?php if ( $is_main_site && in_array( $option->option_name, array(
-									'siteurl',
-									'home'
-								), true ) ) { ?>
-                                <td><code><?php echo esc_html( $option->option_value ); ?></code></td>
-							<?php } else { ?>
-                                <td><input class="<?php echo $class; ?>"
-                                           name="option[<?php echo esc_attr( $option->option_name ); ?>]" type="text"
-                                           id="<?php echo esc_attr( $option->option_name ); ?>"
-                                           value="<?php echo esc_attr( $option->option_value ); ?>"
-                                           size="40" <?php disabled( $disabled ); ?> /></td>
-							<?php } ?>
-                        </tr>
-						<?php
-					}
-				} // End foreach.
-
-				/**
-				 * Fires at the end of the Edit Site form, before the submit button.
-				 *
-				 * @param int $id Site ID.
-				 *
-				 * @since 3.0.0
-				 *
-				 */
-				do_action( 'wpmueditblogaction', $id );
+			if ( strpos( $option->option_value, "\n" ) !== false ) {
 				?>
-            </table>
-			<?php submit_button(); ?>
-        </form>
+				<tr class="form-field">
+					<th scope="row"><label for="<?php echo esc_attr( $option->option_name ); ?>"><?php echo ucwords( str_replace( '_', ' ', $option->option_name ) ); ?></label></th>
+					<td><textarea class="<?php echo $class; ?>" rows="5" cols="40" name="option[<?php echo esc_attr( $option->option_name ); ?>]" id="<?php echo esc_attr( $option->option_name ); ?>"<?php disabled( $disabled ); ?>><?php echo esc_textarea( $option->option_value ); ?></textarea></td>
+				</tr>
+				<?php
+			} else {
+				?>
+				<tr class="form-field">
+					<th scope="row"><label for="<?php echo esc_attr( $option->option_name ); ?>"><?php echo esc_html( ucwords( str_replace( '_', ' ', $option->option_name ) ) ); ?></label></th>
+					<?php if ( $is_main_site && in_array( $option->option_name, array( 'siteurl', 'home' ), true ) ) { ?>
+					<td><code><?php echo esc_html( $option->option_value ); ?></code></td>
+					<?php } else { ?>
+					<td><input class="<?php echo $class; ?>" name="option[<?php echo esc_attr( $option->option_name ); ?>]" type="text" id="<?php echo esc_attr( $option->option_name ); ?>" value="<?php echo esc_attr( $option->option_value ); ?>" size="40" <?php disabled( $disabled ); ?> /></td>
+					<?php } ?>
+				</tr>
+				<?php
+			}
+		} // End foreach.
 
-    </div>
+		/**
+		 * Fires at the end of the Edit Site form, before the submit button.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param int $id Site ID.
+		 */
+		do_action( 'wpmueditblogaction', $id );
+		?>
+	</table>
+	<?php submit_button(); ?>
+</form>
+
+</div>
 <?php
 require_once ABSPATH . 'wp-admin/admin-footer.php';

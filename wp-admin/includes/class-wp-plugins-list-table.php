@@ -62,7 +62,7 @@ class WP_Plugins_List_Table extends WP_List_Table {
 
 		$this->show_autoupdates = wp_is_auto_update_enabled_for_type( 'plugin' )
 			&& current_user_can( 'update_plugins' )
-			&& ( ! Load::is_multisite() || $this->screen->in_admin( 'network' ) )
+			&& ( ! is_multisite() || $this->screen->in_admin( 'network' ) )
 			&& ! in_array( $status, array( 'mustuse', 'dropins' ), true );
 	}
 
@@ -125,7 +125,7 @@ class WP_Plugins_List_Table extends WP_List_Table {
 
 		$screen = $this->screen;
 
-		if ( ! Load::is_multisite() || ( $screen->in_admin( 'network' ) && current_user_can( 'manage_network_plugins' ) ) ) {
+		if ( ! is_multisite() || ( $screen->in_admin( 'network' ) && current_user_can( 'manage_network_plugins' ) ) ) {
 
 			/**
 			 * Filters whether to display the advanced plugins list table.
@@ -245,7 +245,7 @@ class WP_Plugins_List_Table extends WP_List_Table {
 			}
 
 			// Filter into individual sections.
-			if ( Load::is_multisite() && ! $screen->in_admin( 'network' ) && is_network_only_plugin( $plugin_file ) && ! is_plugin_active( $plugin_file ) ) {
+			if ( is_multisite() && ! $screen->in_admin( 'network' ) && is_network_only_plugin( $plugin_file ) && ! is_plugin_active( $plugin_file ) ) {
 				if ( $show_network_active ) {
 					// On the non-network screen, show inactive network-only plugins if allowed.
 					$plugins['inactive'][ $plugin_file ] = $plugin_data;
@@ -410,7 +410,7 @@ class WP_Plugins_List_Table extends WP_List_Table {
 			printf( __( 'No plugins found for: %s.' ), '<strong>' . $s . '</strong>' );
 
 			// We assume that somebody who can install plugins in multisite is experienced enough to not need this helper link.
-			if ( ! Load::is_multisite() && current_user_can( 'install_plugins' ) ) {
+			if ( ! is_multisite() && current_user_can( 'install_plugins' ) ) {
 				echo ' <a href="' . esc_url( admin_url( 'plugin-install.php?tab=search&s=' . urlencode( $s ) ) ) . '">' . __( 'Search for plugins in the WordPress Plugin Directory.' ) . '</a>';
 			}
 		} elseif ( ! empty( $plugins['all'] ) ) {
@@ -605,7 +605,7 @@ class WP_Plugins_List_Table extends WP_List_Table {
 			$actions['deactivate-selected'] = $this->screen->in_admin( 'network' ) ? __( 'Network Deactivate' ) : __( 'Deactivate' );
 		}
 
-		if ( ! Load::is_multisite() || $this->screen->in_admin( 'network' ) ) {
+		if ( ! is_multisite() || $this->screen->in_admin( 'network' ) ) {
 			if ( current_user_can( 'update_plugins' ) ) {
 				$actions['update-selected'] = __( 'Update' );
 			}
@@ -689,7 +689,7 @@ class WP_Plugins_List_Table extends WP_List_Table {
 	public function display_rows() {
 		global $status;
 
-		if ( Load::is_multisite() && ! $this->screen->in_admin( 'network' ) && in_array( $status, array( 'mustuse', 'dropins' ), true ) ) {
+		if ( is_multisite() && ! $this->screen->in_admin( 'network' ) && in_array( $status, array( 'mustuse', 'dropins' ), true ) ) {
 			return;
 		}
 
@@ -774,8 +774,8 @@ class WP_Plugins_List_Table extends WP_List_Table {
 				$is_active = is_plugin_active_for_network( $plugin_file );
 			} else {
 				$is_active               = is_plugin_active( $plugin_file );
-				$restrict_network_active = ( Load::is_multisite() && is_plugin_active_for_network( $plugin_file ) );
-				$restrict_network_only   = ( Load::is_multisite() && is_network_only_plugin( $plugin_file ) && ! $is_active );
+				$restrict_network_active = ( is_multisite() && is_plugin_active_for_network( $plugin_file ) );
+				$restrict_network_only   = ( is_multisite() && is_network_only_plugin( $plugin_file ) && ! $is_active );
 			}
 
 			if ( $screen->in_admin( 'network' ) ) {
@@ -856,7 +856,7 @@ class WP_Plugins_List_Table extends WP_List_Table {
 						);
 					}
 
-					if ( ! Load::is_multisite() && current_user_can( 'delete_plugins' ) ) {
+					if ( ! is_multisite() && current_user_can( 'delete_plugins' ) ) {
 						$actions['delete'] = sprintf(
 							'<a href="%s" id="delete-%s" class="delete" aria-label="%s">%s</a>',
 							wp_nonce_url( 'plugins.php?action=delete-selected&amp;checked[]=' . urlencode( $plugin_file ) . '&amp;plugin_status=' . $context . '&amp;paged=' . $page . '&amp;s=' . $s, 'bulk-plugins' ),

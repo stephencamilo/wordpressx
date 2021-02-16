@@ -78,7 +78,7 @@ class Plugin_Upgrader_Skin extends WP_Upgrader_Skin {
 	 */
 	public function after() {
 		$this->plugin = $this->upgrader->plugin_info();
-		if ( ! empty( $this->plugin ) && ! Load::is_wp_error( $this->result ) && $this->plugin_active ) {
+		if ( ! empty( $this->plugin ) && ! is_wp_error( $this->result ) && $this->plugin_active ) {
 			// Currently used only when JS is off for a single plugin update?
 			printf(
 				'<iframe title="%s" style="border:0;overflow:hidden" width="100%%" height="170" src="%s"></iframe>',
@@ -102,7 +102,7 @@ class Plugin_Upgrader_Skin extends WP_Upgrader_Skin {
 			),
 		);
 
-		if ( $this->plugin_active || ! $this->result || Load::is_wp_error( $this->result ) || ! current_user_can( 'activate_plugin', $this->plugin ) ) {
+		if ( $this->plugin_active || ! $this->result || is_wp_error( $this->result ) || ! current_user_can( 'activate_plugin', $this->plugin ) ) {
 			unset( $update_actions['activate_plugin'] );
 		}
 

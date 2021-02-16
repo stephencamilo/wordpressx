@@ -275,7 +275,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			$user = wp_authenticate( $username, $password );
 		}
 
-		if ( Load::is_wp_error( $user ) ) {
+		if ( is_wp_error( $user ) ) {
 			$this->error = new IXR_Error( 403, __( 'Incorrect username or password.' ) );
 
 			// Flag that authentication has failed once on this wp_xmlrpc_server instance.
@@ -658,7 +658,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		}
 
 		// If this isn't on WPMU then just use blogger_getUsersBlogs().
-		if ( ! Load::is_multisite() ) {
+		if ( ! is_multisite() ) {
 			array_unshift( $args, 1 );
 			return $this->blogger_getUsersBlogs( $args );
 		}
@@ -696,7 +696,7 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		foreach ( $blogs as $blog ) {
 			// Don't include blogs that aren't hosted at this site.
-			if ( Load::get_current_network_id() != $blog->site_id ) {
+			if ( get_current_network_id() != $blog->site_id ) {
 				continue;
 			}
 
@@ -1592,7 +1592,7 @@ class wp_xmlrpc_server extends IXR_Server {
 
 							// Create the new term.
 							$term_info = wp_insert_term( $term_name, $taxonomy );
-							if ( Load::is_wp_error( $term_info ) ) {
+							if ( is_wp_error( $term_info ) ) {
 								return new IXR_Error( 500, $term_info->get_error_message() );
 							}
 
@@ -1611,7 +1611,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		if ( isset( $post_data['post_format'] ) ) {
 			$format = set_post_format( $post_ID, $post_data['post_format'] );
 
-			if ( Load::is_wp_error( $format ) ) {
+			if ( is_wp_error( $format ) ) {
 				return new IXR_Error( 500, $format->get_error_message() );
 			}
 
@@ -1635,7 +1635,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		$post_data = apply_filters( 'xmlrpc_wp_insert_post_data', $post_data, $content_struct );
 
 		$post_ID = $update ? wp_update_post( $post_data, true ) : wp_insert_post( $post_data, true );
-		if ( Load::is_wp_error( $post_ID ) ) {
+		if ( is_wp_error( $post_ID ) ) {
 			return new IXR_Error( 500, $post_ID->get_error_message() );
 		}
 
@@ -2060,7 +2060,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			$parent_term_id = (int) $content_struct['parent'];
 			$parent_term    = get_term( $parent_term_id, $taxonomy['name'] );
 
-			if ( Load::is_wp_error( $parent_term ) ) {
+			if ( is_wp_error( $parent_term ) ) {
 				return new IXR_Error( 500, $parent_term->get_error_message() );
 			}
 
@@ -2081,7 +2081,7 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		$term = wp_insert_term( $term_data['name'], $taxonomy['name'], $term_data );
 
-		if ( Load::is_wp_error( $term ) ) {
+		if ( is_wp_error( $term ) ) {
 			return new IXR_Error( 500, $term->get_error_message() );
 		}
 
@@ -2150,7 +2150,7 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		$term = get_term( $term_id, $content_struct['taxonomy'] );
 
-		if ( Load::is_wp_error( $term ) ) {
+		if ( is_wp_error( $term ) ) {
 			return new IXR_Error( 500, $term->get_error_message() );
 		}
 
@@ -2178,7 +2178,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			$parent_term_id = (int) $content_struct['parent'];
 			$parent_term    = get_term( $parent_term_id, $taxonomy['name'] );
 
-			if ( Load::is_wp_error( $parent_term ) ) {
+			if ( is_wp_error( $parent_term ) ) {
 				return new IXR_Error( 500, $parent_term->get_error_message() );
 			}
 
@@ -2199,7 +2199,7 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		$term = wp_update_term( $term_id, $taxonomy['name'], $term_data );
 
-		if ( Load::is_wp_error( $term ) ) {
+		if ( is_wp_error( $term ) ) {
 			return new IXR_Error( 500, $term->get_error_message() );
 		}
 
@@ -2260,7 +2260,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		$taxonomy = get_taxonomy( $taxonomy );
 		$term     = get_term( $term_id, $taxonomy->name );
 
-		if ( Load::is_wp_error( $term ) ) {
+		if ( is_wp_error( $term ) ) {
 			return new IXR_Error( 500, $term->get_error_message() );
 		}
 
@@ -2274,7 +2274,7 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		$result = wp_delete_term( $term_id, $taxonomy->name );
 
-		if ( Load::is_wp_error( $result ) ) {
+		if ( is_wp_error( $result ) ) {
 			return new IXR_Error( 500, $term->get_error_message() );
 		}
 
@@ -2340,7 +2340,7 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		$term = get_term( $term_id, $taxonomy->name, ARRAY_A );
 
-		if ( Load::is_wp_error( $term ) ) {
+		if ( is_wp_error( $term ) ) {
 			return new IXR_Error( 500, $term->get_error_message() );
 		}
 
@@ -2437,7 +2437,7 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		$terms = get_terms( $query );
 
-		if ( Load::is_wp_error( $terms ) ) {
+		if ( is_wp_error( $terms ) ) {
 			return new IXR_Error( 500, $terms->get_error_message() );
 		}
 
@@ -2879,7 +2879,7 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		$result = wp_update_user( $user_data );
 
-		if ( Load::is_wp_error( $result ) ) {
+		if ( is_wp_error( $result ) ) {
 			return new IXR_Error( 500, $result->get_error_message() );
 		}
 
@@ -3161,6 +3161,10 @@ class wp_xmlrpc_server extends IXR_Server {
 	/**
 	 * Retrieve page list.
 	 *
+	 * @since 2.2.0
+	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
 	 * @param array $args {
 	 *     Method arguments. Note: arguments must be ordered as documented.
 	 *
@@ -3169,10 +3173,6 @@ class wp_xmlrpc_server extends IXR_Server {
 	 *     @type string $password
 	 * }
 	 * @return array|IXR_Error
-	 *@since 2.2.0
-	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 */
 	public function wp_getPageList( $args ) {
 		global $wpdb;
@@ -3379,7 +3379,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		);
 
 		$cat_id = wp_insert_category( $new_category, true );
-		if ( Load::is_wp_error( $cat_id ) ) {
+		if ( is_wp_error( $cat_id ) ) {
 			if ( 'term_exists' === $cat_id->get_error_code() ) {
 				return (int) $cat_id->get_error_data();
 			} else {
@@ -3790,7 +3790,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		}
 
 		$result = wp_update_comment( $comment, true );
-		if ( Load::is_wp_error( $result ) ) {
+		if ( is_wp_error( $result ) ) {
 			return new IXR_Error( 500, $result->get_error_message() );
 		}
 
@@ -3945,7 +3945,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		do_action( 'xmlrpc_call', 'wp.newComment' );
 
 		$comment_ID = wp_new_comment( $comment, true );
-		if ( Load::is_wp_error( $comment_ID ) ) {
+		if ( is_wp_error( $comment_ID ) ) {
 			return new IXR_Error( 403, $comment_ID->get_error_message() );
 		}
 
@@ -4754,7 +4754,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			return $this->error;
 		}
 
-		if ( Load::is_multisite() ) {
+		if ( is_multisite() ) {
 			return $this->_multisite_getUsersBlogs( $args );
 		}
 
@@ -5073,7 +5073,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		$post_data = compact( 'post_author', 'post_date', 'post_date_gmt', 'post_content', 'post_title', 'post_category', 'post_status' );
 
 		$post_ID = wp_insert_post( $post_data );
-		if ( Load::is_wp_error( $post_ID ) ) {
+		if ( is_wp_error( $post_ID ) ) {
 			return new IXR_Error( 500, $post_ID->get_error_message() );
 		}
 
@@ -5566,7 +5566,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		}
 
 		$post_ID = wp_insert_post( $postdata, true );
-		if ( Load::is_wp_error( $post_ID ) ) {
+		if ( is_wp_error( $post_ID ) ) {
 			return new IXR_Error( 500, $post_ID->get_error_message() );
 		}
 
@@ -5618,13 +5618,12 @@ class wp_xmlrpc_server extends IXR_Server {
 	/**
 	 * Attach upload to a post.
 	 *
+	 * @since 2.1.0
+	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
 	 * @param int    $post_ID      Post ID.
 	 * @param string $post_content Post Content for attachment.
-	 *
-	 *@since 2.1.0
-	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 */
 	public function attach_uploads( $post_ID, $post_content ) {
 		global $wpdb;
@@ -5912,7 +5911,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		$newpost = compact( 'ID', 'post_content', 'post_title', 'post_category', 'post_status', 'post_excerpt', 'comment_status', 'ping_status', 'edit_date', 'post_date', 'post_date_gmt', 'to_ping', 'post_name', 'post_password', 'post_parent', 'menu_order', 'post_author', 'tags_input', 'page_template' );
 
 		$result = wp_update_post( $newpost, true );
-		if ( Load::is_wp_error( $result ) ) {
+		if ( is_wp_error( $result ) ) {
 			return new IXR_Error( 500, $result->get_error_message() );
 		}
 
@@ -6303,7 +6302,7 @@ class wp_xmlrpc_server extends IXR_Server {
 	 *
 	 * @since 1.5.0
 	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
+	 * @global wpdb $wpdb WordPress database abstraction object.
 	 *
 	 * @param array $args {
 	 *     Method arguments. Note: arguments must be ordered as documented.
@@ -6339,7 +6338,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			return $this->error;
 		}
 
-		if ( Load::is_multisite() && upload_is_user_over_quota( false ) ) {
+		if ( is_multisite() && upload_is_user_over_quota( false ) ) {
 			$this->error = new IXR_Error(
 				401,
 				sprintf(
@@ -6674,13 +6673,12 @@ class wp_xmlrpc_server extends IXR_Server {
 	/**
 	 * Retrieve trackbacks sent to a given post.
 	 *
+	 * @since 1.5.0
+	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
 	 * @param int $post_ID
-	 *
 	 * @return array|IXR_Error
-	 *@since 1.5.0
-	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 */
 	public function mt_getTrackbackPings( $post_ID ) {
 		global $wpdb;
@@ -6991,7 +6989,7 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		$comment_ID = wp_new_comment( $commentdata );
 
-		if ( Load::is_wp_error( $comment_ID ) ) {
+		if ( is_wp_error( $comment_ID ) ) {
 			return $this->pingback_error( 0, $comment_ID->get_error_message() );
 		}
 
@@ -7013,13 +7011,12 @@ class wp_xmlrpc_server extends IXR_Server {
 	 *
 	 * Specs on http://www.aquarionics.com/misc/archives/blogite/0198.html
 	 *
+	 * @since 1.5.0
+	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
 	 * @param string $url
-	 *
 	 * @return array|IXR_Error
-	 *@since 1.5.0
-	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 */
 	public function pingback_extensions_getPingbacks( $url ) {
 		global $wpdb;

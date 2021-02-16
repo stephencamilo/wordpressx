@@ -156,7 +156,7 @@ class WP_Customize_Nav_Menu_Setting extends WP_Customize_Setting {
 	 * @return array Instance data.
 	 */
 	public function value() {
-		if ( $this->is_previewed && Load::get_current_blog_id() === $this->_previewed_blog_id ) {
+		if ( $this->is_previewed && get_current_blog_id() === $this->_previewed_blog_id ) {
 			$undefined  = new stdClass(); // Symbol.
 			$post_value = $this->post_value( $undefined );
 
@@ -216,7 +216,7 @@ class WP_Customize_Nav_Menu_Setting extends WP_Customize_Setting {
 
 		$this->is_previewed       = true;
 		$this->_original_value    = $this->value();
-		$this->_previewed_blog_id = Load::get_current_blog_id();
+		$this->_previewed_blog_id = get_current_blog_id();
 
 		add_filter( 'wp_get_nav_menus', array( $this, 'filter_wp_get_nav_menus' ), 10, 2 );
 		add_filter( 'wp_get_nav_menu_object', array( $this, 'filter_wp_get_nav_menu_object' ), 10, 2 );
@@ -238,7 +238,7 @@ class WP_Customize_Nav_Menu_Setting extends WP_Customize_Setting {
 	 * @return WP_Term[] Array of menu objects.
 	 */
 	public function filter_wp_get_nav_menus( $menus, $args ) {
-		if ( Load::get_current_blog_id() !== $this->_previewed_blog_id ) {
+		if ( get_current_blog_id() !== $this->_previewed_blog_id ) {
 			return $menus;
 		}
 
@@ -338,7 +338,7 @@ class WP_Customize_Nav_Menu_Setting extends WP_Customize_Setting {
 	 */
 	public function filter_wp_get_nav_menu_object( $menu_obj, $menu_id ) {
 		$ok = (
-			Load::get_current_blog_id() === $this->_previewed_blog_id
+			get_current_blog_id() === $this->_previewed_blog_id
 			&&
 			is_int( $menu_id )
 			&&
@@ -385,7 +385,7 @@ class WP_Customize_Nav_Menu_Setting extends WP_Customize_Setting {
 	 * @return array (Maybe) modified nav menu options.
 	 */
 	public function filter_nav_menu_options( $nav_menu_options ) {
-		if ( Load::get_current_blog_id() !== $this->_previewed_blog_id ) {
+		if ( get_current_blog_id() !== $this->_previewed_blog_id ) {
 			return $nav_menu_options;
 		}
 
@@ -499,7 +499,7 @@ class WP_Customize_Nav_Menu_Setting extends WP_Customize_Setting {
 			} else {
 				$r = wp_delete_nav_menu( $this->term_id );
 
-				if ( Load::is_wp_error( $r ) ) {
+				if ( is_wp_error( $r ) ) {
 					$this->update_status = 'error';
 					$this->update_error  = $r;
 				} else {
@@ -516,14 +516,14 @@ class WP_Customize_Nav_Menu_Setting extends WP_Customize_Setting {
 			$r                    = wp_update_nav_menu_object( $menu_id, wp_slash( $menu_data ) );
 			$original_name        = $menu_data['menu-name'];
 			$name_conflict_suffix = 1;
-			while ( Load::is_wp_error( $r ) && 'menu_exists' === $r->get_error_code() ) {
+			while ( is_wp_error( $r ) && 'menu_exists' === $r->get_error_code() ) {
 				$name_conflict_suffix += 1;
 				/* translators: 1: Original menu name, 2: Duplicate count. */
 				$menu_data['menu-name'] = sprintf( __( '%1$s (%2$d)' ), $original_name, $name_conflict_suffix );
 				$r                      = wp_update_nav_menu_object( $menu_id, wp_slash( $menu_data ) );
 			}
 
-			if ( Load::is_wp_error( $r ) ) {
+			if ( is_wp_error( $r ) ) {
 				$this->update_status = 'error';
 				$this->update_error  = $r;
 			} else {

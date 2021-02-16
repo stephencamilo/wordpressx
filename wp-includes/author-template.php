@@ -381,7 +381,7 @@ function get_author_posts_url( $author_id, $author_nicename = '' ) {
  *
  * @since 1.2.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  *
  * @param string|array $args {
  *     Optional. Array or string of default arguments.
@@ -535,11 +535,11 @@ function wp_list_authors( $args = '' ) {
  * the {@link https://developer.wordpress.org/themes/basics/conditional-tags/
  * Conditional Tags} article in the Theme Developer Handbook.
  *
- * @return bool Whether or not we have more than one author
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 3.2.0
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @return bool Whether or not we have more than one author
  */
 function is_multi_author() {
 	global $wpdb;

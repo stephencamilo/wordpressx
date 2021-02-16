@@ -1,6 +1,9 @@
 <?php
-
-use Core\WPIncludes\Load;
+/**
+ * Main WordPress API
+ *
+ * @package WordPress
+ */
 
 require ABSPATH . WPINC . '/option.php';
 
@@ -824,18 +827,17 @@ function wp_extract_urls( $content ) {
  * remove enclosures that are no longer in the post. This is called as
  * pingbacks and trackbacks.
  *
- * @param string|null $content Post content. If `null`, the `post_content` field from `$post` is used.
- * @param int|WP_Post $post    Post ID or post object.
- *
- * @return null|bool Returns false if post is not found.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 1.5.0
  * @since 5.3.0 The `$content` parameter was made optional, and the `$post` parameter was
  *              updated to accept a post ID or a WP_Post object.
  * @since 5.6.0 The `$content` parameter is no longer optional, but passing `null` to skip it
  *              is still supported.
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string|null $content Post content. If `null`, the `post_content` field from `$post` is used.
+ * @param int|WP_Post $post    Post ID or post object.
+ * @return null|bool Returns false if post is not found.
  */
 function do_enclose( $content, $post ) {
 	global $wpdb;
@@ -945,7 +947,7 @@ function wp_get_http_headers( $url, $deprecated = false ) {
 
 	$response = wp_safe_remote_head( $url );
 
-	if ( Load::is_wp_error( $response ) ) {
+	if ( is_wp_error( $response ) ) {
 		return false;
 	}
 
@@ -1265,7 +1267,7 @@ function wp_remote_fopen( $uri ) {
 
 	$response = wp_safe_remote_get( $uri, $options );
 
-	if ( Load::is_wp_error( $response ) ) {
+	if ( is_wp_error( $response ) ) {
 		return false;
 	}
 
@@ -1407,7 +1409,7 @@ function status_header( $code, $description = '' ) {
 		return;
 	}
 
-	$protocol      = Load::wp_get_server_protocol();
+	$protocol      = wp_get_server_protocol();
 	$status_header = "$protocol $code $description";
 	if ( function_exists( 'apply_filters' ) ) {
 
@@ -1509,11 +1511,11 @@ function cache_javascript_headers() {
 /**
  * Retrieve the number of database queries during the WordPress execution.
  *
- * @return int Number of database queries.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 2.0.0
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @return int Number of database queries.
  */
 function get_num_queries() {
 	global $wpdb;
@@ -1699,11 +1701,11 @@ function do_favicon() {
  * the {@link https://developer.wordpress.org/themes/basics/conditional-tags/
  * Conditional Tags} article in the Theme Developer Handbook.
  *
- * @return bool Whether the site is already installed.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 2.1.0
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @return bool Whether the site is already installed.
  */
 function is_blog_installed() {
 	global $wpdb;
@@ -1717,7 +1719,7 @@ function is_blog_installed() {
 	}
 
 	$suppress = $wpdb->suppress_errors();
-	if ( ! Load::wp_installing() ) {
+	if ( ! wp_installing() ) {
 		$alloptions = wp_load_alloptions();
 	}
 	// If siteurl is not set to autoload, check it specifically.
@@ -1767,7 +1769,7 @@ function is_blog_installed() {
 
 		// One or more tables exist. This is not good.
 
-		Load::wp_load_translations_early();
+		wp_load_translations_early();
 
 		// Die with a DB error.
 		$wpdb->error = sprintf(
@@ -2289,7 +2291,7 @@ function wp_get_upload_dir() {
 function wp_upload_dir( $time = null, $create_dir = true, $refresh_cache = false ) {
 	static $cache = array(), $tested_paths = array();
 
-	$key = sprintf( '%d-%s', Load::get_current_blog_id(), (string) $time );
+	$key = sprintf( '%d-%s', get_current_blog_id(), (string) $time );
 
 	if ( $refresh_cache || empty( $cache[ $key ] ) ) {
 		$cache[ $key ] = _wp_upload_dir( $time );
@@ -2375,13 +2377,13 @@ function _wp_upload_dir( $time = null ) {
 	 * Honor the value of UPLOADS. This happens as long as ms-files rewriting is disabled.
 	 * We also sometimes obey UPLOADS when rewriting is enabled -- see the next block.
 	 */
-	if ( defined( 'UPLOADS' ) && ! ( Load::is_multisite() && get_site_option( 'ms_files_rewriting' ) ) ) {
+	if ( defined( 'UPLOADS' ) && ! ( is_multisite() && get_site_option( 'ms_files_rewriting' ) ) ) {
 		$dir = ABSPATH . UPLOADS;
 		$url = trailingslashit( $siteurl ) . UPLOADS;
 	}
 
 	// If multisite (and if not the main site in a post-MU network).
-	if ( Load::is_multisite() && ! ( is_main_network() && is_main_site() && defined( 'MULTISITE' ) ) ) {
+	if ( is_multisite() && ! ( is_main_network() && is_main_site() && defined( 'MULTISITE' ) ) ) {
 
 		if ( ! get_site_option( 'ms_files_rewriting' ) ) {
 			/*
@@ -2394,9 +2396,9 @@ function _wp_upload_dir( $time = null ) {
 			 */
 
 			if ( defined( 'MULTISITE' ) ) {
-				$ms_dir = '/sites/' . Load::get_current_blog_id();
+				$ms_dir = '/sites/' . get_current_blog_id();
 			} else {
-				$ms_dir = '/' . Load::get_current_blog_id();
+				$ms_dir = '/' . get_current_blog_id();
 			}
 
 			$dir .= $ms_dir;
@@ -2745,7 +2747,7 @@ function wp_upload_bits( $name, $deprecated, $bits, $time = null ) {
 	// Compute the URL.
 	$url = $upload['url'] . "/$filename";
 
-	if ( Load::is_multisite() ) {
+	if ( is_multisite() ) {
 		clean_dirsize_cache( $new_file );
 	}
 
@@ -3355,7 +3357,7 @@ function wp_die( $message = '', $title = '', $args = array() ) {
 		$title = '';
 	}
 
-	if ( Load::wp_doing_ajax() ) {
+	if ( wp_doing_ajax() ) {
 		/**
 		 * Filters the callback for killing WordPress execution for Ajax requests.
 		 *
@@ -3364,7 +3366,7 @@ function wp_die( $message = '', $title = '', $args = array() ) {
 		 * @param callable $function Callback function name.
 		 */
 		$function = apply_filters( 'wp_die_ajax_handler', '_ajax_wp_die_handler' );
-	} elseif ( Load::wp_is_json_request() ) {
+	} elseif ( wp_is_json_request() ) {
 		/**
 		 * Filters the callback for killing WordPress execution for JSON requests.
 		 *
@@ -3373,7 +3375,7 @@ function wp_die( $message = '', $title = '', $args = array() ) {
 		 * @param callable $function Callback function name.
 		 */
 		$function = apply_filters( 'wp_die_json_handler', '_json_wp_die_handler' );
-	} elseif ( Load::wp_is_jsonp_request() ) {
+	} elseif ( wp_is_jsonp_request() ) {
 		/**
 		 * Filters the callback for killing WordPress execution for JSONP requests.
 		 *
@@ -3391,8 +3393,8 @@ function wp_die( $message = '', $title = '', $args = array() ) {
 		 * @param callable $function Callback function name.
 		 */
 		$function = apply_filters( 'wp_die_xmlrpc_handler', '_xmlrpc_wp_die_handler' );
-	} elseif ( Load::wp_is_xml_request()
-	           || isset( $wp_query ) &&
+	} elseif ( wp_is_xml_request()
+		|| isset( $wp_query ) &&
 			( function_exists( 'is_feed' ) && is_feed()
 			|| function_exists( 'is_comment_feed' ) && is_comment_feed()
 			|| function_exists( 'is_trackback' ) && is_trackback() ) ) {
@@ -3878,7 +3880,7 @@ function _wp_die_process_input( $message, $title = '', $args = array() ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
-	if ( function_exists( array( "\Load", "is_wp_error" ) ) && Load::is_wp_error( $message ) ) {
+	if ( function_exists( 'is_wp_error' ) && is_wp_error( $message ) ) {
 		if ( ! empty( $message->errors ) ) {
 			$errors = array();
 			foreach ( (array) $message->errors as $error_code => $error_messages ) {
@@ -4113,7 +4115,7 @@ function wp_send_json( $response, $status_code = null, $options = 0 ) {
 
 	echo wp_json_encode( $response, $options );
 
-	if ( Load::wp_doing_ajax() ) {
+	if ( wp_doing_ajax() ) {
 		wp_die(
 			'',
 			'',
@@ -4168,7 +4170,7 @@ function wp_send_json_error( $data = null, $status_code = null, $options = 0 ) {
 	$response = array( 'success' => false );
 
 	if ( isset( $data ) ) {
-		if ( Load::is_wp_error( $data ) ) {
+		if ( is_wp_error( $data ) ) {
 			$result = array();
 			foreach ( $data->errors as $code => $messages ) {
 				foreach ( $messages as $message ) {
@@ -4770,12 +4772,12 @@ function wp_ob_end_flush_all() {
  *
  * @since 2.3.2
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function dead_db() {
 	global $wpdb;
 
-	Load::wp_load_translations_early();
+	wp_load_translations_early();
 
 	// Load custom DB error template, if present.
 	if ( file_exists( WP_CONTENT_DIR . '/db-error.php' ) ) {
@@ -4784,7 +4786,7 @@ function dead_db() {
 	}
 
 	// If installing or in the admin, provide the verbose message.
-	if ( Load::wp_installing() || defined( 'WP_ADMIN' ) ) {
+	if ( wp_installing() || defined( 'WP_ADMIN' ) ) {
 		wp_die( $wpdb->error );
 	}
 
@@ -5522,11 +5524,8 @@ function wp_guess_url() {
 			}
 		}
 
-		$schema = Load::is_ssl() ? 'https://' : 'http://'; // set_url_scheme() is not defined yet.
-		$url = '';
-		if(array_key_exists('HTTP_HOST', $_SERVER)) {
-			$url    = $schema . $_SERVER['HTTP_HOST'] . $path;
-		}
+		$schema = is_ssl() ? 'https://' : 'http://'; // set_url_scheme() is not defined yet.
+		$url    = $schema . $_SERVER['HTTP_HOST'] . $path;
 	}
 
 	return rtrim( $url, '/' );
@@ -5592,12 +5591,12 @@ function wp_suspend_cache_invalidation( $suspend = true ) {
  *              running Multisite.
  */
 function is_main_site( $site_id = null, $network_id = null ) {
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		return true;
 	}
 
 	if ( ! $site_id ) {
-		$site_id = Load::get_current_blog_id();
+		$site_id = get_current_blog_id();
 	}
 
 	$site_id = (int) $site_id;
@@ -5615,8 +5614,8 @@ function is_main_site( $site_id = null, $network_id = null ) {
  * @return int The ID of the main site.
  */
 function get_main_site_id( $network_id = null ) {
-	if ( ! Load::is_multisite() ) {
-		return Load::get_current_blog_id();
+	if ( ! is_multisite() ) {
+		return get_current_blog_id();
 	}
 
 	$network = get_network( $network_id );
@@ -5636,12 +5635,12 @@ function get_main_site_id( $network_id = null ) {
  * @return bool True if $network_id is the main network, or if not running Multisite.
  */
 function is_main_network( $network_id = null ) {
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		return true;
 	}
 
 	if ( null === $network_id ) {
-		$network_id = Load::get_current_network_id();
+		$network_id = get_current_network_id();
 	}
 
 	$network_id = (int) $network_id;
@@ -5657,7 +5656,7 @@ function is_main_network( $network_id = null ) {
  * @return int The ID of the main network.
  */
 function get_main_network_id() {
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		return 1;
 	}
 
@@ -5696,7 +5695,7 @@ function get_main_network_id() {
  * @return bool True if multisite and global terms enabled.
  */
 function global_terms_enabled() {
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		return false;
 	}
 
@@ -5730,16 +5729,16 @@ function global_terms_enabled() {
  * a setting for the main network, making it essentially a global setting. Subsequent requests
  * will refer to this setting instead of running the query.
  *
- * @return bool True if site meta is supported, false otherwise.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 5.1.0
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @return bool True if site meta is supported, false otherwise.
  */
 function is_site_meta_supported() {
 	global $wpdb;
 
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		return false;
 	}
 
@@ -6041,7 +6040,7 @@ function _cleanup_header_comment( $str ) {
  *
  * @since 2.9.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function wp_scheduled_delete() {
 	global $wpdb;
@@ -6564,7 +6563,7 @@ function wp_checkdate( $month, $day, $year, $source_date ) {
  * @since 3.6.0
  */
 function wp_auth_check_load() {
-	if ( ! Load::is_admin() && ! is_user_logged_in() ) {
+	if ( ! is_admin() && ! is_user_logged_in() ) {
 		return;
 	}
 
@@ -6603,7 +6602,7 @@ function wp_auth_check_load() {
  */
 function wp_auth_check_html() {
 	$login_url      = wp_login_url();
-	$current_domain = ( Load::is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
+	$current_domain = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
 	$same_domain    = ( strpos( $login_url, $current_domain ) === 0 );
 
 	/**
@@ -6919,19 +6918,19 @@ function mysql_to_rfc3339( $date_string ) {
  */
 function wp_raise_memory_limit( $context = 'admin' ) {
 	// Exit early if the limit cannot be changed.
-	if ( false === Load::wp_is_ini_value_changeable( 'memory_limit' ) ) {
+	if ( false === wp_is_ini_value_changeable( 'memory_limit' ) ) {
 		return false;
 	}
 
 	$current_limit     = ini_get( 'memory_limit' );
-	$current_limit_int = Load::wp_convert_hr_to_bytes( $current_limit );
+	$current_limit_int = wp_convert_hr_to_bytes( $current_limit );
 
 	if ( -1 === $current_limit_int ) {
 		return false;
 	}
 
 	$wp_max_limit     = WP_MAX_MEMORY_LIMIT;
-	$wp_max_limit_int = Load::wp_convert_hr_to_bytes( $wp_max_limit );
+	$wp_max_limit_int = wp_convert_hr_to_bytes( $wp_max_limit );
 	$filtered_limit   = $wp_max_limit;
 
 	switch ( $context ) {
@@ -6992,7 +6991,7 @@ function wp_raise_memory_limit( $context = 'admin' ) {
 			break;
 	}
 
-	$filtered_limit_int = Load::wp_convert_hr_to_bytes( $filtered_limit );
+	$filtered_limit_int = wp_convert_hr_to_bytes( $filtered_limit );
 
 	if ( -1 === $filtered_limit_int || ( $filtered_limit_int > $wp_max_limit_int && $filtered_limit_int > $current_limit_int ) ) {
 		if ( false !== ini_set( 'memory_limit', $filtered_limit ) ) {
@@ -7370,7 +7369,7 @@ function wp_privacy_exports_url() {
  * @since 4.9.6
  */
 function wp_schedule_delete_old_privacy_export_files() {
-	if ( Load::wp_installing() ) {
+	if ( wp_installing() ) {
 		return;
 	}
 
@@ -7597,7 +7596,7 @@ function get_dirsize( $directory, $max_execution_time = null ) {
 
 	// Exclude individual site directories from the total when checking the main site of a network,
 	// as they are subdirectories and should not be counted.
-	if ( Load::is_multisite() && is_main_site() ) {
+	if ( is_multisite() && is_main_site() ) {
 		$size = recurse_dirsize( $directory, $directory . '/sites', $max_execution_time );
 	} else {
 		$size = recurse_dirsize( $directory, null, $max_execution_time );

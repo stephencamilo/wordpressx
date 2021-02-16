@@ -352,7 +352,7 @@ class WP_REST_Terms_Controller extends WP_REST_Controller {
 	public function get_item_permissions_check( $request ) {
 		$term = $this->get_term( $request['id'] );
 
-		if ( Load::is_wp_error( $term ) ) {
+		if ( is_wp_error( $term ) ) {
 			return $term;
 		}
 
@@ -377,7 +377,7 @@ class WP_REST_Terms_Controller extends WP_REST_Controller {
 	 */
 	public function get_item( $request ) {
 		$term = $this->get_term( $request['id'] );
-		if ( Load::is_wp_error( $term ) ) {
+		if ( is_wp_error( $term ) ) {
 			return $term;
 		}
 
@@ -448,7 +448,7 @@ class WP_REST_Terms_Controller extends WP_REST_Controller {
 		$prepared_term = $this->prepare_item_for_database( $request );
 
 		$term = wp_insert_term( wp_slash( $prepared_term->name ), $this->taxonomy, wp_slash( (array) $prepared_term ) );
-		if ( Load::is_wp_error( $term ) ) {
+		if ( is_wp_error( $term ) ) {
 			/*
 			 * If we're going to inform the client that the term already exists,
 			 * give them the identifier for future use.
@@ -487,14 +487,14 @@ class WP_REST_Terms_Controller extends WP_REST_Controller {
 		if ( ! empty( $schema['properties']['meta'] ) && isset( $request['meta'] ) ) {
 			$meta_update = $this->meta->update_value( $request['meta'], $term->term_id );
 
-			if ( Load::is_wp_error( $meta_update ) ) {
+			if ( is_wp_error( $meta_update ) ) {
 				return $meta_update;
 			}
 		}
 
 		$fields_update = $this->update_additional_fields_for_object( $term, $request );
 
-		if ( Load::is_wp_error( $fields_update ) ) {
+		if ( is_wp_error( $fields_update ) ) {
 			return $fields_update;
 		}
 
@@ -533,7 +533,7 @@ class WP_REST_Terms_Controller extends WP_REST_Controller {
 	public function update_item_permissions_check( $request ) {
 		$term = $this->get_term( $request['id'] );
 
-		if ( Load::is_wp_error( $term ) ) {
+		if ( is_wp_error( $term ) ) {
 			return $term;
 		}
 
@@ -558,7 +558,7 @@ class WP_REST_Terms_Controller extends WP_REST_Controller {
 	 */
 	public function update_item( $request ) {
 		$term = $this->get_term( $request['id'] );
-		if ( Load::is_wp_error( $term ) ) {
+		if ( is_wp_error( $term ) ) {
 			return $term;
 		}
 
@@ -588,7 +588,7 @@ class WP_REST_Terms_Controller extends WP_REST_Controller {
 		if ( ! empty( $prepared_term ) ) {
 			$update = wp_update_term( $term->term_id, $term->taxonomy, wp_slash( (array) $prepared_term ) );
 
-			if ( Load::is_wp_error( $update ) ) {
+			if ( is_wp_error( $update ) ) {
 				return $update;
 			}
 		}
@@ -602,14 +602,14 @@ class WP_REST_Terms_Controller extends WP_REST_Controller {
 		if ( ! empty( $schema['properties']['meta'] ) && isset( $request['meta'] ) ) {
 			$meta_update = $this->meta->update_value( $request['meta'], $term->term_id );
 
-			if ( Load::is_wp_error( $meta_update ) ) {
+			if ( is_wp_error( $meta_update ) ) {
 				return $meta_update;
 			}
 		}
 
 		$fields_update = $this->update_additional_fields_for_object( $term, $request );
 
-		if ( Load::is_wp_error( $fields_update ) ) {
+		if ( is_wp_error( $fields_update ) ) {
 			return $fields_update;
 		}
 
@@ -634,7 +634,7 @@ class WP_REST_Terms_Controller extends WP_REST_Controller {
 	public function delete_item_permissions_check( $request ) {
 		$term = $this->get_term( $request['id'] );
 
-		if ( Load::is_wp_error( $term ) ) {
+		if ( is_wp_error( $term ) ) {
 			return $term;
 		}
 
@@ -659,7 +659,7 @@ class WP_REST_Terms_Controller extends WP_REST_Controller {
 	 */
 	public function delete_item( $request ) {
 		$term = $this->get_term( $request['id'] );
-		if ( Load::is_wp_error( $term ) ) {
+		if ( is_wp_error( $term ) ) {
 			return $term;
 		}
 

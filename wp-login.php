@@ -12,7 +12,7 @@
 require __DIR__ . '/wp-load.php';
 
 // Redirect to HTTPS login if forced to use SSL.
-if ( force_ssl_admin() && ! Load::is_ssl() ) {
+if ( force_ssl_admin() && ! is_ssl() ) {
 	if ( 0 === strpos( $_SERVER['REQUEST_URI'], 'http' ) ) {
 		wp_safe_redirect( set_url_scheme( $_SERVER['REQUEST_URI'], 'https' ) );
 		exit;
@@ -46,7 +46,7 @@ function login_header( $title = 'Log In', $message = '', $wp_error = null ) {
 
 	add_action( 'login_head', 'wp_login_viewport_meta' );
 
-	if ( ! Load::is_wp_error( $wp_error ) ) {
+	if ( ! is_wp_error( $wp_error ) ) {
 		$wp_error = new WP_Error();
 	}
 
@@ -70,7 +70,7 @@ function login_header( $title = 'Log In', $message = '', $wp_error = null ) {
 	/* translators: Login screen title. 1: Login screen name, 2: Network or site name. */
 	$login_title = sprintf( __( '%1$s &lsaquo; %2$s &#8212; WordPress' ), $title, $login_title );
 
-	if ( Load::wp_is_recovery_mode() ) {
+	if ( wp_is_recovery_mode() ) {
 		/* translators: %s: Login screen title. */
 		$login_title = sprintf( __( 'Recovery Mode &#8212; %s' ), $login_title );
 	}
@@ -413,11 +413,11 @@ function retrieve_password() {
 	$user_email = $user_data->user_email;
 	$key        = get_password_reset_key( $user_data );
 
-	if ( Load::is_wp_error( $key ) ) {
+	if ( is_wp_error( $key ) ) {
 		return $key;
 	}
 
-	if ( Load::is_multisite() ) {
+	if ( is_multisite() ) {
 		$site_name = get_network()->site_name;
 	} else {
 		/*
@@ -831,7 +831,7 @@ switch ( $action ) {
 		if ( $http_post ) {
 			$errors = retrieve_password();
 
-			if ( ! Load::is_wp_error( $errors ) ) {
+			if ( ! is_wp_error( $errors ) ) {
 				$redirect_to = ! empty( $_REQUEST['redirect_to'] ) ? $_REQUEST['redirect_to'] : 'wp-login.php?checkemail=confirm';
 				wp_safe_redirect( $redirect_to );
 				exit;
@@ -925,7 +925,7 @@ switch ( $action ) {
 
 		if ( isset( $_GET['key'] ) ) {
 			$value = sprintf( '%s:%s', wp_unslash( $_GET['login'] ), wp_unslash( $_GET['key'] ) );
-			setcookie( $rp_cookie, $value, 0, $rp_path, COOKIE_DOMAIN, Load::is_ssl(), true );
+			setcookie( $rp_cookie, $value, 0, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
 
 			wp_safe_redirect( remove_query_arg( array( 'key', 'login' ) ) );
 			exit;
@@ -943,8 +943,8 @@ switch ( $action ) {
 			$user = false;
 		}
 
-		if ( ! $user || Load::is_wp_error( $user ) ) {
-			setcookie( $rp_cookie, ' ', time() - YEAR_IN_SECONDS, $rp_path, COOKIE_DOMAIN, Load::is_ssl(), true );
+		if ( ! $user || is_wp_error( $user ) ) {
+			setcookie( $rp_cookie, ' ', time() - YEAR_IN_SECONDS, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
 
 			if ( $user && $user->get_error_code() === 'expired_key' ) {
 				wp_redirect( site_url( 'wp-login.php?action=lostpassword&error=expiredkey' ) );
@@ -973,7 +973,7 @@ switch ( $action ) {
 
 		if ( ( ! $errors->has_errors() ) && isset( $_POST['pass1'] ) && ! empty( $_POST['pass1'] ) ) {
 			reset_password( $user, $_POST['pass1'] );
-			setcookie( $rp_cookie, ' ', time() - YEAR_IN_SECONDS, $rp_path, COOKIE_DOMAIN, Load::is_ssl(), true );
+			setcookie( $rp_cookie, ' ', time() - YEAR_IN_SECONDS, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
 			login_header( __( 'Password Reset' ), '<p class="message reset-pass">' . __( 'Your password has been reset.' ) . ' <a href="' . esc_url( wp_login_url() ) . '">' . __( 'Log in' ) . '</a></p>' );
 			login_footer();
 			exit;
@@ -1054,7 +1054,7 @@ switch ( $action ) {
 		break;
 
 	case 'register':
-		if ( Load::is_multisite() ) {
+		if ( is_multisite() ) {
 			/**
 			 * Filters the Multisite sign up URL.
 			 *
@@ -1085,7 +1085,7 @@ switch ( $action ) {
 
 			$errors = register_new_user( $user_login, $user_email );
 
-			if ( ! Load::is_wp_error( $errors ) ) {
+			if ( ! is_wp_error( $errors ) ) {
 				$redirect_to = ! empty( $_POST['redirect_to'] ) ? $_POST['redirect_to'] : 'wp-login.php?checkemail=registered';
 				wp_safe_redirect( $redirect_to );
 				exit;
@@ -1191,7 +1191,7 @@ switch ( $action ) {
 		$key        = sanitize_text_field( wp_unslash( $_GET['confirm_key'] ) );
 		$result     = wp_validate_user_request_key( $request_id, $key );
 
-		if ( Load::is_wp_error( $result ) ) {
+		if ( is_wp_error( $result ) ) {
 			wp_die( $result );
 		}
 
@@ -1292,7 +1292,7 @@ switch ( $action ) {
 		 */
 		$redirect_to = apply_filters( 'login_redirect', $redirect_to, $requested_redirect_to, $user );
 
-		if ( ! Load::is_wp_error( $user ) && ! $reauth ) {
+		if ( ! is_wp_error( $user ) && ! $reauth ) {
 			if ( $interim_login ) {
 				$message       = '<p class="message">' . __( 'You have logged in successfully.' ) . '</p>';
 				$interim_login = 'success';
@@ -1340,9 +1340,9 @@ switch ( $action ) {
 
 			if ( ( empty( $redirect_to ) || 'wp-admin/' === $redirect_to || admin_url() === $redirect_to ) ) {
 				// If the user doesn't belong to a blog, send them to user admin. If the user can't edit posts, send them to their profile.
-				if ( Load::is_multisite() && ! get_active_blog_for_user( $user->ID ) && ! is_super_admin( $user->ID ) ) {
+				if ( is_multisite() && ! get_active_blog_for_user( $user->ID ) && ! is_super_admin( $user->ID ) ) {
 					$redirect_to = user_admin_url();
-				} elseif ( Load::is_multisite() && ! $user->has_cap( 'read' ) ) {
+				} elseif ( is_multisite() && ! $user->has_cap( 'read' ) ) {
 					$redirect_to = get_dashboard_url( $user->ID );
 				} elseif ( ! $user->has_cap( 'edit_posts' ) ) {
 					$redirect_to = $user->has_cap( 'read' ) ? admin_url( 'profile.php' ) : home_url();

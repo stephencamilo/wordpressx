@@ -37,7 +37,7 @@ if ( isset( $_POST['action'] ) && 'authorize_application_password' === $_POST['a
 			)
 		);
 
-		if ( Load::is_wp_error( $created ) ) {
+		if ( is_wp_error( $created ) ) {
 			$error = $created;
 		} else {
 			list( $new_password ) = $created;
@@ -81,7 +81,7 @@ $user = wp_get_current_user();
 $request  = compact( 'app_name', 'app_id', 'success_url', 'reject_url' );
 $is_valid = wp_is_authorize_application_password_request_valid( $request, $user );
 
-if ( Load::is_wp_error( $is_valid ) ) {
+if ( is_wp_error( $is_valid ) ) {
 	wp_die(
 		__( 'The Authorize Application request is not allowed.' ) . ' ' . implode( ' ', $is_valid->get_error_messages() ),
 		__( 'Cannot Authorize Application' )
@@ -136,7 +136,7 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 <div class="wrap">
 	<h1><?php echo esc_html( $title ); ?></h1>
 
-	<?php if ( Load::is_wp_error( $error ) ) : ?>
+	<?php if ( is_wp_error( $error ) ) : ?>
 		<div class="notice notice-error"><p><?php echo $error->get_error_message(); ?></p></div>
 	<?php endif; ?>
 
@@ -157,7 +157,7 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 		<?php endif; ?>
 
 		<?php
-		if ( Load::is_multisite() ) {
+		if ( is_multisite() ) {
 			$blogs       = get_blogs_of_user( $user->ID, true );
 			$blogs_count = count( $blogs );
 			if ( $blogs_count > 1 ) {

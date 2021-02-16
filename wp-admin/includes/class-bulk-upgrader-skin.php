@@ -94,7 +94,7 @@ class Bulk_Upgrader_Skin extends WP_Upgrader_Skin {
 			$this->error = $this->upgrader->strings[ $error ];
 		}
 
-		if ( Load::is_wp_error( $error ) ) {
+		if ( is_wp_error( $error ) ) {
 			$messages = array();
 			foreach ( $error->get_error_messages() as $emessage ) {
 				if ( $error->get_error_data() && is_string( $error->get_error_data() ) ) {
@@ -146,7 +146,7 @@ class Bulk_Upgrader_Skin extends WP_Upgrader_Skin {
 
 			echo '<script type="text/javascript">jQuery(\'#progress-' . esc_js( $this->upgrader->update_current ) . '\').show();</script>';
 		}
-		if ( $this->result && ! Load::is_wp_error( $this->result ) ) {
+		if ( $this->result && ! is_wp_error( $this->result ) ) {
 			if ( ! $this->error ) {
 				echo '<div class="updated js-update-details" data-update-details="progress-' . esc_attr( $this->upgrader->update_current ) . '">' .
 					'<p>' . sprintf( $this->upgrader->strings['skin_update_successful'], $title ) .

@@ -1,6 +1,4 @@
 <?php
-
-use Core\WPIncludes\Load;
 /**
  * WordPress Translation Installation Administration API
  *
@@ -12,12 +10,11 @@ use Core\WPIncludes\Load;
 /**
  * Retrieve translations from WordPress Translation API.
  *
- * @param string $type Type of translations. Accepts 'plugins', 'themes', 'core'.
- * @param array|object $args Translation API arguments. Optional.
- *
- * @return object|WP_Error On success an object of translations, WP_Error on failure.
  * @since 4.0.0
  *
+ * @param string       $type Type of translations. Accepts 'plugins', 'themes', 'core'.
+ * @param array|object $args Translation API arguments. Optional.
+ * @return object|WP_Error On success an object of translations, WP_Error on failure.
  */
 function translations_api( $type, $args = null ) {
 	// Include an unmodified $wp_version.
@@ -30,12 +27,11 @@ function translations_api( $type, $args = null ) {
 	/**
 	 * Allows a plugin to override the WordPress.org Translation Installation API entirely.
 	 *
-	 * @param bool|array $result The result object. Default false.
-	 * @param string $type The type of translations being requested.
-	 * @param object $args Translation API arguments.
-	 *
 	 * @since 4.0.0
 	 *
+	 * @param bool|array  $result The result object. Default false.
+	 * @param string      $type   The type of translations being requested.
+	 * @param object      $args   Translation API arguments.
 	 */
 	$res = apply_filters( 'translations_api', false, $type, $args );
 
@@ -62,10 +58,10 @@ function translations_api( $type, $args = null ) {
 
 		$request = wp_remote_post( $url, $options );
 
-		if ( $ssl && Load::is_wp_error( $request ) ) {
+		if ( $ssl && is_wp_error( $request ) ) {
 			trigger_error(
 				sprintf(
-				/* translators: %s: Support forums URL. */
+					/* translators: %s: Support forums URL. */
 					__( 'An unexpected error occurred. Something may be wrong with WordPress.org or this server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.' ),
 					__( 'https://wordpress.org/support/forums/' )
 				) . ' ' . __( '(WordPress could not establish a secure connection to WordPress.org. Please contact your server administrator.)' ),
@@ -75,11 +71,11 @@ function translations_api( $type, $args = null ) {
 			$request = wp_remote_post( $http_url, $options );
 		}
 
-		if ( Load::is_wp_error( $request ) ) {
+		if ( is_wp_error( $request ) ) {
 			$res = new WP_Error(
 				'translations_api_failed',
 				sprintf(
-				/* translators: %s: Support forums URL. */
+					/* translators: %s: Support forums URL. */
 					__( 'An unexpected error occurred. Something may be wrong with WordPress.org or this server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.' ),
 					__( 'https://wordpress.org/support/forums/' )
 				),
@@ -91,7 +87,7 @@ function translations_api( $type, $args = null ) {
 				$res = new WP_Error(
 					'translations_api_failed',
 					sprintf(
-					/* translators: %s: Support forums URL. */
+						/* translators: %s: Support forums URL. */
 						__( 'An unexpected error occurred. Something may be wrong with WordPress.org or this server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.' ),
 						__( 'https://wordpress.org/support/forums/' )
 					),
@@ -104,12 +100,11 @@ function translations_api( $type, $args = null ) {
 	/**
 	 * Filters the Translation Installation API response results.
 	 *
-	 * @param object|WP_Error $res Response object or WP_Error.
-	 * @param string $type The type of translations being requested.
-	 * @param object $args Translation API arguments.
-	 *
 	 * @since 4.0.0
 	 *
+	 * @param object|WP_Error $res  Response object or WP_Error.
+	 * @param string          $type The type of translations being requested.
+	 * @param object          $args Translation API arguments.
 	 */
 	return apply_filters( 'translations_api_result', $res, $type, $args );
 }
@@ -117,15 +112,15 @@ function translations_api( $type, $args = null ) {
 /**
  * Get available translations from the WordPress.org API.
  *
- * @return array[] Array of translations, each an array of data, keyed by the language. If the API response results
- *                 in an error, an empty array will be returned.
- * @see translations_api()
- *
  * @since 4.0.0
  *
+ * @see translations_api()
+ *
+ * @return array[] Array of translations, each an array of data, keyed by the language. If the API response results
+ *                 in an error, an empty array will be returned.
  */
 function wp_get_available_translations() {
-	if ( ! Load::wp_installing() ) {
+	if ( ! wp_installing() ) {
 		$translations = get_site_transient( 'available_translations' );
 		if ( false !== $translations ) {
 			return $translations;
@@ -137,7 +132,7 @@ function wp_get_available_translations() {
 
 	$api = translations_api( 'core', array( 'version' => $wp_version ) );
 
-	if ( Load::is_wp_error( $api ) || empty( $api['translations'] ) ) {
+	if ( is_wp_error( $api ) || empty( $api['translations'] ) ) {
 		return array();
 	}
 
@@ -157,12 +152,11 @@ function wp_get_available_translations() {
 /**
  * Output the select form for the language selection on the installation screen.
  *
- * @param array[] $languages Array of available languages (populated via the Translation API).
+ * @since 4.0.0
  *
  * @global string $wp_local_package Locale code of the package.
  *
- * @since 4.0.0
- *
+ * @param array[] $languages Array of available languages (populated via the Translation API).
  */
 function wp_install_language_form( $languages ) {
 	global $wp_local_package;
@@ -207,14 +201,13 @@ function wp_install_language_form( $languages ) {
 /**
  * Download a language pack.
  *
- * @param string $download Language code to download.
- *
- * @return string|bool Returns the language code if successfully downloaded
- *                     (or already installed), or false on failure.
  * @since 4.0.0
  *
  * @see wp_get_available_translations()
  *
+ * @param string $download Language code to download.
+ * @return string|bool Returns the language code if successfully downloaded
+ *                     (or already installed), or false on failure.
  */
 function wp_download_language_pack( $download ) {
 	// Check if the translation is already installed.
@@ -222,7 +215,7 @@ function wp_download_language_pack( $download ) {
 		return $download;
 	}
 
-	if ( ! Load::wp_is_file_mod_allowed( 'download_language_pack' ) ) {
+	if ( ! wp_is_file_mod_allowed( 'download_language_pack' ) ) {
 		return false;
 	}
 
@@ -249,7 +242,7 @@ function wp_download_language_pack( $download ) {
 	$translation->type = 'core';
 	$result            = $upgrader->upgrade( $translation, array( 'clear_update_cache' => false ) );
 
-	if ( ! $result || Load::is_wp_error( $result ) ) {
+	if ( ! $result || is_wp_error( $result ) ) {
 		return false;
 	}
 
@@ -260,12 +253,12 @@ function wp_download_language_pack( $download ) {
  * Check if WordPress has access to the filesystem without asking for
  * credentials.
  *
- * @return bool Returns true on success, false on failure.
  * @since 4.0.0
  *
+ * @return bool Returns true on success, false on failure.
  */
 function wp_can_install_language_pack() {
-	if ( ! Load::wp_is_file_mod_allowed( 'can_install_language_pack' ) ) {
+	if ( ! wp_is_file_mod_allowed( 'can_install_language_pack' ) ) {
 		return false;
 	}
 
@@ -276,7 +269,7 @@ function wp_can_install_language_pack() {
 
 	$check = $upgrader->fs_connect( array( WP_CONTENT_DIR, WP_LANG_DIR ) );
 
-	if ( ! $check || Load::is_wp_error( $check ) ) {
+	if ( ! $check || is_wp_error( $check ) ) {
 		return false;
 	}
 

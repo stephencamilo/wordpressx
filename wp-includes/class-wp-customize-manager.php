@@ -416,7 +416,7 @@ final class WP_Customize_Manager {
 	 * @return bool True if it's an Ajax request, false otherwise.
 	 */
 	public function doing_ajax( $action = null ) {
-		if ( ! Load::wp_doing_ajax() ) {
+		if ( ! wp_doing_ajax() ) {
 			return false;
 		}
 
@@ -640,7 +640,7 @@ final class WP_Customize_Manager {
 			$this->_changeset_uuid = $changeset_uuid;
 		}
 
-		if ( Load::is_admin() && 'customize.php' === $pagenow ) {
+		if ( is_admin() && 'customize.php' === $pagenow ) {
 			$this->set_changeset_lock( $this->changeset_post_id() );
 		}
 	}
@@ -938,7 +938,7 @@ final class WP_Customize_Manager {
 			}
 		}
 
-		if ( $this->is_preview() && ! Load::is_admin() ) {
+		if ( $this->is_preview() && ! is_admin() ) {
 			$this->customize_preview_init();
 		}
 	}
@@ -958,7 +958,7 @@ final class WP_Customize_Manager {
 	public function wp_redirect_status( $status ) {
 		_deprecated_function( __FUNCTION__, '4.7.0' );
 
-		if ( $this->is_preview() && ! Load::is_admin() ) {
+		if ( $this->is_preview() && ! is_admin() ) {
 			return 200;
 		}
 
@@ -1151,7 +1151,7 @@ final class WP_Customize_Manager {
 				$autosave_post = wp_get_post_autosave( $changeset_post_id, get_current_user_id() );
 				if ( $autosave_post ) {
 					$data = $this->get_changeset_post_data( $autosave_post->ID );
-					if ( ! Load::is_wp_error( $data ) ) {
+					if ( ! is_wp_error( $data ) ) {
 						$this->_changeset_data = $data;
 					}
 				}
@@ -1160,7 +1160,7 @@ final class WP_Customize_Manager {
 			// Load data from the changeset if it was not loaded from an autosave.
 			if ( ! isset( $this->_changeset_data ) ) {
 				$data = $this->get_changeset_post_data( $changeset_post_id );
-				if ( ! Load::is_wp_error( $data ) ) {
+				if ( ! is_wp_error( $data ) ) {
 					$this->_changeset_data = $data;
 				} else {
 					$this->_changeset_data = array();
@@ -1384,7 +1384,7 @@ final class WP_Customize_Manager {
 					);
 
 					$attachment_id = media_handle_sideload( $file_array, 0, null, $attachment_post_data );
-					if ( Load::is_wp_error( $attachment_id ) ) {
+					if ( is_wp_error( $attachment_id ) ) {
 						continue;
 					}
 					update_post_meta( $attachment_id, '_starter_content_theme', $this->get_stylesheet() );
@@ -1825,11 +1825,11 @@ final class WP_Customize_Manager {
 		}
 		$value = $post_values[ $setting->id ];
 		$valid = $setting->validate( $value );
-		if ( Load::is_wp_error( $valid ) ) {
+		if ( is_wp_error( $valid ) ) {
 			return $default;
 		}
 		$value = $setting->sanitize( $value );
-		if ( is_null( $value ) || Load::is_wp_error( $value ) ) {
+		if ( is_null( $value ) || is_wp_error( $value ) ) {
 			return $default;
 		}
 		return $value;
@@ -2356,18 +2356,18 @@ final class WP_Customize_Manager {
 				}
 				$validity = $setting->validate( $unsanitized_value );
 			}
-			if ( ! Load::is_wp_error( $validity ) ) {
+			if ( ! is_wp_error( $validity ) ) {
 				/** This filter is documented in wp-includes/class-wp-customize-setting.php */
 				$late_validity = apply_filters( "customize_validate_{$setting->id}", new WP_Error(), $unsanitized_value, $setting );
-				if ( Load::is_wp_error( $late_validity ) && $late_validity->has_errors() ) {
+				if ( is_wp_error( $late_validity ) && $late_validity->has_errors() ) {
 					$validity = $late_validity;
 				}
 			}
-			if ( ! Load::is_wp_error( $validity ) ) {
+			if ( ! is_wp_error( $validity ) ) {
 				$value = $setting->sanitize( $unsanitized_value );
 				if ( is_null( $value ) ) {
 					$validity = false;
-				} elseif ( Load::is_wp_error( $value ) ) {
+				} elseif ( is_wp_error( $value ) ) {
 					$validity = $value;
 				}
 			}
@@ -2393,7 +2393,7 @@ final class WP_Customize_Manager {
 	 *                    `wp.customize.Notification` JS model.
 	 */
 	public function prepare_setting_validity_for_js( $validity ) {
-		if ( Load::is_wp_error( $validity ) ) {
+		if ( is_wp_error( $validity ) ) {
 			$notification = array();
 			foreach ( $validity->errors as $error_code => $error_messages ) {
 				$notification[ $error_code ] = array(
@@ -2522,12 +2522,12 @@ final class WP_Customize_Manager {
 				'autosave' => $autosave,
 			)
 		);
-		if ( $autosave && ! Load::is_wp_error( $r ) ) {
+		if ( $autosave && ! is_wp_error( $r ) ) {
 			$autosaved = true;
 		}
 
 		// If the changeset was locked and an autosave request wasn't itself an error, then now explicitly return with a failure.
-		if ( $lock_user_id && ! Load::is_wp_error( $r ) ) {
+		if ( $lock_user_id && ! is_wp_error( $r ) ) {
 			$r = new WP_Error(
 				'changeset_locked',
 				__( 'Changeset is being edited by other user.' ),
@@ -2537,7 +2537,7 @@ final class WP_Customize_Manager {
 			);
 		}
 
-		if ( Load::is_wp_error( $r ) ) {
+		if ( is_wp_error( $r ) ) {
 			$response = array(
 				'message' => $r->get_error_message(),
 				'code'    => $r->get_error_code(),
@@ -2596,7 +2596,7 @@ final class WP_Customize_Manager {
 		 */
 		$response = apply_filters( 'customize_save_response', $response, $this );
 
-		if ( Load::is_wp_error( $r ) ) {
+		if ( is_wp_error( $r ) ) {
 			wp_send_json_error( $response );
 		} else {
 			wp_send_json_success( $response );
@@ -2652,7 +2652,7 @@ final class WP_Customize_Manager {
 			}
 
 			$existing_changeset_data = $this->get_changeset_post_data( $changeset_post_id );
-			if ( Load::is_wp_error( $existing_changeset_data ) ) {
+			if ( is_wp_error( $existing_changeset_data ) ) {
 				return $existing_changeset_data;
 			}
 		}
@@ -2776,7 +2776,7 @@ final class WP_Customize_Manager {
 				'validate_existence'  => true,
 			)
 		);
-		$invalid_setting_count = count( array_filter( $setting_validities, array( "\Load", "is_wp_error" ) ) );
+		$invalid_setting_count = count( array_filter( $setting_validities, 'is_wp_error' ) );
 
 		/*
 		 * Short-circuit if there are invalid settings the update is transactional.
@@ -2794,7 +2794,7 @@ final class WP_Customize_Manager {
 		// Obtain/merge data for changeset.
 		$original_changeset_data = $this->get_changeset_post_data( $changeset_post_id );
 		$data                    = $original_changeset_data;
-		if ( Load::is_wp_error( $data ) ) {
+		if ( is_wp_error( $data ) ) {
 			$data = array();
 		}
 
@@ -2815,7 +2815,7 @@ final class WP_Customize_Manager {
 			}
 
 			// Skip updating changeset for invalid setting values.
-			if ( isset( $setting_validities[ $setting_id ] ) && Load::is_wp_error( $setting_validities[ $setting_id ] ) ) {
+			if ( isset( $setting_validities[ $setting_id ] ) && is_wp_error( $setting_validities[ $setting_id ] ) ) {
 				continue;
 			}
 
@@ -2863,7 +2863,7 @@ final class WP_Customize_Manager {
 			'status'        => $args['status'],
 			'date_gmt'      => $args['date_gmt'],
 			'post_id'       => $changeset_post_id,
-			'previous_data' => Load::is_wp_error( $original_changeset_data ) ? array() : $original_changeset_data,
+			'previous_data' => is_wp_error( $original_changeset_data ) ? array() : $original_changeset_data,
 			'manager'       => $this,
 		);
 
@@ -2969,7 +2969,7 @@ final class WP_Customize_Manager {
 			}
 		} else {
 			$r = wp_insert_post( wp_slash( $post_array ), true );
-			if ( ! Load::is_wp_error( $r ) ) {
+			if ( ! is_wp_error( $r ) ) {
 				$this->_changeset_post_id = $r; // Update cached post ID for the loaded changeset.
 			}
 		}
@@ -2983,7 +2983,7 @@ final class WP_Customize_Manager {
 			'setting_validities' => $setting_validities,
 		);
 
-		if ( Load::is_wp_error( $r ) ) {
+		if ( is_wp_error( $r ) ) {
 			$response['changeset_post_save_failure'] = $r->get_error_code();
 			return new WP_Error( 'changeset_post_save_failure', '', $response );
 		}
@@ -3044,14 +3044,13 @@ final class WP_Customize_Manager {
 	 * will mutate the the `post_content` and the `post_name` when they should be
 	 * untouched.
 	 *
-	 * @param int|WP_Post $post The changeset post.
-	 *
-	 * @return mixed A WP_Post object for the trashed post or an empty value on failure.
-	 *@global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 * @since 4.9.0
 	 *
 	 * @see wp_trash_post()
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
+	 * @param int|WP_Post $post The changeset post.
+	 * @return mixed A WP_Post object for the trashed post or an empty value on failure.
 	 */
 	public function trash_changeset_post( $post ) {
 		global $wpdb;
@@ -3440,20 +3439,19 @@ final class WP_Customize_Manager {
 	 * theme, the theme must first be switched to (via `switch_theme()`) before
 	 * invoking this method.
 	 *
-	 * @param int $changeset_post_id ID for customize_changeset post. Defaults to the changeset for the current manager instance.
-	 *
-	 * @return true|WP_Error True or error info.
-	 *@global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 * @since 4.7.0
 	 *
 	 * @see _wp_customize_publish_changeset()
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
+	 * @param int $changeset_post_id ID for customize_changeset post. Defaults to the changeset for the current manager instance.
+	 * @return true|WP_Error True or error info.
 	 */
 	public function _publish_changeset_values( $changeset_post_id ) {
 		global $wpdb;
 
 		$publishing_changeset_data = $this->get_changeset_post_data( $changeset_post_id );
-		if ( Load::is_wp_error( $publishing_changeset_data ) ) {
+		if ( is_wp_error( $publishing_changeset_data ) ) {
 			return $publishing_changeset_data;
 		}
 
@@ -4509,7 +4507,7 @@ final class WP_Customize_Manager {
 			$control->enqueue();
 		}
 
-		if ( ! Load::is_multisite() && ( current_user_can( 'install_themes' ) || current_user_can( 'update_themes' ) || current_user_can( 'delete_themes' ) ) ) {
+		if ( ! is_multisite() && ( current_user_can( 'install_themes' ) || current_user_can( 'update_themes' ) || current_user_can( 'delete_themes' ) ) ) {
 			wp_enqueue_script( 'updates' );
 			wp_localize_script(
 				'updates',
@@ -4612,7 +4610,7 @@ final class WP_Customize_Manager {
 	public function get_allowed_urls() {
 		$allowed_urls = array( home_url( '/' ) );
 
-		if ( Load::is_ssl() && ! $this->is_cross_domain() ) {
+		if ( is_ssl() && ! $this->is_cross_domain() ) {
 			$allowed_urls[] = home_url( '/', 'https' );
 		}
 
@@ -5052,7 +5050,7 @@ final class WP_Customize_Manager {
 			)
 		);
 
-		if ( ! Load::is_multisite() ) {
+		if ( ! is_multisite() ) {
 			$this->add_section(
 				new WP_Customize_Themes_Section(
 					$this,
@@ -5836,7 +5834,7 @@ final class WP_Customize_Manager {
 
 			// Load themes from the .org API.
 			$themes = themes_api( 'query_themes', $args );
-			if ( Load::is_wp_error( $themes ) ) {
+			if ( is_wp_error( $themes ) ) {
 				wp_send_json_error();
 			}
 

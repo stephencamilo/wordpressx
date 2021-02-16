@@ -26,7 +26,7 @@ add_action( 'admin_head', 'options_general_add_js' );
 $options_help = '<p>' . __( 'The fields on this screen determine some of the basics of your site setup.' ) . '</p>' .
 	'<p>' . __( 'Most themes display the site title at the top of every page, in the title bar of the browser, and as the identifying name for syndicated feeds. The tagline is also displayed by many themes.' ) . '</p>';
 
-if ( ! Load::is_multisite() ) {
+if ( ! is_multisite() ) {
 	$options_help .= '<p>' . __( 'The WordPress URL and the Site URL can be the same (example.com) or different; for example, having the WordPress core files (example.com/wordpress) in a subdirectory instead of the root directory.' ) . '</p>' .
 		'<p>' . __( 'If you want site visitors to be able to register themselves, as opposed to by the site administrator, check the membership box. A default user role can be set for all new users, whether self-registered or registered by the site admin.' ) . '</p>';
 }
@@ -72,7 +72,7 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 </tr>
 
 <?php
-if ( ! Load::is_multisite() ) {
+if ( ! is_multisite() ) {
 	$wp_site_url_class = '';
 	$wp_home_class     = '';
 	if ( defined( 'WP_SITEURL' ) ) {
@@ -125,7 +125,7 @@ if ( $new_admin_email && get_option( 'admin_email' ) !== $new_admin_email ) :
 		);
 		printf(
 			' <a href="%1$s">%2$s</a>',
-			esc_url( wp_nonce_url( admin_url( 'options.php?dismiss=new_admin_email' ), 'dismiss-' . Load::get_current_blog_id() . '-new_admin_email' ) ),
+			esc_url( wp_nonce_url( admin_url( 'options.php?dismiss=new_admin_email' ), 'dismiss-' . get_current_blog_id() . '-new_admin_email' ) ),
 			__( 'Cancel' )
 		);
 	?>
@@ -135,7 +135,7 @@ if ( $new_admin_email && get_option( 'admin_email' ) !== $new_admin_email ) :
 </td>
 </tr>
 
-<?php if ( ! Load::is_multisite() ) { ?>
+<?php if ( ! is_multisite() ) { ?>
 
 <tr>
 <th scope="row"><?php _e( 'Membership' ); ?></th>
@@ -157,7 +157,7 @@ if ( $new_admin_email && get_option( 'admin_email' ) !== $new_admin_email ) :
 
 $languages    = get_available_languages();
 $translations = wp_get_available_translations();
-if ( ! Load::is_multisite() && defined( 'WPLANG' ) && '' !== WPLANG && 'en_US' !== WPLANG && ! in_array( WPLANG, $languages, true ) ) {
+if ( ! is_multisite() && defined( 'WPLANG' ) && '' !== WPLANG && 'en_US' !== WPLANG && ! in_array( WPLANG, $languages, true ) ) {
 	$languages[] = WPLANG;
 }
 if ( ! empty( $languages ) || ! empty( $translations ) ) {

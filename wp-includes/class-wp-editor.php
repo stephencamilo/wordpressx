@@ -315,7 +315,7 @@ final class _WP_Editors {
 	 */
 	public static function editor_settings( $editor_id, $set ) {
 		if ( empty( self::$first_init ) ) {
-			if ( Load::is_admin() ) {
+			if ( is_admin() ) {
 				add_action( 'admin_print_footer_scripts', array( __CLASS__, 'editor_js' ), 50 );
 				add_action( 'admin_print_footer_scripts', array( __CLASS__, 'force_uncompressed_tinymce' ), 1 );
 				add_action( 'admin_print_footer_scripts', array( __CLASS__, 'enqueue_scripts' ), 1 );
@@ -564,7 +564,7 @@ final class _WP_Editors {
 				 * Plugins that use wp_editor() on the front-end can decide whether to add the theme stylesheet
 				 * by using `get_editor_stylesheets()` and the `mce_css` or `tiny_mce_before_init` filters, see below.
 				 */
-				if ( Load::is_admin() ) {
+				if ( is_admin() ) {
 					$editor_styles = get_editor_stylesheets();
 
 					if ( ! empty( $editor_styles ) ) {
@@ -730,7 +730,7 @@ final class _WP_Editors {
 
 				if ( post_type_supports( $post->post_type, 'post-formats' ) ) {
 					$post_format = get_post_format( $post );
-					if ( $post_format && ! Load::is_wp_error( $post_format ) ) {
+					if ( $post_format && ! is_wp_error( $post_format ) ) {
 						$body_class .= ' post-format-' . sanitize_html_class( $post_format );
 					} else {
 						$body_class .= ' post-format-standard';
@@ -905,7 +905,7 @@ final class _WP_Editors {
 		// Also add wp-includes/css/editor.css.
 		wp_enqueue_style( 'editor-buttons' );
 
-		if ( Load::is_admin() ) {
+		if ( is_admin() ) {
 			add_action( 'admin_print_footer_scripts', array( __CLASS__, 'force_uncompressed_tinymce' ), 1 );
 			add_action( 'admin_print_footer_scripts', array( __CLASS__, 'print_default_editor_scripts' ), 45 );
 		} else {
@@ -1656,7 +1656,7 @@ final class _WP_Editors {
 			echo self::$ext_plugins . "\n";
 		}
 
-		if ( ! Load::is_admin() ) {
+		if ( ! is_admin() ) {
 			echo 'var ajaxurl = "' . admin_url( 'admin-ajax.php', 'relative' ) . '";';
 		}
 

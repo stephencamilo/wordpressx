@@ -14,7 +14,7 @@ wp_enqueue_script( 'plugin-install' );
 wp_enqueue_script( 'updates' );
 add_thickbox();
 
-if ( Load::is_multisite() && ! Load::is_network_admin() ) {
+if ( is_multisite() && ! is_network_admin() ) {
 	wp_redirect( network_admin_url( 'update-core.php' ) );
 	exit;
 }
@@ -29,7 +29,7 @@ if ( ! current_user_can( 'update_core' ) && ! current_user_can( 'update_themes' 
  * @since 2.7.0
  *
  * @global string $wp_local_package Locale code of the package.
- * @global WPDB   $wpdb             WordPress database abstraction object.
+ * @global wpdb   $wpdb             WordPress database abstraction object.
  *
  * @param object $update
  */
@@ -841,7 +841,7 @@ function do_core_upgrade( $reinstall = false ) {
 		)
 	);
 
-	if ( Load::is_wp_error( $result ) ) {
+	if ( is_wp_error( $result ) ) {
 		show_message( $result );
 		if ( 'up_to_date' != $result->get_error_code() && 'locked' != $result->get_error_code() ) {
 			show_message( __( 'Installation failed.' ) );

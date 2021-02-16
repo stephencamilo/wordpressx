@@ -52,7 +52,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @ignore
  * @since 3.3.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  *
  * @return string|false Value of the `doing_cron` transient, 0|false otherwise.
  */
@@ -60,7 +60,7 @@ function _get_cron_lock() {
 	global $wpdb;
 
 	$value = 0;
-	if ( Load::wp_using_ext_object_cache() ) {
+	if ( wp_using_ext_object_cache() ) {
 		/*
 		 * Skip local cache and force re-fetch of doing_cron transient
 		 * in case another process updated the cache.

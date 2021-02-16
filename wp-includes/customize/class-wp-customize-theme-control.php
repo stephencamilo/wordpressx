@@ -94,7 +94,7 @@ class WP_Customize_Theme_Control extends WP_Customize_Control {
 					<div class="update-message notice inline notice-warning notice-alt" data-slug="{{ data.theme.id }}">
 						<p>
 							<?php
-							if ( Load::is_multisite() ) {
+							if ( is_multisite() ) {
 								_e( 'New version available.' );
 							} else {
 								printf(

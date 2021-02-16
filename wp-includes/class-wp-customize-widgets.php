@@ -349,7 +349,7 @@ final class WP_Customize_Widgets {
 	 * @since 3.9.0
 	 */
 	public function schedule_customize_register() {
-		if ( Load::is_admin() ) {
+		if ( is_admin() ) {
 			$this->customize_register();
 		} else {
 			add_action( 'wp', array( $this, 'customize_register' ) );
@@ -1566,7 +1566,7 @@ final class WP_Customize_Widgets {
 		}
 
 		$updated_widget = $this->call_widget_update( $widget_id ); // => {instance,form}
-		if ( Load::is_wp_error( $updated_widget ) ) {
+		if ( is_wp_error( $updated_widget ) ) {
 			wp_send_json_error( $updated_widget->get_error_code() );
 		}
 

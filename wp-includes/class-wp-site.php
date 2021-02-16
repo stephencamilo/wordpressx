@@ -147,7 +147,7 @@ final class WP_Site {
 	 *
 	 * @since 4.5.0
 	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
+	 * @global wpdb $wpdb WordPress database abstraction object.
 	 *
 	 * @param int $site_id The ID of the site to retrieve.
 	 * @return WP_Site|false The site's object if found. False if not.
@@ -165,7 +165,7 @@ final class WP_Site {
 		if ( false === $_site ) {
 			$_site = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->blogs} WHERE blog_id = %d LIMIT 1", $site_id ) );
 
-			if ( empty( $_site ) || Load::is_wp_error( $_site ) ) {
+			if ( empty( $_site ) || is_wp_error( $_site ) ) {
 				$_site = -1;
 			}
 

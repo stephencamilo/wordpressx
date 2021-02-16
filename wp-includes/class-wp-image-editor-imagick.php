@@ -145,7 +145,7 @@ class WP_Image_Editor_Imagick extends WP_Image_Editor {
 			if ( 'pdf' === $file_extension ) {
 				$pdf_loaded = $this->pdf_load_source();
 
-				if ( Load::is_wp_error( $pdf_loaded ) ) {
+				if ( is_wp_error( $pdf_loaded ) ) {
 					return $pdf_loaded;
 				}
 			} else {
@@ -173,7 +173,7 @@ class WP_Image_Editor_Imagick extends WP_Image_Editor {
 
 		$updated_size = $this->update_size();
 
-		if ( Load::is_wp_error( $updated_size ) ) {
+		if ( is_wp_error( $updated_size ) ) {
 			return $updated_size;
 		}
 
@@ -190,7 +190,7 @@ class WP_Image_Editor_Imagick extends WP_Image_Editor {
 	 */
 	public function set_quality( $quality = null ) {
 		$quality_result = parent::set_quality( $quality );
-		if ( Load::is_wp_error( $quality_result ) ) {
+		if ( is_wp_error( $quality_result ) ) {
 			return $quality_result;
 		} else {
 			$quality = $this->get_quality();
@@ -272,7 +272,7 @@ class WP_Image_Editor_Imagick extends WP_Image_Editor {
 
 		// Execute the resize.
 		$thumb_result = $this->thumbnail_image( $dst_w, $dst_h );
-		if ( Load::is_wp_error( $thumb_result ) ) {
+		if ( is_wp_error( $thumb_result ) ) {
 			return $thumb_result;
 		}
 
@@ -447,7 +447,7 @@ class WP_Image_Editor_Imagick extends WP_Image_Editor {
 		foreach ( $sizes as $size => $size_data ) {
 			$meta = $this->make_subsize( $size_data );
 
-			if ( ! Load::is_wp_error( $meta ) ) {
+			if ( ! is_wp_error( $meta ) ) {
 				$metadata[ $size ] = $meta;
 			}
 		}
@@ -492,7 +492,7 @@ class WP_Image_Editor_Imagick extends WP_Image_Editor {
 
 		$resized = $this->resize( $size_data['width'], $size_data['height'], $size_data['crop'] );
 
-		if ( Load::is_wp_error( $resized ) ) {
+		if ( is_wp_error( $resized ) ) {
 			$saved = $resized;
 		} else {
 			$saved = $this->_save( $this->image );
@@ -505,7 +505,7 @@ class WP_Image_Editor_Imagick extends WP_Image_Editor {
 		$this->size  = $orig_size;
 		$this->image = $orig_image;
 
-		if ( ! Load::is_wp_error( $saved ) ) {
+		if ( ! is_wp_error( $saved ) ) {
 			unset( $saved['path'] );
 		}
 
@@ -547,7 +547,7 @@ class WP_Image_Editor_Imagick extends WP_Image_Editor {
 				}
 
 				$thumb_result = $this->thumbnail_image( $dst_w, $dst_h );
-				if ( Load::is_wp_error( $thumb_result ) ) {
+				if ( is_wp_error( $thumb_result ) ) {
 					return $thumb_result;
 				}
 
@@ -583,7 +583,7 @@ class WP_Image_Editor_Imagick extends WP_Image_Editor {
 
 			// Since this changes the dimensions of the image, update the size.
 			$result = $this->update_size();
-			if ( Load::is_wp_error( $result ) ) {
+			if ( is_wp_error( $result ) ) {
 				return $result;
 			}
 
@@ -656,7 +656,7 @@ class WP_Image_Editor_Imagick extends WP_Image_Editor {
 	public function save( $destfilename = null, $mime_type = null ) {
 		$saved = $this->_save( $this->image, $destfilename, $mime_type );
 
-		if ( ! Load::is_wp_error( $saved ) ) {
+		if ( ! is_wp_error( $saved ) ) {
 			$this->file      = $saved['path'];
 			$this->mime_type = $saved['mime-type'];
 
@@ -693,7 +693,7 @@ class WP_Image_Editor_Imagick extends WP_Image_Editor {
 		}
 
 		$write_image_result = $this->write_image( $this->image, $filename );
-		if ( Load::is_wp_error( $write_image_result ) ) {
+		if ( is_wp_error( $write_image_result ) ) {
 			return $write_image_result;
 		}
 
@@ -893,7 +893,7 @@ class WP_Image_Editor_Imagick extends WP_Image_Editor {
 	protected function pdf_load_source() {
 		$filename = $this->pdf_setup();
 
-		if ( Load::is_wp_error( $filename ) ) {
+		if ( is_wp_error( $filename ) ) {
 			return $filename;
 		}
 

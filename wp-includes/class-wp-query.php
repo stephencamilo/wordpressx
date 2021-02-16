@@ -951,7 +951,7 @@ class WP_Query {
 			$this->is_preview = true;
 		}
 
-		if ( Load::is_admin() ) {
+		if ( is_admin() ) {
 			$this->is_admin = true;
 		}
 
@@ -1324,13 +1324,12 @@ class WP_Query {
 	/**
 	 * Generates SQL for the WHERE clause based on passed search terms.
 	 *
+	 * @since 3.7.0
+	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
 	 * @param array $q Query variables.
-	 *
 	 * @return string WHERE clause.
-	 *@since 3.7.0
-	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 */
 	protected function parse_search( &$q ) {
 		global $wpdb;
@@ -1494,13 +1493,12 @@ class WP_Query {
 	/**
 	 * Generates SQL for the ORDER BY condition based on passed search terms.
 	 *
+	 * @since 3.7.0
+	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
 	 * @param array $q Query variables.
-	 *
 	 * @return string ORDER BY clause.
-	 *@since 3.7.0
-	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 */
 	protected function parse_search_order( &$q ) {
 		global $wpdb;
@@ -1552,13 +1550,12 @@ class WP_Query {
 	/**
 	 * Converts the given orderby alias (if allowed) to a properly-prefixed value.
 	 *
+	 * @since 4.0.0
+	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
 	 * @param string $orderby Alias for the field to order by.
-	 *
 	 * @return string|false Table-prefixed value to used in the ORDER clause. False otherwise.
-	 *@since 4.0.0
-	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 */
 	protected function parse_orderby( $orderby ) {
 		global $wpdb;
@@ -1837,7 +1834,7 @@ class WP_Query {
 		}
 
 		if ( ! isset( $q['cache_results'] ) ) {
-			if ( Load::wp_using_ext_object_cache() ) {
+			if ( wp_using_ext_object_cache() ) {
 				$q['cache_results'] = false;
 			} else {
 				$q['cache_results'] = true;
@@ -3500,7 +3497,7 @@ class WP_Query {
 				}
 			}
 
-			if ( ! empty( $term ) && ! Load::is_wp_error( $term ) ) {
+			if ( ! empty( $term ) && ! is_wp_error( $term ) ) {
 				$this->queried_object    = $term;
 				$this->queried_object_id = (int) $term->term_id;
 

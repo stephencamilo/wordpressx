@@ -20,7 +20,7 @@ if ( ! current_user_can( 'manage_network' ) ) {
 $title       = __( 'Dashboard' );
 $parent_file = 'index.php';
 
-$overview = '<p>' . __( 'Welcome to your Network Admin. This area of the Administration Screens is used for managing all aspects of your Multisite Network.' ) . '</p>';
+$overview  = '<p>' . __( 'Welcome to your Network Admin. This area of the Administration Screens is used for managing all aspects of your Multisite Network.' ) . '</p>';
 $overview .= '<p>' . __( 'From here you can:' ) . '</p>';
 $overview .= '<ul><li>' . __( 'Add and manage sites or users' ) . '</li>';
 $overview .= '<li>' . __( 'Install and activate themes or plugins' ) . '</li>';
@@ -35,7 +35,7 @@ get_current_screen()->add_help_tab(
 	)
 );
 
-$quick_tasks = '<p>' . __( 'The Right Now widget on this screen provides current user and site counts on your network.' ) . '</p>';
+$quick_tasks  = '<p>' . __( 'The Right Now widget on this screen provides current user and site counts on your network.' ) . '</p>';
 $quick_tasks .= '<ul><li>' . __( 'To add a new user, <strong>click Create a New User</strong>.' ) . '</li>';
 $quick_tasks .= '<li>' . __( 'To add a new site, <strong>click Create a New Site</strong>.' ) . '</li></ul>';
 $quick_tasks .= '<p>' . __( 'To search for a user or site, use the search boxes.' ) . '</p>';
@@ -66,17 +66,17 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 
 ?>
 
-    <div class="wrap">
-        <h1><?php echo esc_html( $title ); ?></h1>
+<div class="wrap">
+<h1><?php echo esc_html( $title ); ?></h1>
 
-        <div id="dashboard-widgets-wrap">
+<div id="dashboard-widgets-wrap">
 
-			<?php wp_dashboard(); ?>
+<?php wp_dashboard(); ?>
 
-            <div class="clear"></div>
-        </div><!-- dashboard-widgets-wrap -->
+<div class="clear"></div>
+</div><!-- dashboard-widgets-wrap -->
 
-    </div><!-- wrap -->
+</div><!-- wrap -->
 
 <?php
 wp_print_community_events_templates();

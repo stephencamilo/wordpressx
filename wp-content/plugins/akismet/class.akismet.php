@@ -600,7 +600,7 @@ class Akismet {
 
 		delete_comment_meta( $id, 'akismet_rechecking' );
 
-		if ( Load::is_wp_error( $api_response ) ) {
+		if ( is_wp_error( $api_response ) ) {
 			// Invalid comment ID.
 		}
 		else if ( 'true' === $api_response ) {
@@ -1048,7 +1048,7 @@ class Akismet {
 				$roles = join( ',', $comment_user->roles );
 		}
 
-		if ( Load::is_multisite() && is_super_admin( $user_id ) ) {
+		if ( is_multisite() && is_super_admin( $user_id ) ) {
 			if ( empty( $roles ) ) {
 				$roles = 'super_admin';
 			} else {
@@ -1193,7 +1193,7 @@ class Akismet {
 
 		Akismet::log( compact( 'akismet_url', 'http_args', 'response' ) );
 
-		if ( $ssl && Load::is_wp_error( $response ) ) {
+		if ( $ssl && is_wp_error( $response ) ) {
 			do_action( 'akismet_https_request_failure', $response );
 
 			// Intermittent connection problems may cause the first HTTPS
@@ -1203,7 +1203,7 @@ class Akismet {
 			
 			Akismet::log( compact( 'akismet_url', 'http_args', 'response' ) );
 
-			if ( Load::is_wp_error( $response ) ) {
+			if ( is_wp_error( $response ) ) {
 				$ssl_failed = true;
 
 				do_action( 'akismet_https_request_failure', $response );
@@ -1217,7 +1217,7 @@ class Akismet {
 			}
 		}
 
-		if ( Load::is_wp_error( $response ) ) {
+		if ( is_wp_error( $response ) ) {
 			do_action( 'akismet_request_failure', $response );
 
 			return array( '', '' );

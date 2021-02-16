@@ -13,9 +13,6 @@
  *
  * @since 1.0.0
  */
-
-use Core\WPIncludes\Load;
-
 define( 'WPINC', 'wp-includes' );
 
 /**
@@ -25,19 +22,19 @@ define( 'WPINC', 'wp-includes' );
  * we're including version.php from another installation and don't want
  * these values to be overridden if already set.
  *
- * @global string $wp_version The WordPress version string.
- * @global int $wp_db_version WordPress database version.
- * @global string $tinymce_version TinyMCE version.
- * @global string $required_php_version The required PHP version string.
+ * @global string $wp_version             The WordPress version string.
+ * @global int    $wp_db_version          WordPress database version.
+ * @global string $tinymce_version        TinyMCE version.
+ * @global string $required_php_version   The required PHP version string.
  * @global string $required_mysql_version The required MySQL version string.
- * @global string $wp_local_package Locale code of the package.
+ * @global string $wp_local_package       Locale code of the package.
  */
 global $wp_version, $wp_db_version, $tinymce_version, $required_php_version, $required_mysql_version, $wp_local_package;
 require ABSPATH . WPINC . '/version.php';
 require ABSPATH . WPINC . '/load.php';
 
 // Check for the required PHP version and for the MySQL extension or a database drop-in.
-Load::wp_check_php_mysql_versions();
+wp_check_php_mysql_versions();
 
 // Include files required for initialization.
 require ABSPATH . WPINC . '/class-wp-paused-extensions-storage.php';
@@ -63,21 +60,24 @@ global $blog_id;
 // Set initial default constants including WP_MEMORY_LIMIT, WP_MAX_MEMORY_LIMIT, WP_DEBUG, SCRIPT_DEBUG, WP_CONTENT_DIR and WP_CACHE.
 wp_initial_constants();
 
+// Make sure we register the shutdown handler for fatal errors as soon as possible.
+wp_register_fatal_error_handler();
+
 // WordPress calculates offsets from UTC.
 // phpcs:ignore WordPress.DateTime.RestrictedFunctions.timezone_change_date_default_timezone_set
 date_default_timezone_set( 'UTC' );
 
 // Standardize $_SERVER variables across setups.
-Load::wp_fix_server_vars();
+wp_fix_server_vars();
 
 // Check if we're in maintenance mode.
-Load::wp_maintenance();
+wp_maintenance();
 
 // Start loading timer.
-Load::timer_start();
+timer_start();
 
 // Check if we're in WP_DEBUG mode.
-Load::wp_debug_mode();
+wp_debug_mode();
 
 /**
  * Filters whether to enable loading of the advanced-cache.php drop-in.
@@ -85,11 +85,10 @@ Load::wp_debug_mode();
  * This filter runs before it can be used by plugins. It is designed for non-web
  * run-times. If false is returned, advanced-cache.php will never be loaded.
  *
- * @param bool $enable_advanced_cache Whether to enable loading advanced-cache.php (if present).
- *                                    Default true.
- *
  * @since 4.6.0
  *
+ * @param bool $enable_advanced_cache Whether to enable loading advanced-cache.php (if present).
+ *                                    Default true.
  */
 if ( WP_CACHE && apply_filters( 'enable_loading_advanced_cache_dropin', true ) && file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {
 	// For an advanced caching plugin to use. Uses a static drop-in because you would only want one.
@@ -102,7 +101,7 @@ if ( WP_CACHE && apply_filters( 'enable_loading_advanced_cache_dropin', true ) &
 }
 
 // Define WP_LANG_DIR if not set.
-Load::wp_set_lang_dir();
+wp_set_lang_dir();
 
 // Load early WordPress files.
 require ABSPATH . WPINC . '/compat.php';
@@ -117,25 +116,25 @@ require ABSPATH . WPINC . '/class-wp-error.php';
 require ABSPATH . WPINC . '/pomo/mo.php';
 
 /**
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  * @since 0.71
  */
 global $wpdb;
 // Include the wpdb class and, if present, a db.php database drop-in.
-Load::require_wp_db();
+require_wp_db();
 
 // Set the database table prefix and the format specifiers for database table columns.
 $GLOBALS['table_prefix'] = $table_prefix;
-Load::wp_set_wpdb_vars();
+wp_set_wpdb_vars();
 
 // Start the WordPress object cache, or an external object cache if the drop-in is present.
-Load::wp_start_object_cache();
+wp_start_object_cache();
 
 // Attach the default filters.
 require ABSPATH . WPINC . '/default-filters.php';
 
 // Initialize multisite if enabled.
-if ( Load::is_multisite() ) {
+if ( is_multisite() ) {
 	require ABSPATH . WPINC . '/class-wp-site-query.php';
 	require ABSPATH . WPINC . '/class-wp-network-query.php';
 	require ABSPATH . WPINC . '/ms-blogs.php';
@@ -144,7 +143,7 @@ if ( Load::is_multisite() ) {
 	define( 'MULTISITE', false );
 }
 
-register_shutdown_function( array( "\Core\WPIncludes\Load", "shutdown_action_hook" ) );
+register_shutdown_function( 'shutdown_action_hook' );
 
 // Stop most of WordPress from being loaded if we just want the basics.
 if ( SHORTINIT ) {
@@ -157,7 +156,7 @@ require_once ABSPATH . WPINC . '/class-wp-locale.php';
 require_once ABSPATH . WPINC . '/class-wp-locale-switcher.php';
 
 // Run the installer if WordPress is not installed.
-Load::wp_not_installed();
+wp_not_installed();
 
 // Load most of WordPress.
 require ABSPATH . WPINC . '/class-wp-walker.php';
@@ -303,7 +302,7 @@ require ABSPATH . WPINC . '/block-supports/typography.php';
 $GLOBALS['wp_embed'] = new WP_Embed();
 
 // Load multisite-specific files.
-if ( Load::is_multisite() ) {
+if ( is_multisite() ) {
 	require ABSPATH . WPINC . '/ms-functions.php';
 	require ABSPATH . WPINC . '/ms-default-filters.php';
 	require ABSPATH . WPINC . '/ms-deprecated.php';
@@ -316,23 +315,22 @@ wp_plugin_directory_constants();
 $GLOBALS['wp_plugin_paths'] = array();
 
 // Load must-use plugins.
-foreach ( Load::wp_get_mu_plugins() as $mu_plugin ) {
+foreach ( wp_get_mu_plugins() as $mu_plugin ) {
 	include_once $mu_plugin;
 
 	/**
 	 * Fires once a single must-use plugin has loaded.
 	 *
-	 * @param string $mu_plugin Full path to the plugin's main file.
-	 *
 	 * @since 5.1.0
 	 *
+	 * @param string $mu_plugin Full path to the plugin's main file.
 	 */
 	do_action( 'mu_plugin_loaded', $mu_plugin );
 }
 unset( $mu_plugin );
 
 // Load network activated plugins.
-if ( Load::is_multisite() ) {
+if ( is_multisite() ) {
 	foreach ( wp_get_active_network_plugins() as $network_plugin ) {
 		wp_register_plugin_realpath( $network_plugin );
 		include_once $network_plugin;
@@ -340,10 +338,9 @@ if ( Load::is_multisite() ) {
 		/**
 		 * Fires once a single network-activated plugin has loaded.
 		 *
-		 * @param string $network_plugin Full path to the plugin's main file.
-		 *
 		 * @since 5.1.0
 		 *
+		 * @param string $network_plugin Full path to the plugin's main file.
 		 */
 		do_action( 'network_plugin_loaded', $network_plugin );
 	}
@@ -357,7 +354,7 @@ if ( Load::is_multisite() ) {
  */
 do_action( 'muplugins_loaded' );
 
-if ( Load::is_multisite() ) {
+if ( is_multisite() ) {
 	ms_cookie_constants();
 }
 
@@ -375,28 +372,27 @@ require ABSPATH . WPINC . '/vars.php';
 create_initial_taxonomies();
 create_initial_post_types();
 
-Load::wp_start_scraping_edited_file_errors();
+wp_start_scraping_edited_file_errors();
 
 // Register the default theme directory root.
 register_theme_directory( get_theme_root() );
 
-if ( ! Load::is_multisite() ) {
+if ( ! is_multisite() ) {
 	// Handle users requesting a recovery mode link and initiating recovery mode.
 	wp_recovery_mode()->initialize();
 }
 
 // Load active plugins.
-foreach ( Load::wp_get_active_and_valid_plugins() as $plugin ) {
+foreach ( wp_get_active_and_valid_plugins() as $plugin ) {
 	wp_register_plugin_realpath( $plugin );
 	include_once $plugin;
 
 	/**
 	 * Fires once a single activated plugin has loaded.
 	 *
-	 * @param string $plugin Full path to the plugin's main file.
-	 *
 	 * @since 5.1.0
 	 *
+	 * @param string $plugin Full path to the plugin's main file.
 	 */
 	do_action( 'plugin_loaded', $plugin );
 }
@@ -407,7 +403,7 @@ require ABSPATH . WPINC . '/pluggable.php';
 require ABSPATH . WPINC . '/pluggable-deprecated.php';
 
 // Set internal encoding.
-Load::wp_set_internal_encoding();
+wp_set_internal_encoding();
 
 // Run wp_cache_postload() if object cache is enabled and the function exists.
 if ( WP_CACHE && function_exists( 'wp_cache_postload' ) ) {
@@ -427,7 +423,7 @@ do_action( 'plugins_loaded' );
 wp_functionality_constants();
 
 // Add magic quotes and set up $_REQUEST ( $_GET + $_POST ).
-Load::wp_magic_quotes();
+wp_magic_quotes();
 
 /**
  * Fires when comment cookies are sanitized.
@@ -524,7 +520,7 @@ $GLOBALS['wp_locale_switcher'] = new WP_Locale_Switcher();
 $GLOBALS['wp_locale_switcher']->init();
 
 // Load the functions for the active theme, for both parent and child theme if applicable.
-foreach ( Load::wp_get_active_and_valid_themes() as $theme ) {
+foreach ( wp_get_active_and_valid_themes() as $theme ) {
 	if ( file_exists( $theme . '/functions.php' ) ) {
 		include $theme . '/functions.php';
 	}
@@ -561,7 +557,7 @@ $GLOBALS['wp']->init();
 do_action( 'init' );
 
 // Check site status.
-if ( Load::is_multisite() ) {
+if ( is_multisite() ) {
 	$file = ms_site_check();
 	if ( true !== $file ) {
 		require $file;

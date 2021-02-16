@@ -13,8 +13,6 @@
  */
 
 // Strip, trim, kses, special chars for string saves.
-use Core\WPIncludes\Load;
-
 foreach ( array( 'pre_term_name', 'pre_comment_author_name', 'pre_link_name', 'pre_link_target', 'pre_link_rel', 'pre_user_display_name', 'pre_user_first_name', 'pre_user_last_name', 'pre_user_nickname' ) as $filter ) {
 	add_filter( $filter, 'sanitize_text_field' );
 	add_filter( $filter, 'wp_filter_kses' );
@@ -23,7 +21,7 @@ foreach ( array( 'pre_term_name', 'pre_comment_author_name', 'pre_link_name', 'p
 
 // Strip, kses, special chars for string display.
 foreach ( array( 'term_name', 'comment_author_name', 'link_name', 'link_target', 'link_rel', 'user_display_name', 'user_first_name', 'user_last_name', 'user_nickname' ) as $filter ) {
-	if ( Load::is_admin() ) {
+	if ( is_admin() ) {
 		// These are expensive. Run only on admin pages for defense in depth.
 		add_filter( $filter, 'sanitize_text_field' );
 		add_filter( $filter, 'wp_kses_data' );
@@ -37,7 +35,7 @@ foreach ( array( 'pre_term_description', 'pre_link_description', 'pre_link_notes
 }
 
 // Kses only for textarea admin displays.
-if ( Load::is_admin() ) {
+if ( is_admin() ) {
 	foreach ( array( 'term_description', 'link_description', 'link_notes', 'user_description' ) as $filter ) {
 		add_filter( $filter, 'wp_kses_data' );
 	}
@@ -54,7 +52,7 @@ foreach ( array( 'pre_comment_author_email', 'pre_user_email' ) as $filter ) {
 // Email admin display.
 foreach ( array( 'comment_author_email', 'user_email' ) as $filter ) {
 	add_filter( $filter, 'sanitize_email' );
-	if ( Load::is_admin() ) {
+	if ( is_admin() ) {
 		add_filter( $filter, 'wp_kses_data' );
 	}
 }
@@ -75,11 +73,11 @@ foreach ( array(
 
 // Display URL.
 foreach ( array( 'user_url', 'link_url', 'link_image', 'link_rss', 'comment_url', 'post_guid' ) as $filter ) {
-	if ( Load::is_admin() ) {
+	if ( is_admin() ) {
 		add_filter( $filter, 'wp_strip_all_tags' );
 	}
 	add_filter( $filter, 'esc_url' );
-	if ( Load::is_admin() ) {
+	if ( is_admin() ) {
 		add_filter( $filter, 'wp_kses_data' );
 	}
 }

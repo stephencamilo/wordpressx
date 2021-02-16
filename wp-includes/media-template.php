@@ -240,7 +240,7 @@ function wp_print_media_templates() {
 				?>
 				</p>
 			</div>
-		<?php elseif ( Load::is_multisite() && ! is_upload_space_available() ) : ?>
+		<?php elseif ( is_multisite() && ! is_upload_space_available() ) : ?>
 			<div class="upload-ui">
 				<h2 class="upload-instructions"><?php _e( 'Upload Limit Exceeded' ); ?></h2>
 				<?php

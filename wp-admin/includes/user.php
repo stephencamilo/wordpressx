@@ -9,9 +9,9 @@
 /**
  * Creates a new user from the "Users" form using $_POST information.
  *
- * @return int|WP_Error WP_Error or User ID.
  * @since 2.0.0
  *
+ * @return int|WP_Error WP_Error or User ID.
  */
 function add_user() {
 	return edit_user();
@@ -22,11 +22,10 @@ function add_user() {
  *
  * Used on user-edit.php and profile.php to manage and process user options, passwords etc.
  *
- * @param int $user_id Optional. User ID.
- *
- * @return int|WP_Error User ID of the updated user.
  * @since 2.0.0
  *
+ * @param int $user_id Optional. User ID.
+ * @return int|WP_Error User ID of the updated user.
  */
 function edit_user( $user_id = 0 ) {
 	$wp_roles = wp_roles();
@@ -70,7 +69,7 @@ function edit_user( $user_id = 0 ) {
 		 * Multisite super admins can freely edit their roles, they possess all caps.
 		 */
 		if (
-			( Load::is_multisite() && current_user_can( 'manage_network_users' ) ) ||
+			( is_multisite() && current_user_can( 'manage_network_users' ) ) ||
 			get_current_user_id() !== $user_id ||
 			( $potential_role && $potential_role->has_cap( 'promote_users' ) )
 		) {
@@ -155,12 +154,11 @@ function edit_user( $user_id = 0 ) {
 	/**
 	 * Fires before the password and confirm password fields are checked for congruity.
 	 *
-	 * @param string $user_login The username.
-	 * @param string $pass1 The password (passed by reference).
-	 * @param string $pass2 The confirmed password (passed by reference).
-	 *
 	 * @since 1.5.1
 	 *
+	 * @param string $user_login The username.
+	 * @param string $pass1     The password (passed by reference).
+	 * @param string $pass2     The confirmed password (passed by reference).
 	 */
 	do_action_ref_array( 'check_passwords', array( $user->user_login, &$pass1, &$pass2 ) );
 
@@ -213,12 +211,11 @@ function edit_user( $user_id = 0 ) {
 	/**
 	 * Fires before user profile update errors are returned.
 	 *
-	 * @param WP_Error $errors WP_Error object (passed by reference).
-	 * @param bool $update Whether this is a user update.
-	 * @param stdClass $user User object (passed by reference).
-	 *
 	 * @since 2.8.0
 	 *
+	 * @param WP_Error $errors WP_Error object (passed by reference).
+	 * @param bool     $update Whether this is a user update.
+	 * @param stdClass $user   User object (passed by reference).
 	 */
 	do_action_ref_array( 'user_profile_update_errors', array( &$errors, $update, &$user ) );
 
@@ -235,16 +232,14 @@ function edit_user( $user_id = 0 ) {
 		/**
 		 * Fires after a new user has been created.
 		 *
-		 * @param int $user_id ID of the newly created user.
-		 * @param string $notify Type of notification that should happen. See wp_send_new_user_notifications()
-		 *                        for more information on possible values.
-		 *
 		 * @since 4.4.0
 		 *
+		 * @param int    $user_id ID of the newly created user.
+		 * @param string $notify  Type of notification that should happen. See wp_send_new_user_notifications()
+		 *                        for more information on possible values.
 		 */
 		do_action( 'edit_user_created_user', $user_id, $notify );
 	}
-
 	return $user_id;
 }
 
@@ -260,9 +255,9 @@ function edit_user( $user_id = 0 ) {
  * only editors or authors. This filter allows admins to delegate
  * user management.
  *
- * @return array[] Array of arrays containing role information.
  * @since 2.8.0
  *
+ * @return array[] Array of arrays containing role information.
  */
 function get_editable_roles() {
 	$all_roles = wp_roles()->roles;
@@ -270,10 +265,9 @@ function get_editable_roles() {
 	/**
 	 * Filters the list of editable roles.
 	 *
-	 * @param array[] $all_roles Array of arrays containing role information.
-	 *
 	 * @since 2.8.0
 	 *
+	 * @param array[] $all_roles Array of arrays containing role information.
 	 */
 	$editable_roles = apply_filters( 'editable_roles', $all_roles );
 
@@ -283,11 +277,10 @@ function get_editable_roles() {
 /**
  * Retrieve user data and filter it.
  *
- * @param int $user_id User ID.
- *
- * @return WP_User|bool WP_User object on success, false on failure.
  * @since 2.0.5
  *
+ * @param int $user_id User ID.
+ * @return WP_User|bool WP_User object on success, false on failure.
  */
 function get_user_to_edit( $user_id ) {
 	$user = get_userdata( $user_id );
@@ -302,13 +295,12 @@ function get_user_to_edit( $user_id ) {
 /**
  * Retrieve the user's drafts.
  *
- * @param int $user_id User ID.
- *
- * @return array
  * @since 2.0.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  *
+ * @param int $user_id User ID.
+ * @return array
  */
 function get_users_drafts( $user_id ) {
 	global $wpdb;
@@ -317,13 +309,11 @@ function get_users_drafts( $user_id ) {
 	/**
 	 * Filters the user's drafts query string.
 	 *
-	 * @param string $query The user's drafts query string.
-	 *
 	 * @since 2.0.0
 	 *
+	 * @param string $query The user's drafts query string.
 	 */
 	$query = apply_filters( 'get_users_drafts', $query );
-
 	return $wpdb->get_results( $query );
 }
 
@@ -335,14 +325,13 @@ function get_users_drafts( $user_id ) {
  * being deleted will be run after the posts are either reassigned or deleted.
  * The user meta will also be deleted that are for that User ID.
  *
- * @param int $id User ID.
- * @param int $reassign Optional. Reassign posts and links to new User ID.
- *
- * @return bool True when finished.
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 2.0.0
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int $id User ID.
+ * @param int $reassign Optional. Reassign posts and links to new User ID.
+ * @return bool True when finished.
  */
 function wp_delete_user( $id, $reassign = null ) {
 	global $wpdb;
@@ -368,14 +357,13 @@ function wp_delete_user( $id, $reassign = null ) {
 	/**
 	 * Fires immediately before a user is deleted from the database.
 	 *
-	 * @param int $id ID of the user to delete.
-	 * @param int|null $reassign ID of the user to reassign posts and links to.
-	 *                           Default null, for no reassignment.
-	 * @param WP_User $user WP_User object of the user to delete.
-	 *
+	 * @since 2.0.0
 	 * @since 5.5.0 Added the `$user` parameter.
 	 *
-	 * @since 2.0.0
+	 * @param int      $id       ID of the user to delete.
+	 * @param int|null $reassign ID of the user to reassign posts and links to.
+	 *                           Default null, for no reassignment.
+	 * @param WP_User  $user     WP_User object of the user to delete.
 	 */
 	do_action( 'delete_user', $id, $reassign, $user );
 
@@ -392,11 +380,10 @@ function wp_delete_user( $id, $reassign = null ) {
 		/**
 		 * Filters the list of post types to delete with a user.
 		 *
-		 * @param string[] $post_types_to_delete Array of post types to delete.
-		 * @param int $id User ID.
-		 *
 		 * @since 3.4.0
 		 *
+		 * @param string[] $post_types_to_delete Array of post types to delete.
+		 * @param int      $id                   User ID.
 		 */
 		$post_types_to_delete = apply_filters( 'post_types_to_delete_with_user', $post_types_to_delete, $id );
 		$post_types_to_delete = implode( "', '", $post_types_to_delete );
@@ -433,8 +420,8 @@ function wp_delete_user( $id, $reassign = null ) {
 	}
 
 	// FINALLY, delete user.
-	if ( Load::is_multisite() ) {
-		remove_user_from_blog( $id, Load::get_current_blog_id() );
+	if ( is_multisite() ) {
+		remove_user_from_blog( $id, get_current_blog_id() );
 	} else {
 		$meta = $wpdb->get_col( $wpdb->prepare( "SELECT umeta_id FROM $wpdb->usermeta WHERE user_id = %d", $id ) );
 		foreach ( $meta as $mid ) {
@@ -449,14 +436,13 @@ function wp_delete_user( $id, $reassign = null ) {
 	/**
 	 * Fires immediately after a user is deleted from the database.
 	 *
-	 * @param int $id ID of the deleted user.
-	 * @param int|null $reassign ID of the user to reassign posts and links to.
-	 *                           Default null, for no reassignment.
-	 * @param WP_User $user WP_User object of the deleted user.
-	 *
+	 * @since 2.9.0
 	 * @since 5.5.0 Added the `$user` parameter.
 	 *
-	 * @since 2.9.0
+	 * @param int      $id       ID of the deleted user.
+	 * @param int|null $reassign ID of the user to reassign posts and links to.
+	 *                           Default null, for no reassignment.
+	 * @param WP_User  $user     WP_User object of the deleted user.
 	 */
 	do_action( 'deleted_user', $id, $reassign, $user );
 
@@ -466,10 +452,9 @@ function wp_delete_user( $id, $reassign = null ) {
 /**
  * Remove all capabilities from user.
  *
- * @param int $id User ID.
- *
  * @since 2.1.0
  *
+ * @param int $id User ID.
  */
 function wp_revoke_user( $id ) {
 	$id = (int) $id;
@@ -479,12 +464,11 @@ function wp_revoke_user( $id ) {
 }
 
 /**
- * @param false $errors Deprecated.
+ * @since 2.8.0
  *
  * @global int $user_ID
  *
- * @since 2.8.0
- *
+ * @param false $errors Deprecated.
  */
 function default_password_nag_handler( $errors = false ) {
 	global $user_ID;
@@ -495,7 +479,7 @@ function default_password_nag_handler( $errors = false ) {
 
 	// get_user_setting() = JS-saved UI setting. Else no-js-fallback code.
 	if ( 'hide' === get_user_setting( 'default_password_nag' )
-	     || isset( $_GET['default_password_nag'] ) && '0' == $_GET['default_password_nag']
+		|| isset( $_GET['default_password_nag'] ) && '0' == $_GET['default_password_nag']
 	) {
 		delete_user_setting( 'default_password_nag' );
 		update_user_option( $user_ID, 'default_password_nag', false, true );
@@ -503,11 +487,10 @@ function default_password_nag_handler( $errors = false ) {
 }
 
 /**
- * @param int $user_ID
- * @param WP_User $old_data
- *
  * @since 2.8.0
  *
+ * @param int     $user_ID
+ * @param WP_User $old_data
  */
 function default_password_nag_edit_user( $user_ID, $old_data ) {
 	// Short-circuit it.
@@ -552,17 +535,17 @@ function default_password_nag() {
  */
 function delete_users_add_js() {
 	?>
-    <script>
-        jQuery(document).ready(function ($) {
-            var submit = $('#submit').prop('disabled', true);
-            $('input[name="delete_option"]').one('change', function () {
-                submit.prop('disabled', false);
-            });
-            $('#reassign_user').focus(function () {
-                $('#delete_option1').prop('checked', true).trigger('change');
-            });
-        });
-    </script>
+<script>
+jQuery(document).ready( function($) {
+	var submit = $('#submit').prop('disabled', true);
+	$('input[name="delete_option"]').one('change', function() {
+		submit.prop('disabled', false);
+	});
+	$('#reassign_user').focus( function() {
+		$('#delete_option1').prop('checked', true).trigger('change');
+	});
+});
+</script>
 	<?php
 }
 
@@ -571,35 +554,31 @@ function delete_users_add_js() {
  *
  * See the {@see 'personal_options'} action.
  *
- * @param WP_User $user User data object.
- *
  * @since 2.7.0
  *
+ * @param WP_User $user User data object.
  */
 function use_ssl_preference( $user ) {
 	?>
-    <tr class="user-use-ssl-wrap">
-        <th scope="row"><?php _e( 'Use https' ); ?></th>
-        <td><label for="use_ssl"><input name="use_ssl" type="checkbox" id="use_ssl"
-                                        value="1" <?php checked( '1', $user->use_ssl ); ?> /> <?php _e( 'Always use https when visiting the admin' ); ?>
-            </label></td>
-    </tr>
+	<tr class="user-use-ssl-wrap">
+		<th scope="row"><?php _e( 'Use https' ); ?></th>
+		<td><label for="use_ssl"><input name="use_ssl" type="checkbox" id="use_ssl" value="1" <?php checked( '1', $user->use_ssl ); ?> /> <?php _e( 'Always use https when visiting the admin' ); ?></label></td>
+	</tr>
 	<?php
 }
 
 /**
- * @param string $text
- *
- * @return string
  * @since MU (3.0.0)
  *
+ * @param string $text
+ * @return string
  */
 function admin_created_user_email( $text ) {
 	$roles = get_editable_roles();
 	$role  = $roles[ $_REQUEST['role'] ];
 
 	return sprintf(
-	/* translators: 1: Site title, 2: Site URL, 3: User role. */
+		/* translators: 1: Site title, 2: Site URL, 3: User role. */
 		__(
 			'Hi,
 You\'ve been invited to join \'%1$s\' at
@@ -619,20 +598,18 @@ Please click the following link to activate your user account:
 /**
  * Checks if the Authorize Application Password request is valid.
  *
- * @param array $request {
- *     The array of request data. All arguments are optional and may be empty.
- *
- * @type string $app_name The suggested name of the application.
- * @type string $app_id A uuid provided by the application to uniquely identify it.
- * @type string $success_url The url the user will be redirected to after approving the application.
- * @type string $reject_url The url the user will be redirected to after rejecting the application.
- * }
- *
- * @param WP_User $user The user authorizing the application.
- *
- * @return true|WP_Error True if the request is valid, a WP_Error object contains errors if not.
  * @since 5.6.0
  *
+ * @param array   $request {
+ *     The array of request data. All arguments are optional and may be empty.
+ *
+ *     @type string $app_name    The suggested name of the application.
+ *     @type string $app_id      A uuid provided by the application to uniquely identify it.
+ *     @type string $success_url The url the user will be redirected to after approving the application.
+ *     @type string $reject_url  The url the user will be redirected to after rejecting the application.
+ * }
+ * @param WP_User $user The user authorizing the application.
+ * @return true|WP_Error True if the request is valid, a WP_Error object contains errors if not.
  */
 function wp_is_authorize_application_password_request_valid( $request, $user ) {
 	$error = new WP_Error();
@@ -669,12 +646,11 @@ function wp_is_authorize_application_password_request_valid( $request, $user ) {
 	/**
 	 * Fires before application password errors are returned.
 	 *
-	 * @param WP_Error $error The error object.
-	 * @param array $request The array of request data.
-	 * @param WP_User $user The user authorizing the application.
-	 *
 	 * @since 5.6.0
 	 *
+	 * @param WP_Error $error   The error object.
+	 * @param array    $request The array of request data.
+	 * @param WP_User  $user    The user authorizing the application.
 	 */
 	do_action( 'wp_authorize_application_password_request_errors', $error, $request, $user );
 

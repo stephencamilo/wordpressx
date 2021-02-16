@@ -45,7 +45,7 @@ if ( isset( $_REQUEST['action'] ) && 'add-user' === $_REQUEST['action'] ) {
 
 	$user_details = wpmu_validate_user_signup( $user['username'], $user['email'] );
 
-	if ( Load::is_wp_error( $user_details['errors'] ) && $user_details['errors']->has_errors() ) {
+	if ( is_wp_error( $user_details['errors'] ) && $user_details['errors']->has_errors() ) {
 		$add_user_errors = $user_details['errors'];
 	} else {
 		$password = wp_generate_password( 12, false );
@@ -57,10 +57,9 @@ if ( isset( $_REQUEST['action'] ) && 'add-user' === $_REQUEST['action'] ) {
 			/**
 			 * Fires after a new user has been created via the network user-new.php page.
 			 *
-			 * @param int $user_id ID of the newly created user.
-			 *
 			 * @since 4.4.0
 			 *
+			 * @param int $user_id ID of the newly created user.
 			 */
 			do_action( 'network_user_new_created_user', $user_id );
 
@@ -104,54 +103,51 @@ $parent_file = 'users.php';
 
 require_once ABSPATH . 'wp-admin/admin-header.php'; ?>
 
-    <div class="wrap">
-        <h1 id="add-new-user"><?php _e( 'Add New User' ); ?></h1>
+<div class="wrap">
+<h1 id="add-new-user"><?php _e( 'Add New User' ); ?></h1>
+<?php
+if ( ! empty( $messages ) ) {
+	foreach ( $messages as $msg ) {
+		echo '<div id="message" class="updated notice is-dismissible"><p>' . $msg . '</p></div>';
+	}
+}
+
+if ( isset( $add_user_errors ) && is_wp_error( $add_user_errors ) ) {
+	?>
+	<div class="error">
 		<?php
-		if ( ! empty( $messages ) ) {
-			foreach ( $messages as $msg ) {
-				echo '<div id="message" class="updated notice is-dismissible"><p>' . $msg . '</p></div>';
-			}
+		foreach ( $add_user_errors->get_error_messages() as $message ) {
+			echo "<p>$message</p>";
 		}
+		?>
+	</div>
+<?php } ?>
+	<form action="<?php echo network_admin_url( 'user-new.php?action=add-user' ); ?>" id="adduser" method="post" novalidate="novalidate">
+	<table class="form-table" role="presentation">
+		<tr class="form-field form-required">
+			<th scope="row"><label for="username"><?php _e( 'Username' ); ?></label></th>
+			<td><input type="text" class="regular-text" name="user[username]" id="username" autocapitalize="none" autocorrect="off" maxlength="60" /></td>
+		</tr>
+		<tr class="form-field form-required">
+			<th scope="row"><label for="email"><?php _e( 'Email' ); ?></label></th>
+			<td><input type="email" class="regular-text" name="user[email]" id="email"/></td>
+		</tr>
+		<tr class="form-field">
+			<td colspan="2" class="td-full"><?php _e( 'A password reset link will be sent to the user via email.' ); ?></td>
+		</tr>
+	</table>
+	<?php
+	/**
+	 * Fires at the end of the new user form in network admin.
+	 *
+	 * @since 4.5.0
+	 */
+	do_action( 'network_user_new_form' );
 
-		if ( isset( $add_user_errors ) && Load::is_wp_error( $add_user_errors ) ) {
-			?>
-            <div class="error">
-				<?php
-				foreach ( $add_user_errors->get_error_messages() as $message ) {
-					echo "<p>$message</p>";
-				}
-				?>
-            </div>
-		<?php } ?>
-        <form action="<?php echo network_admin_url( 'user-new.php?action=add-user' ); ?>" id="adduser" method="post"
-              novalidate="novalidate">
-            <table class="form-table" role="presentation">
-                <tr class="form-field form-required">
-                    <th scope="row"><label for="username"><?php _e( 'Username' ); ?></label></th>
-                    <td><input type="text" class="regular-text" name="user[username]" id="username"
-                               autocapitalize="none" autocorrect="off" maxlength="60"/></td>
-                </tr>
-                <tr class="form-field form-required">
-                    <th scope="row"><label for="email"><?php _e( 'Email' ); ?></label></th>
-                    <td><input type="email" class="regular-text" name="user[email]" id="email"/></td>
-                </tr>
-                <tr class="form-field">
-                    <td colspan="2"
-                        class="td-full"><?php _e( 'A password reset link will be sent to the user via email.' ); ?></td>
-                </tr>
-            </table>
-			<?php
-			/**
-			 * Fires at the end of the new user form in network admin.
-			 *
-			 * @since 4.5.0
-			 */
-			do_action( 'network_user_new_form' );
-
-			wp_nonce_field( 'add-user', '_wpnonce_add-user' );
-			submit_button( __( 'Add User' ), 'primary', 'add-user' );
-			?>
-        </form>
-    </div>
+	wp_nonce_field( 'add-user', '_wpnonce_add-user' );
+	submit_button( __( 'Add User' ), 'primary', 'add-user' );
+	?>
+	</form>
+</div>
 <?php
 require_once ABSPATH . 'wp-admin/admin-footer.php';

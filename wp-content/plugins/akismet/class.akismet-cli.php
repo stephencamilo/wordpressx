@@ -42,7 +42,7 @@ class Akismet_CLI extends WP_CLI_Command {
 				if ( false === $api_response ) {
 					WP_CLI::error( __( "Failed to connect to Akismet.", 'akismet' ) );
 				}
-				else if ( Load::is_wp_error( $api_response ) ) {
+				else if ( is_wp_error( $api_response ) ) {
 					WP_CLI::warning( sprintf( __( "Comment #%d could not be checked.", 'akismet' ), $comment_id ) );
 				}
 			}

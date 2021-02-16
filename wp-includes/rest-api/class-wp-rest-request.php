@@ -333,7 +333,7 @@ class WP_REST_Request implements ArrayAccess {
 	public function is_json_content_type() {
 		$content_type = $this->get_content_type();
 
-		return isset( $content_type['value'] ) && Load::wp_is_json_media_type( $content_type['value'] );
+		return isset( $content_type['value'] ) && wp_is_json_media_type( $content_type['value'] );
 	}
 
 	/**
@@ -827,7 +827,7 @@ class WP_REST_Request implements ArrayAccess {
 
 				$sanitized_value = call_user_func( $param_args['sanitize_callback'], $value, $this, $key );
 
-				if ( Load::is_wp_error( $sanitized_value ) ) {
+				if ( is_wp_error( $sanitized_value ) ) {
 					$invalid_params[ $key ] = $sanitized_value->get_error_message();
 				} else {
 					$this->params[ $type ][ $key ] = $sanitized_value;
@@ -861,7 +861,7 @@ class WP_REST_Request implements ArrayAccess {
 	public function has_valid_params() {
 		// If JSON data was passed, check for errors.
 		$json_error = $this->parse_json_params();
-		if ( Load::is_wp_error( $json_error ) ) {
+		if ( is_wp_error( $json_error ) ) {
 			return $json_error;
 		}
 
@@ -907,7 +907,7 @@ class WP_REST_Request implements ArrayAccess {
 					$invalid_params[ $key ] = __( 'Invalid parameter.' );
 				}
 
-				if ( Load::is_wp_error( $valid_check ) ) {
+				if ( is_wp_error( $valid_check ) ) {
 					$invalid_params[ $key ] = $valid_check->get_error_message();
 				}
 			}
@@ -928,7 +928,7 @@ class WP_REST_Request implements ArrayAccess {
 		if ( isset( $attributes['validate_callback'] ) ) {
 			$valid_check = call_user_func( $attributes['validate_callback'], $this );
 
-			if ( Load::is_wp_error( $valid_check ) ) {
+			if ( is_wp_error( $valid_check ) ) {
 				return $valid_check;
 			}
 

@@ -110,17 +110,17 @@ if ( isset( $_GET['action'] ) ) {
 
 		require_once ABSPATH . 'wp-admin/admin-header.php';
 		?>
-        <div class="wrap">
-            <h1><?php _e( 'Confirm your action' ); ?></h1>
-            <form action="sites.php?action=<?php echo esc_attr( $site_action ); ?>" method="post">
-                <input type="hidden" name="action" value="<?php echo esc_attr( $site_action ); ?>"/>
-                <input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>"/>
-                <input type="hidden" name="_wp_http_referer" value="<?php echo esc_attr( wp_get_referer() ); ?>"/>
-				<?php wp_nonce_field( $site_action . '_' . $id, '_wpnonce', false ); ?>
-                <p><?php printf( $manage_actions[ $site_action ], $site_address ); ?></p>
-				<?php submit_button( __( 'Confirm' ), 'primary' ); ?>
-            </form>
-        </div>
+			<div class="wrap">
+				<h1><?php _e( 'Confirm your action' ); ?></h1>
+				<form action="sites.php?action=<?php echo esc_attr( $site_action ); ?>" method="post">
+					<input type="hidden" name="action" value="<?php echo esc_attr( $site_action ); ?>" />
+					<input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>" />
+					<input type="hidden" name="_wp_http_referer" value="<?php echo esc_attr( wp_get_referer() ); ?>" />
+					<?php wp_nonce_field( $site_action . '_' . $id, '_wpnonce', false ); ?>
+					<p><?php printf( $manage_actions[ $site_action ], $site_address ); ?></p>
+					<?php submit_button( __( 'Confirm' ), 'primary' ); ?>
+				</form>
+			</div>
 		<?php
 		require_once ABSPATH . 'wp-admin/admin-footer.php';
 		exit;
@@ -163,7 +163,7 @@ if ( isset( $_GET['action'] ) ) {
 
 					wp_die(
 						sprintf(
-						/* translators: %s: Site URL. */
+							/* translators: %s: Site URL. */
 							__( 'Sorry, you are not allowed to delete the site %s.' ),
 							$site_address
 						),
@@ -178,7 +178,7 @@ if ( isset( $_GET['action'] ) ) {
 
 		case 'allblogs':
 			if ( ( isset( $_POST['action'] ) || isset( $_POST['action2'] ) ) && isset( $_POST['allblogs'] ) ) {
-				$doaction = - 1 != $_POST['action'] ? $_POST['action'] : $_POST['action2'];
+				$doaction = -1 != $_POST['action'] ? $_POST['action'] : $_POST['action2'];
 
 				foreach ( (array) $_POST['allblogs'] as $key => $val ) {
 					if ( '0' != $val && get_network()->site_id != $val ) {
@@ -186,34 +186,32 @@ if ( isset( $_GET['action'] ) ) {
 							case 'delete':
 								require_once ABSPATH . 'wp-admin/admin-header.php';
 								?>
-                                <div class="wrap">
-                                    <h1><?php _e( 'Confirm your action' ); ?></h1>
-                                    <form action="sites.php?action=delete_sites" method="post">
-                                        <input type="hidden" name="action" value="delete_sites"/>
-                                        <input type="hidden" name="_wp_http_referer"
-                                               value="<?php echo esc_attr( wp_get_referer() ); ?>"/>
+								<div class="wrap">
+									<h1><?php _e( 'Confirm your action' ); ?></h1>
+									<form action="sites.php?action=delete_sites" method="post">
+										<input type="hidden" name="action" value="delete_sites" />
+										<input type="hidden" name="_wp_http_referer" value="<?php echo esc_attr( wp_get_referer() ); ?>" />
 										<?php wp_nonce_field( 'ms-delete-sites', '_wpnonce', false ); ?>
-                                        <p><?php _e( 'You are about to delete the following sites:' ); ?></p>
-                                        <ul class="ul-disc">
+										<p><?php _e( 'You are about to delete the following sites:' ); ?></p>
+										<ul class="ul-disc">
 											<?php
 											foreach ( $_POST['allblogs'] as $site_id ) :
-												$site = get_site( $site_id );
+												$site         = get_site( $site_id );
 												$site_address = untrailingslashit( $site->domain . $site->path );
 												?>
-                                                <li>
+												<li>
 													<?php echo $site_address; ?>
-                                                    <input type="hidden" name="site_ids[]"
-                                                           value="<?php echo (int) $site_id; ?>"/>
-                                                </li>
+													<input type="hidden" name="site_ids[]" value="<?php echo (int) $site_id; ?>" />
+												</li>
 											<?php endforeach; ?>
-                                        </ul>
+										</ul>
 										<?php submit_button( __( 'Confirm' ), 'primary' ); ?>
-                                    </form>
-                                </div>
+									</form>
+								</div>
 								<?php
 								require_once ABSPATH . 'wp-admin/admin-footer.php';
 								exit;
-								break;
+							break;
 
 							case 'spam':
 							case 'notspam':
@@ -260,10 +258,9 @@ if ( isset( $_GET['action'] ) ) {
 			/**
 			 * Fires after a network site is activated.
 			 *
-			 * @param string $id The ID of the activated site.
-			 *
 			 * @since MU (3.0.0)
 			 *
+			 * @param string $id The ID of the activated site.
 			 */
 			do_action( 'activate_blog', $id );
 			break;
@@ -272,10 +269,9 @@ if ( isset( $_GET['action'] ) ) {
 			/**
 			 * Fires before a network site is deactivated.
 			 *
-			 * @param string $id The ID of the site being deactivated.
-			 *
 			 * @since MU (3.0.0)
 			 *
+			 * @param string $id The ID of the site being deactivated.
 			 */
 			do_action( 'deactivate_blog', $id );
 
@@ -348,10 +344,9 @@ if ( isset( $_GET['updated'] ) ) {
 			 * The dynamic portion of the hook name, `$action`, refers to the non-default
 			 * site update action.
 			 *
-			 * @param string $msg The update message. Default 'Settings saved'.
-			 *
 			 * @since 3.1.0
 			 *
+			 * @param string $msg The update message. Default 'Settings saved'.
 			 */
 			$msg = apply_filters( "network_sites_updated_message_{$action}", __( 'Settings saved.' ) );
 			break;
@@ -368,39 +363,38 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 ?>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline"><?php _e( 'Sites' ); ?></h1>
+<h1 class="wp-heading-inline"><?php _e( 'Sites' ); ?></h1>
 
-	<?php if ( current_user_can( 'create_sites' ) ) : ?>
-        <a href="<?php echo network_admin_url( 'site-new.php' ); ?>"
-           class="page-title-action"><?php echo esc_html_x( 'Add New', 'site' ); ?></a>
-	<?php endif; ?>
+<?php if ( current_user_can( 'create_sites' ) ) : ?>
+	<a href="<?php echo network_admin_url( 'site-new.php' ); ?>" class="page-title-action"><?php echo esc_html_x( 'Add New', 'site' ); ?></a>
+<?php endif; ?>
 
-	<?php
-	if ( isset( $_REQUEST['s'] ) && strlen( $_REQUEST['s'] ) ) {
-		echo '<span class="subtitle">';
-		printf(
+<?php
+if ( isset( $_REQUEST['s'] ) && strlen( $_REQUEST['s'] ) ) {
+	echo '<span class="subtitle">';
+	printf(
 		/* translators: %s: Search query. */
-			__( 'Search results for: %s' ),
-			'<strong>' . esc_html( $s ) . '</strong>'
-		);
-		echo '</span>';
-	}
-	?>
+		__( 'Search results for: %s' ),
+		'<strong>' . esc_html( $s ) . '</strong>'
+	);
+	echo '</span>';
+}
+?>
 
-    <hr class="wp-header-end">
+<hr class="wp-header-end">
 
-	<?php $wp_list_table->views(); ?>
+<?php $wp_list_table->views(); ?>
 
-	<?php echo $msg; ?>
+<?php echo $msg; ?>
 
-    <form method="get" id="ms-search" class="wp-clearfix">
-		<?php $wp_list_table->search_box( __( 'Search Sites' ), 'site' ); ?>
-        <input type="hidden" name="action" value="blogs"/>
-    </form>
+<form method="get" id="ms-search" class="wp-clearfix">
+<?php $wp_list_table->search_box( __( 'Search Sites' ), 'site' ); ?>
+<input type="hidden" name="action" value="blogs" />
+</form>
 
-    <form id="form-site-list" action="sites.php?action=allblogs" method="post">
-		<?php $wp_list_table->display(); ?>
-    </form>
+<form id="form-site-list" action="sites.php?action=allblogs" method="post">
+	<?php $wp_list_table->display(); ?>
+</form>
 </div>
 <?php
 

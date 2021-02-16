@@ -26,24 +26,23 @@ if ( ! function_exists( 'wp_install' ) ) :
 	 * Runs the required functions to set up and populate the database,
 	 * including primary admin user and initial options.
 	 *
-	 * @param string $blog_title Site title.
-	 * @param string $user_name User's username.
-	 * @param string $user_email User's email.
-	 * @param bool $public Whether site is public.
-	 * @param string $deprecated Optional. Not used.
-	 * @param string $user_password Optional. User's chosen password. Default empty (random password).
-	 * @param string $language Optional. Language chosen. Default empty.
+	 * @since 2.1.0
 	 *
+	 * @param string $blog_title    Site title.
+	 * @param string $user_name     User's username.
+	 * @param string $user_email    User's email.
+	 * @param bool   $public        Whether site is public.
+	 * @param string $deprecated    Optional. Not used.
+	 * @param string $user_password Optional. User's chosen password. Default empty (random password).
+	 * @param string $language      Optional. Language chosen. Default empty.
 	 * @return array {
 	 *     Data for the newly installed site.
 	 *
-	 * @type string $url The URL of the site.
-	 * @type int $user_id The ID of the site owner.
-	 * @type string $password The password of the site owner, if their user account didn't already exist.
-	 * @type string $password_message The explanatory message regarding the password.
+	 *     @type string $url              The URL of the site.
+	 *     @type int    $user_id          The ID of the site owner.
+	 *     @type string $password         The password of the site owner, if their user account didn't already exist.
+	 *     @type string $password_message The explanatory message regarding the password.
 	 * }
-	 * @since 2.1.0
-	 *
 	 */
 	function wp_install( $blog_title, $user_name, $user_email, $public, $deprecated = '', $user_password = '', $language = '' ) {
 		if ( ! empty( $deprecated ) ) {
@@ -122,10 +121,9 @@ if ( ! function_exists( 'wp_install' ) ) :
 		/**
 		 * Fires after a site is fully installed.
 		 *
-		 * @param WP_User $user The site owner.
-		 *
 		 * @since 3.9.0
 		 *
+		 * @param WP_User $user The site owner.
 		 */
 		do_action( 'wp_install', $user );
 
@@ -145,14 +143,13 @@ if ( ! function_exists( 'wp_install_defaults' ) ) :
 	 * Adds the default "Uncategorized" category, the first post (with comment),
 	 * first page, and default widgets for default theme for the current version.
 	 *
-	 * @param int $user_id User ID.
-	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
-	 * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
-	 * @global string $table_prefix
-	 *
 	 * @since 2.1.0
 	 *
+	 * @global wpdb       $wpdb         WordPress database abstraction object.
+	 * @global WP_Rewrite $wp_rewrite   WordPress rewrite component.
+	 * @global string     $table_prefix
+	 *
+	 * @param int $user_id User ID.
 	 */
 	function wp_install_defaults( $user_id ) {
 		global $wpdb, $wp_rewrite, $table_prefix;
@@ -207,14 +204,14 @@ if ( ! function_exists( 'wp_install_defaults' ) ) :
 		$now_gmt         = current_time( 'mysql', 1 );
 		$first_post_guid = get_option( 'home' ) . '/?p=1';
 
-		if ( Load::is_multisite() ) {
+		if ( is_multisite() ) {
 			$first_post = get_site_option( 'first_post' );
 
 			if ( ! $first_post ) {
 				$first_post = "<!-- wp:paragraph -->\n<p>" .
-				              /* translators: First post content. %s: Site link. */
-				              __( 'Welcome to %s. This is your first post. Edit or delete it, then start writing!' ) .
-				              "</p>\n<!-- /wp:paragraph -->";
+				/* translators: First post content. %s: Site link. */
+				__( 'Welcome to %s. This is your first post. Edit or delete it, then start writing!' ) .
+				"</p>\n<!-- /wp:paragraph -->";
 			}
 
 			$first_post = sprintf(
@@ -227,9 +224,9 @@ if ( ! function_exists( 'wp_install_defaults' ) ) :
 			$first_post = str_replace( 'SITE_NAME', get_network()->site_name, $first_post );
 		} else {
 			$first_post = "<!-- wp:paragraph -->\n<p>" .
-			              /* translators: First post content. %s: Site link. */
-			              __( 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing!' ) .
-			              "</p>\n<!-- /wp:paragraph -->";
+			/* translators: First post content. %s: Site link. */
+			__( 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing!' ) .
+			"</p>\n<!-- /wp:paragraph -->";
 		}
 
 		$wpdb->insert(
@@ -261,7 +258,7 @@ if ( ! function_exists( 'wp_install_defaults' ) ) :
 		);
 
 		// Default comment.
-		if ( Load::is_multisite() ) {
+		if ( is_multisite() ) {
 			$first_comment_author = get_site_option( 'first_comment_author' );
 			$first_comment_email  = get_site_option( 'first_comment_email' );
 			$first_comment_url    = get_site_option( 'first_comment_url', network_home_url() );
@@ -291,7 +288,7 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.'
 		);
 
 		// First page.
-		if ( Load::is_multisite() ) {
+		if ( is_multisite() ) {
 			$first_page = get_site_option( 'first_page' );
 		}
 
@@ -318,7 +315,7 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.'
 
 			$first_page .= "<!-- wp:paragraph -->\n<p>";
 			$first_page .= sprintf(
-			/* translators: First page content. %s: Site admin URL. */
+				/* translators: First page content. %s: Site admin URL. */
 				__( 'As a new WordPress user, you should go to <a href="%s">your dashboard</a> to delete this page and create new pages for your content. Have fun!' ),
 				admin_url()
 			);
@@ -357,7 +354,7 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.'
 		);
 
 		// Privacy Policy page.
-		if ( Load::is_multisite() ) {
+		if ( is_multisite() ) {
 			// Disable by default unless the suggested content is provided.
 			$privacy_policy_content = get_site_option( 'default_privacy_policy_content' );
 		} else {
@@ -479,13 +476,13 @@ Commenter avatars come from <a href="https://gravatar.com">Gravatar</a>.'
 				'array_version'       => 3,
 			)
 		);
-		if ( ! Load::is_multisite() ) {
+		if ( ! is_multisite() ) {
 			update_user_meta( $user_id, 'show_welcome_panel', 1 );
 		} elseif ( ! is_super_admin( $user_id ) && ! metadata_exists( 'user', $user_id, 'show_welcome_panel' ) ) {
 			update_user_meta( $user_id, 'show_welcome_panel', 2 );
 		}
 
-		if ( Load::is_multisite() ) {
+		if ( is_multisite() ) {
 			// Flush rules to pick up the new page.
 			$wp_rewrite->init();
 			$wp_rewrite->flush_rules();
@@ -517,11 +514,11 @@ endif;
  *
  * If after enabling pretty permalinks don't work, fallback to query-string permalinks.
  *
- * @return bool Whether pretty permalinks are enabled. False otherwise.
- * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
- *
  * @since 4.2.0
  *
+ * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
+ *
+ * @return bool Whether pretty permalinks are enabled. False otherwise.
  */
 function wp_install_maybe_enable_pretty_permalinks() {
 	global $wp_rewrite;
@@ -594,14 +591,13 @@ if ( ! function_exists( 'wp_new_blog_notification' ) ) :
 	 * Sends an email to the new administrator that the installation is complete
 	 * and provides them with a record of their login credentials.
 	 *
-	 * @param string $blog_title Site title.
-	 * @param string $blog_url Site URL.
-	 * @param int $user_id Administrator's user ID.
-	 * @param string $password Administrator's password. Note that a placeholder message is
-	 *                           usually passed instead of the actual password.
-	 *
 	 * @since 2.1.0
 	 *
+	 * @param string $blog_title Site title.
+	 * @param string $blog_url   Site URL.
+	 * @param int    $user_id    Administrator's user ID.
+	 * @param string $password   Administrator's password. Note that a placeholder message is
+	 *                           usually passed instead of the actual password.
 	 */
 	function wp_new_blog_notification( $blog_title, $blog_url, $user_id, $password ) {
 		$user      = new WP_User( $user_id );
@@ -610,7 +606,7 @@ if ( ! function_exists( 'wp_new_blog_notification' ) ) :
 		$login_url = wp_login_url();
 
 		$message = sprintf(
-		/* translators: New site notification email. 1: New site URL, 2: User login, 3: User password or password reset link, 4: Login URL. */
+			/* translators: New site notification email. 1: New site URL, 2: User login, 3: User password or password reset link, 4: Login URL. */
 			__(
 				'Your new WordPress site has been successfully set up at:
 
@@ -644,23 +640,21 @@ https://wordpress.org/
 		/**
 		 * Filters the contents of the email sent to the site administrator when WordPress is installed.
 		 *
+		 * @since 5.6.0
+		 *
 		 * @param array $installed_email {
 		 *     Used to build wp_mail().
 		 *
-		 * @type string $to The email address of the recipient.
-		 * @type string $subject The subject of the email.
-		 * @type string $message The content of the email.
-		 * @type string $headers Headers.
+		 *     @type string $to      The email address of the recipient.
+		 *     @type string $subject The subject of the email.
+		 *     @type string $message The content of the email.
+		 *     @type string $headers Headers.
 		 * }
-		 *
-		 * @param WP_User $user The site administrator user object.
-		 * @param string $blog_title The site title.
-		 * @param string $blog_url The site URL.
-		 * @param string $password The site administrator's password. Note that a placeholder message
+		 * @param WP_User $user          The site administrator user object.
+		 * @param string  $blog_title    The site title.
+		 * @param string  $blog_url      The site URL.
+		 * @param string  $password      The site administrator's password. Note that a placeholder message
 		 *                               is usually passed instead of the user's actual password.
-		 *
-		 * @since 5.6.0
-		 *
 		 */
 		$installed_email = apply_filters( 'wp_installed_email', $installed_email, $user, $blog_title, $blog_url, $password );
 
@@ -681,9 +675,9 @@ if ( ! function_exists( 'wp_upgrade' ) ) :
 	 *
 	 * @since 2.1.0
 	 *
-	 * @global int $wp_current_db_version The old (current) database version.
-	 * @global int $wp_db_version The new database version.
-	 * @global WPDB $wpdb WordPress database abstraction object.
+	 * @global int  $wp_current_db_version The old (current) database version.
+	 * @global int  $wp_db_version         The new database version.
+	 * @global wpdb $wpdb                  WordPress database abstraction object.
 	 */
 	function wp_upgrade() {
 		global $wp_current_db_version, $wp_db_version, $wpdb;
@@ -704,24 +698,23 @@ if ( ! function_exists( 'wp_upgrade' ) ) :
 		pre_schema_upgrade();
 		make_db_current_silent();
 		upgrade_all();
-		if ( Load::is_multisite() && is_main_site() ) {
+		if ( is_multisite() && is_main_site() ) {
 			upgrade_network();
 		}
 		wp_cache_flush();
 
-		if ( Load::is_multisite() ) {
-			update_site_meta( Load::get_current_blog_id(), 'db_version', $wp_db_version );
-			update_site_meta( Load::get_current_blog_id(), 'db_last_updated', microtime() );
+		if ( is_multisite() ) {
+			update_site_meta( get_current_blog_id(), 'db_version', $wp_db_version );
+			update_site_meta( get_current_blog_id(), 'db_last_updated', microtime() );
 		}
 
 		/**
 		 * Fires after a site is fully upgraded.
 		 *
-		 * @param int $wp_db_version The new $wp_db_version.
-		 * @param int $wp_current_db_version The old (current) $wp_db_version.
-		 *
 		 * @since 3.9.0
 		 *
+		 * @param int $wp_db_version         The new $wp_db_version.
+		 * @param int $wp_current_db_version The old (current) $wp_db_version.
 		 */
 		do_action( 'wp_upgrade', $wp_db_version, $wp_current_db_version );
 	}
@@ -737,7 +730,7 @@ endif;
  * @since 1.0.1
  *
  * @global int $wp_current_db_version The old (current) database version.
- * @global int $wp_db_version The new database version.
+ * @global int $wp_db_version         The new database version.
  */
 function upgrade_all() {
 	global $wp_current_db_version, $wp_db_version;
@@ -899,7 +892,7 @@ function upgrade_all() {
  * @ignore
  * @since 1.0.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function upgrade_100() {
 	global $wpdb;
@@ -964,7 +957,7 @@ function upgrade_100() {
  * @ignore
  * @since 1.0.1
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function upgrade_101() {
 	global $wpdb;
@@ -985,7 +978,7 @@ function upgrade_101() {
  * @ignore
  * @since 1.2.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function upgrade_110() {
 	global $wpdb;
@@ -1011,14 +1004,14 @@ function upgrade_110() {
 
 	$time_difference = $all_options->time_difference;
 
-	$server_time    = time() + gmdate( 'Z' );
-	$weblogger_time = $server_time + $time_difference * HOUR_IN_SECONDS;
-	$gmt_time       = time();
+		$server_time = time() + gmdate( 'Z' );
+	$weblogger_time  = $server_time + $time_difference * HOUR_IN_SECONDS;
+	$gmt_time        = time();
 
 	$diff_gmt_server       = ( $gmt_time - $server_time ) / HOUR_IN_SECONDS;
 	$diff_weblogger_server = ( $weblogger_time - $server_time ) / HOUR_IN_SECONDS;
 	$diff_gmt_weblogger    = $diff_gmt_server - $diff_weblogger_server;
-	$gmt_offset            = - $diff_gmt_weblogger;
+	$gmt_offset            = -$diff_gmt_weblogger;
 
 	// Add a gmt_offset option, with value $gmt_offset.
 	add_option( 'gmt_offset', $gmt_offset );
@@ -1050,7 +1043,7 @@ function upgrade_110() {
  * @ignore
  * @since 1.5.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function upgrade_130() {
 	global $wpdb;
@@ -1138,8 +1131,8 @@ function upgrade_130() {
  * @ignore
  * @since 2.0.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
- * @global int $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
  */
 function upgrade_160() {
 	global $wpdb, $wp_current_db_version;
@@ -1211,21 +1204,7 @@ function upgrade_160() {
 		}
 
 	endforeach;
-	$old_user_fields = array(
-		'user_firstname',
-		'user_lastname',
-		'user_icq',
-		'user_aim',
-		'user_msn',
-		'user_yim',
-		'user_idmode',
-		'user_ip',
-		'user_domain',
-		'user_browser',
-		'user_description',
-		'user_nickname',
-		'user_level'
-	);
+	$old_user_fields = array( 'user_firstname', 'user_lastname', 'user_icq', 'user_aim', 'user_msn', 'user_yim', 'user_idmode', 'user_ip', 'user_domain', 'user_browser', 'user_description', 'user_nickname', 'user_level' );
 	$wpdb->hide_errors();
 	foreach ( $old_user_fields as $old ) {
 		$wpdb->query( "ALTER TABLE $wpdb->users DROP $old" );
@@ -1271,8 +1250,8 @@ function upgrade_160() {
  * @ignore
  * @since 2.1.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
  */
 function upgrade_210() {
 	global $wp_current_db_version, $wpdb;
@@ -1323,8 +1302,8 @@ function upgrade_210() {
  * @ignore
  * @since 2.3.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
  */
 function upgrade_230() {
 	global $wp_current_db_version, $wpdb;
@@ -1353,7 +1332,7 @@ function upgrade_230() {
 			$num        = 2;
 			do {
 				$alt_slug = $slug . "-$num";
-				$num ++;
+				$num++;
 				$slug_check = $wpdb->get_var( $wpdb->prepare( "SELECT slug FROM $wpdb->terms WHERE slug = %s", $alt_slug ) );
 			} while ( $slug_check );
 
@@ -1550,18 +1529,11 @@ function upgrade_230() {
  * @ignore
  * @since 2.3.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function upgrade_230_options_table() {
 	global $wpdb;
-	$old_options_fields = array(
-		'option_can_override',
-		'option_type',
-		'option_width',
-		'option_height',
-		'option_description',
-		'option_admin_level'
-	);
+	$old_options_fields = array( 'option_can_override', 'option_type', 'option_width', 'option_height', 'option_description', 'option_admin_level' );
 	$wpdb->hide_errors();
 	foreach ( $old_options_fields as $old ) {
 		$wpdb->query( "ALTER TABLE $wpdb->options DROP $old" );
@@ -1575,7 +1547,7 @@ function upgrade_230_options_table() {
  * @ignore
  * @since 2.3.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function upgrade_230_old_tables() {
 	global $wpdb;
@@ -1590,7 +1562,7 @@ function upgrade_230_old_tables() {
  * @ignore
  * @since 2.2.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function upgrade_old_slugs() {
 	// Upgrade people who were using the Redirect Old Slugs plugin.
@@ -1621,7 +1593,7 @@ function upgrade_250() {
  * @ignore
  * @since 2.5.2
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function upgrade_252() {
 	global $wpdb;
@@ -1651,8 +1623,8 @@ function upgrade_260() {
  * @ignore
  * @since 2.7.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
  */
 function upgrade_270() {
 	global $wp_current_db_version, $wpdb;
@@ -1673,8 +1645,8 @@ function upgrade_270() {
  * @ignore
  * @since 2.8.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
  */
 function upgrade_280() {
 	global $wp_current_db_version, $wpdb;
@@ -1682,7 +1654,7 @@ function upgrade_280() {
 	if ( $wp_current_db_version < 10360 ) {
 		populate_roles_280();
 	}
-	if ( Load::is_multisite() ) {
+	if ( is_multisite() ) {
 		$start = 0;
 		while ( $rows = $wpdb->get_results( "SELECT option_name, option_value FROM $wpdb->options ORDER BY option_id LIMIT $start, 20" ) ) {
 			foreach ( $rows as $row ) {
@@ -1696,7 +1668,7 @@ function upgrade_280() {
 			}
 			$start += 20;
 		}
-		clean_blog_cache( Load::get_current_blog_id() );
+		clean_blog_cache( get_current_blog_id() );
 	}
 }
 
@@ -1727,8 +1699,8 @@ function upgrade_290() {
  * @ignore
  * @since 3.0.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
  */
 function upgrade_300() {
 	global $wp_current_db_version, $wpdb;
@@ -1737,7 +1709,7 @@ function upgrade_300() {
 		populate_roles_300();
 	}
 
-	if ( $wp_current_db_version < 14139 && Load::is_multisite() && is_main_site() && ! defined( 'MULTISITE' ) && get_site_option( 'siteurl' ) === false ) {
+	if ( $wp_current_db_version < 14139 && is_multisite() && is_main_site() && ! defined( 'MULTISITE' ) && get_site_option( 'siteurl' ) === false ) {
 		add_site_option( 'siteurl', '' );
 	}
 
@@ -1778,8 +1750,8 @@ function upgrade_300() {
  * @ignore
  * @since 3.3.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int   $wp_current_db_version The old (current) database version.
+ * @global wpdb  $wpdb                  WordPress database abstraction object.
  * @global array $wp_registered_widgets
  * @global array $sidebars_widgets
  */
@@ -1845,7 +1817,7 @@ function upgrade_330() {
 			$sidebars_widgets                   = $_sidebars_widgets;
 			unset( $_sidebars_widgets );
 
-		// Intentional fall-through to upgrade to the next version.
+			// Intentional fall-through to upgrade to the next version.
 		case 2:
 			$sidebars_widgets                  = retrieve_widgets();
 			$sidebars_widgets['array_version'] = 3;
@@ -1859,8 +1831,8 @@ function upgrade_330() {
  * @ignore
  * @since 3.4.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
  */
 function upgrade_340() {
 	global $wp_current_db_version, $wpdb;
@@ -1896,8 +1868,8 @@ function upgrade_340() {
  * @ignore
  * @since 3.5.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
  */
 function upgrade_350() {
 	global $wp_current_db_version, $wpdb;
@@ -1988,7 +1960,7 @@ function upgrade_400() {
 	global $wp_current_db_version;
 
 	if ( $wp_current_db_version < 29630 ) {
-		if ( ! Load::is_multisite() && false === get_option( 'WPLANG' ) ) {
+		if ( ! is_multisite() && false === get_option( 'WPLANG' ) ) {
 			if ( defined( 'WPLANG' ) && ( '' !== WPLANG ) && in_array( WPLANG, get_available_languages(), true ) ) {
 				update_option( 'WPLANG', WPLANG );
 			} else {
@@ -2004,8 +1976,7 @@ function upgrade_400() {
  * @ignore
  * @since 4.2.0
  */
-function upgrade_420() {
-}
+function upgrade_420() {}
 
 /**
  * Executes changes made in WordPress 4.3.0.
@@ -2013,8 +1984,8 @@ function upgrade_420() {
  * @ignore
  * @since 4.3.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
  */
 function upgrade_430() {
 	global $wp_current_db_version, $wpdb;
@@ -2030,7 +2001,7 @@ function upgrade_430() {
 	}
 
 	if ( $wp_current_db_version < 33055 && 'utf8mb4' === $wpdb->charset ) {
-		if ( Load::is_multisite() ) {
+		if ( is_multisite() ) {
 			$tables = $wpdb->tables( 'blog' );
 		} else {
 			$tables = $wpdb->tables( 'all' );
@@ -2052,14 +2023,14 @@ function upgrade_430() {
  * @ignore
  * @since 4.3.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function upgrade_430_fix_comments() {
 	global $wpdb;
 
 	$content_length = $wpdb->get_col_length( $wpdb->comments, 'comment_content' );
 
-	if ( Load::is_wp_error( $content_length ) ) {
+	if ( is_wp_error( $content_length ) ) {
 		return;
 	}
 
@@ -2116,8 +2087,8 @@ function upgrade_431() {
  * @ignore
  * @since 4.4.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
  */
 function upgrade_440() {
 	global $wp_current_db_version, $wpdb;
@@ -2141,8 +2112,8 @@ function upgrade_440() {
  * @ignore
  * @since 4.5.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
  */
 function upgrade_450() {
 	global $wp_current_db_version, $wpdb;
@@ -2152,7 +2123,7 @@ function upgrade_450() {
 	}
 
 	// Remove unused email confirmation options, moved to usermeta.
-	if ( $wp_current_db_version < 36679 && Load::is_multisite() ) {
+	if ( $wp_current_db_version < 36679 && is_multisite() ) {
 		$wpdb->query( "DELETE FROM $wpdb->options WHERE option_name REGEXP '^[0-9]+_new_email$'" );
 	}
 
@@ -2328,8 +2299,8 @@ function upgrade_560() {
  *
  * @since 3.0.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
  */
 function upgrade_network() {
 	global $wp_current_db_version, $wpdb;
@@ -2486,14 +2457,13 @@ function upgrade_network() {
  * already present. It doesn't rely on MySQL's "IF NOT EXISTS" statement, but chooses
  * to query all tables first and then run the SQL statement creating the table.
  *
- * @param string $table_name Database table name.
- * @param string $create_ddl SQL statement to create table.
- *
- * @return bool True on success or if the table already exists. False on failure.
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 1.0.0
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $table_name Database table name.
+ * @param string $create_ddl SQL statement to create table.
+ * @return bool True on success or if the table already exists. False on failure.
  */
 function maybe_create_table( $table_name, $create_ddl ) {
 	global $wpdb;
@@ -2518,14 +2488,13 @@ function maybe_create_table( $table_name, $create_ddl ) {
 /**
  * Drops a specified index from a table.
  *
- * @param string $table Database table name.
- * @param string $index Index name to drop.
- *
- * @return true True, when finished.
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 1.0.1
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $table Database table name.
+ * @param string $index Index name to drop.
+ * @return true True, when finished.
  */
 function drop_index( $table, $index ) {
 	global $wpdb;
@@ -2535,7 +2504,7 @@ function drop_index( $table, $index ) {
 	$wpdb->query( "ALTER TABLE `$table` DROP INDEX `$index`" );
 
 	// Now we need to take out all the extra ones we may have created.
-	for ( $i = 0; $i < 25; $i ++ ) {
+	for ( $i = 0; $i < 25; $i++ ) {
 		$wpdb->query( "ALTER TABLE `$table` DROP INDEX `{$index}_$i`" );
 	}
 
@@ -2547,14 +2516,13 @@ function drop_index( $table, $index ) {
 /**
  * Adds an index to a specified table.
  *
- * @param string $table Database table name.
- * @param string $index Database table index column.
- *
- * @return true True, when done with execution.
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 1.0.1
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $table Database table name.
+ * @param string $index Database table index column.
+ * @return true True, when done with execution.
  */
 function add_clean_index( $table, $index ) {
 	global $wpdb;
@@ -2568,15 +2536,14 @@ function add_clean_index( $table, $index ) {
 /**
  * Adds column to a database table, if it doesn't already exist.
  *
- * @param string $table_name Database table name.
- * @param string $column_name Table column name.
- * @param string $create_ddl SQL statement to add column.
- *
- * @return bool True on success or if the column already exists. False on failure.
  * @since 1.3.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  *
+ * @param string $table_name  Database table name.
+ * @param string $column_name Table column name.
+ * @param string $create_ddl  SQL statement to add column.
+ * @return bool True on success or if the column already exists. False on failure.
  */
 function maybe_add_column( $table_name, $column_name, $create_ddl ) {
 	global $wpdb;
@@ -2603,13 +2570,12 @@ function maybe_add_column( $table_name, $column_name, $create_ddl ) {
 /**
  * If a table only contains utf8 or utf8mb4 columns, convert it to utf8mb4.
  *
- * @param string $table The table to convert.
- *
- * @return bool True if the table was converted, false if it wasn't.
  * @since 4.2.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  *
+ * @param string $table The table to convert.
+ * @return bool True if the table was converted, false if it wasn't.
  */
 function maybe_convert_table_to_utf8mb4( $table ) {
 	global $wpdb;
@@ -2622,7 +2588,7 @@ function maybe_convert_table_to_utf8mb4( $table ) {
 	foreach ( $results as $column ) {
 		if ( $column->Collation ) {
 			list( $charset ) = explode( '_', $column->Collation );
-			$charset = strtolower( $charset );
+			$charset         = strtolower( $charset );
 			if ( 'utf8' !== $charset && 'utf8mb4' !== $charset ) {
 				// Don't upgrade tables that have non-utf8 columns.
 				return false;
@@ -2636,7 +2602,7 @@ function maybe_convert_table_to_utf8mb4( $table ) {
 	}
 
 	list( $table_charset ) = explode( '_', $table_details->Collation );
-	$table_charset = strtolower( $table_charset );
+	$table_charset         = strtolower( $table_charset );
 	if ( 'utf8mb4' === $table_charset ) {
 		return true;
 	}
@@ -2647,11 +2613,11 @@ function maybe_convert_table_to_utf8mb4( $table ) {
 /**
  * Retrieve all options as it was for 1.2.
  *
- * @return stdClass List of options.
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 1.2.0
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @return stdClass List of options.
  */
 function get_alloptions_110() {
 	global $wpdb;
@@ -2665,22 +2631,20 @@ function get_alloptions_110() {
 			$all_options->{$option->option_name} = stripslashes( $option->option_value );
 		}
 	}
-
 	return $all_options;
 }
 
 /**
  * Utility version of get_option that is private to installation/upgrade.
  *
- * @param string $setting Option name.
- *
- * @return mixed
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  * @ignore
  * @since 1.5.1
  * @access private
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $setting Option name.
+ * @return mixed
  */
 function __get_option( $setting ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionDoubleUnderscore,PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.FunctionDoubleUnderscore
 	global $wpdb;
@@ -2709,11 +2673,10 @@ function __get_option( $setting ) { // phpcs:ignore WordPress.NamingConventions.
 /**
  * Filters for content to remove unnecessary slashes.
  *
- * @param string $content The content to modify.
- *
- * @return string The de-slashed content.
  * @since 1.5.0
  *
+ * @param string $content The content to modify.
+ * @return string The de-slashed content.
  */
 function deslash( $content ) {
 	// Note: \\\ inside a regex denotes a single backslash.
@@ -2741,17 +2704,16 @@ function deslash( $content ) {
  *
  * Useful for creating new tables and updating existing tables to a new structure.
  *
+ * @since 1.5.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param string[]|string $queries Optional. The query to run. Can be multiple queries
  *                                 in an array, or a string of queries separated by
  *                                 semicolons. Default empty string.
- * @param bool $execute Optional. Whether or not to execute the query right away.
+ * @param bool            $execute Optional. Whether or not to execute the query right away.
  *                                 Default true.
- *
  * @return array Strings containing the results of the various update queries.
- * @global WPDB $wpdb WordPress database abstraction object.
- *
- * @since 1.5.0
- *
  */
 function dbDelta( $queries = '', $execute = true ) { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
 	global $wpdb;
@@ -2769,10 +2731,9 @@ function dbDelta( $queries = '', $execute = true ) { // phpcs:ignore WordPress.N
 	/**
 	 * Filters the dbDelta SQL queries.
 	 *
-	 * @param string[] $queries An array of dbDelta SQL queries.
-	 *
 	 * @since 3.3.0
 	 *
+	 * @param string[] $queries An array of dbDelta SQL queries.
 	 */
 	$queries = apply_filters( 'dbdelta_queries', $queries );
 
@@ -2801,10 +2762,9 @@ function dbDelta( $queries = '', $execute = true ) { // phpcs:ignore WordPress.N
 	 *
 	 * Queries filterable via this hook contain "CREATE TABLE" or "CREATE DATABASE".
 	 *
-	 * @param string[] $cqueries An array of dbDelta create SQL queries.
-	 *
 	 * @since 3.3.0
 	 *
+	 * @param string[] $cqueries An array of dbDelta create SQL queries.
 	 */
 	$cqueries = apply_filters( 'dbdelta_create_queries', $cqueries );
 
@@ -2813,10 +2773,9 @@ function dbDelta( $queries = '', $execute = true ) { // phpcs:ignore WordPress.N
 	 *
 	 * Queries filterable via this hook contain "INSERT INTO" or "UPDATE".
 	 *
-	 * @param string[] $iqueries An array of dbDelta insert or update SQL queries.
-	 *
 	 * @since 3.3.0
 	 *
+	 * @param string[] $iqueries An array of dbDelta insert or update SQL queries.
 	 */
 	$iqueries = apply_filters( 'dbdelta_insert_queries', $iqueries );
 
@@ -2885,23 +2844,23 @@ function dbDelta( $queries = '', $execute = true ) { // phpcs:ignore WordPress.N
 					// phpcs:disable Squiz.Strings.ConcatenationSpacing.PaddingFound -- don't remove regex indentation
 					preg_match(
 						'/^'
-						. '(?P<index_type>'             // 1) Type of the index.
-						. 'PRIMARY\s+KEY|(?:UNIQUE|FULLTEXT|SPATIAL)\s+(?:KEY|INDEX)|KEY|INDEX'
-						. ')'
-						. '\s+'                         // Followed by at least one white space character.
-						. '(?:'                         // Name of the index. Optional if type is PRIMARY KEY.
-						. '`?'                      // Name can be escaped with a backtick.
-						. '(?P<index_name>'     // 2) Name of the index.
-						. '(?:[0-9a-zA-Z$_-]|[\xC2-\xDF][\x80-\xBF])+'
-						. ')'
-						. '`?'                      // Name can be escaped with a backtick.
-						. '\s+'                     // Followed by at least one white space character.
-						. ')*'
-						. '\('                          // Opening bracket for the columns.
-						. '(?P<index_columns>'
-						. '.+?'                 // 3) Column names, index prefixes, and orders.
-						. ')'
-						. '\)'                          // Closing bracket for the columns.
+						.   '(?P<index_type>'             // 1) Type of the index.
+						.       'PRIMARY\s+KEY|(?:UNIQUE|FULLTEXT|SPATIAL)\s+(?:KEY|INDEX)|KEY|INDEX'
+						.   ')'
+						.   '\s+'                         // Followed by at least one white space character.
+						.   '(?:'                         // Name of the index. Optional if type is PRIMARY KEY.
+						.       '`?'                      // Name can be escaped with a backtick.
+						.           '(?P<index_name>'     // 2) Name of the index.
+						.               '(?:[0-9a-zA-Z$_-]|[\xC2-\xDF][\x80-\xBF])+'
+						.           ')'
+						.       '`?'                      // Name can be escaped with a backtick.
+						.       '\s+'                     // Followed by at least one white space character.
+						.   ')*'
+						.   '\('                          // Opening bracket for the columns.
+						.       '(?P<index_columns>'
+						.           '.+?'                 // 3) Column names, index prefixes, and orders.
+						.       ')'
+						.   '\)'                          // Closing bracket for the columns.
 						. '$/im',
 						$fld,
 						$index_matches
@@ -3129,12 +3088,11 @@ function dbDelta( $queries = '', $execute = true ) { // phpcs:ignore WordPress.N
  * By default, updates all the tables to use the latest defined schema, but can also
  * be used to update a specific set of tables in wp_get_db_schema().
  *
- * @param string $tables Optional. Which set of tables to update. Default is 'all'.
+ * @since 1.5.0
  *
  * @uses dbDelta
  *
- * @since 1.5.0
- *
+ * @param string $tables Optional. Which set of tables to update. Default is 'all'.
  */
 function make_db_current( $tables = 'all' ) {
 	$alterations = dbDelta( $tables );
@@ -3151,12 +3109,11 @@ function make_db_current( $tables = 'all' ) {
  * By default, updates all the tables to use the latest defined schema, but can
  * also be used to update a specific set of tables in wp_get_db_schema().
  *
- * @param string $tables Optional. Which set of tables to update. Default is 'all'.
+ * @since 1.5.0
  *
  * @see make_db_current()
  *
- * @since 1.5.0
- *
+ * @param string $tables Optional. Which set of tables to update. Default is 'all'.
  */
 function make_db_current_silent( $tables = 'all' ) {
 	dbDelta( $tables );
@@ -3167,12 +3124,11 @@ function make_db_current_silent( $tables = 'all' ) {
  *
  * {@internal Missing Long Description}}
  *
- * @param string $theme_name The name of the theme.
- * @param string $template The directory name of the theme.
- *
- * @return bool
  * @since 1.5.0
  *
+ * @param string $theme_name The name of the theme.
+ * @param string $template   The directory name of the theme.
+ * @return bool
  */
 function make_site_theme_from_oldschool( $theme_name, $template ) {
 	$home_path = get_home_path();
@@ -3261,12 +3217,11 @@ function make_site_theme_from_oldschool( $theme_name, $template ) {
  *
  * {@internal Missing Long Description}}
  *
- * @param string $theme_name The name of the theme.
- * @param string $template The directory name of the theme.
- *
- * @return void|false
  * @since 1.5.0
  *
+ * @param string $theme_name The name of the theme.
+ * @param string $template   The directory name of the theme.
+ * @return void|false
  */
 function make_site_theme_from_default( $theme_name, $template ) {
 	$site_dir    = WP_CONTENT_DIR . "/themes/$template";
@@ -3339,9 +3294,9 @@ function make_site_theme_from_default( $theme_name, $template ) {
  *
  * {@internal Missing Long Description}}
  *
- * @return string|false
  * @since 1.5.0
  *
+ * @return string|false
  */
 function make_site_theme() {
 	// Name the theme after the blog.
@@ -3382,18 +3337,16 @@ function make_site_theme() {
 		update_option( 'template', $template );
 		update_option( 'stylesheet', $template );
 	}
-
 	return $template;
 }
 
 /**
  * Translate user level to user role name.
  *
- * @param int $level User level.
- *
- * @return string User role name.
  * @since 2.0.0
  *
+ * @param int $level User level.
+ * @return string User role name.
  */
 function translate_level_to_role( $level ) {
 	switch ( $level ) {
@@ -3422,12 +3375,12 @@ function translate_level_to_role( $level ) {
  *
  * @since 2.1.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function wp_check_mysql_version() {
 	global $wpdb;
 	$result = $wpdb->check_database_version();
-	if ( Load::is_wp_error( $result ) ) {
+	if ( is_wp_error( $result ) ) {
 		wp_die( $result );
 	}
 }
@@ -3454,8 +3407,8 @@ function maybe_disable_automattic_widgets() {
  *
  * @since 3.5.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
  */
 function maybe_disable_link_manager() {
 	global $wp_current_db_version, $wpdb;
@@ -3470,8 +3423,8 @@ function maybe_disable_link_manager() {
  *
  * @since 2.9.0
  *
- * @global int $wp_current_db_version The old (current) database version.
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global int  $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
  */
 function pre_schema_upgrade() {
 	global $wp_current_db_version, $wpdb;
@@ -3489,7 +3442,7 @@ function pre_schema_upgrade() {
 	}
 
 	// Multisite schema upgrades.
-	if ( $wp_current_db_version < 25448 && Load::is_multisite() && wp_should_upgrade_global_tables() ) {
+	if ( $wp_current_db_version < 25448 && is_multisite() && wp_should_upgrade_global_tables() ) {
 
 		// Upgrade versions prior to 3.7.
 		if ( $wp_current_db_version < 25179 ) {
@@ -3507,7 +3460,7 @@ function pre_schema_upgrade() {
 
 	// Upgrade versions prior to 4.2.
 	if ( $wp_current_db_version < 31351 ) {
-		if ( ! Load::is_multisite() && wp_should_upgrade_global_tables() ) {
+		if ( ! is_multisite() && wp_should_upgrade_global_tables() ) {
 			$wpdb->query( "ALTER TABLE $wpdb->usermeta DROP INDEX meta_key, ADD INDEX meta_key(meta_key(191))" );
 		}
 		$wpdb->query( "ALTER TABLE $wpdb->terms DROP INDEX slug, ADD INDEX slug(slug(191))" );
@@ -3533,7 +3486,7 @@ if ( ! function_exists( 'install_global_terms' ) ) :
 	 *
 	 * @since 3.0.0
 	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
+	 * @global wpdb   $wpdb            WordPress database abstraction object.
 	 * @global string $charset_collate
 	 */
 	function install_global_terms() {
@@ -3568,9 +3521,9 @@ endif;
  * WordPress is on the main site of the main network, to avoid running queries
  * more than once in multi-site or multi-network environments.
  *
- * @return bool Whether to run the upgrade routines on global tables.
  * @since 4.3.0
  *
+ * @return bool Whether to run the upgrade routines on global tables.
  */
 function wp_should_upgrade_global_tables() {
 

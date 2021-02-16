@@ -22,15 +22,15 @@ class WP_Debug_Data {
 	/**
 	 * Static function for generating site debug data when required.
 	 *
-	 * @return array The debug data for the site.
-	 * @throws ImagickException
-	 * @since 5.5.0 Added pretty permalinks support information.
-	 *
 	 * @since 5.2.0
-	 * @global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 * @since 5.3.0 Added database charset, database collation,
 	 *              and timezone information.
+	 * @since 5.5.0 Added pretty permalinks support information.
+	 *
+	 * @throws ImagickException
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
+	 * @return array The debug data for the site.
 	 */
 	static function debug_data() {
 		global $wpdb;
@@ -38,12 +38,12 @@ class WP_Debug_Data {
 		// Save few function calls.
 		$upload_dir             = wp_upload_dir();
 		$permalink_structure    = get_option( 'permalink_structure' );
-		$is_ssl                 = Load::is_ssl();
-		$is_multisite           = Load::is_multisite();
+		$is_ssl                 = is_ssl();
+		$is_multisite           = is_multisite();
 		$users_can_register     = get_option( 'users_can_register' );
 		$blog_public            = get_option( 'blog_public' );
 		$default_comment_status = get_option( 'default_comment_status' );
-		$environment_type       = Load::wp_get_environment_type();
+		$environment_type       = wp_get_environment_type();
 		$core_version           = get_bloginfo( 'version' );
 		$core_updates           = get_core_updates();
 		$core_update_needed     = '';
@@ -139,7 +139,7 @@ class WP_Debug_Data {
 			'label'       => __( 'Drop-ins' ),
 			'show_count'  => true,
 			'description' => sprintf(
-			/* translators: %s: wp-content directory name. */
+				/* translators: %s: wp-content directory name. */
 				__( 'Drop-ins are single files, found in the %s directory, that replace or enhance WordPress features in ways that are not possible for traditional plugins.' ),
 				'<code>' . str_replace( ABSPATH, '', WP_CONTENT_DIR ) . '</code>'
 			),
@@ -369,7 +369,7 @@ class WP_Debug_Data {
 		);
 
 		// Conditionally add debug information for multisite setups.
-		if ( Load::is_multisite() ) {
+		if ( is_multisite() ) {
 			$network_query = new WP_Network_Query();
 			$network_ids   = $network_query->query(
 				array(
@@ -410,7 +410,7 @@ class WP_Debug_Data {
 		// WordPress features requiring processing.
 		$wp_dotorg = wp_remote_get( 'https://wordpress.org', array( 'timeout' => 10 ) );
 
-		if ( ! Load::is_wp_error( $wp_dotorg ) ) {
+		if ( ! is_wp_error( $wp_dotorg ) ) {
 			$info['wp-core']['fields']['dotorg_communication'] = array(
 				'label' => __( 'Communication with WordPress.org' ),
 				'value' => __( 'WordPress.org is reachable' ),
@@ -420,7 +420,7 @@ class WP_Debug_Data {
 			$info['wp-core']['fields']['dotorg_communication'] = array(
 				'label' => __( 'Communication with WordPress.org' ),
 				'value' => sprintf(
-				/* translators: 1: The IP address WordPress.org resolves to. 2: The error returned by the lookup. */
+					/* translators: 1: The IP address WordPress.org resolves to. 2: The error returned by the lookup. */
 					__( 'Unable to reach WordPress.org at %1$s: %2$s' ),
 					gethostbyname( 'wordpress.org' ),
 					$wp_dotorg->get_error_message()
@@ -529,7 +529,7 @@ class WP_Debug_Data {
 			$info['wp-media']['fields']['ini_get'] = array(
 				'label' => __( 'File upload settings' ),
 				'value' => sprintf(
-				/* translators: %s: ini_get() */
+					/* translators: %s: ini_get() */
 					__( 'Unable to determine some settings, as the %s function has been disabled.' ),
 					'ini_get()'
 				),
@@ -540,7 +540,7 @@ class WP_Debug_Data {
 			$post_max_size       = ini_get( 'post_max_size' );
 			$upload_max_filesize = ini_get( 'upload_max_filesize' );
 			$max_file_uploads    = ini_get( 'max_file_uploads' );
-			$effective           = min( Load::wp_convert_hr_to_bytes( $post_max_size ), Load::wp_convert_hr_to_bytes( $upload_max_filesize ) );
+			$effective           = min( wp_convert_hr_to_bytes( $post_max_size ), wp_convert_hr_to_bytes( $upload_max_filesize ) );
 
 			// Add info in Media section.
 			$info['wp-media']['fields']['file_uploads']        = array(
@@ -685,7 +685,7 @@ class WP_Debug_Data {
 			$info['wp-server']['fields']['ini_get'] = array(
 				'label' => __( 'Server settings' ),
 				'value' => sprintf(
-				/* translators: %s: ini_get() */
+					/* translators: %s: ini_get() */
 					__( 'Unable to determine some settings, as the %s function has been disabled.' ),
 					'ini_get()'
 				),
@@ -994,13 +994,12 @@ class WP_Debug_Data {
 				/**
 				 * Filters the text string of the auto-updates setting for each plugin in the Site Health debug data.
 				 *
-				 * @param string $auto_updates_string The string output for the auto-updates column.
-				 * @param string $plugin_path The path to the plugin file.
-				 * @param array $plugin An array of plugin data.
-				 * @param bool $enabled Whether auto-updates are enabled for this item.
-				 *
 				 * @since 5.5.0
 				 *
+				 * @param string $auto_updates_string The string output for the auto-updates column.
+				 * @param string $plugin_path         The path to the plugin file.
+				 * @param array  $plugin              An array of plugin data.
+				 * @param bool   $enabled             Whether auto-updates are enabled for this item.
 				 */
 				$auto_updates_string = apply_filters( 'plugin_auto_update_debug_string', $auto_updates_string, $plugin_path, $plugin, $enabled );
 
@@ -1049,8 +1048,8 @@ class WP_Debug_Data {
 		$active_theme_author_uri = $active_theme->display( 'AuthorURI' );
 
 		if ( $active_theme->parent_theme ) {
-			$active_theme_parent_theme       = sprintf(
-			/* translators: 1: Theme name. 2: Theme slug. */
+			$active_theme_parent_theme = sprintf(
+				/* translators: 1: Theme name. 2: Theme slug. */
 				__( '%1$s (%2$s)' ),
 				$active_theme->parent_theme,
 				$active_theme->template
@@ -1069,7 +1068,7 @@ class WP_Debug_Data {
 			'name'           => array(
 				'label' => __( 'Name' ),
 				'value' => sprintf(
-				/* translators: 1: Theme name. 2: Theme slug. */
+					/* translators: 1: Theme name. 2: Theme slug. */
 					__( '%1$s (%2$s)' ),
 					$active_theme->name,
 					$active_theme->stylesheet
@@ -1164,7 +1163,7 @@ class WP_Debug_Data {
 				'name'           => array(
 					'label' => __( 'Name' ),
 					'value' => sprintf(
-					/* translators: 1: Theme name. 2: Theme slug. */
+						/* translators: 1: Theme name. 2: Theme slug. */
 						__( '%1$s (%2$s)' ),
 						$parent_theme->name,
 						$parent_theme->stylesheet
@@ -1311,12 +1310,11 @@ class WP_Debug_Data {
 				/**
 				 * Filters the text string of the auto-updates setting for each theme in the Site Health debug data.
 				 *
-				 * @param string $auto_updates_string The string output for the auto-updates column.
-				 * @param WP_Theme $theme An object of theme data.
-				 * @param bool $enabled Whether auto-updates are enabled for this item.
-				 *
 				 * @since 5.5.0
 				 *
+				 * @param string   $auto_updates_string The string output for the auto-updates column.
+				 * @param WP_Theme $theme               An object of theme data.
+				 * @param bool     $enabled             Whether auto-updates are enabled for this item.
 				 */
 				$auto_updates_string = apply_filters( 'theme_auto_update_debug_string', $auto_updates_string, $theme, $enabled );
 
@@ -1326,7 +1324,7 @@ class WP_Debug_Data {
 
 			$info['wp-themes-inactive']['fields'][ sanitize_text_field( $theme->name ) ] = array(
 				'label' => sprintf(
-				/* translators: 1: Theme name. 2: Theme slug. */
+					/* translators: 1: Theme name. 2: Theme slug. */
 					__( '%1$s (%2$s)' ),
 					$theme->name,
 					$theme_slug
@@ -1359,6 +1357,8 @@ class WP_Debug_Data {
 		 *
 		 * All strings are expected to be plain text except $description that can contain inline HTML tags (see below).
 		 *
+		 * @since 5.2.0
+		 *
 		 * @param array $args {
 		 *     The debug information to be added to the core information page.
 		 *
@@ -1366,28 +1366,26 @@ class WP_Debug_Data {
 		 *     Each section has a `$fields` associative array (see below), and each `$value` in `$fields` can be
 		 *     another associative array of name/value pairs when there is more structured data to display.
 		 *
-		 * @type string $label The title for this section of the debug output.
-		 * @type string $description Optional. A description for your information section which may contain basic HTML
+		 *     @type string  $label        The title for this section of the debug output.
+		 *     @type string  $description  Optional. A description for your information section which may contain basic HTML
 		 *                                 markup, inline tags only as it is outputted in a paragraph.
-		 * @type boolean $show_count Optional. If set to `true` the amount of fields will be included in the title for
+		 *     @type boolean $show_count   Optional. If set to `true` the amount of fields will be included in the title for
 		 *                                 this section.
-		 * @type boolean $private Optional. If set to `true` the section and all associated fields will be excluded
+		 *     @type boolean $private      Optional. If set to `true` the section and all associated fields will be excluded
 		 *                                 from the copied data.
-		 * @type array $fields {
+		 *     @type array   $fields {
 		 *         An associative array containing the data to be displayed.
 		 *
-		 * @type string $label The label for this piece of information.
-		 * @type string $value The output that is displayed for this field. Text should be translated. Can be
+		 *         @type string  $label    The label for this piece of information.
+		 *         @type string  $value    The output that is displayed for this field. Text should be translated. Can be
 		 *                                 an associative array that is displayed as name/value pairs.
-		 * @type string $debug Optional. The output that is used for this field when the user copies the data.
+		 *         @type string  $debug    Optional. The output that is used for this field when the user copies the data.
 		 *                                 It should be more concise and not translated. If not set, the content of `$value` is used.
 		 *                                 Note that the array keys are used as labels for the copied data.
-		 * @type boolean $private Optional. If set to `true` the field will not be included in the copied data
+		 *         @type boolean $private  Optional. If set to `true` the field will not be included in the copied data
 		 *                                 allowing you to show, for example, API keys here.
 		 *     }
 		 * }
-		 * @since 5.2.0
-		 *
 		 */
 		$info = apply_filters( 'debug_information', $info );
 
@@ -1397,12 +1395,11 @@ class WP_Debug_Data {
 	/**
 	 * Format the information gathered for debugging, in a manner suitable for copying to a forum or support ticket.
 	 *
-	 * @param array $info_array Information gathered from the `WP_Debug_Data::debug_data` function.
-	 * @param string $type The data type to return, either 'info' or 'debug'.
-	 *
-	 * @return string The formatted data.
 	 * @since 5.2.0
 	 *
+	 * @param array  $info_array Information gathered from the `WP_Debug_Data::debug_data` function.
+	 * @param string $type       The data type to return, either 'info' or 'debug'.
+	 * @return string The formatted data.
 	 */
 	public static function format( $info_array, $type ) {
 		$return = "`\n";
@@ -1465,12 +1462,33 @@ class WP_Debug_Data {
 	}
 
 	/**
+	 * Fetch the total size of all the database tables for the active database user.
+	 *
+	 * @since 5.2.0
+	 *
+	 * @return int The size of the database, in bytes.
+	 */
+	public static function get_database_size() {
+		global $wpdb;
+		$size = 0;
+		$rows = $wpdb->get_results( 'SHOW TABLE STATUS', ARRAY_A );
+
+		if ( $wpdb->num_rows > 0 ) {
+			foreach ( $rows as $row ) {
+				$size += $row['Data_length'] + $row['Index_length'];
+			}
+		}
+
+		return (int) $size;
+	}
+
+	/**
 	 * Fetch the sizes of the WordPress directories: `wordpress` (ABSPATH), `plugins`, `themes`, and `uploads`.
 	 * Intended to supplement the array returned by `WP_Debug_Data::debug_data()`.
 	 *
-	 * @return array The sizes of the directories, also the database size and total installation size.
 	 * @since 5.2.0
 	 *
+	 * @return array The sizes of the directories, also the database size and total installation size.
 	 */
 	public static function get_sizes() {
 		$size_db    = self::get_database_size();
@@ -1588,26 +1606,5 @@ class WP_Debug_Data {
 		}
 
 		return $all_sizes;
-	}
-
-	/**
-	 * Fetch the total size of all the database tables for the active database user.
-	 *
-	 * @return int The size of the database, in bytes.
-	 * @since 5.2.0
-	 *
-	 */
-	public static function get_database_size() {
-		global $wpdb;
-		$size = 0;
-		$rows = $wpdb->get_results( 'SHOW TABLE STATUS', ARRAY_A );
-
-		if ( $wpdb->num_rows > 0 ) {
-			foreach ( $rows as $row ) {
-				$size += $row['Data_length'] + $row['Index_length'];
-			}
-		}
-
-		return (int) $size;
 	}
 }

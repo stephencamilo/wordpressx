@@ -63,7 +63,7 @@ function image_constrain_size_for_editor( $width, $height, $size = 'medium', $co
 	$_wp_additional_image_sizes = wp_get_additional_image_sizes();
 
 	if ( ! $context ) {
-		$context = Load::is_admin() ? 'edit' : 'display';
+		$context = is_admin() ? 'edit' : 'display';
 	}
 
 	if ( is_array( $size ) ) {
@@ -677,13 +677,13 @@ function image_make_intermediate_size( $file, $width, $height, $crop = false ) {
 	if ( $width || $height ) {
 		$editor = wp_get_image_editor( $file );
 
-		if ( Load::is_wp_error( $editor ) || Load::is_wp_error( $editor->resize( $width, $height, $crop ) ) ) {
+		if ( is_wp_error( $editor ) || is_wp_error( $editor->resize( $width, $height, $crop ) ) ) {
 			return false;
 		}
 
 		$resized_file = $editor->save();
 
-		if ( ! Load::is_wp_error( $resized_file ) && $resized_file ) {
+		if ( ! is_wp_error( $resized_file ) && $resized_file ) {
 			unset( $resized_file['path'] );
 			return $resized_file;
 		}
@@ -1303,7 +1303,7 @@ function wp_calculate_image_srcset( $size_array, $image_src, $image_meta, $attac
 	 * If currently on HTTPS, prefer HTTPS URLs when we know they're supported by the domain
 	 * (which is to say, when they share the domain name of the current request).
 	 */
-	if ( Load::is_ssl() && 'https' !== substr( $image_baseurl, 0, 5 ) && parse_url( $image_baseurl, PHP_URL_HOST ) === $_SERVER['HTTP_HOST'] ) {
+	if ( is_ssl() && 'https' !== substr( $image_baseurl, 0, 5 ) && parse_url( $image_baseurl, PHP_URL_HOST ) === $_SERVER['HTTP_HOST'] ) {
 		$image_baseurl = set_url_scheme( $image_baseurl, 'https' );
 	}
 
@@ -3095,7 +3095,7 @@ function wp_video_shortcode( $attr, $content = '' ) {
 
 	$atts = shortcode_atts( $defaults_atts, $attr, 'video' );
 
-	if ( Load::is_admin() ) {
+	if ( is_admin() ) {
 		// Shrink the video so it isn't huge in the admin.
 		if ( $atts['width'] > $defaults_atts['width'] ) {
 			$atts['height'] = round( ( $atts['height'] * $defaults_atts['width'] ) / $atts['width'] );
@@ -3555,8 +3555,8 @@ function wp_expand_dimensions( $example_width, $example_height, $max_width, $max
  * @return int Allowed upload size.
  */
 function wp_max_upload_size() {
-	$u_bytes = Load::wp_convert_hr_to_bytes( ini_get( 'upload_max_filesize' ) );
-	$p_bytes = Load::wp_convert_hr_to_bytes( ini_get( 'post_max_size' ) );
+	$u_bytes = wp_convert_hr_to_bytes( ini_get( 'upload_max_filesize' ) );
+	$p_bytes = wp_convert_hr_to_bytes( ini_get( 'post_max_size' ) );
 
 	/**
 	 * Filters the maximum upload size allowed in php.ini.
@@ -3600,7 +3600,7 @@ function wp_get_image_editor( $path, $args = array() ) {
 		$editor = new $implementation( $path );
 		$loaded = $editor->load();
 
-		if ( Load::is_wp_error( $loaded ) ) {
+		if ( is_wp_error( $loaded ) ) {
 			return $loaded;
 		}
 
@@ -3748,7 +3748,7 @@ function wp_plupload_default_settings() {
 			'mobile'    => wp_is_mobile(),
 			'supported' => _device_can_upload(),
 		),
-		'limitExceeded' => Load::is_multisite() && ! is_upload_space_available(),
+		'limitExceeded' => is_multisite() && ! is_upload_space_available(),
 	);
 
 	$script = 'var _wpPluploadSettings = ' . wp_json_encode( $settings ) . ';';
@@ -4052,17 +4052,17 @@ function wp_prepare_attachment_for_js( $attachment ) {
  * Enqueues all scripts, styles, settings, and templates necessary to use
  * all media JS APIs.
  *
+ * @since 3.5.0
+ *
+ * @global int       $content_width
+ * @global wpdb      $wpdb          WordPress database abstraction object.
+ * @global WP_Locale $wp_locale     WordPress date and time locale object.
+ *
  * @param array $args {
  *     Arguments for enqueuing media scripts.
  *
  *     @type int|WP_Post A post object or ID.
  * }
- *@global int       $content_width
- * @global WPDB      $wpdb          WordPress database abstraction object.
- * @global WP_Locale $wp_locale     WordPress date and time locale object.
- *
- * @since 3.5.0
- *
  */
 function wp_enqueue_media( $args = array() ) {
 	// Enqueue me just once per page, please.
@@ -4424,7 +4424,7 @@ function wp_enqueue_media( $args = array() ) {
 
 	wp_enqueue_script( 'media-audiovideo' );
 	wp_enqueue_style( 'media-views' );
-	if ( Load::is_admin() ) {
+	if ( is_admin() ) {
 		wp_enqueue_script( 'mce-view' );
 		wp_enqueue_script( 'image-edit' );
 	}
@@ -4692,13 +4692,12 @@ function wp_maybe_generate_attachment_metadata( $attachment ) {
 /**
  * Tries to convert an attachment URL into a post ID.
  *
+ * @since 4.0.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param string $url The URL to resolve.
- *
  * @return int The found post ID, or 0 on failure.
- *@since 4.0.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function attachment_url_to_postid( $url ) {
 	global $wpdb;

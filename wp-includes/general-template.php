@@ -1,6 +1,4 @@
 <?php
-
-use Core\WPIncludes\Load;
 /**
  * General template tags that can go anywhere in a template.
  *
@@ -510,7 +508,7 @@ function wp_login_form( $args = array() ) {
 	$defaults = array(
 		'echo'           => true,
 		// Default 'redirect' value takes the user back to the request URI.
-		'redirect'       => ( Load::is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
+		'redirect'       => ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
 		'form_id'        => 'loginform',
 		'label_username' => __( 'Username or Email Address' ),
 		'label_password' => __( 'Password' ),
@@ -618,7 +616,7 @@ function wp_lostpassword_url( $redirect = '' ) {
 		$args['redirect_to'] = urlencode( $redirect );
 	}
 
-	if ( Load::is_multisite() ) {
+	if ( is_multisite() ) {
 		$blog_details  = get_blog_details();
 		$wp_login_path = $blog_details->path . 'wp-login.php';
 	} else {
@@ -918,7 +916,7 @@ function get_bloginfo( $show = '', $filter = 'raw' ) {
 function get_site_icon_url( $size = 512, $url = '', $blog_id = 0 ) {
 	$switched_blog = false;
 
-	if ( Load::is_multisite() && ! empty( $blog_id ) && Load::get_current_blog_id() !== (int) $blog_id ) {
+	if ( is_multisite() && ! empty( $blog_id ) && get_current_blog_id() !== (int) $blog_id ) {
 		switch_to_blog( $blog_id );
 		$switched_blog = true;
 	}
@@ -986,7 +984,7 @@ function has_site_icon( $blog_id = 0 ) {
 function has_custom_logo( $blog_id = 0 ) {
 	$switched_blog = false;
 
-	if ( Load::is_multisite() && ! empty( $blog_id ) && Load::get_current_blog_id() !== (int) $blog_id ) {
+	if ( is_multisite() && ! empty( $blog_id ) && get_current_blog_id() !== (int) $blog_id ) {
 		switch_to_blog( $blog_id );
 		$switched_blog = true;
 	}
@@ -1014,7 +1012,7 @@ function get_custom_logo( $blog_id = 0 ) {
 	$html          = '';
 	$switched_blog = false;
 
-	if ( Load::is_multisite() && ! empty( $blog_id ) && Load::get_current_blog_id() !== (int) $blog_id ) {
+	if ( is_multisite() && ! empty( $blog_id ) && get_current_blog_id() !== (int) $blog_id ) {
 		switch_to_blog( $blog_id );
 		$switched_blog = true;
 	}
@@ -1899,6 +1897,15 @@ function get_archives_link( $url, $text, $format = 'html', $before = '', $after 
 /**
  * Display archive links based on type and format.
  *
+ * @since 1.2.0
+ * @since 4.4.0 The `$post_type` argument was added.
+ * @since 5.2.0 The `$year`, `$monthnum`, `$day`, and `$w` arguments were added.
+ *
+ * @see get_archives_link()
+ *
+ * @global wpdb      $wpdb      WordPress database abstraction object.
+ * @global WP_Locale $wp_locale WordPress date and time locale object.
+ *
  * @param string|array $args {
  *     Default archive links arguments. Optional.
  *
@@ -1926,15 +1933,6 @@ function get_archives_link( $url, $text, $format = 'html', $before = '', $after 
  *     @type string     $w               Week. Default current week.
  * }
  * @return void|string Void if 'echo' argument is true, archive links if 'echo' is false.
- *@since 5.2.0 The `$year`, `$monthnum`, `$day`, and `$w` arguments were added.
- *
- * @see get_archives_link()
- *
- * @global WPDB      $wpdb      WordPress database abstraction object.
- * @global WP_Locale $wp_locale WordPress date and time locale object.
- *
- * @since 1.2.0
- * @since 4.4.0 The `$post_type` argument was added.
  */
 function wp_get_archives( $args = '' ) {
 	global $wpdb, $wp_locale;
@@ -2175,19 +2173,18 @@ function calendar_week_mod( $num ) {
  * The calendar is cached, which will be retrieved, if it exists. If there are
  * no posts for the month, then it will not be displayed.
  *
- * @param bool $initial Optional. Whether to use initial calendar names. Default true.
- * @param bool $echo    Optional. Whether to display the calendar output. Default true.
+ * @since 1.0.0
  *
- * @return void|string Void if `$echo` argument is true, calendar HTML if `$echo` is false.
- *@since 1.0.0
- *
- * @global WPDB      $wpdb      WordPress database abstraction object.
+ * @global wpdb      $wpdb      WordPress database abstraction object.
  * @global int       $m
  * @global int       $monthnum
  * @global int       $year
  * @global WP_Locale $wp_locale WordPress date and time locale object.
  * @global array     $posts
  *
+ * @param bool $initial Optional. Whether to use initial calendar names. Default true.
+ * @param bool $echo    Optional. Whether to display the calendar output. Default true.
+ * @return void|string Void if `$echo` argument is true, calendar HTML if `$echo` is false.
  */
 function get_calendar( $initial = true, $echo = true ) {
 	global $wpdb, $m, $monthnum, $year, $wp_locale, $posts;
@@ -4634,7 +4631,7 @@ function add_thickbox() {
 	wp_enqueue_script( 'thickbox' );
 	wp_enqueue_style( 'thickbox' );
 
-	if ( Load::is_network_admin() ) {
+	if ( is_network_admin() ) {
 		add_action( 'admin_head', '_thickbox_path_admin_subfolder' );
 	}
 }
@@ -4861,7 +4858,7 @@ function __checked_selected_helper( $helper, $current, $echo, $type ) { // phpcs
  * @return array Heartbeat settings.
  */
 function wp_heartbeat_settings( $settings ) {
-	if ( ! Load::is_admin() ) {
+	if ( ! is_admin() ) {
 		$settings['ajaxurl'] = admin_url( 'admin-ajax.php', 'relative' );
 	}
 

@@ -9,17 +9,16 @@
 /**
  * Retrieve list of importers.
  *
- * @return array
- * @global array $wp_importers
  * @since 2.0.0
  *
+ * @global array $wp_importers
+ * @return array
  */
 function get_importers() {
 	global $wp_importers;
 	if ( is_array( $wp_importers ) ) {
 		uasort( $wp_importers, '_usort_by_first_member' );
 	}
-
 	return $wp_importers;
 }
 
@@ -28,13 +27,12 @@ function get_importers() {
  *
  * Used by uasort() as a callback, should not be used directly.
  *
- * @param array $a
- * @param array $b
- *
- * @return int
  * @since 2.9.0
  * @access private
  *
+ * @param array $a
+ * @param array $b
+ * @return int
  */
 function _usort_by_first_member( $a, $b ) {
 	return strnatcasecmp( $a[0], $b[0] );
@@ -43,20 +41,19 @@ function _usort_by_first_member( $a, $b ) {
 /**
  * Register importer for WordPress.
  *
- * @param string $id Importer tag. Used to uniquely identify importer.
- * @param string $name Importer name and title.
- * @param string $description Importer description.
- * @param callable $callback Callback to run.
- *
- * @return WP_Error Returns WP_Error when $callback is WP_Error.
- * @global array $wp_importers
- *
  * @since 2.0.0
  *
+ * @global array $wp_importers
+ *
+ * @param string   $id          Importer tag. Used to uniquely identify importer.
+ * @param string   $name        Importer name and title.
+ * @param string   $description Importer description.
+ * @param callable $callback    Callback to run.
+ * @return WP_Error Returns WP_Error when $callback is WP_Error.
  */
 function register_importer( $id, $name, $description, $callback ) {
 	global $wp_importers;
-	if ( Load::is_wp_error( $callback ) ) {
+	if ( is_wp_error( $callback ) ) {
 		return $callback;
 	}
 	$wp_importers[ $id ] = array( $name, $description, $callback );
@@ -67,10 +64,9 @@ function register_importer( $id, $name, $description, $callback ) {
  *
  * Removes attachment based on ID.
  *
- * @param string $id Importer ID.
- *
  * @since 2.0.0
  *
+ * @param string $id Importer ID.
  */
 function wp_import_cleanup( $id ) {
 	wp_delete_attachment( $id );
@@ -79,15 +75,15 @@ function wp_import_cleanup( $id ) {
 /**
  * Handle importer uploading and add attachment.
  *
- * @return array Uploaded file's details on success, error message on failure
  * @since 2.0.0
  *
+ * @return array Uploaded file's details on success, error message on failure
  */
 function wp_import_handle_upload() {
 	if ( ! isset( $_FILES['import'] ) ) {
 		return array(
 			'error' => sprintf(
-			/* translators: 1: php.ini, 2: post_max_size, 3: upload_max_filesize */
+				/* translators: 1: php.ini, 2: post_max_size, 3: upload_max_filesize */
 				__( 'File is empty. Please upload something more substantial. This error could also be caused by uploads being disabled in your %1$s file or by %2$s being defined as smaller than %3$s in %1$s.' ),
 				'php.ini',
 				'post_max_size',
@@ -96,12 +92,12 @@ function wp_import_handle_upload() {
 		);
 	}
 
-	$overrides                = array(
+	$overrides                 = array(
 		'test_form' => false,
 		'test_type' => false,
 	);
 	$_FILES['import']['name'] .= '.txt';
-	$upload                   = wp_handle_upload( $_FILES['import'], $overrides );
+	$upload                    = wp_handle_upload( $_FILES['import'], $overrides );
 
 	if ( isset( $upload['error'] ) ) {
 		return $upload;
@@ -135,9 +131,9 @@ function wp_import_handle_upload() {
 /**
  * Returns a list from WordPress.org of popular importer plugins.
  *
- * @return array Importers with metadata for each.
  * @since 3.5.0
  *
+ * @return array Importers with metadata for each.
  */
 function wp_get_popular_importers() {
 	// Include an unmodified $wp_version.
@@ -185,7 +181,6 @@ function wp_get_popular_importers() {
 				$importer['name'] = translate( $importer['name'] );
 			}
 		}
-
 		return $popular_importers['importers'];
 	}
 

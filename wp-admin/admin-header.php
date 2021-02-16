@@ -34,10 +34,10 @@ if ( empty( $current_screen ) ) {
 get_admin_page_title();
 $title = strip_tags( $title );
 
-if ( Load::is_network_admin() ) {
+if ( is_network_admin() ) {
 	/* translators: Network admin screen title. %s: Network title. */
 	$admin_title = sprintf( __( 'Network Admin: %s' ), get_network()->site_name );
-} elseif ( Load::is_user_admin() ) {
+} elseif ( is_user_admin() ) {
 	/* translators: User dashboard screen title. %s: Network title. */
 	$admin_title = sprintf( __( 'User Dashboard: %s' ), get_network()->site_name );
 } else {
@@ -52,7 +52,7 @@ if ( $admin_title === $title ) {
 	$admin_title = sprintf( __( '%1$s &lsaquo; %2$s &#8212; WordPress' ), $title, $admin_title );
 }
 
-if ( Load::wp_is_recovery_mode() ) {
+if ( wp_is_recovery_mode() ) {
 	/* translators: %s: Admin screen title. */
 	$admin_title = sprintf( __( 'Recovery Mode &#8212; %s' ), $admin_title );
 }
@@ -179,11 +179,11 @@ if ( wp_is_mobile() ) {
 	$admin_body_class .= ' mobile';
 }
 
-if ( Load::is_multisite() ) {
+if ( is_multisite() ) {
 	$admin_body_class .= ' multisite';
 }
 
-if ( Load::is_network_admin() ) {
+if ( is_network_admin() ) {
 	$admin_body_class .= ' network-admin';
 }
 
@@ -269,14 +269,14 @@ $current_screen->set_parentage( $parent_file );
 
 $current_screen->render_screen_meta();
 
-if ( Load::is_network_admin() ) {
+if ( is_network_admin() ) {
 	/**
 	 * Prints network admin screen notices.
 	 *
 	 * @since 3.1.0
 	 */
 	do_action( 'network_admin_notices' );
-} elseif ( Load::is_user_admin() ) {
+} elseif ( is_user_admin() ) {
 	/**
 	 * Prints user admin screen notices.
 	 *

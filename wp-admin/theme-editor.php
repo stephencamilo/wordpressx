@@ -9,7 +9,7 @@
 /** WordPress Administration Bootstrap */
 require_once __DIR__ . '/admin.php';
 
-if ( Load::is_multisite() && ! Load::is_network_admin() ) {
+if ( is_multisite() && ! is_network_admin() ) {
 	wp_redirect( network_admin_url( 'theme-editor.php' ) );
 	exit;
 }
@@ -42,7 +42,7 @@ get_current_screen()->add_help_tab(
 					__( 'Upgrading to a newer version of the same theme will override changes made here. To avoid this, consider creating a <a href="%s">child theme</a> instead.' ),
 					__( 'https://developer.wordpress.org/themes/advanced-topics/child-themes/' )
 				) . '</p>' .
-				( Load::is_network_admin() ? '<p>' . __( 'Any edits to files from this screen will be reflected on all sites in the network.' ) . '</p>' : '' ),
+				( is_network_admin() ? '<p>' . __( 'Any edits to files from this screen will be reflected on all sites in the network.' ) . '</p>' : '' ),
 	)
 );
 
@@ -118,7 +118,7 @@ $posted_content = null;
 
 if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 	$r = wp_edit_theme_plugin_file( wp_unslash( $_POST ) );
-	if ( Load::is_wp_error( $r ) ) {
+	if ( is_wp_error( $r ) ) {
 		$edit_error = $r;
 		if ( check_ajax_referer( 'edit-theme_' . $stylesheet . '_' . $relative_file, 'nonce', false ) && isset( $_POST['newcontent'] ) ) {
 			$posted_content = wp_unslash( $_POST['newcontent'] );
@@ -188,7 +188,7 @@ if ( $file_description !== $file_show ) {
 	<div id="message" class="updated notice is-dismissible">
 		<p><?php _e( 'File edited successfully.' ); ?></p>
 	</div>
-<?php elseif ( Load::is_wp_error( $edit_error ) ) : ?>
+<?php elseif ( is_wp_error( $edit_error ) ) : ?>
 	<div id="message" class="notice notice-error">
 		<p><?php _e( 'There was an error while trying to update the file. You may need to fix something and try updating again.' ); ?></p>
 		<pre><?php echo esc_html( $edit_error->get_error_message() ? $edit_error->get_error_message() : $edit_error->get_error_code() ); ?></pre>

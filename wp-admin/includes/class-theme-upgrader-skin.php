@@ -116,7 +116,7 @@ class Theme_Upgrader_Skin extends WP_Upgrader_Skin {
 				);
 			}
 
-			if ( ! $this->result || Load::is_wp_error( $this->result ) || Load::is_network_admin() ) {
+			if ( ! $this->result || is_wp_error( $this->result ) || is_network_admin() ) {
 				unset( $update_actions['preview'], $update_actions['activate'] );
 			}
 		}

@@ -156,7 +156,7 @@ class WP_REST_Autosaves_Controller extends WP_REST_Revisions_Controller {
 	 */
 	public function get_items_permissions_check( $request ) {
 		$parent = $this->get_parent( $request['id'] );
-		if ( Load::is_wp_error( $parent ) ) {
+		if ( is_wp_error( $parent ) ) {
 			return $parent;
 		}
 
@@ -212,7 +212,7 @@ class WP_REST_Autosaves_Controller extends WP_REST_Revisions_Controller {
 
 		$post = get_post( $request['id'] );
 
-		if ( Load::is_wp_error( $post ) ) {
+		if ( is_wp_error( $post ) ) {
 			return $post;
 		}
 
@@ -229,7 +229,7 @@ class WP_REST_Autosaves_Controller extends WP_REST_Revisions_Controller {
 			$autosave_id = $this->create_post_autosave( (array) $prepared_post );
 		}
 
-		if ( Load::is_wp_error( $autosave_id ) ) {
+		if ( is_wp_error( $autosave_id ) ) {
 			return $autosave_id;
 		}
 
@@ -287,7 +287,7 @@ class WP_REST_Autosaves_Controller extends WP_REST_Revisions_Controller {
 	 */
 	public function get_items( $request ) {
 		$parent = $this->get_parent( $request['id'] );
-		if ( Load::is_wp_error( $parent ) ) {
+		if ( is_wp_error( $parent ) ) {
 			return $parent;
 		}
 
@@ -348,7 +348,7 @@ class WP_REST_Autosaves_Controller extends WP_REST_Revisions_Controller {
 		$post_id = (int) $post_data['ID'];
 		$post    = get_post( $post_id );
 
-		if ( Load::is_wp_error( $post ) ) {
+		if ( is_wp_error( $post ) ) {
 			return $post;
 		}
 

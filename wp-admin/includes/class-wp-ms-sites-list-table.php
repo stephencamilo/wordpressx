@@ -64,7 +64,7 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 	 *
 	 * @global string $mode List table view mode.
 	 * @global string $s
-	 * @global WPDB   $wpdb WordPress database abstraction object.
+	 * @global wpdb   $wpdb WordPress database abstraction object.
 	 */
 	public function prepare_items() {
 		global $mode, $s, $wpdb;
@@ -105,7 +105,7 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 		$args = array(
 			'number'     => (int) $per_page,
 			'offset'     => (int) ( ( $pagenum - 1 ) * $per_page ),
-			'network_id' => Load::get_current_network_id(),
+			'network_id' => get_current_network_id(),
 		);
 
 		if ( empty( $s ) ) {

@@ -140,7 +140,7 @@ function twenty_twenty_one_continue_reading_text() {
  * Create the continue reading link for excerpt.
  */
 function twenty_twenty_one_continue_reading_link_excerpt() {
-	if ( ! Load::is_admin() ) {
+	if ( ! is_admin() ) {
 		return '&hellip; <a class="more-link" href="' . esc_url( get_permalink() ) . '">' . twenty_twenty_one_continue_reading_text() . '</a>';
 	}
 }
@@ -152,7 +152,7 @@ add_filter( 'excerpt_more', 'twenty_twenty_one_continue_reading_link_excerpt' );
  * Create the continue reading link.
  */
 function twenty_twenty_one_continue_reading_link() {
-	if ( ! Load::is_admin() ) {
+	if ( ! is_admin() ) {
 		return '<div class="more-link-container"><a class="more-link" href="' . esc_url( get_permalink() ) . '#more-' . esc_attr( get_the_ID() ) . '">' . twenty_twenty_one_continue_reading_text() . '</a></div>';
 	}
 }

@@ -62,15 +62,14 @@ class WP_Posts_List_Table extends WP_List_Table {
 	/**
 	 * Constructor.
 	 *
-	 * @param array $args An associative array of arguments.
-	 *
-	 *@see WP_List_Table::__construct() for more information on default arguments.
-	 *
-	 * @global WP_Post_Type $post_type_object
-	 * @global WPDB         $wpdb             WordPress database abstraction object.
-	 *
 	 * @since 3.1.0
 	 *
+	 * @see WP_List_Table::__construct() for more information on default arguments.
+	 *
+	 * @global WP_Post_Type $post_type_object
+	 * @global wpdb         $wpdb             WordPress database abstraction object.
+	 *
+	 * @param array $args An associative array of arguments.
 	 */
 	public function __construct( $args = array() ) {
 		global $post_type_object, $wpdb;
@@ -752,12 +751,11 @@ class WP_Posts_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * @global wpdb    $wpdb WordPress database abstraction object.
+	 * @global WP_Post $post Global post object.
 	 * @param array $pages
 	 * @param int   $pagenum
 	 * @param int   $per_page
-	 *
-	 *@global WP_Post $post Global post object.
-	 * @global WPDB    $wpdb WordPress database abstraction object.
 	 */
 	private function _display_rows_hierarchical( $pages, $pagenum = 1, $per_page = 20 ) {
 		global $wpdb;

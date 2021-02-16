@@ -64,10 +64,10 @@ function wp_list_widgets() {
 /**
  * Callback to sort array by a 'name' key.
  *
- * @return int
  * @since 3.1.0
  * @access private
  *
+ * @return int
  */
 function _sort_name_callback( $a, $b ) {
 	return strnatcasecmp( $a['name'], $b['name'] );
@@ -77,11 +77,10 @@ function _sort_name_callback( $a, $b ) {
  * Show the widgets and their settings for a sidebar.
  * Used in the admin widget config screen.
  *
- * @param string $sidebar Sidebar ID.
- * @param string $sidebar_name Optional. Sidebar name. Default empty.
- *
  * @since 2.5.0
  *
+ * @param string $sidebar      Sidebar ID.
+ * @param string $sidebar_name Optional. Sidebar name. Default empty.
  */
 function wp_list_widget_controls( $sidebar, $sidebar_name = '' ) {
 	add_filter( 'dynamic_sidebar_params', 'wp_list_widget_controls_dynamic_sidebar' );
@@ -92,26 +91,26 @@ function wp_list_widget_controls( $sidebar, $sidebar_name = '' ) {
 
 	if ( $sidebar_name ) {
 		$add_to = sprintf(
-		/* translators: %s: Widgets sidebar name. */
+			/* translators: %s: Widgets sidebar name. */
 			__( 'Add to: %s' ),
 			$sidebar_name
 		);
 		?>
-        <div class="sidebar-name" data-add-to="<?php echo esc_attr( $add_to ); ?>">
-            <button type="button" class="handlediv hide-if-no-js" aria-expanded="true">
-                <span class="screen-reader-text"><?php echo esc_html( $sidebar_name ); ?></span>
-                <span class="toggle-indicator" aria-hidden="true"></span>
-            </button>
-            <h2><?php echo esc_html( $sidebar_name ); ?> <span class="spinner"></span></h2>
-        </div>
+		<div class="sidebar-name" data-add-to="<?php echo esc_attr( $add_to ); ?>">
+			<button type="button" class="handlediv hide-if-no-js" aria-expanded="true">
+				<span class="screen-reader-text"><?php echo esc_html( $sidebar_name ); ?></span>
+				<span class="toggle-indicator" aria-hidden="true"></span>
+			</button>
+			<h2><?php echo esc_html( $sidebar_name ); ?> <span class="spinner"></span></h2>
+		</div>
 		<?php
 	}
 
 	if ( ! empty( $description ) ) {
 		?>
-        <div class="sidebar-description">
-            <p class="description"><?php echo $description; ?></p>
-        </div>
+		<div class="sidebar-description">
+			<p class="description"><?php echo $description; ?></p>
+		</div>
 		<?php
 	}
 
@@ -123,18 +122,17 @@ function wp_list_widget_controls( $sidebar, $sidebar_name = '' ) {
 /**
  * Retrieves the widget control arguments.
  *
- * @param array $params
- *
- * @return array
  * @since 2.5.0
  *
  * @global array $wp_registered_widgets
  *
+ * @param array $params
+ * @return array
  */
 function wp_list_widget_controls_dynamic_sidebar( $params ) {
 	global $wp_registered_widgets;
 	static $i = 0;
-	$i ++;
+	$i++;
 
 	$widget_id = $params[0]['widget_id'];
 	$id        = isset( $params[0]['_temp_id'] ) ? $params[0]['_temp_id'] : $widget_id;
@@ -154,11 +152,10 @@ function wp_list_widget_controls_dynamic_sidebar( $params ) {
 }
 
 /**
- * @param string $id_base
- *
- * @return int
  * @global array $wp_registered_widgets
  *
+ * @param string $id_base
+ * @return int
  */
 function next_widget_id_number( $id_base ) {
 	global $wp_registered_widgets;
@@ -169,7 +166,7 @@ function next_widget_id_number( $id_base ) {
 			$number = max( $number, $matches[1] );
 		}
 	}
-	$number ++;
+	$number++;
 
 	return $number;
 }
@@ -179,15 +176,14 @@ function next_widget_id_number( $id_base ) {
  *
  * Called from dynamic_sidebar().
  *
- * @param array $sidebar_args
- *
- * @return array
- * @global array $wp_registered_widget_controls
- * @global array $sidebars_widgets
- *
  * @since 2.5.0
  *
  * @global array $wp_registered_widgets
+ * @global array $wp_registered_widget_controls
+ * @global array $sidebars_widgets
+ *
+ * @param array $sidebar_args
+ * @return array
  */
 function wp_widget_control( $sidebar_args ) {
 	global $wp_registered_widgets, $wp_registered_widget_controls, $sidebars_widgets;
@@ -229,7 +225,7 @@ function wp_widget_control( $sidebar_args ) {
 	 */
 	if ( isset( $sidebar_args['_display'] ) && 'template' === $sidebar_args['_display'] && $widget_number ) {
 		// number == -1 implies a template where id numbers are replaced by a generic '__i__'.
-		$control['params'][0]['number'] = - 1;
+		$control['params'][0]['number'] = -1;
 		// With id_base widget id's are constructed like {$id_base}-{$id_number}.
 		if ( isset( $control['id_base'] ) ) {
 			$id_format = $control['id_base'] . '-__i__';
@@ -244,80 +240,78 @@ function wp_widget_control( $sidebar_args ) {
 
 	echo $sidebar_args['before_widget'];
 	?>
-    <div class="widget-top">
-        <div class="widget-title-action">
-            <button type="button" class="widget-action hide-if-no-js" aria-expanded="false">
+	<div class="widget-top">
+	<div class="widget-title-action">
+		<button type="button" class="widget-action hide-if-no-js" aria-expanded="false">
 			<span class="screen-reader-text edit">
 				<?php
 				/* translators: %s: Widget title. */
 				printf( __( 'Edit widget: %s' ), $widget_title );
 				?>
 			</span>
-                <span class="screen-reader-text add">
+			<span class="screen-reader-text add">
 				<?php
 				/* translators: %s: Widget title. */
 				printf( __( 'Add widget: %s' ), $widget_title );
 				?>
 			</span>
-                <span class="toggle-indicator" aria-hidden="true"></span>
-            </button>
-            <a class="widget-control-edit hide-if-js" href="<?php echo esc_url( add_query_arg( $query_arg ) ); ?>">
-                <span class="edit"><?php _ex( 'Edit', 'widget' ); ?></span>
-                <span class="add"><?php _ex( 'Add', 'widget' ); ?></span>
-                <span class="screen-reader-text"><?php echo $widget_title; ?></span>
-            </a>
-        </div>
-        <div class="widget-title"><h3><?php echo $widget_title; ?><span class="in-widget-title"></span></h3></div>
-    </div>
+			<span class="toggle-indicator" aria-hidden="true"></span>
+		</button>
+		<a class="widget-control-edit hide-if-js" href="<?php echo esc_url( add_query_arg( $query_arg ) ); ?>">
+			<span class="edit"><?php _ex( 'Edit', 'widget' ); ?></span>
+			<span class="add"><?php _ex( 'Add', 'widget' ); ?></span>
+			<span class="screen-reader-text"><?php echo $widget_title; ?></span>
+		</a>
+	</div>
+	<div class="widget-title"><h3><?php echo $widget_title; ?><span class="in-widget-title"></span></h3></div>
+	</div>
 
-    <div class="widget-inside">
-		<?php echo $before_form; ?>
-		<?php echo $before_widget_content; ?>
-		<?php
-		if ( isset( $control['callback'] ) ) {
-			$has_form = call_user_func_array( $control['callback'], $control['params'] );
-		} else {
-			echo "\t\t<p>" . __( 'There are no options for this widget.' ) . "</p>\n";
-		}
+	<div class="widget-inside">
+	<?php echo $before_form; ?>
+	<?php echo $before_widget_content; ?>
+	<?php
+	if ( isset( $control['callback'] ) ) {
+		$has_form = call_user_func_array( $control['callback'], $control['params'] );
+	} else {
+		echo "\t\t<p>" . __( 'There are no options for this widget.' ) . "</p>\n";
+	}
 
-		$noform_class = '';
-		if ( 'noform' === $has_form ) {
-			$noform_class = ' widget-control-noform';
-		}
-		?>
-		<?php echo $after_widget_content; ?>
-        <input type="hidden" name="widget-id" class="widget-id" value="<?php echo esc_attr( $id_format ); ?>"/>
-        <input type="hidden" name="id_base" class="id_base" value="<?php echo esc_attr( $id_base ); ?>"/>
-        <input type="hidden" name="widget-width" class="widget-width" value="<?php echo esc_attr( $width ); ?>"/>
-        <input type="hidden" name="widget-height" class="widget-height" value="<?php echo esc_attr( $height ); ?>"/>
-        <input type="hidden" name="widget_number" class="widget_number"
-               value="<?php echo esc_attr( $widget_number ); ?>"/>
-        <input type="hidden" name="multi_number" class="multi_number" value="<?php echo esc_attr( $multi_number ); ?>"/>
-        <input type="hidden" name="add_new" class="add_new" value="<?php echo esc_attr( $add_new ); ?>"/>
+	$noform_class = '';
+	if ( 'noform' === $has_form ) {
+		$noform_class = ' widget-control-noform';
+	}
+	?>
+	<?php echo $after_widget_content; ?>
+	<input type="hidden" name="widget-id" class="widget-id" value="<?php echo esc_attr( $id_format ); ?>" />
+	<input type="hidden" name="id_base" class="id_base" value="<?php echo esc_attr( $id_base ); ?>" />
+	<input type="hidden" name="widget-width" class="widget-width" value="<?php echo esc_attr( $width ); ?>" />
+	<input type="hidden" name="widget-height" class="widget-height" value="<?php echo esc_attr( $height ); ?>" />
+	<input type="hidden" name="widget_number" class="widget_number" value="<?php echo esc_attr( $widget_number ); ?>" />
+	<input type="hidden" name="multi_number" class="multi_number" value="<?php echo esc_attr( $multi_number ); ?>" />
+	<input type="hidden" name="add_new" class="add_new" value="<?php echo esc_attr( $add_new ); ?>" />
 
-        <div class="widget-control-actions">
-            <div class="alignleft">
-                <button type="button"
-                        class="button-link button-link-delete widget-control-remove"><?php _e( 'Delete' ); ?></button>
-                <span class="widget-control-close-wrapper">
+	<div class="widget-control-actions">
+		<div class="alignleft">
+			<button type="button" class="button-link button-link-delete widget-control-remove"><?php _e( 'Delete' ); ?></button>
+			<span class="widget-control-close-wrapper">
 				| <button type="button" class="button-link widget-control-close"><?php _e( 'Done' ); ?></button>
 			</span>
-            </div>
-            <div class="alignright<?php echo $noform_class; ?>">
-				<?php submit_button( __( 'Save' ), 'primary widget-control-save right', 'savewidget', false, array( 'id' => 'widget-' . esc_attr( $id_format ) . '-savewidget' ) ); ?>
-                <span class="spinner"></span>
-            </div>
-            <br class="clear"/>
-        </div>
-		<?php echo $after_form; ?>
-    </div>
+		</div>
+		<div class="alignright<?php echo $noform_class; ?>">
+			<?php submit_button( __( 'Save' ), 'primary widget-control-save right', 'savewidget', false, array( 'id' => 'widget-' . esc_attr( $id_format ) . '-savewidget' ) ); ?>
+			<span class="spinner"></span>
+		</div>
+		<br class="clear" />
+	</div>
+	<?php echo $after_form; ?>
+	</div>
 
-    <div class="widget-description">
-		<?php
-		$widget_description = wp_widget_description( $widget_id );
-		echo ( $widget_description ) ? "$widget_description\n" : "$widget_title\n";
-		?>
-    </div>
+	<div class="widget-description">
+	<?php
+	$widget_description = wp_widget_description( $widget_id );
+	echo ( $widget_description ) ? "$widget_description\n" : "$widget_title\n";
+	?>
+	</div>
 	<?php
 	echo $sidebar_args['after_widget'];
 
@@ -326,7 +320,6 @@ function wp_widget_control( $sidebar_args ) {
 
 /**
  * @param string $classes
- *
  * @return string
  */
 function wp_widgets_access_body_class( $classes ) {

@@ -227,7 +227,7 @@ class WP_Plugin_Install_List_Table extends WP_List_Table {
 
 		$api = plugins_api( 'query_plugins', $args );
 
-		if ( Load::is_wp_error( $api ) ) {
+		if ( is_wp_error( $api ) ) {
 			$this->error = $api;
 			return;
 		}
@@ -587,7 +587,7 @@ class WP_Plugin_Install_List_Table extends WP_List_Table {
 								network_admin_url( 'plugins.php' )
 							);
 
-							if ( Load::is_network_admin() ) {
+							if ( is_network_admin() ) {
 								$button_text = __( 'Network Activate' );
 								/* translators: %s: Plugin name. */
 								$button_label = _x( 'Network Activate %s', 'plugin' );

@@ -236,7 +236,7 @@ class WP_Block_Type {
 			// attributes loop immediately following. If there is not a default
 			// assigned, the attribute value should remain unset.
 			$is_valid = rest_validate_value_from_schema( $value, $schema, $attribute_name );
-			if ( Load::is_wp_error( $is_valid ) ) {
+			if ( is_wp_error( $is_valid ) ) {
 				unset( $attributes[ $attribute_name ] );
 			}
 		}

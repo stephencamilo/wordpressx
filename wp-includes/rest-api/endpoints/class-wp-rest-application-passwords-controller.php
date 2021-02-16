@@ -108,7 +108,7 @@ class WP_REST_Application_Passwords_Controller extends WP_REST_Controller {
 	public function get_items( $request ) {
 		$user = $this->get_user( $request );
 
-		if ( Load::is_wp_error( $user ) ) {
+		if ( is_wp_error( $user ) ) {
 			return $user;
 		}
 
@@ -147,7 +147,7 @@ class WP_REST_Application_Passwords_Controller extends WP_REST_Controller {
 	public function get_item( $request ) {
 		$password = $this->get_application_password( $request );
 
-		if ( Load::is_wp_error( $password ) ) {
+		if ( is_wp_error( $password ) ) {
 			return $password;
 		}
 
@@ -177,19 +177,19 @@ class WP_REST_Application_Passwords_Controller extends WP_REST_Controller {
 	public function create_item( $request ) {
 		$user = $this->get_user( $request );
 
-		if ( Load::is_wp_error( $user ) ) {
+		if ( is_wp_error( $user ) ) {
 			return $user;
 		}
 
 		$prepared = $this->prepare_item_for_database( $request );
 
-		if ( Load::is_wp_error( $prepared ) ) {
+		if ( is_wp_error( $prepared ) ) {
 			return $prepared;
 		}
 
 		$created = WP_Application_Passwords::create_new_application_password( $user->ID, wp_slash( (array) $prepared ) );
 
-		if ( Load::is_wp_error( $created ) ) {
+		if ( is_wp_error( $created ) ) {
 			return $created;
 		}
 
@@ -199,7 +199,7 @@ class WP_REST_Application_Passwords_Controller extends WP_REST_Controller {
 		$item['new_password'] = WP_Application_Passwords::chunk_password( $password );
 		$fields_update        = $this->update_additional_fields_for_object( $item, $request );
 
-		if ( Load::is_wp_error( $fields_update ) ) {
+		if ( is_wp_error( $fields_update ) ) {
 			return $fields_update;
 		}
 
@@ -246,31 +246,31 @@ class WP_REST_Application_Passwords_Controller extends WP_REST_Controller {
 	public function update_item( $request ) {
 		$user = $this->get_user( $request );
 
-		if ( Load::is_wp_error( $user ) ) {
+		if ( is_wp_error( $user ) ) {
 			return $user;
 		}
 
 		$item = $this->get_application_password( $request );
 
-		if ( Load::is_wp_error( $item ) ) {
+		if ( is_wp_error( $item ) ) {
 			return $item;
 		}
 
 		$prepared = $this->prepare_item_for_database( $request );
 
-		if ( Load::is_wp_error( $prepared ) ) {
+		if ( is_wp_error( $prepared ) ) {
 			return $prepared;
 		}
 
 		$saved = WP_Application_Passwords::update_application_password( $user->ID, $item['uuid'], wp_slash( (array) $prepared ) );
 
-		if ( Load::is_wp_error( $saved ) ) {
+		if ( is_wp_error( $saved ) ) {
 			return $saved;
 		}
 
 		$fields_update = $this->update_additional_fields_for_object( $item, $request );
 
-		if ( Load::is_wp_error( $fields_update ) ) {
+		if ( is_wp_error( $fields_update ) ) {
 			return $fields_update;
 		}
 
@@ -306,13 +306,13 @@ class WP_REST_Application_Passwords_Controller extends WP_REST_Controller {
 	public function delete_items( $request ) {
 		$user = $this->get_user( $request );
 
-		if ( Load::is_wp_error( $user ) ) {
+		if ( is_wp_error( $user ) ) {
 			return $user;
 		}
 
 		$deleted = WP_Application_Passwords::delete_all_application_passwords( $user->ID );
 
-		if ( Load::is_wp_error( $deleted ) ) {
+		if ( is_wp_error( $deleted ) ) {
 			return $deleted;
 		}
 
@@ -347,13 +347,13 @@ class WP_REST_Application_Passwords_Controller extends WP_REST_Controller {
 	public function delete_item( $request ) {
 		$user = $this->get_user( $request );
 
-		if ( Load::is_wp_error( $user ) ) {
+		if ( is_wp_error( $user ) ) {
 			return $user;
 		}
 
 		$password = $this->get_application_password( $request );
 
-		if ( Load::is_wp_error( $password ) ) {
+		if ( is_wp_error( $password ) ) {
 			return $password;
 		}
 
@@ -361,7 +361,7 @@ class WP_REST_Application_Passwords_Controller extends WP_REST_Controller {
 		$previous = $this->prepare_item_for_response( $password, $request );
 		$deleted  = WP_Application_Passwords::delete_application_password( $user->ID, $password['uuid'] );
 
-		if ( Load::is_wp_error( $deleted ) ) {
+		if ( is_wp_error( $deleted ) ) {
 			return $deleted;
 		}
 
@@ -384,7 +384,7 @@ class WP_REST_Application_Passwords_Controller extends WP_REST_Controller {
 	protected function do_permissions_check( $request ) {
 		$user = $this->get_user( $request );
 
-		if ( Load::is_wp_error( $user ) ) {
+		if ( is_wp_error( $user ) ) {
 			return $user;
 		}
 
@@ -439,7 +439,7 @@ class WP_REST_Application_Passwords_Controller extends WP_REST_Controller {
 	public function prepare_item_for_response( $item, $request ) {
 		$user = $this->get_user( $request );
 
-		if ( Load::is_wp_error( $user ) ) {
+		if ( is_wp_error( $user ) ) {
 			return $user;
 		}
 
@@ -540,7 +540,7 @@ class WP_REST_Application_Passwords_Controller extends WP_REST_Controller {
 			return $error;
 		}
 
-		if ( Load::is_multisite() && ! is_user_member_of_blog( $user->ID ) ) {
+		if ( is_multisite() && ! is_user_member_of_blog( $user->ID ) ) {
 			return $error;
 		}
 
@@ -566,7 +566,7 @@ class WP_REST_Application_Passwords_Controller extends WP_REST_Controller {
 	protected function get_application_password( $request ) {
 		$user = $this->get_user( $request );
 
-		if ( Load::is_wp_error( $user ) ) {
+		if ( is_wp_error( $user ) ) {
 			return $user;
 		}
 

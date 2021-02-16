@@ -22,7 +22,11 @@
  *
  * If all checks pass, the function will return true.
  *
- * @param string $author Comment author name.
+ * @since 1.2.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $author       Comment author name.
  * @param string $email        Comment author email.
  * @param string $url          Comment author URL.
  * @param string $comment      Content of the comment.
@@ -30,12 +34,7 @@
  * @param string $user_agent   Comment author User-Agent.
  * @param string $comment_type Comment type, either user-submitted comment,
  *                             trackback, or pingback.
- *
  * @return bool If all checks pass, true, otherwise false.
- *@since 1.2.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function check_comment( $author, $email, $url, $comment, $user_ip, $user_agent, $comment_type ) {
 	global $wpdb;
@@ -313,15 +312,14 @@ function get_default_comment_status( $post_type = 'post', $comment_type = 'comme
 /**
  * The date the last comment was modified.
  *
- * @param string $timezone Which timezone to use in reference to 'gmt', 'blog', or 'server' locations.
- *
- * @return string|false Last comment modified date on success, false on failure.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 1.5.0
  * @since 4.7.0 Replaced caching the modified date in a local static variable
  *              with the Object Cache API.
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $timezone Which timezone to use in reference to 'gmt', 'blog', or 'server' locations.
+ * @return string|false Last comment modified date on success, false on failure.
  */
 function get_lastcommentmodified( $timezone = 'server' ) {
 	global $wpdb;
@@ -362,9 +360,12 @@ function get_lastcommentmodified( $timezone = 'server' ) {
  *
  * Unlike wp_count_comments(), this function always returns the live comment counts without caching.
  *
+ * @since 2.0.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int $post_id Optional. Restrict the comment counts to the given post. Default 0, which indicates that
  *                     comment counts for the whole site will be retrieved.
- *
  * @return array() {
  *     The number of comments keyed by their status.
  *
@@ -376,10 +377,6 @@ function get_lastcommentmodified( $timezone = 'server' ) {
  *     @type int $total_comments      The total number of non-trashed comments, including spam.
  *     @type int $all                 The total number of pending or approved comments.
  * }
- *@since 2.0.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function get_comment_count( $post_id = 0 ) {
 	global $wpdb;
@@ -661,20 +658,19 @@ function sanitize_comment_cookies() {
 /**
  * Validates whether this comment is allowed to be made.
  *
- * @param array $commentdata Contains information on the comment.
- * @param bool  $wp_error    When true, a disallowed comment will result in the function
- *                           returning a WP_Error object, rather than executing wp_die().
- *                           Default false.
- *
- * @return int|string|WP_Error Allowed comments return the approval status (0|1|'spam'|'trash').
- *                             If `$wp_error` is true, disallowed comments return a WP_Error.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 2.0.0
  * @since 4.7.0 The `$avoid_die` parameter was added, allowing the function
  *              to return a WP_Error object instead of dying.
  * @since 5.5.0 The `$avoid_die` parameter was renamed to `$wp_error`.
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param array $commentdata Contains information on the comment.
+ * @param bool  $wp_error    When true, a disallowed comment will result in the function
+ *                           returning a WP_Error object, rather than executing wp_die().
+ *                           Default false.
+ * @return int|string|WP_Error Allowed comments return the approval status (0|1|'spam'|'trash').
+ *                             If `$wp_error` is true, disallowed comments return a WP_Error.
  */
 function wp_allow_comment( $commentdata, $wp_error = false ) {
 	global $wpdb;
@@ -734,7 +730,7 @@ function wp_allow_comment( $commentdata, $wp_error = false ) {
 		if ( $wp_error ) {
 			return new WP_Error( 'comment_duplicate', $comment_duplicate_message, 409 );
 		} else {
-			if ( Load::wp_doing_ajax() ) {
+			if ( wp_doing_ajax() ) {
 				die( $comment_duplicate_message );
 			}
 
@@ -871,18 +867,17 @@ function check_comment_flood_db() {
  * Won't run, if current user can manage options, so to not block
  * administrators.
  *
- * @param bool   $is_flood Is a comment flooding occurring?
+ * @since 4.7.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param bool   $is_flood  Is a comment flooding occurring?
  * @param string $ip        Comment author's IP address.
  * @param string $email     Comment author's email address.
  * @param string $date      MySQL time string.
  * @param bool   $avoid_die When true, a disallowed comment will result in the function
  *                          returning without executing wp_die() or die(). Default false.
- *
  * @return bool Whether comment flooding is occurring.
- *@since 4.7.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function wp_check_comment_flood( $is_flood, $ip, $email, $date, $avoid_die = false ) {
 
@@ -955,7 +950,7 @@ function wp_check_comment_flood( $is_flood, $ip, $email, $date, $avoid_die = fal
 				 */
 				$comment_flood_message = apply_filters( 'comment_flood_message', __( 'You are posting comments too quickly. Slow down.' ) );
 
-				if ( Load::wp_doing_ajax() ) {
+				if ( wp_doing_ajax() ) {
 					die( $comment_flood_message );
 				}
 
@@ -1062,6 +1057,10 @@ function get_comment_pages_count( $comments = null, $per_page = null, $threaded 
 /**
  * Calculate what page number a comment will appear on for comment paging.
  *
+ * @since 2.7.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int   $comment_ID Comment ID.
  * @param array $args {
  *     Array of optional arguments.
@@ -1076,10 +1075,6 @@ function get_comment_pages_count( $comments = null, $per_page = null, $threaded 
  *                                 Defaults to the value of the 'thread_comments_depth' option.
  * } *
  * @return int|null Comment page number or null on error.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
- * @since 2.7.0
- *
  */
 function get_page_of_comment( $comment_ID, $args = array() ) {
 	global $wpdb;
@@ -1231,11 +1226,11 @@ function get_page_of_comment( $comment_ID, $args = array() ) {
 /**
  * Retrieves the maximum character lengths for the comment form fields.
  *
- * @return int[] Array of maximum lengths keyed by field name.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 4.5.0
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @return int[] Array of maximum lengths keyed by field name.
  */
 function wp_get_comment_fields_max_lengths() {
 	global $wpdb;
@@ -1253,7 +1248,7 @@ function wp_get_comment_fields_max_lengths() {
 			$max_length = 0;
 
 			// No point if we can't get the DB column lengths.
-			if ( Load::is_wp_error( $col_length ) ) {
+			if ( is_wp_error( $col_length ) ) {
 				break;
 			}
 
@@ -1463,14 +1458,13 @@ function wp_count_comments( $post_id = 0 ) {
  * The post comment count will be updated if the comment was approved and has a
  * post ID available.
  *
- * @param int|WP_Comment $comment_id   Comment ID or WP_Comment object.
- * @param bool           $force_delete Whether to bypass Trash and force deletion. Default false.
- *
- * @return bool True on success, false on failure.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 2.0.0
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int|WP_Comment $comment_id   Comment ID or WP_Comment object.
+ * @param bool           $force_delete Whether to bypass Trash and force deletion. Default false.
+ * @return bool True on success, false on failure.
  */
 function wp_delete_comment( $comment_id, $force_delete = false ) {
 	global $wpdb;
@@ -1959,6 +1953,12 @@ function wp_get_unapproved_comment_author_email() {
 /**
  * Inserts a comment into the database.
  *
+ * @since 2.0.0
+ * @since 4.4.0 Introduced the `$comment_meta` argument.
+ * @since 5.5.0 Default value for `$comment_type` argument changed to `comment`.
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param array $commentdata {
  *     Array of arguments for inserting a new comment.
  *
@@ -1985,12 +1985,6 @@ function wp_get_unapproved_comment_author_email() {
  *     @type int        $user_id              ID of the user who submitted the comment. Default 0.
  * }
  * @return int|false The new comment's ID on success, false on failure.
- *@since 5.5.0 Default value for `$comment_type` argument changed to `comment`.
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
- * @since 2.0.0
- * @since 4.4.0 Introduced the `$comment_meta` argument.
  */
 function wp_insert_comment( $commentdata ) {
 	global $wpdb;
@@ -2150,6 +2144,16 @@ function wp_throttle_comment_flood( $block, $time_lastcomment, $time_newcomment 
  *
  * See {@link https://core.trac.wordpress.org/ticket/9235}
  *
+ * @since 1.5.0
+ * @since 4.3.0 Introduced the `comment_agent` and `comment_author_IP` arguments.
+ * @since 4.7.0 The `$avoid_die` parameter was added, allowing the function
+ *              to return a WP_Error object instead of dying.
+ * @since 5.5.0 The `$avoid_die` parameter was renamed to `$wp_error`.
+ * @since 5.5.0 Introduced the `comment_type` argument.
+ *
+ * @see wp_insert_comment()
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param array $commentdata {
  *     Comment data.
  *
@@ -2170,21 +2174,9 @@ function wp_throttle_comment_flood( $block, $time_lastcomment, $time_newcomment 
  *     @type string $comment_author_IP    Comment author IP address in IPv4 format. Default is the value of
  *                                        'REMOTE_ADDR' in the `$_SERVER` superglobal sent in the original request.
  * }
- *
  * @param bool  $wp_error Should errors be returned as WP_Error objects instead of
  *                        executing wp_die()? Default false.
- *
  * @return int|false|WP_Error The ID of the comment on success, false or WP_Error on failure.
- *@since 1.5.0
- * @since 4.3.0 Introduced the `comment_agent` and `comment_author_IP` arguments.
- * @since 4.7.0 The `$avoid_die` parameter was added, allowing the function
- *              to return a WP_Error object instead of dying.
- * @since 5.5.0 The `$avoid_die` parameter was renamed to `$wp_error`.
- * @since 5.5.0 Introduced the `comment_type` argument.
- *
- * @see wp_insert_comment()
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function wp_new_comment( $commentdata, $wp_error = false ) {
 	global $wpdb;
@@ -2247,7 +2239,7 @@ function wp_new_comment( $commentdata, $wp_error = false ) {
 	$commentdata = wp_filter_comment( $commentdata );
 
 	$commentdata['comment_approved'] = wp_allow_comment( $commentdata, $wp_error );
-	if ( Load::is_wp_error( $commentdata['comment_approved'] ) ) {
+	if ( is_wp_error( $commentdata['comment_approved'] ) ) {
 		return $commentdata['comment_approved'];
 	}
 
@@ -2264,7 +2256,7 @@ function wp_new_comment( $commentdata, $wp_error = false ) {
 		$commentdata = wp_filter_comment( $commentdata );
 
 		$commentdata['comment_approved'] = wp_allow_comment( $commentdata, $wp_error );
-		if ( Load::is_wp_error( $commentdata['comment_approved'] ) ) {
+		if ( is_wp_error( $commentdata['comment_approved'] ) ) {
 			return $commentdata['comment_approved'];
 		}
 
@@ -2362,15 +2354,14 @@ function wp_new_comment_notify_postauthor( $comment_ID ) {
  * The {@see 'wp_set_comment_status'} action is called after the comment is handled.
  * If the comment status is not in the list, then false is returned.
  *
+ * @since 1.0.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int|WP_Comment $comment_id     Comment ID or WP_Comment object.
  * @param string         $comment_status New comment status, either 'hold', 'approve', 'spam', or 'trash'.
  * @param bool           $wp_error       Whether to return a WP_Error object if there is a failure. Default false.
- *
  * @return bool|WP_Error True on success, false or WP_Error on failure.
- *@since 1.0.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function wp_set_comment_status( $comment_id, $comment_status, $wp_error = false ) {
 	global $wpdb;
@@ -2433,19 +2424,18 @@ function wp_set_comment_status( $comment_id, $comment_status, $wp_error = false 
  *
  * Filters the comment and makes sure certain fields are valid before updating.
  *
- * @param array $commentarr Contains information on the comment.
- * @param bool  $wp_error   Optional. Whether to return a WP_Error on failure. Default false.
- *
- * @return int|false|WP_Error The value 1 if the comment was updated, 0 if not updated.
- *                            False or a WP_Error object on failure.
- *@since 5.5.0 The return values for an invalid comment or post ID
- *              were changed to false instead of 0.
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 2.0.0
  * @since 4.9.0 Add updating comment meta during comment update.
  * @since 5.5.0 The `$wp_error` parameter was added.
+ * @since 5.5.0 The return values for an invalid comment or post ID
+ *              were changed to false instead of 0.
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param array $commentarr Contains information on the comment.
+ * @param bool  $wp_error   Optional. Whether to return a WP_Error on failure. Default false.
+ * @return int|false|WP_Error The value 1 if the comment was updated, 0 if not updated.
+ *                            False or a WP_Error object on failure.
  */
 function wp_update_comment( $commentarr, $wp_error = false ) {
 	global $wpdb;
@@ -2520,7 +2510,7 @@ function wp_update_comment( $commentarr, $wp_error = false ) {
 	$data = apply_filters( 'wp_update_comment_data', $data, $comment, $commentarr );
 
 	// Do not carry on on failure.
-	if ( Load::is_wp_error( $data ) ) {
+	if ( is_wp_error( $data ) ) {
 		if ( $wp_error ) {
 			return $data;
 		} else {
@@ -2647,13 +2637,12 @@ function wp_update_comment_count( $post_id, $do_deferred = false ) {
 /**
  * Updates the comment count for the post.
  *
+ * @since 2.5.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int $post_id Post ID
- *
  * @return bool True on success, false if the post does not exist.
- *@since 2.5.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function wp_update_comment_count_now( $post_id ) {
 	global $wpdb;
@@ -2759,7 +2748,7 @@ function discover_pingback_server_uri( $url, $deprecated = '' ) {
 		)
 	);
 
-	if ( Load::is_wp_error( $response ) ) {
+	if ( is_wp_error( $response ) ) {
 		return false;
 	}
 
@@ -2781,7 +2770,7 @@ function discover_pingback_server_uri( $url, $deprecated = '' ) {
 		)
 	);
 
-	if ( Load::is_wp_error( $response ) ) {
+	if ( is_wp_error( $response ) ) {
 		return false;
 	}
 
@@ -2891,13 +2880,12 @@ function do_all_trackbacks() {
 /**
  * Perform trackbacks.
  *
- * @param int|WP_Post $post_id Post object or ID to do trackbacks on.
- *
- *@since 4.7.0 `$post_id` can be a WP_Post object.
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 1.5.0
+ * @since 4.7.0 `$post_id` can be a WP_Post object.
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int|WP_Post $post_id Post object or ID to do trackbacks on.
  */
 function do_trackbacks( $post_id ) {
 	global $wpdb;
@@ -3098,16 +3086,15 @@ function privacy_ping_filter( $sites ) {
  *
  * Updates database when sending trackback to prevent duplicates.
  *
+ * @since 0.71
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param string $trackback_url URL to send trackbacks.
  * @param string $title         Title of post.
  * @param string $excerpt       Excerpt of post.
  * @param int    $ID            Post ID.
- *
  * @return int|false|void Database query from update.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
- * @since 0.71
- *
  */
 function trackback( $trackback_url, $title, $excerpt, $ID ) {
 	global $wpdb;
@@ -3127,7 +3114,7 @@ function trackback( $trackback_url, $title, $excerpt, $ID ) {
 
 	$response = wp_safe_remote_post( $trackback_url, $options );
 
-	if ( Load::is_wp_error( $response ) ) {
+	if ( is_wp_error( $response ) ) {
 		return;
 	}
 
@@ -3253,15 +3240,14 @@ function update_comment_cache( $comments, $update_meta_cache = true ) {
 /**
  * Adds any comments from the given IDs to the cache that do not already exist in cache.
  *
- * @param int[] $comment_ids       Array of comment IDs.
- * @param bool  $update_meta_cache Optional. Whether to update the meta cache. Default true.
- *
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 4.4.0
  * @access private
  *
  * @see update_comment_cache()
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int[] $comment_ids       Array of comment IDs.
+ * @param bool  $update_meta_cache Optional. Whether to update the meta cache. Default true.
  */
 function _prime_comment_caches( $comment_ids, $update_meta_cache = true ) {
 	global $wpdb;
@@ -3567,12 +3553,12 @@ function wp_handle_comment_submission( $comment_data ) {
 	}
 
 	$check_max_lengths = wp_check_comment_data_max_lengths( $commentdata );
-	if ( Load::is_wp_error( $check_max_lengths ) ) {
+	if ( is_wp_error( $check_max_lengths ) ) {
 		return $check_max_lengths;
 	}
 
 	$comment_id = wp_new_comment( wp_slash( $commentdata ), true );
-	if ( Load::is_wp_error( $comment_id ) ) {
+	if ( is_wp_error( $comment_id ) ) {
 		return $comment_id;
 	}
 
@@ -3826,7 +3812,7 @@ function wp_cache_set_comments_last_changed() {
  *
  * @since 5.5.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function _wp_batch_update_comment_type() {
 	global $wpdb;

@@ -64,7 +64,7 @@ if ( ! isset( $current_site ) || ! isset( $current_blog ) ) {
 	}
 
 	$path = stripslashes( $_SERVER['REQUEST_URI'] );
-	if ( Load::is_admin() ) {
+	if ( is_admin() ) {
 		$path = preg_replace( '#(.*)/wp-admin/.*#', '$1/', $path );
 	}
 	list( $path ) = explode( '?', $path );
@@ -101,7 +101,7 @@ $_wp_switched_stack = array();
 $switched           = false;
 
 // Need to init cache again after blog_id is set.
-Load::wp_start_object_cache();
+wp_start_object_cache();
 
 if ( ! $current_site instanceof WP_Network ) {
 	$current_site = new WP_Network( $current_site );

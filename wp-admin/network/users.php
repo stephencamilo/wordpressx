@@ -49,7 +49,7 @@ if ( isset( $_GET['action'] ) ) {
 			if ( ( isset( $_POST['action'] ) || isset( $_POST['action2'] ) ) && isset( $_POST['allusers'] ) ) {
 				check_admin_referer( 'bulk-users-network' );
 
-				$doaction     = - 1 != $_POST['action'] ? $_POST['action'] : $_POST['action2'];
+				$doaction     = -1 != $_POST['action'] ? $_POST['action'] : $_POST['action2'];
 				$userfunction = '';
 
 				foreach ( (array) $_POST['allusers'] as $user_id ) {
@@ -73,7 +73,7 @@ if ( isset( $_GET['action'] ) ) {
 								if ( is_super_admin( $user->ID ) ) {
 									wp_die(
 										sprintf(
-										/* translators: %s: User login. */
+											/* translators: %s: User login. */
 											__( 'Warning! User cannot be modified. The user %s is a network administrator.' ),
 											esc_html( $user->user_login )
 										)
@@ -174,7 +174,7 @@ if ( isset( $_GET['action'] ) ) {
 						continue;
 					}
 					wpmu_delete_user( $id );
-					$i ++;
+					$i++;
 				}
 			}
 
@@ -243,45 +243,44 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 
 if ( isset( $_REQUEST['updated'] ) && 'true' == $_REQUEST['updated'] && ! empty( $_REQUEST['action'] ) ) {
 	?>
-    <div id="message" class="updated notice is-dismissible"><p>
-			<?php
-			switch ( $_REQUEST['action'] ) {
-				case 'delete':
-					_e( 'User deleted.' );
-					break;
-				case 'all_spam':
-					_e( 'Users marked as spam.' );
-					break;
-				case 'all_notspam':
-					_e( 'Users removed from spam.' );
-					break;
-				case 'all_delete':
-					_e( 'Users deleted.' );
-					break;
-				case 'add':
-					_e( 'User added.' );
-					break;
-			}
-			?>
-        </p></div>
+	<div id="message" class="updated notice is-dismissible"><p>
+		<?php
+		switch ( $_REQUEST['action'] ) {
+			case 'delete':
+				_e( 'User deleted.' );
+				break;
+			case 'all_spam':
+				_e( 'Users marked as spam.' );
+				break;
+			case 'all_notspam':
+				_e( 'Users removed from spam.' );
+				break;
+			case 'all_delete':
+				_e( 'Users deleted.' );
+				break;
+			case 'add':
+				_e( 'User added.' );
+				break;
+		}
+		?>
+	</p></div>
 	<?php
 }
 ?>
 <div class="wrap">
-    <h1 class="wp-heading-inline"><?php esc_html_e( 'Users' ); ?></h1>
+	<h1 class="wp-heading-inline"><?php esc_html_e( 'Users' ); ?></h1>
 
 	<?php
 	if ( current_user_can( 'create_users' ) ) :
 		?>
-        <a href="<?php echo network_admin_url( 'user-new.php' ); ?>"
-           class="page-title-action"><?php echo esc_html_x( 'Add New', 'user' ); ?></a>
-	<?php
+		<a href="<?php echo network_admin_url( 'user-new.php' ); ?>" class="page-title-action"><?php echo esc_html_x( 'Add New', 'user' ); ?></a>
+							<?php
 	endif;
 
 	if ( strlen( $usersearch ) ) {
 		echo '<span class="subtitle">';
 		printf(
-		/* translators: %s: Search query. */
+			/* translators: %s: Search query. */
 			__( 'Search results for: %s' ),
 			'<strong>' . esc_html( $usersearch ) . '</strong>'
 		);
@@ -289,17 +288,17 @@ if ( isset( $_REQUEST['updated'] ) && 'true' == $_REQUEST['updated'] && ! empty(
 	}
 	?>
 
-    <hr class="wp-header-end">
+	<hr class="wp-header-end">
 
 	<?php $wp_list_table->views(); ?>
 
-    <form method="get" class="search-form">
+	<form method="get" class="search-form">
 		<?php $wp_list_table->search_box( __( 'Search Users' ), 'all-user' ); ?>
-    </form>
+	</form>
 
-    <form id="form-user-list" action="users.php?action=allusers" method="post">
+	<form id="form-user-list" action="users.php?action=allusers" method="post">
 		<?php $wp_list_table->display(); ?>
-    </form>
+	</form>
 </div>
 
 <?php require_once ABSPATH . 'wp-admin/admin-footer.php'; ?>

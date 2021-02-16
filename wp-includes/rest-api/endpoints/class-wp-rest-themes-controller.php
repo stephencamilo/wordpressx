@@ -193,7 +193,7 @@ class WP_REST_Themes_Controller extends WP_REST_Controller {
 
 				$prepared = $prepare( $support, $config, $feature, $request );
 
-				if ( Load::is_wp_error( $prepared ) ) {
+				if ( is_wp_error( $prepared ) ) {
 					continue;
 				}
 
@@ -464,7 +464,7 @@ class WP_REST_Themes_Controller extends WP_REST_Controller {
 		foreach ( $statuses as $status ) {
 			$result = rest_validate_request_arg( $status, $request, $parameter );
 
-			if ( Load::is_wp_error( $result ) ) {
+			if ( is_wp_error( $result ) ) {
 				return $result;
 			}
 		}

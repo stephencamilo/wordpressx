@@ -1,6 +1,4 @@
 <?php
-
-use Core\WPIncludes\Load;
 /**
  * WordPress Link Template Functions
  *
@@ -203,7 +201,7 @@ function get_permalink( $post = 0, $leavename = false ) {
 			// without having to assign it explicitly.
 			if ( empty( $category ) ) {
 				$default_category = get_term( get_option( 'default_category' ), 'category' );
-				if ( $default_category && ! Load::is_wp_error( $default_category ) ) {
+				if ( $default_category && ! is_wp_error( $default_category ) ) {
 					$category = $default_category->slug;
 				}
 			}
@@ -271,7 +269,7 @@ function get_post_permalink( $id = 0, $leavename = false, $sample = false ) {
 
 	$post = get_post( $id );
 
-	if ( Load::is_wp_error( $post ) ) {
+	if ( is_wp_error( $post ) ) {
 		return $post;
 	}
 
@@ -863,7 +861,7 @@ function get_term_feed_link( $term_id, $taxonomy = 'category', $feed = '' ) {
 
 	$term = get_term( $term_id, $taxonomy );
 
-	if ( empty( $term ) || Load::is_wp_error( $term ) ) {
+	if ( empty( $term ) || is_wp_error( $term ) ) {
 		return false;
 	}
 
@@ -1003,7 +1001,7 @@ function edit_tag_link( $link = '', $before = '', $after = '', $tag = null ) {
  */
 function get_edit_term_link( $term_id, $taxonomy = '', $object_type = '' ) {
 	$term = get_term( $term_id, $taxonomy );
-	if ( ! $term || Load::is_wp_error( $term ) ) {
+	if ( ! $term || is_wp_error( $term ) ) {
 		return;
 	}
 
@@ -1699,7 +1697,7 @@ function get_next_post( $in_same_term = false, $excluded_terms = '', $taxonomy =
  *
  * @since 2.5.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  *
  * @param bool         $in_same_term   Optional. Whether post should be in a same taxonomy term. Default false.
  * @param array|string $excluded_terms Optional. Array or comma-separated list of excluded term IDs. Default empty.
@@ -1768,7 +1766,7 @@ function get_adjacent_post( $in_same_term = false, $excluded_terms = '', $previo
 			$term_array = array_diff( $term_array, (array) $excluded_terms );
 			$term_array = array_map( 'intval', $term_array );
 
-			if ( ! $term_array || Load::is_wp_error( $term_array ) ) {
+			if ( ! $term_array || is_wp_error( $term_array ) ) {
 				return '';
 			}
 
@@ -2254,7 +2252,7 @@ function get_pagenum_link( $pagenum = 1, $escape = true ) {
 	$request = preg_replace( '|^' . $home_root . '|i', '', $request );
 	$request = preg_replace( '|^/+|', '', $request );
 
-	if ( ! $wp_rewrite->using_permalinks() || Load::is_admin() ) {
+	if ( ! $wp_rewrite->using_permalinks() || is_admin() ) {
 		$base = trailingslashit( get_bloginfo( 'url' ) );
 
 		if ( $pagenum > 1 ) {
@@ -3203,7 +3201,7 @@ function get_home_url( $blog_id = null, $path = '', $scheme = null ) {
 
 	$orig_scheme = $scheme;
 
-	if ( empty( $blog_id ) || ! Load::is_multisite() ) {
+	if ( empty( $blog_id ) || ! is_multisite() ) {
 		$url = get_option( 'home' );
 	} else {
 		switch_to_blog( $blog_id );
@@ -3212,7 +3210,7 @@ function get_home_url( $blog_id = null, $path = '', $scheme = null ) {
 	}
 
 	if ( ! in_array( $scheme, array( 'http', 'https', 'relative' ), true ) ) {
-		if ( Load::is_ssl() && ! Load::is_admin() && 'wp-login.php' !== $pagenow ) {
+		if ( is_ssl() && ! is_admin() && 'wp-login.php' !== $pagenow ) {
 			$scheme = 'https';
 		} else {
 			$scheme = parse_url( $url, PHP_URL_SCHEME );
@@ -3275,7 +3273,7 @@ function site_url( $path = '', $scheme = null ) {
  * @return string Site URL link with optional path appended.
  */
 function get_site_url( $blog_id = null, $path = '', $scheme = null ) {
-	if ( empty( $blog_id ) || ! Load::is_multisite() ) {
+	if ( empty( $blog_id ) || ! is_multisite() ) {
 		$url = get_option( 'siteurl' );
 	} else {
 		switch_to_blog( $blog_id );
@@ -3474,7 +3472,7 @@ function plugins_url( $path = '', $plugin = '' ) {
  * @return string Site URL link with optional path appended.
  */
 function network_site_url( $path = '', $scheme = null ) {
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		return site_url( $path, $scheme );
 	}
 
@@ -3519,7 +3517,7 @@ function network_site_url( $path = '', $scheme = null ) {
  * @return string Home URL link with optional path appended.
  */
 function network_home_url( $path = '', $scheme = null ) {
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		return home_url( $path, $scheme );
 	}
 
@@ -3527,7 +3525,7 @@ function network_home_url( $path = '', $scheme = null ) {
 	$orig_scheme     = $scheme;
 
 	if ( ! in_array( $scheme, array( 'http', 'https', 'relative' ), true ) ) {
-		$scheme = Load::is_ssl() && ! Load::is_admin() ? 'https' : 'http';
+		$scheme = is_ssl() && ! is_admin() ? 'https' : 'http';
 	}
 
 	if ( 'relative' === $scheme ) {
@@ -3565,7 +3563,7 @@ function network_home_url( $path = '', $scheme = null ) {
  * @return string Admin URL link with optional path appended.
  */
 function network_admin_url( $path = '', $scheme = 'admin' ) {
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		return admin_url( $path, $scheme );
 	}
 
@@ -3627,9 +3625,9 @@ function user_admin_url( $path = '', $scheme = 'admin' ) {
  * @return string Admin URL link with optional path appended.
  */
 function self_admin_url( $path = '', $scheme = 'admin' ) {
-	if ( Load::is_network_admin() ) {
+	if ( is_network_admin() ) {
 		$url = network_admin_url( $path, $scheme );
-	} elseif ( Load::is_user_admin() ) {
+	} elseif ( is_user_admin() ) {
 		$url = user_admin_url( $path, $scheme );
 	} else {
 		$url = admin_url( $path, $scheme );
@@ -3662,11 +3660,11 @@ function set_url_scheme( $url, $scheme = null ) {
 	$orig_scheme = $scheme;
 
 	if ( ! $scheme ) {
-		$scheme = Load::is_ssl() ? 'https' : 'http';
+		$scheme = is_ssl() ? 'https' : 'http';
 	} elseif ( 'admin' === $scheme || 'login' === $scheme || 'login_post' === $scheme || 'rpc' === $scheme ) {
-		$scheme = Load::is_ssl() || force_ssl_admin() ? 'https' : 'http';
+		$scheme = is_ssl() || force_ssl_admin() ? 'https' : 'http';
 	} elseif ( 'http' !== $scheme && 'https' !== $scheme && 'relative' !== $scheme ) {
-		$scheme = Load::is_ssl() ? 'https' : 'http';
+		$scheme = is_ssl() ? 'https' : 'http';
 	}
 
 	$url = trim( $url );
@@ -3717,12 +3715,12 @@ function get_dashboard_url( $user_id = 0, $path = '', $scheme = 'admin' ) {
 
 	$blogs = get_blogs_of_user( $user_id );
 
-	if ( Load::is_multisite() && ! user_can( $user_id, 'manage_network' ) && empty( $blogs ) ) {
+	if ( is_multisite() && ! user_can( $user_id, 'manage_network' ) && empty( $blogs ) ) {
 		$url = user_admin_url( $path, $scheme );
-	} elseif ( ! Load::is_multisite() ) {
+	} elseif ( ! is_multisite() ) {
 		$url = admin_url( $path, $scheme );
 	} else {
-		$current_blog = Load::get_current_blog_id();
+		$current_blog = get_current_blog_id();
 
 		if ( $current_blog && ( user_can( $user_id, 'manage_network' ) || in_array( $current_blog, array_keys( $blogs ), true ) ) ) {
 			$url = admin_url( $path, $scheme );
@@ -3763,9 +3761,9 @@ function get_dashboard_url( $user_id = 0, $path = '', $scheme = 'admin' ) {
 function get_edit_profile_url( $user_id = 0, $scheme = 'admin' ) {
 	$user_id = $user_id ? (int) $user_id : get_current_user_id();
 
-	if ( Load::is_user_admin() ) {
+	if ( is_user_admin() ) {
 		$url = user_admin_url( 'profile.php', $scheme );
-	} elseif ( Load::is_network_admin() ) {
+	} elseif ( is_network_admin() ) {
 		$url = network_admin_url( 'profile.php', $scheme );
 	} else {
 		$url = get_dashboard_url( $user_id, 'profile.php', $scheme );
@@ -4232,7 +4230,7 @@ function get_avatar_data( $id_or_email, $args = null ) {
 		if ( ! empty( $id_or_email->user_id ) ) {
 			$user = get_user_by( 'id', (int) $id_or_email->user_id );
 		}
-		if ( ( ! $user || Load::is_wp_error( $user ) ) && ! empty( $id_or_email->comment_author_email ) ) {
+		if ( ( ! $user || is_wp_error( $user ) ) && ! empty( $id_or_email->comment_author_email ) ) {
 			$email = $id_or_email->comment_author_email;
 		}
 	}
@@ -4261,7 +4259,7 @@ function get_avatar_data( $id_or_email, $args = null ) {
 		'r' => $args['rating'],
 	);
 
-	if ( Load::is_ssl() ) {
+	if ( is_ssl() ) {
 		$url = 'https://secure.gravatar.com/avatar/' . $email_hash;
 	} else {
 		$url = sprintf( 'http://%d.gravatar.com/avatar/%s', $gravatar_server, $email_hash );

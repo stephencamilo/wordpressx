@@ -254,7 +254,7 @@ function twentynineteen_custom_colors_css() {
 		}
 		';
 
-	if ( function_exists( 'register_block_type' ) && Load::is_admin() ) {
+	if ( function_exists( 'register_block_type' ) && is_admin() ) {
 		$theme_css = $editor_css;
 	}
 
