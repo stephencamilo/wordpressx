@@ -4275,13 +4275,12 @@ function _deep_replace( $search, $subject ) {
  * may cause issues for code that expects the return value of esc_sql() to be useable
  * for other purposes.
  *
+ * @since 2.8.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param string|array $data Unescaped data
- *
  * @return string|array Escaped data
- *@since 2.8.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function esc_sql( $data ) {
 	global $wpdb;
@@ -4638,14 +4637,13 @@ function wp_make_link_relative( $link ) {
  * This is basically a switch statement which will pass $value through a number
  * of functions depending on the $option.
  *
- * @param string $option The name of the option.
- * @param string $value  The unsanitised value.
- *
- * @return string Sanitized value.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 2.0.5
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $option The name of the option.
+ * @param string $value  The unsanitised value.
+ * @return string Sanitized value.
  */
 function sanitize_option( $option, $value ) {
 	global $wpdb;
@@ -4657,7 +4655,7 @@ function sanitize_option( $option, $value ) {
 		case 'admin_email':
 		case 'new_admin_email':
 			$value = $wpdb->strip_invalid_text_for_column( $wpdb->options, 'option_value', $value );
-			if ( Load::is_wp_error( $value ) ) {
+			if ( is_wp_error( $value ) ) {
 				$error = $value->get_error_message();
 			} else {
 				$value = sanitize_email( $value );
@@ -4718,7 +4716,7 @@ function sanitize_option( $option, $value ) {
 				$value = $wpdb->strip_invalid_text_for_column( $wpdb->options, 'option_value', wp_encode_emoji( $original_value ) );
 			}
 
-			if ( Load::is_wp_error( $value ) ) {
+			if ( is_wp_error( $value ) ) {
 				$error = $value->get_error_message();
 			} else {
 				$value = esc_html( $value );
@@ -4745,7 +4743,7 @@ function sanitize_option( $option, $value ) {
 		case 'mailserver_pass':
 		case 'upload_path':
 			$value = $wpdb->strip_invalid_text_for_column( $wpdb->options, 'option_value', $value );
-			if ( Load::is_wp_error( $value ) ) {
+			if ( is_wp_error( $value ) ) {
 				$error = $value->get_error_message();
 			} else {
 				$value = strip_tags( $value );
@@ -4766,7 +4764,7 @@ function sanitize_option( $option, $value ) {
 
 		case 'siteurl':
 			$value = $wpdb->strip_invalid_text_for_column( $wpdb->options, 'option_value', $value );
-			if ( Load::is_wp_error( $value ) ) {
+			if ( is_wp_error( $value ) ) {
 				$error = $value->get_error_message();
 			} else {
 				if ( preg_match( '#http(s?)://(.+)#i', $value ) ) {
@@ -4779,7 +4777,7 @@ function sanitize_option( $option, $value ) {
 
 		case 'home':
 			$value = $wpdb->strip_invalid_text_for_column( $wpdb->options, 'option_value', $value );
-			if ( Load::is_wp_error( $value ) ) {
+			if ( is_wp_error( $value ) ) {
 				$error = $value->get_error_message();
 			} else {
 				if ( preg_match( '#http(s?)://(.+)#i', $value ) ) {
@@ -4792,7 +4790,7 @@ function sanitize_option( $option, $value ) {
 
 		case 'WPLANG':
 			$allowed = get_available_languages();
-			if ( ! Load::is_multisite() && defined( 'WPLANG' ) && '' !== WPLANG && 'en_US' !== WPLANG ) {
+			if ( ! is_multisite() && defined( 'WPLANG' ) && '' !== WPLANG && 'en_US' !== WPLANG ) {
 				$allowed[] = WPLANG;
 			}
 			if ( ! in_array( $value, $allowed, true ) && ! empty( $value ) ) {
@@ -4802,7 +4800,7 @@ function sanitize_option( $option, $value ) {
 
 		case 'illegal_names':
 			$value = $wpdb->strip_invalid_text_for_column( $wpdb->options, 'option_value', $value );
-			if ( Load::is_wp_error( $value ) ) {
+			if ( is_wp_error( $value ) ) {
 				$error = $value->get_error_message();
 			} else {
 				if ( ! is_array( $value ) ) {
@@ -4820,7 +4818,7 @@ function sanitize_option( $option, $value ) {
 		case 'limited_email_domains':
 		case 'banned_email_domains':
 			$value = $wpdb->strip_invalid_text_for_column( $wpdb->options, 'option_value', $value );
-			if ( Load::is_wp_error( $value ) ) {
+			if ( is_wp_error( $value ) ) {
 				$error = $value->get_error_message();
 			} else {
 				if ( ! is_array( $value ) ) {
@@ -4852,7 +4850,7 @@ function sanitize_option( $option, $value ) {
 		case 'category_base':
 		case 'tag_base':
 			$value = $wpdb->strip_invalid_text_for_column( $wpdb->options, 'option_value', $value );
-			if ( Load::is_wp_error( $value ) ) {
+			if ( is_wp_error( $value ) ) {
 				$error = $value->get_error_message();
 			} else {
 				$value = esc_url_raw( $value );
@@ -4877,7 +4875,7 @@ function sanitize_option( $option, $value ) {
 		case 'moderation_keys':
 		case 'disallowed_keys':
 			$value = $wpdb->strip_invalid_text_for_column( $wpdb->options, 'option_value', $value );
-			if ( Load::is_wp_error( $value ) ) {
+			if ( is_wp_error( $value ) ) {
 				$error = $value->get_error_message();
 			} else {
 				$value = explode( "\n", $value );

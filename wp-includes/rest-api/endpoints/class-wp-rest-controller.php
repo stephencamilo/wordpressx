@@ -460,7 +460,7 @@ abstract class WP_REST_Controller {
 
 			$result = call_user_func( $field_options['update_callback'], $request[ $field_name ], $object, $field_name, $request, $this->get_object_type() );
 
-			if ( Load::is_wp_error( $result ) ) {
+			if ( is_wp_error( $result ) ) {
 				return $result;
 			}
 		}

@@ -86,7 +86,7 @@ class WP_REST_Block_Directory_Controller extends WP_REST_Controller {
 			)
 		);
 
-		if ( Load::is_wp_error( $response ) ) {
+		if ( is_wp_error( $response ) ) {
 			$response->add_data( array( 'status' => 500 ) );
 
 			return $response;

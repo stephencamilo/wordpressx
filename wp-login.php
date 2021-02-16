@@ -101,7 +101,7 @@ function login_header( $title = 'Log In', $message = '', $wp_error = null ) {
 	 */
 	if ( 'loggedout' === $wp_error->get_error_code() ) {
 		?>
-		<script>if("sessionStorage" in window){try{for(var key in sessionStorage){if(key.indexOf("wp-autosave-")!=-1){sessionStorage.removeItem(key)}}}catch(e){}};</script>
+		<script>if("sessionStorage" in window){try{for(var key in sessionStorage){if(key.indexOf("wp-autosave-")!=-1){sessionStorage.removeItem(key)}}}catch(e){}}</script>
 		<?php
 	}
 

@@ -456,7 +456,7 @@ function register_taxonomy( $taxonomy, $object_type, $args = array() ) {
 			);
 
 			// Update `term_id` in options.
-			if ( ! Load::is_wp_error( $term ) ) {
+			if ( ! is_wp_error( $term ) ) {
 				update_option( 'default_term_' . $taxonomy_object->name, $term['term_id'] );
 			}
 		}
@@ -736,16 +736,15 @@ function unregister_taxonomy_for_object_type( $taxonomy, $object_type ) {
  * using PHP sort family functions or using the database by using $args with
  * either ASC or DESC array. The value should be in the key named 'order'.
  *
- * @param int|array    $term_ids Term ID or array of term IDs of terms that will be used.
+ * @since 2.3.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int|array    $term_ids   Term ID or array of term IDs of terms that will be used.
  * @param string|array $taxonomies String of taxonomy name or Array of string values of taxonomy names.
  * @param array|string $args       Change the order of the object_ids, either ASC or DESC.
- *
  * @return WP_Error|array If the taxonomy does not exist, then WP_Error will be returned. On success.
  *  the array can be empty meaning that there are no $object_ids found or it will return the $object_ids found.
- *@since 2.3.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function get_objects_in_term( $term_ids, $taxonomies, $args = array() ) {
 	global $wpdb;
@@ -875,7 +874,7 @@ function get_term( $term, $taxonomy = '', $output = OBJECT, $filter = 'raw' ) {
 		$_term = WP_Term::get_instance( $term, $taxonomy );
 	}
 
-	if ( Load::is_wp_error( $_term ) ) {
+	if ( is_wp_error( $_term ) ) {
 		return $_term;
 	} elseif ( ! $_term ) {
 		return null;
@@ -985,7 +984,7 @@ function get_term_by( $field, $value, $taxonomy = '', $output = OBJECT, $filter 
 
 	if ( 'id' === $field || 'ID' === $field || 'term_id' === $field ) {
 		$term = get_term( (int) $value, $taxonomy, $output, $filter );
-		if ( Load::is_wp_error( $term ) || null === $term ) {
+		if ( is_wp_error( $term ) || null === $term ) {
 			$term = false;
 		}
 		return $term;
@@ -1016,7 +1015,7 @@ function get_term_by( $field, $value, $taxonomy = '', $output = OBJECT, $filter 
 	}
 
 	$terms = get_terms( $args );
-	if ( Load::is_wp_error( $terms ) || empty( $terms ) ) {
+	if ( is_wp_error( $terms ) || empty( $terms ) ) {
 		return false;
 	}
 
@@ -1091,7 +1090,7 @@ function get_term_children( $term_id, $taxonomy ) {
  */
 function get_term_field( $field, $term, $taxonomy = '', $context = 'display' ) {
 	$term = get_term( $term, $taxonomy );
-	if ( Load::is_wp_error( $term ) ) {
+	if ( is_wp_error( $term ) ) {
 		return $term;
 	}
 
@@ -1121,7 +1120,7 @@ function get_term_field( $field, $term, $taxonomy = '', $context = 'display' ) {
 function get_term_to_edit( $id, $taxonomy ) {
 	$term = get_term( $id, $taxonomy );
 
-	if ( Load::is_wp_error( $term ) ) {
+	if ( is_wp_error( $term ) ) {
 		return $term;
 	}
 
@@ -1349,13 +1348,12 @@ function update_termmeta_cache( $term_ids ) {
 /**
  * Get all meta data, including meta IDs, for the given term ID.
  *
+ * @since 4.9.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int $term_id Term ID.
- *
  * @return array|false Array with meta data, or false when the meta table is not installed.
- *@since 4.9.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function has_term_meta( $term_id ) {
 	$check = wp_check_term_meta_support_prefilter( null );
@@ -1410,18 +1408,17 @@ function unregister_term_meta( $taxonomy, $meta_key ) {
  * the {@link https://developer.wordpress.org/themes/basics/conditional-tags/
  * Conditional Tags} article in the Theme Developer Handbook.
  *
- * @param int|string $term The term to check. Accepts term ID, slug, or name.
+ * @since 3.0.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int|string $term     The term to check. Accepts term ID, slug, or name.
  * @param string     $taxonomy Optional. The taxonomy name to use.
  * @param int        $parent   Optional. ID of parent term under which to confine the exists search.
- *
  * @return mixed Returns null if the term does not exist.
  *               Returns the term ID if no taxonomy is specified and the term ID exists.
  *               Returns an array of the term ID and the term taxonomy ID if the taxonomy is specified and the pairing exists.
  *               Returns 0 if term ID 0 is passed to the function.
- *@since 3.0.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function term_exists( $term, $taxonomy = '', $parent = null ) {
 	global $wpdb;
@@ -1814,6 +1811,10 @@ function wp_delete_object_term_relationships( $object_id, $taxonomies ) {
  *
  * Metadata associated with the term will be deleted.
  *
+ * @since 2.3.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int          $term     Term ID.
  * @param string       $taxonomy Taxonomy Name.
  * @param array|string $args {
@@ -1828,10 +1829,6 @@ function wp_delete_object_term_relationships( $object_id, $taxonomies ) {
  * }
  * @return bool|int|WP_Error True on success, false if term does not exist. Zero on attempted
  *                           deletion of default Category. WP_Error if the taxonomy does not exist.
- *@since 2.3.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function wp_delete_term( $term, $taxonomy, $args = array() ) {
 	global $wpdb;
@@ -1842,7 +1839,7 @@ function wp_delete_term( $term, $taxonomy, $args = array() ) {
 	if ( ! $ids ) {
 		return false;
 	}
-	if ( Load::is_wp_error( $ids ) ) {
+	if ( is_wp_error( $ids ) ) {
 		return $ids;
 	}
 
@@ -1892,7 +1889,7 @@ function wp_delete_term( $term, $taxonomy, $args = array() ) {
 	// Update children to point to new parent.
 	if ( is_taxonomy_hierarchical( $taxonomy ) ) {
 		$term_obj = get_term( $term, $taxonomy );
-		if ( Load::is_wp_error( $term_obj ) ) {
+		if ( is_wp_error( $term_obj ) ) {
 			return $term_obj;
 		}
 		$parent = $term_obj->parent;
@@ -2181,6 +2178,10 @@ function wp_get_object_terms( $object_ids, $taxonomies, $args = array() ) {
  * If the term already exists on the same hierarchical level,
  * or the term slug and name are not unique, a WP_Error object will be returned.
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @since 2.3.0
+ *
  * @param string       $term     The term name to add.
  * @param string       $taxonomy The taxonomy to which to add the term.
  * @param array|string $args {
@@ -2194,10 +2195,6 @@ function wp_get_object_terms( $object_ids, $taxonomies, $args = array() ) {
  * }
  * @return array|WP_Error An array containing the `term_id` and `term_taxonomy_id`,
  *                        WP_Error otherwise.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
- * @since 2.3.0
- *
  */
 function wp_insert_term( $term, $taxonomy, $args = array() ) {
 	global $wpdb;
@@ -2216,7 +2213,7 @@ function wp_insert_term( $term, $taxonomy, $args = array() ) {
 	 */
 	$term = apply_filters( 'pre_insert_term', $term, $taxonomy );
 
-	if ( Load::is_wp_error( $term ) ) {
+	if ( is_wp_error( $term ) ) {
 		return $term;
 	}
 
@@ -2543,18 +2540,17 @@ function wp_insert_term( $term, $taxonomy, $args = array() ) {
  * A term has no meaning until it is given context by defining which taxonomy it
  * exists under.
  *
- * @param int $object_id The object to relate to.
+ * @since 2.3.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int              $object_id The object to relate to.
  * @param string|int|array $terms     A single term slug, single term ID, or array of either term slugs or IDs.
  *                                    Will replace all existing related terms in this taxonomy. Passing an
  *                                    empty value will remove all related terms.
  * @param string           $taxonomy  The context in which to relate the term to the object.
  * @param bool             $append    Optional. If false will delete difference of terms. Default false.
- *
  * @return array|WP_Error Term taxonomy IDs of the affected terms or WP_Error on failure.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
- * @since 2.3.0
- *
  */
 function wp_set_object_terms( $object_id, $terms, $taxonomy, $append = false ) {
 	global $wpdb;
@@ -2603,7 +2599,7 @@ function wp_set_object_terms( $object_id, $terms, $taxonomy, $append = false ) {
 			$term_info = wp_insert_term( $term, $taxonomy );
 		}
 
-		if ( Load::is_wp_error( $term_info ) ) {
+		if ( is_wp_error( $term_info ) ) {
 			return $term_info;
 		}
 
@@ -2663,7 +2659,7 @@ function wp_set_object_terms( $object_id, $terms, $taxonomy, $append = false ) {
 			$delete_term_ids  = array_map( 'intval', $delete_term_ids );
 
 			$remove = wp_remove_object_terms( $object_id, $delete_term_ids, $taxonomy );
-			if ( Load::is_wp_error( $remove ) ) {
+			if ( is_wp_error( $remove ) ) {
 				return $remove;
 			}
 		}
@@ -2734,15 +2730,14 @@ function wp_add_object_terms( $object_id, $terms, $taxonomy ) {
 /**
  * Remove term(s) associated with a given object.
  *
- * @param int $object_id The ID of the object from which the terms will be removed.
+ * @since 3.6.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int              $object_id The ID of the object from which the terms will be removed.
  * @param string|int|array $terms     The slug(s) or ID(s) of the term(s) to remove.
  * @param array|string     $taxonomy  Taxonomy name.
- *
  * @return bool|WP_Error True on success, false or WP_Error on failure.
- *@since 3.6.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function wp_remove_object_terms( $object_id, $terms, $taxonomy ) {
 	global $wpdb;
@@ -2772,7 +2767,7 @@ function wp_remove_object_terms( $object_id, $terms, $taxonomy ) {
 			}
 		}
 
-		if ( Load::is_wp_error( $term_info ) ) {
+		if ( is_wp_error( $term_info ) ) {
 			return $term_info;
 		}
 
@@ -2834,14 +2829,13 @@ function wp_remove_object_terms( $object_id, $terms, $taxonomy ) {
  *
  * The only purpose for `$term` is for appending a parent, if one exists.
  *
- * @param string $slug The string that will be tried for a unique slug.
- * @param object $term The term object that the `$slug` will belong to.
- *
- * @return string Will return a true unique slug.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 2.3.0
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $slug The string that will be tried for a unique slug.
+ * @param object $term The term object that the `$slug` will belong to.
+ * @return string Will return a true unique slug.
  */
 function wp_unique_term_slug( $slug, $term ) {
 	global $wpdb;
@@ -2863,7 +2857,7 @@ function wp_unique_term_slug( $slug, $term ) {
 		$the_parent = $term->parent;
 		while ( ! empty( $the_parent ) ) {
 			$parent_term = get_term( $the_parent, $term->taxonomy );
-			if ( Load::is_wp_error( $parent_term ) || empty( $parent_term ) ) {
+			if ( is_wp_error( $parent_term ) || empty( $parent_term ) ) {
 				break;
 			}
 			$parent_suffix .= '-' . $parent_term->slug;
@@ -2940,7 +2934,11 @@ function wp_unique_term_slug( $slug, $term ) {
  * If you set 'slug' and it isn't unique, then a WP_Error is returned.
  * If you don't pass any slug, then a unique one will be created.
  *
- * @param int $term_id  The ID of the term.
+ * @since 2.3.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int          $term_id  The ID of the term.
  * @param string       $taxonomy The taxonomy of the term.
  * @param array|string $args {
  *     Optional. Array or string of arguments for updating a term.
@@ -2953,10 +2951,6 @@ function wp_unique_term_slug( $slug, $term ) {
  * }
  * @return array|WP_Error An array containing the `term_id` and `term_taxonomy_id`,
  *                        WP_Error otherwise.
- *@since 2.3.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function wp_update_term( $term_id, $taxonomy, $args = array() ) {
 	global $wpdb;
@@ -2970,7 +2964,7 @@ function wp_update_term( $term_id, $taxonomy, $args = array() ) {
 	// First, get all of the original args.
 	$term = get_term( $term_id, $taxonomy );
 
-	if ( Load::is_wp_error( $term ) ) {
+	if ( is_wp_error( $term ) ) {
 		return $term;
 	}
 
@@ -3078,7 +3072,7 @@ function wp_update_term( $term_id, $taxonomy, $args = array() ) {
 
 	// Check whether this is a shared term that needs splitting.
 	$_term_id = _split_shared_term( $term_id, $tt_id );
-	if ( ! Load::is_wp_error( $_term_id ) ) {
+	if ( ! is_wp_error( $_term_id ) ) {
 		$term_id = $_term_id;
 	}
 
@@ -3374,17 +3368,16 @@ function clean_object_term_cache( $object_ids, $object_type ) {
 /**
  * Will remove all of the term IDs from the cache.
  *
- * @param int|int[] $ids Single or array of term IDs.
+ * @since 2.3.0
+ *
+ * @global wpdb $wpdb                           WordPress database abstraction object.
+ * @global bool $_wp_suspend_cache_invalidation
+ *
+ * @param int|int[] $ids            Single or array of term IDs.
  * @param string    $taxonomy       Optional. Taxonomy slug. Can be empty, in which case the taxonomies of the passed
  *                                  term IDs will be used. Default empty.
  * @param bool      $clean_taxonomy Optional. Whether to clean taxonomy wide caches (true), or just individual
  *                                  term object caches (false). Default true.
- *
- *@since 2.3.0
- *
- * @global WPDB $wpdb                           WordPress database abstraction object.
- * @global bool $_wp_suspend_cache_invalidation
- *
  */
 function clean_term_cache( $ids, $taxonomy = '', $clean_taxonomy = true ) {
 	global $wpdb, $_wp_suspend_cache_invalidation;
@@ -3509,7 +3502,7 @@ function get_object_term_cache( $id, $taxonomy ) {
 	$terms = array();
 	foreach ( $term_ids as $term_id ) {
 		$term = get_term( $term_id, $taxonomy );
-		if ( Load::is_wp_error( $term ) ) {
+		if ( is_wp_error( $term ) ) {
 			return $term;
 		}
 
@@ -3702,7 +3695,7 @@ function _get_term_children( $term_id, $terms, $taxonomy, &$ancestors = array() 
 		$use_id = false;
 		if ( ! is_object( $term ) ) {
 			$term = get_term( $term, $taxonomy );
-			if ( Load::is_wp_error( $term ) ) {
+			if ( is_wp_error( $term ) ) {
 				return $term;
 			}
 			$use_id = true;
@@ -3743,14 +3736,12 @@ function _get_term_children( $term_id, $terms, $taxonomy, &$ancestors = array() 
  * relevant children are already in the $terms argument.
  *
  * @access private
+ * @since 2.3.0
  *
- * @param array $terms List of term objects (passed by reference).
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param array  $terms    List of term objects (passed by reference).
  * @param string $taxonomy Term context.
- *
- *@since 2.3.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function _pad_term_counts( &$terms, $taxonomy ) {
 	global $wpdb;
@@ -3818,14 +3809,13 @@ function _pad_term_counts( &$terms, $taxonomy ) {
 /**
  * Adds any terms from the given IDs to the cache that do not already exist in cache.
  *
- * @param array $term_ids Array of term IDs.
- * @param bool  $update_meta_cache Optional. Whether to update the meta cache. Default true.
- *
- *@since 4.6.0
+ * @since 4.6.0
  * @access private
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  *
+ * @param array $term_ids          Array of term IDs.
+ * @param bool  $update_meta_cache Optional. Whether to update the meta cache. Default true.
  */
 function _prime_term_caches( $term_ids, $update_meta_cache = true ) {
 	global $wpdb;
@@ -3853,14 +3843,12 @@ function _prime_term_caches( $term_ids, $update_meta_cache = true ) {
  * taxonomies.
  *
  * @access private
+ * @since 2.3.0
  *
- * @param int[] $terms    List of Term taxonomy IDs.
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int[]       $terms    List of Term taxonomy IDs.
  * @param WP_Taxonomy $taxonomy Current taxonomy object of terms.
- *
- *@since 2.3.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function _update_post_term_count( $terms, $taxonomy ) {
 	global $wpdb;
@@ -3910,13 +3898,12 @@ function _update_post_term_count( $terms, $taxonomy ) {
  *
  * Default callback for the 'link_category' taxonomy.
  *
+ * @since 3.3.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int[]       $terms    List of term taxonomy IDs.
  * @param WP_Taxonomy $taxonomy Current taxonomy object of terms.
- *
- *@since 3.3.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function _update_generic_term_count( $terms, $taxonomy ) {
 	global $wpdb;
@@ -3937,6 +3924,13 @@ function _update_generic_term_count( $terms, $taxonomy ) {
  * Create a new term for a term_taxonomy item that currently shares its term
  * with another term_taxonomy.
  *
+ * @ignore
+ * @since 4.2.0
+ * @since 4.3.0 Introduced `$record` parameter. Also, `$term_id` and
+ *              `$term_taxonomy_id` can now accept objects.
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int|object $term_id          ID of the shared term, or the shared term object.
  * @param int|object $term_taxonomy_id ID of the term_taxonomy item to receive a new term, or the term_taxonomy object
  *                                     (corresponding to a row from the term_taxonomy table).
@@ -3945,17 +3939,9 @@ function _update_generic_term_count( $terms, $taxonomy ) {
  *                                     it can be beneficial to skip inline recording and do it just once, after the
  *                                     batch is processed. Only set this to `false` if you know what you are doing.
  *                                     Default: true.
- *
  * @return int|WP_Error When the current term does not need to be split (or cannot be split on the current
  *                      database schema), `$term_id` is returned. When the term is successfully split, the
  *                      new term_id is returned. A WP_Error is returned for miscellaneous errors.
- *@ignore
- * @since 4.2.0
- * @since 4.3.0 Introduced `$record` parameter. Also, `$term_id` and
- *              `$term_taxonomy_id` can now accept objects.
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function _split_shared_term( $term_id, $term_taxonomy_id, $record = true ) {
 	global $wpdb;
@@ -4089,7 +4075,7 @@ function _split_shared_term( $term_id, $term_taxonomy_id, $record = true ) {
  *
  * @since 4.3.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  */
 function _wp_batch_split_terms() {
 	global $wpdb;
@@ -4219,16 +4205,15 @@ function _wp_check_split_default_terms( $term_id, $new_term_id, $term_taxonomy_i
 /**
  * Check menu items when a term gets split to see if any of them need to be updated.
  *
- * @param int $term_id          ID of the formerly shared term.
+ * @ignore
+ * @since 4.2.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int    $term_id          ID of the formerly shared term.
  * @param int    $new_term_id      ID of the new term created for the $term_taxonomy_id.
  * @param int    $term_taxonomy_id ID for the term_taxonomy row affected by the split.
  * @param string $taxonomy         Taxonomy for the split term.
- *
- *@since 4.2.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
- * @ignore
  */
 function _wp_check_split_terms_in_menus( $term_id, $new_term_id, $term_taxonomy_id, $taxonomy ) {
 	global $wpdb;
@@ -4370,7 +4355,7 @@ function get_term_link( $term, $taxonomy = '' ) {
 		$term = new WP_Error( 'invalid_term', __( 'Empty Term.' ) );
 	}
 
-	if ( Load::is_wp_error( $term ) ) {
+	if ( is_wp_error( $term ) ) {
 		return $term;
 	}
 
@@ -4595,14 +4580,14 @@ function is_object_in_term( $object_id, $taxonomy, $terms = null ) {
 	$object_terms = get_object_term_cache( $object_id, $taxonomy );
 	if ( false === $object_terms ) {
 		$object_terms = wp_get_object_terms( $object_id, $taxonomy, array( 'update_term_meta_cache' => false ) );
-		if ( Load::is_wp_error( $object_terms ) ) {
+		if ( is_wp_error( $object_terms ) ) {
 			return $object_terms;
 		}
 
 		wp_cache_set( $object_id, wp_list_pluck( $object_terms, 'term_id' ), "{$taxonomy}_relationships" );
 	}
 
-	if ( Load::is_wp_error( $object_terms ) ) {
+	if ( is_wp_error( $object_terms ) ) {
 		return $object_terms;
 	}
 	if ( empty( $object_terms ) ) {
@@ -4697,7 +4682,7 @@ function get_ancestors( $object_id = 0, $object_type = '', $resource_type = '' )
 
 	if ( 'taxonomy' === $resource_type ) {
 		$term = get_term( $object_id, $object_type );
-		while ( ! Load::is_wp_error( $term ) && ! empty( $term->parent ) && ! in_array( $term->parent, $ancestors, true ) ) {
+		while ( ! is_wp_error( $term ) && ! empty( $term->parent ) && ! in_array( $term->parent, $ancestors, true ) ) {
 			$ancestors[] = (int) $term->parent;
 			$term        = get_term( $term->parent, $object_type );
 		}
@@ -4730,7 +4715,7 @@ function get_ancestors( $object_id = 0, $object_type = '', $resource_type = '' )
  */
 function wp_get_term_taxonomy_parent_id( $term_id, $taxonomy ) {
 	$term = get_term( $term_id, $taxonomy );
-	if ( ! $term || Load::is_wp_error( $term ) ) {
+	if ( ! $term || is_wp_error( $term ) ) {
 		return false;
 	}
 	return (int) $term->parent;

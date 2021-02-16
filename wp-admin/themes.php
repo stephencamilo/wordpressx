@@ -47,7 +47,7 @@ if ( current_user_can( 'switch_themes' ) && isset( $_GET['action'] ) ) {
 
 		$result = resume_theme( $theme->get_stylesheet(), self_admin_url( 'themes.php?error=resuming' ) );
 
-		if ( Load::is_wp_error( $result ) ) {
+		if ( is_wp_error( $result ) ) {
 			wp_die( $result );
 		}
 
@@ -147,7 +147,7 @@ if ( current_user_can( 'switch_themes' ) ) {
 
 // Help tab: Adding Themes.
 if ( current_user_can( 'install_themes' ) ) {
-	if ( Load::is_multisite() ) {
+	if ( is_multisite() ) {
 		$help_install = '<p>' . __( 'Installing themes on Multisite can only be done from the Network Admin section.' ) . '</p>';
 	} else {
 		$help_install = '<p>' . sprintf(
@@ -221,8 +221,8 @@ wp_localize_script(
 	array(
 		'themes'   => $themes,
 		'settings' => array(
-			'canInstall'    => ( ! Load::is_multisite() && current_user_can( 'install_themes' ) ),
-			'installURI'    => ( ! Load::is_multisite() && current_user_can( 'install_themes' ) ) ? admin_url( 'theme-install.php' ) : null,
+			'canInstall'    => ( ! is_multisite() && current_user_can( 'install_themes' ) ),
+			'installURI'    => ( ! is_multisite() && current_user_can( 'install_themes' ) ) ? admin_url( 'theme-install.php' ) : null,
 			'confirmDelete' => __( "Are you sure you want to delete this theme?\n\nClick 'Cancel' to go back, 'OK' to confirm the delete." ),
 			'adminUrl'      => parse_url( admin_url(), PHP_URL_PATH ),
 		),
@@ -249,7 +249,7 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 		<span class="title-count theme-count"><?php echo ! empty( $_GET['search'] ) ? __( '&hellip;' ) : count( $themes ); ?></span>
 	</h1>
 
-	<?php if ( ! Load::is_multisite() && current_user_can( 'install_themes' ) ) : ?>
+	<?php if ( ! is_multisite() && current_user_can( 'install_themes' ) ) : ?>
 		<a href="<?php echo admin_url( 'theme-install.php' ); ?>" class="hide-if-no-js page-title-action"><?php echo esc_html_x( 'Add New', 'theme' ); ?></a>
 	<?php endif; ?>
 
@@ -299,7 +299,7 @@ if ( ! validate_current_theme() || isset( $_GET['broken'] ) ) {
 
 $ct = wp_get_theme();
 
-if ( $ct->errors() && ( ! Load::is_multisite() || current_user_can( 'manage_network_themes' ) ) ) {
+if ( $ct->errors() && ( ! is_multisite() || current_user_can( 'manage_network_themes' ) ) ) {
 	echo '<div class="error"><p>' . __( 'Error:' ) . ' ' . $ct->errors()->get_error_message() . '</p></div>';
 }
 
@@ -567,7 +567,7 @@ foreach ( $themes as $theme ) :
 <?php
 // List broken themes, if any.
 $broken_themes = wp_get_themes( array( 'errors' => true ) );
-if ( ! Load::is_multisite() && $broken_themes ) {
+if ( ! is_multisite() && $broken_themes ) {
 	?>
 
 <div class="broken-themes">
@@ -638,7 +638,7 @@ if ( ! Load::is_multisite() && $broken_themes ) {
 				$parent_theme_name = $broken_theme->get( 'Template' );
 				$parent_theme      = themes_api( 'theme_information', array( 'slug' => urlencode( $parent_theme_name ) ) );
 
-				if ( ! Load::is_wp_error( $parent_theme ) ) {
+				if ( ! is_wp_error( $parent_theme ) ) {
 					$install_url = add_query_arg(
 						array(
 							'action' => 'install-theme',

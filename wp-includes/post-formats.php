@@ -148,7 +148,7 @@ function get_post_format_string( $slug ) {
  */
 function get_post_format_link( $format ) {
 	$term = get_term_by( 'slug', 'post-format-' . $format, 'post_format' );
-	if ( ! $term || Load::is_wp_error( $term ) ) {
+	if ( ! $term || is_wp_error( $term ) ) {
 		return false;
 	}
 	return get_term_link( $term );
@@ -172,7 +172,7 @@ function _post_format_request( $qvs ) {
 		$qvs['post_format'] = 'post-format-' . $slugs[ $qvs['post_format'] ];
 	}
 	$tax = get_taxonomy( 'post_format' );
-	if ( ! Load::is_admin() ) {
+	if ( ! is_admin() ) {
 		$qvs['post_type'] = $tax->object_type;
 	}
 	return $qvs;

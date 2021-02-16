@@ -23,7 +23,7 @@ require __DIR__ . '/wp-load.php';
 nocache_headers();
 
 $comment = wp_handle_comment_submission( wp_unslash( $_POST ) );
-if ( Load::is_wp_error( $comment ) ) {
+if ( is_wp_error( $comment ) ) {
 	$data = (int) $comment->get_error_data();
 	if ( ! empty( $data ) ) {
 		wp_die(

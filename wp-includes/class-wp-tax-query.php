@@ -367,19 +367,18 @@ class WP_Tax_Query {
 	/**
 	 * Generate SQL JOIN and WHERE clauses for a "first-order" query clause.
 	 *
+	 * @since 4.1.0
+	 *
+	 * @global wpdb $wpdb The WordPress database abstraction object.
+	 *
 	 * @param array $clause       Query clause (passed by reference).
 	 * @param array $parent_query Parent query array.
-	 *
 	 * @return array {
 	 *     Array containing JOIN and WHERE SQL clauses to append to a first-order query.
 	 *
 	 *     @type string $join  SQL fragment to append to the main JOIN clause.
 	 *     @type string $where SQL fragment to append to the main WHERE clause.
 	 * }
-	 *@global WPDB $wpdb The WordPress database abstraction object.
-	 *
-	 * @since 4.1.0
-	 *
 	 */
 	public function get_sql_for_clause( &$clause, $parent_query ) {
 		global $wpdb;
@@ -394,7 +393,7 @@ class WP_Tax_Query {
 
 		$this->clean_query( $clause );
 
-		if ( Load::is_wp_error( $clause ) ) {
+		if ( is_wp_error( $clause ) ) {
 			return self::$no_results;
 		}
 
@@ -562,7 +561,7 @@ class WP_Tax_Query {
 		if ( is_taxonomy_hierarchical( $query['taxonomy'] ) && $query['include_children'] ) {
 			$this->transform_query( $query, 'term_id' );
 
-			if ( Load::is_wp_error( $query ) ) {
+			if ( is_wp_error( $query ) ) {
 				return;
 			}
 
@@ -583,14 +582,13 @@ class WP_Tax_Query {
 	 * Operates on the `$query` object by reference. In the case of error,
 	 * `$query` is converted to a WP_Error object.
 	 *
-	 * @param array  $query The single query. Passed by reference.
+	 * @since 3.2.0
+	 *
+	 * @global wpdb $wpdb The WordPress database abstraction object.
+	 *
+	 * @param array  $query           The single query. Passed by reference.
 	 * @param string $resulting_field The resulting field. Accepts 'slug', 'name', 'term_taxonomy_id',
 	 *                                or 'term_id'. Default 'term_id'.
-	 *
-	 *@since 3.2.0
-	 *
-	 * @global WPDB $wpdb The WordPress database abstraction object.
-	 *
 	 */
 	public function transform_query( &$query, $resulting_field ) {
 		if ( empty( $query['terms'] ) ) {
@@ -638,7 +636,7 @@ class WP_Tax_Query {
 		$term_query = new WP_Term_Query();
 		$term_list  = $term_query->query( $args );
 
-		if ( Load::is_wp_error( $term_list ) ) {
+		if ( is_wp_error( $term_list ) ) {
 			$query = $term_list;
 			return;
 		}

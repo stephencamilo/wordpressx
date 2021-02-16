@@ -9,17 +9,16 @@
 /**
  * Retrieve Bookmark data
  *
+ * @since 2.1.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int|stdClass $bookmark
  * @param string       $output   Optional. The required return type. One of OBJECT, ARRAY_A, or ARRAY_N, which
  *                               correspond to an stdClass object, an associative array, or a numeric array,
  *                               respectively. Default OBJECT.
  * @param string       $filter   Optional. How to sanitize bookmark fields. Default 'raw'.
- *
  * @return array|object|null Type returned depends on $output value.
- *@since 2.1.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function get_bookmark( $bookmark, $output = OBJECT, $filter = 'raw' ) {
 	global $wpdb;
@@ -79,7 +78,7 @@ function get_bookmark_field( $field, $bookmark, $context = 'display' ) {
 	$bookmark = (int) $bookmark;
 	$bookmark = get_bookmark( $bookmark );
 
-	if ( Load::is_wp_error( $bookmark ) ) {
+	if ( is_wp_error( $bookmark ) ) {
 		return $bookmark;
 	}
 
@@ -100,6 +99,10 @@ function get_bookmark_field( $field, $bookmark, $context = 'display' ) {
  * Attempts to retrieve from the cache first based on MD5 hash of arguments. If
  * that fails, then the query will be built from the arguments and executed. The
  * results will be stored to the cache.
+ *
+ * @since 2.1.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
  *
  * @param string|array $args {
  *     Optional. String or array of arguments to retrieve bookmarks.
@@ -128,10 +131,6 @@ function get_bookmark_field( $field, $bookmark, $context = 'display' ) {
  *                                    Default empty.
  * }
  * @return object[] List of bookmark row objects.
- *@since 2.1.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function get_bookmarks( $args = '' ) {
 	global $wpdb;

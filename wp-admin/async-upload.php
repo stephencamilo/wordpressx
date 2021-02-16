@@ -92,7 +92,7 @@ if ( isset( $_REQUEST['post_id'] ) ) {
 }
 
 $id = media_handle_upload( 'async-upload', $post_id );
-if ( Load::is_wp_error( $id ) ) {
+if ( is_wp_error( $id ) ) {
 	printf(
 		'<div class="error-div error">%s <strong>%s</strong><br />%s</div>',
 		sprintf(

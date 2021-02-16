@@ -83,13 +83,13 @@ class WP_Ajax_Response {
 		$old_id   = $parsed_args['old_id'];
 		$data     = $parsed_args['data'];
 
-		if ( Load::is_wp_error( $id ) ) {
+		if ( is_wp_error( $id ) ) {
 			$data = $id;
 			$id   = 0;
 		}
 
 		$response = '';
-		if ( Load::is_wp_error( $data ) ) {
+		if ( is_wp_error( $data ) ) {
 			foreach ( (array) $data->get_error_codes() as $code ) {
 				$response  .= "<wp_error code='$code'><![CDATA[" . $data->get_error_message( $code ) . ']]></wp_error>';
 				$error_data = $data->get_error_data( $code );
@@ -155,7 +155,7 @@ class WP_Ajax_Response {
 			echo $response;
 		}
 		echo '</wp_ajax>';
-		if ( Load::wp_doing_ajax() ) {
+		if ( wp_doing_ajax() ) {
 			wp_die();
 		} else {
 			die();

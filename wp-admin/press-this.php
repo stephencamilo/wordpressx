@@ -66,7 +66,7 @@ function wp_load_press_this() {
 				$action = sprintf(
 					/* translators: %s: URL to Press This bookmarklet on the main site. */
 					__( 'Press This is not installed. Please install Press This from <a href="%s">the main site</a>.' ),
-					get_admin_url( Load::get_current_network_id(), 'press-this.php' )
+					get_admin_url( get_current_network_id(), 'press-this.php' )
 				);
 			}
 		}

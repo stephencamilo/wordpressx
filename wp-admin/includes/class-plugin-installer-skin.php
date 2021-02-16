@@ -117,7 +117,7 @@ class Plugin_Installer_Skin extends WP_Upgrader_Skin {
 			);
 		}
 
-		if ( Load::is_multisite() && current_user_can( 'manage_network_plugins' ) ) {
+		if ( is_multisite() && current_user_can( 'manage_network_plugins' ) ) {
 			$install_actions['network_activate'] = sprintf(
 				'<a class="button button-primary" href="%s" target="_parent">%s</a>',
 				wp_nonce_url( 'plugins.php?action=activate&amp;networkwide=1&amp;plugin=' . urlencode( $plugin_file ), 'activate-plugin_' . $plugin_file ),
@@ -152,7 +152,7 @@ class Plugin_Installer_Skin extends WP_Upgrader_Skin {
 			);
 		}
 
-		if ( ! $this->result || Load::is_wp_error( $this->result ) ) {
+		if ( ! $this->result || is_wp_error( $this->result ) ) {
 			unset( $install_actions['activate_plugin'], $install_actions['network_activate'] );
 		} elseif ( ! current_user_can( 'activate_plugin', $plugin_file ) || is_plugin_active( $plugin_file ) ) {
 			unset( $install_actions['activate_plugin'] );
@@ -184,7 +184,7 @@ class Plugin_Installer_Skin extends WP_Upgrader_Skin {
 	 * @return bool Whether the plugin can be overwritten and HTML was outputted.
 	 */
 	private function do_overwrite() {
-		if ( 'upload' !== $this->type || ! Load::is_wp_error( $this->result ) || 'folder_exists' !== $this->result->get_error_code() ) {
+		if ( 'upload' !== $this->type || ! is_wp_error( $this->result ) || 'folder_exists' !== $this->result->get_error_code() ) {
 			return false;
 		}
 

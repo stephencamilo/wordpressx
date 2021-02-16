@@ -31,7 +31,7 @@ if ( $_POST ) {
 		check_admin_referer( 'media-form' );
 		// Upload File button was clicked.
 		$upload_id = media_handle_upload( 'async-upload', $post_id );
-		if ( Load::is_wp_error( $upload_id ) ) {
+		if ( is_wp_error( $upload_id ) ) {
 			wp_die( $upload_id );
 		}
 	}

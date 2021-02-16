@@ -46,10 +46,10 @@ final class WP_Recovery_Mode_Cookie_Service {
 
 		$expire = time() + $length;
 
-		setcookie( RECOVERY_MODE_COOKIE, $value, $expire, COOKIEPATH, COOKIE_DOMAIN, Load::is_ssl(), true );
+		setcookie( RECOVERY_MODE_COOKIE, $value, $expire, COOKIEPATH, COOKIE_DOMAIN, is_ssl(), true );
 
 		if ( COOKIEPATH !== SITECOOKIEPATH ) {
-			setcookie( RECOVERY_MODE_COOKIE, $value, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, Load::is_ssl(), true );
+			setcookie( RECOVERY_MODE_COOKIE, $value, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, is_ssl(), true );
 		}
 	}
 
@@ -84,7 +84,7 @@ final class WP_Recovery_Mode_Cookie_Service {
 
 		$parts = $this->parse_cookie( $cookie );
 
-		if ( Load::is_wp_error( $parts ) ) {
+		if ( is_wp_error( $parts ) ) {
 			return $parts;
 		}
 
@@ -132,7 +132,7 @@ final class WP_Recovery_Mode_Cookie_Service {
 		}
 
 		$parts = $this->parse_cookie( $cookie );
-		if ( Load::is_wp_error( $parts ) ) {
+		if ( is_wp_error( $parts ) ) {
 			return $parts;
 		}
 

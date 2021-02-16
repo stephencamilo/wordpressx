@@ -73,7 +73,7 @@ if ( $action ) {
 				} else {
 					$result = add_user_to_blog( $id, $user_id, $_POST['new_role'] );
 
-					if ( Load::is_wp_error( $result ) ) {
+					if ( is_wp_error( $result ) ) {
 						$update = 'err_add_fail';
 					} else {
 						$update = 'newuser';
@@ -81,10 +81,9 @@ if ( $action ) {
 						/**
 						 * Fires after a user has been created via the network site-users.php page.
 						 *
-						 * @param int $user_id ID of the newly created user.
-						 *
 						 * @since 4.4.0
 						 *
+						 * @param int $user_id ID of the newly created user.
 						 */
 						do_action( 'network_site_users_created_user', $user_id );
 					}
@@ -102,7 +101,7 @@ if ( $action ) {
 					if ( ! is_user_member_of_blog( $user->ID, $id ) ) {
 						$result = add_user_to_blog( $id, $user->ID, $_POST['new_role'] );
 
-						if ( Load::is_wp_error( $result ) ) {
+						if ( is_wp_error( $result ) ) {
 							$update = 'err_add_fail';
 						}
 					} else {
@@ -210,10 +209,9 @@ $submenu_file = 'sites.php';
 /**
  * Filters whether to show the Add Existing User form on the Multisite Users screen.
  *
- * @param bool $bool Whether to show the Add Existing User form. Default true.
- *
  * @since 3.1.0
  *
+ * @param bool $bool Whether to show the Add Existing User form. Default true.
  */
 if ( ! wp_is_large_network( 'users' ) && apply_filters( 'show_network_site_users_add_existing_form', true ) ) {
 	wp_enqueue_script( 'user-suggest' );
@@ -221,156 +219,151 @@ if ( ! wp_is_large_network( 'users' ) && apply_filters( 'show_network_site_users
 
 require_once ABSPATH . 'wp-admin/admin-header.php'; ?>
 
-    <script type="text/javascript">
-        var current_site_id = <?php echo absint( $id ); ?>;
-    </script>
+<script type="text/javascript">
+var current_site_id = <?php echo absint( $id ); ?>;
+</script>
 
 
-    <div class="wrap">
-        <h1 id="edit-site"><?php echo $title; ?></h1>
-        <p class="edit-site-actions"><a
-                    href="<?php echo esc_url( get_home_url( $id, '/' ) ); ?>"><?php _e( 'Visit' ); ?></a> | <a
-                    href="<?php echo esc_url( get_admin_url( $id ) ); ?>"><?php _e( 'Dashboard' ); ?></a></p>
-		<?php
+<div class="wrap">
+<h1 id="edit-site"><?php echo $title; ?></h1>
+<p class="edit-site-actions"><a href="<?php echo esc_url( get_home_url( $id, '/' ) ); ?>"><?php _e( 'Visit' ); ?></a> | <a href="<?php echo esc_url( get_admin_url( $id ) ); ?>"><?php _e( 'Dashboard' ); ?></a></p>
+<?php
 
-		network_edit_site_nav(
-			array(
-				'blog_id'  => $id,
-				'selected' => 'site-users',
-			)
-		);
+network_edit_site_nav(
+	array(
+		'blog_id'  => $id,
+		'selected' => 'site-users',
+	)
+);
 
-		if ( isset( $_GET['update'] ) ) :
-			switch ( $_GET['update'] ) {
-				case 'adduser':
-					echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'User added.' ) . '</p></div>';
-					break;
-				case 'err_add_member':
-					echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'User is already a member of this site.' ) . '</p></div>';
-					break;
-				case 'err_add_fail':
-					echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'User could not be added to this site.' ) . '</p></div>';
-					break;
-				case 'err_add_notfound':
-					echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'Enter the username of an existing user.' ) . '</p></div>';
-					break;
-				case 'promote':
-					echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'Changed roles.' ) . '</p></div>';
-					break;
-				case 'err_promote':
-					echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'Select a user to change role.' ) . '</p></div>';
-					break;
-				case 'remove':
-					echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'User removed from this site.' ) . '</p></div>';
-					break;
-				case 'err_remove':
-					echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'Select a user to remove.' ) . '</p></div>';
-					break;
-				case 'newuser':
-					echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'User created.' ) . '</p></div>';
-					break;
-				case 'err_new':
-					echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'Enter the username and email.' ) . '</p></div>';
-					break;
-				case 'err_new_dup':
-					echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'Duplicated username or email address.' ) . '</p></div>';
-					break;
-			}
-		endif;
-		?>
+if ( isset( $_GET['update'] ) ) :
+	switch ( $_GET['update'] ) {
+		case 'adduser':
+			echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'User added.' ) . '</p></div>';
+			break;
+		case 'err_add_member':
+			echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'User is already a member of this site.' ) . '</p></div>';
+			break;
+		case 'err_add_fail':
+			echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'User could not be added to this site.' ) . '</p></div>';
+			break;
+		case 'err_add_notfound':
+			echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'Enter the username of an existing user.' ) . '</p></div>';
+			break;
+		case 'promote':
+			echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'Changed roles.' ) . '</p></div>';
+			break;
+		case 'err_promote':
+			echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'Select a user to change role.' ) . '</p></div>';
+			break;
+		case 'remove':
+			echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'User removed from this site.' ) . '</p></div>';
+			break;
+		case 'err_remove':
+			echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'Select a user to remove.' ) . '</p></div>';
+			break;
+		case 'newuser':
+			echo '<div id="message" class="updated notice is-dismissible"><p>' . __( 'User created.' ) . '</p></div>';
+			break;
+		case 'err_new':
+			echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'Enter the username and email.' ) . '</p></div>';
+			break;
+		case 'err_new_dup':
+			echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'Duplicated username or email address.' ) . '</p></div>';
+			break;
+	}
+endif;
+?>
 
-        <form class="search-form" method="get">
-			<?php $wp_list_table->search_box( __( 'Search Users' ), 'user' ); ?>
-            <input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>"/>
-        </form>
+<form class="search-form" method="get">
+<?php $wp_list_table->search_box( __( 'Search Users' ), 'user' ); ?>
+<input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>" />
+</form>
 
-		<?php $wp_list_table->views(); ?>
+<?php $wp_list_table->views(); ?>
 
-        <form method="post" action="site-users.php?action=update-site">
-            <input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>"/>
+<form method="post" action="site-users.php?action=update-site">
+	<input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>" />
 
-			<?php $wp_list_table->display(); ?>
+<?php $wp_list_table->display(); ?>
 
-        </form>
+</form>
 
-		<?php
-		/**
-		 * Fires after the list table on the Users screen in the Multisite Network Admin.
-		 *
-		 * @since 3.1.0
-		 */
-		do_action( 'network_site_users_after_list_table' );
+<?php
+/**
+ * Fires after the list table on the Users screen in the Multisite Network Admin.
+ *
+ * @since 3.1.0
+ */
+do_action( 'network_site_users_after_list_table' );
 
-		/** This filter is documented in wp-admin/network/site-users.php */
-		if ( current_user_can( 'promote_users' ) && apply_filters( 'show_network_site_users_add_existing_form', true ) ) :
+/** This filter is documented in wp-admin/network/site-users.php */
+if ( current_user_can( 'promote_users' ) && apply_filters( 'show_network_site_users_add_existing_form', true ) ) :
+	?>
+<h2 id="add-existing-user"><?php _e( 'Add Existing User' ); ?></h2>
+<form action="site-users.php?action=adduser" id="adduser" method="post">
+	<input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>" />
+	<table class="form-table" role="presentation">
+		<tr>
+			<th scope="row"><label for="newuser"><?php _e( 'Username' ); ?></label></th>
+			<td><input type="text" class="regular-text wp-suggest-user" name="newuser" id="newuser" /></td>
+		</tr>
+		<tr>
+			<th scope="row"><label for="new_role_adduser"><?php _e( 'Role' ); ?></label></th>
+			<td><select name="new_role" id="new_role_adduser">
+			<?php
+			switch_to_blog( $id );
+			wp_dropdown_roles( get_option( 'default_role' ) );
+			restore_current_blog();
 			?>
-            <h2 id="add-existing-user"><?php _e( 'Add Existing User' ); ?></h2>
-            <form action="site-users.php?action=adduser" id="adduser" method="post">
-                <input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>"/>
-                <table class="form-table" role="presentation">
-                    <tr>
-                        <th scope="row"><label for="newuser"><?php _e( 'Username' ); ?></label></th>
-                        <td><input type="text" class="regular-text wp-suggest-user" name="newuser" id="newuser"/></td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><label for="new_role_adduser"><?php _e( 'Role' ); ?></label></th>
-                        <td><select name="new_role" id="new_role_adduser">
-								<?php
-								switch_to_blog( $id );
-								wp_dropdown_roles( get_option( 'default_role' ) );
-								restore_current_blog();
-								?>
-                            </select></td>
-                    </tr>
-                </table>
-				<?php wp_nonce_field( 'add-user', '_wpnonce_add-user' ); ?>
-				<?php submit_button( __( 'Add User' ), 'primary', 'add-user', true, array( 'id' => 'submit-add-existing-user' ) ); ?>
-            </form>
-		<?php endif; ?>
+			</select></td>
+		</tr>
+	</table>
+	<?php wp_nonce_field( 'add-user', '_wpnonce_add-user' ); ?>
+	<?php submit_button( __( 'Add User' ), 'primary', 'add-user', true, array( 'id' => 'submit-add-existing-user' ) ); ?>
+</form>
+<?php endif; ?>
 
-		<?php
-		/**
-		 * Filters whether to show the Add New User form on the Multisite Users screen.
-		 *
-		 * @param bool $bool Whether to show the Add New User form. Default true.
-		 *
-		 * @since 3.1.0
-		 *
-		 */
-		if ( current_user_can( 'create_users' ) && apply_filters( 'show_network_site_users_add_new_form', true ) ) :
+<?php
+/**
+ * Filters whether to show the Add New User form on the Multisite Users screen.
+ *
+ * @since 3.1.0
+ *
+ * @param bool $bool Whether to show the Add New User form. Default true.
+ */
+if ( current_user_can( 'create_users' ) && apply_filters( 'show_network_site_users_add_new_form', true ) ) :
+	?>
+<h2 id="add-new-user"><?php _e( 'Add New User' ); ?></h2>
+<form action="<?php echo network_admin_url( 'site-users.php?action=newuser' ); ?>" id="newuser" method="post">
+	<input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>" />
+	<table class="form-table" role="presentation">
+		<tr>
+			<th scope="row"><label for="user_username"><?php _e( 'Username' ); ?></label></th>
+			<td><input type="text" class="regular-text" name="user[username]" id="user_username" /></td>
+		</tr>
+		<tr>
+			<th scope="row"><label for="user_email"><?php _e( 'Email' ); ?></label></th>
+			<td><input type="text" class="regular-text" name="user[email]" id="user_email" /></td>
+		</tr>
+		<tr>
+			<th scope="row"><label for="new_role_newuser"><?php _e( 'Role' ); ?></label></th>
+			<td><select name="new_role" id="new_role_newuser">
+			<?php
+			switch_to_blog( $id );
+			wp_dropdown_roles( get_option( 'default_role' ) );
+			restore_current_blog();
 			?>
-            <h2 id="add-new-user"><?php _e( 'Add New User' ); ?></h2>
-            <form action="<?php echo network_admin_url( 'site-users.php?action=newuser' ); ?>" id="newuser"
-                  method="post">
-                <input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>"/>
-                <table class="form-table" role="presentation">
-                    <tr>
-                        <th scope="row"><label for="user_username"><?php _e( 'Username' ); ?></label></th>
-                        <td><input type="text" class="regular-text" name="user[username]" id="user_username"/></td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><label for="user_email"><?php _e( 'Email' ); ?></label></th>
-                        <td><input type="text" class="regular-text" name="user[email]" id="user_email"/></td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><label for="new_role_newuser"><?php _e( 'Role' ); ?></label></th>
-                        <td><select name="new_role" id="new_role_newuser">
-								<?php
-								switch_to_blog( $id );
-								wp_dropdown_roles( get_option( 'default_role' ) );
-								restore_current_blog();
-								?>
-                            </select></td>
-                    </tr>
-                    <tr class="form-field">
-                        <td colspan="2"
-                            class="td-full"><?php _e( 'A password reset link will be sent to the user via email.' ); ?></td>
-                    </tr>
-                </table>
-				<?php wp_nonce_field( 'add-user', '_wpnonce_add-new-user' ); ?>
-				<?php submit_button( __( 'Add New User' ), 'primary', 'add-user', true, array( 'id' => 'submit-add-user' ) ); ?>
-            </form>
-		<?php endif; ?>
-    </div>
+			</select></td>
+		</tr>
+		<tr class="form-field">
+			<td colspan="2" class="td-full"><?php _e( 'A password reset link will be sent to the user via email.' ); ?></td>
+		</tr>
+	</table>
+	<?php wp_nonce_field( 'add-user', '_wpnonce_add-new-user' ); ?>
+	<?php submit_button( __( 'Add New User' ), 'primary', 'add-user', true, array( 'id' => 'submit-add-user' ) ); ?>
+</form>
+<?php endif; ?>
+</div>
 <?php
 require_once ABSPATH . 'wp-admin/admin-footer.php';

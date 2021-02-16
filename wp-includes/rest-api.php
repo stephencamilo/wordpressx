@@ -1,6 +1,4 @@
 <?php
-
-use Core\WPIncludes\Load;
 /**
  * REST API functions.
  *
@@ -399,7 +397,7 @@ function get_rest_url( $blog_id = null, $path = '/', $scheme = 'rest' ) {
 
 	$path = '/' . ltrim( $path, '/' );
 
-	if ( Load::is_multisite() && get_blog_option( $blog_id, 'permalink_structure' ) || get_option( 'permalink_structure' ) ) {
+	if ( is_multisite() && get_blog_option( $blog_id, 'permalink_structure' ) || get_option( 'permalink_structure' ) ) {
 		global $wp_rewrite;
 
 		if ( $wp_rewrite->using_index_permalinks() ) {
@@ -420,14 +418,14 @@ function get_rest_url( $blog_id = null, $path = '/', $scheme = 'rest' ) {
 		$url = add_query_arg( 'rest_route', $path, $url );
 	}
 
-	if ( Load::is_ssl() && isset( $_SERVER['SERVER_NAME'] ) ) {
+	if ( is_ssl() && isset( $_SERVER['SERVER_NAME'] ) ) {
 		// If the current host is the same as the REST URL host, force the REST URL scheme to HTTPS.
 		if ( parse_url( get_home_url( $blog_id ), PHP_URL_HOST ) === $_SERVER['SERVER_NAME'] ) {
 			$url = set_url_scheme( $url, 'https' );
 		}
 	}
 
-	if ( Load::is_admin() && force_ssl_admin() ) {
+	if ( is_admin() && force_ssl_admin() ) {
 		/*
 		 * In this situation the home URL may be http:, and `is_ssl()` may be false,
 		 * but the admin is served over https: (one way or another), so REST API usage
@@ -562,7 +560,7 @@ function rest_ensure_request( $request ) {
  *                                   returns a new WP_REST_Response instance.
  */
 function rest_ensure_response( $response ) {
-	if ( Load::is_wp_error( $response ) ) {
+	if ( is_wp_error( $response ) ) {
 		return $response;
 	}
 
@@ -1079,7 +1077,7 @@ function rest_application_password_check_errors( $result ) {
 		return $result;
 	}
 
-	if ( Load::is_wp_error( $wp_rest_application_password_status ) ) {
+	if ( is_wp_error( $wp_rest_application_password_status ) ) {
 		$data = $wp_rest_application_password_status->get_error_data();
 
 		if ( ! isset( $data['status'] ) ) {
@@ -1314,7 +1312,7 @@ function rest_sanitize_request_arg( $value, $request, $param ) {
 function rest_parse_request_arg( $value, $request, $param ) {
 	$is_valid = rest_validate_request_arg( $value, $request, $param );
 
-	if ( Load::is_wp_error( $is_valid ) ) {
+	if ( is_wp_error( $is_valid ) ) {
 		return $is_valid;
 	}
 
@@ -1786,7 +1784,7 @@ function rest_find_any_matching_schema( $value, $args, $param ) {
 		}
 
 		$is_valid = rest_validate_value_from_schema( $value, $schema, $param );
-		if ( ! Load::is_wp_error( $is_valid ) ) {
+		if ( ! is_wp_error( $is_valid ) ) {
 			return $schema;
 		}
 
@@ -1821,7 +1819,7 @@ function rest_find_one_matching_schema( $value, $args, $param, $stop_after_first
 		}
 
 		$is_valid = rest_validate_value_from_schema( $value, $schema, $param );
-		if ( ! Load::is_wp_error( $is_valid ) ) {
+		if ( ! is_wp_error( $is_valid ) ) {
 			if ( $stop_after_first_match ) {
 				return $schema;
 			}
@@ -1938,7 +1936,7 @@ function rest_get_allowed_schema_keywords() {
 function rest_validate_value_from_schema( $value, $args, $param = '' ) {
 	if ( isset( $args['anyOf'] ) ) {
 		$matching_schema = rest_find_any_matching_schema( $value, $args, $param );
-		if ( Load::is_wp_error( $matching_schema ) ) {
+		if ( is_wp_error( $matching_schema ) ) {
 			return $matching_schema;
 		}
 
@@ -1949,7 +1947,7 @@ function rest_validate_value_from_schema( $value, $args, $param = '' ) {
 
 	if ( isset( $args['oneOf'] ) ) {
 		$matching_schema = rest_find_one_matching_schema( $value, $args, $param );
-		if ( Load::is_wp_error( $matching_schema ) ) {
+		if ( is_wp_error( $matching_schema ) ) {
 			return $matching_schema;
 		}
 
@@ -2004,7 +2002,7 @@ function rest_validate_value_from_schema( $value, $args, $param = '' ) {
 		if ( isset( $args['items'] ) ) {
 			foreach ( $value as $index => $v ) {
 				$is_valid = rest_validate_value_from_schema( $v, $args['items'], $param . '[' . $index . ']' );
-				if ( Load::is_wp_error( $is_valid ) ) {
+				if ( is_wp_error( $is_valid ) ) {
 					return $is_valid;
 				}
 			}
@@ -2079,7 +2077,7 @@ function rest_validate_value_from_schema( $value, $args, $param = '' ) {
 		foreach ( $value as $property => $v ) {
 			if ( isset( $args['properties'][ $property ] ) ) {
 				$is_valid = rest_validate_value_from_schema( $v, $args['properties'][ $property ], $param . '[' . $property . ']' );
-				if ( Load::is_wp_error( $is_valid ) ) {
+				if ( is_wp_error( $is_valid ) ) {
 					return $is_valid;
 				}
 				continue;
@@ -2088,7 +2086,7 @@ function rest_validate_value_from_schema( $value, $args, $param = '' ) {
 			$pattern_property_schema = rest_find_matching_pattern_property_schema( $property, $args );
 			if ( null !== $pattern_property_schema ) {
 				$is_valid = rest_validate_value_from_schema( $v, $pattern_property_schema, $param . '[' . $property . ']' );
-				if ( Load::is_wp_error( $is_valid ) ) {
+				if ( is_wp_error( $is_valid ) ) {
 					return $is_valid;
 				}
 				continue;
@@ -2102,7 +2100,7 @@ function rest_validate_value_from_schema( $value, $args, $param = '' ) {
 
 				if ( is_array( $args['additionalProperties'] ) ) {
 					$is_valid = rest_validate_value_from_schema( $v, $args['additionalProperties'], $param . '[' . $property . ']' );
-					if ( Load::is_wp_error( $is_valid ) ) {
+					if ( is_wp_error( $is_valid ) ) {
 						return $is_valid;
 					}
 				}
@@ -2334,7 +2332,7 @@ function rest_validate_value_from_schema( $value, $args, $param = '' ) {
 function rest_sanitize_value_from_schema( $value, $args, $param = '' ) {
 	if ( isset( $args['anyOf'] ) ) {
 		$matching_schema = rest_find_any_matching_schema( $value, $args, $param );
-		if ( Load::is_wp_error( $matching_schema ) ) {
+		if ( is_wp_error( $matching_schema ) ) {
 			return $matching_schema;
 		}
 
@@ -2347,7 +2345,7 @@ function rest_sanitize_value_from_schema( $value, $args, $param = '' ) {
 
 	if ( isset( $args['oneOf'] ) ) {
 		$matching_schema = rest_find_one_matching_schema( $value, $args, $param );
-		if ( Load::is_wp_error( $matching_schema ) ) {
+		if ( is_wp_error( $matching_schema ) ) {
 			return $matching_schema;
 		}
 
@@ -2583,7 +2581,7 @@ function rest_parse_embed_param( $embed ) {
 function rest_filter_response_by_context( $data, $schema, $context ) {
 	if ( isset( $schema['anyOf'] ) ) {
 		$matching_schema = rest_find_any_matching_schema( $data, $schema, '' );
-		if ( ! Load::is_wp_error( $matching_schema ) ) {
+		if ( ! is_wp_error( $matching_schema ) ) {
 			if ( ! isset( $schema['type'] ) ) {
 				$schema['type'] = $matching_schema['type'];
 			}
@@ -2594,7 +2592,7 @@ function rest_filter_response_by_context( $data, $schema, $context ) {
 
 	if ( isset( $schema['oneOf'] ) ) {
 		$matching_schema = rest_find_one_matching_schema( $data, $schema, '', true );
-		if ( ! Load::is_wp_error( $matching_schema ) ) {
+		if ( ! is_wp_error( $matching_schema ) ) {
 			if ( ! isset( $schema['type'] ) ) {
 				$schema['type'] = $matching_schema['type'];
 			}

@@ -6,8 +6,6 @@
  * @subpackage Option
  */
 
-use Core\WPIncludes\Load;
-
 /**
  * Retrieves an option value based on an option name.
  *
@@ -21,15 +19,14 @@ use Core\WPIncludes\Load;
  * Any scalar values will be returned as strings. You may coerce the return type of
  * a given option by registering an {@see 'option_$option'} filter callback.
  *
- * @param string $option  Name of the option to retrieve. Expected to not be SQL-escaped.
- * @param mixed  $default Optional. Default value to return if the option does not exist.
- *
- * @return mixed Value set for the option. A value of any type may be returned, including
- *               array, boolean, float, integer, null, object, and string.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 1.5.0
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $option  Name of the option to retrieve. Expected to not be SQL-escaped.
+ * @param mixed  $default Optional. Default value to return if the option does not exist.
+ * @return mixed Value set for the option. A value of any type may be returned, including
+ *               array, boolean, float, integer, null, object, and string.
  */
 function get_option( $option, $default = false ) {
 	global $wpdb;
@@ -48,7 +45,7 @@ function get_option( $option, $default = false ) {
 		'comment_whitelist' => 'comment_previously_approved',
 	);
 
-	if ( ! Load::wp_installing() && isset( $deprecated_keys[ $option ] ) ) {
+	if ( ! wp_installing() && isset( $deprecated_keys[ $option ] ) ) {
 		_deprecated_argument(
 			__FUNCTION__,
 			'5.5.0',
@@ -95,7 +92,7 @@ function get_option( $option, $default = false ) {
 	// Distinguish between `false` as a default, and not passing one.
 	$passed_default = func_num_args() > 1;
 
-	if ( ! Load::wp_installing() ) {
+	if ( ! wp_installing() ) {
 		// Prevent non-existent options from triggering multiple queries.
 		$notoptions = wp_cache_get( 'notoptions', 'options' );
 
@@ -218,20 +215,19 @@ function form_option( $option ) {
 /**
  * Loads and caches all autoloaded options, if available or all options.
  *
- * @param bool $force_cache Optional. Whether to force an update of the local cache
- *                          from the persistent cache. Default false.
- *
- * @return array List of all options.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 2.2.0
  * @since 5.3.1 The `$force_cache` parameter was added.
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param bool $force_cache Optional. Whether to force an update of the local cache
+ *                          from the persistent cache. Default false.
+ * @return array List of all options.
  */
 function wp_load_alloptions( $force_cache = false ) {
 	global $wpdb;
 
-	if ( ! Load::wp_installing() || ! Load::is_multisite() ) {
+	if ( ! wp_installing() || ! is_multisite() ) {
 		$alloptions = wp_cache_get( 'alloptions', 'options', $force_cache );
 	} else {
 		$alloptions = false;
@@ -250,7 +246,7 @@ function wp_load_alloptions( $force_cache = false ) {
 			$alloptions[ $o->option_name ] = $o->option_value;
 		}
 
-		if ( ! Load::wp_installing() || ! Load::is_multisite() ) {
+		if ( ! wp_installing() || ! is_multisite() ) {
 			/**
 			 * Filters all options before caching them.
 			 *
@@ -277,22 +273,21 @@ function wp_load_alloptions( $force_cache = false ) {
 /**
  * Loads and caches certain often requested site options if is_multisite() and a persistent cache is not being used.
  *
- * @param int $network_id Optional site ID for which to query the options. Defaults to the current site.
- *
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 3.0.0
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int $network_id Optional site ID for which to query the options. Defaults to the current site.
  */
 function wp_load_core_site_options( $network_id = null ) {
 	global $wpdb;
 
-	if ( ! Load::is_multisite() || Load::wp_using_ext_object_cache() || Load::wp_installing() ) {
+	if ( ! is_multisite() || wp_using_ext_object_cache() || wp_installing() ) {
 		return;
 	}
 
 	if ( empty( $network_id ) ) {
-		$network_id = Load::get_current_network_id();
+		$network_id = get_current_network_id();
 	}
 
 	$core_options = array( 'site_name', 'siteurl', 'active_sitewide_plugins', '_site_transient_timeout_theme_roots', '_site_transient_theme_roots', 'site_admins', 'can_compress_scripts', 'global_terms_enabled', 'ms_files_rewriting' );
@@ -317,8 +312,14 @@ function wp_load_core_site_options( $network_id = null ) {
  * Remember, resources cannot be serialized or added as an option.
  *
  * If the option does not exist, it will be created.
+
  * This function is designed to work with or without a logged-in user. In terms of security,
  * plugin developers should check the current user's capabilities before updating any options.
+ *
+ * @since 1.0.0
+ * @since 4.2.0 The `$autoload` parameter was added.
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
  *
  * @param string      $option   Name of the option to update. Expected to not be SQL-escaped.
  * @param mixed       $value    Option value. Must be serializable if non-scalar. Expected to not be SQL-escaped.
@@ -326,13 +327,7 @@ function wp_load_core_site_options( $network_id = null ) {
  *                              `$autoload` can only be updated using `update_option()` if `$value` is also changed.
  *                              Accepts 'yes'|true to enable or 'no'|false to disable. For non-existent options,
  *                              the default value is 'yes'. Default null.
- *
  * @return bool True if the value was updated, false otherwise.
- *@since 4.2.0 The `$autoload` parameter was added.
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
- * @since 1.0.0
  */
 function update_option( $option, $value, $autoload = null ) {
 	global $wpdb;
@@ -351,7 +346,7 @@ function update_option( $option, $value, $autoload = null ) {
 		'comment_whitelist' => 'comment_previously_approved',
 	);
 
-	if ( ! Load::wp_installing() && isset( $deprecated_keys[ $option ] ) ) {
+	if ( ! wp_installing() && isset( $deprecated_keys[ $option ] ) ) {
 		_deprecated_argument(
 			__FUNCTION__,
 			'5.5.0',
@@ -455,7 +450,7 @@ function update_option( $option, $value, $autoload = null ) {
 		wp_cache_set( 'notoptions', $notoptions, 'options' );
 	}
 
-	if ( ! Load::wp_installing() ) {
+	if ( ! wp_installing() ) {
 		$alloptions = wp_load_alloptions( true );
 		if ( isset( $alloptions[ $option ] ) ) {
 			$alloptions[ $option ] = $serialized_value;
@@ -505,18 +500,17 @@ function update_option( $option, $value, $autoload = null ) {
  * aren't adding a protected WordPress option. Care should be taken to not name
  * options the same as the ones which are protected.
  *
+ * @since 1.0.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param string      $option     Name of the option to add. Expected to not be SQL-escaped.
  * @param mixed       $value      Optional. Option value. Must be serializable if non-scalar.
  *                                Expected to not be SQL-escaped.
  * @param string      $deprecated Optional. Description. Not used anymore.
  * @param string|bool $autoload   Optional. Whether to load the option when WordPress starts up.
  *                                Default is enabled. Accepts 'no' to disable for legacy reasons.
- *
  * @return bool True if the option was added, false otherwise.
- *@global WPDB $wpdb WordPress database abstraction object.
- *
- * @since 1.0.0
- *
  */
 function add_option( $option, $value = '', $deprecated = '', $autoload = 'yes' ) {
 	global $wpdb;
@@ -539,7 +533,7 @@ function add_option( $option, $value = '', $deprecated = '', $autoload = 'yes' )
 		'comment_whitelist' => 'comment_previously_approved',
 	);
 
-	if ( ! Load::wp_installing() && isset( $deprecated_keys[ $option ] ) ) {
+	if ( ! wp_installing() && isset( $deprecated_keys[ $option ] ) ) {
 		_deprecated_argument(
 			__FUNCTION__,
 			'5.5.0',
@@ -590,7 +584,7 @@ function add_option( $option, $value = '', $deprecated = '', $autoload = 'yes' )
 		return false;
 	}
 
-	if ( ! Load::wp_installing() ) {
+	if ( ! wp_installing() ) {
 		if ( 'yes' === $autoload ) {
 			$alloptions            = wp_load_alloptions( true );
 			$alloptions[ $option ] = $serialized_value;
@@ -637,13 +631,12 @@ function add_option( $option, $value = '', $deprecated = '', $autoload = 'yes' )
 /**
  * Removes option by name. Prevents removal of protected WordPress options.
  *
+ * @since 1.2.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param string $option Name of the option to delete. Expected to not be SQL-escaped.
- *
  * @return bool True if the option was deleted, false otherwise.
- *@since 1.2.0
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function delete_option( $option ) {
 	global $wpdb;
@@ -672,7 +665,7 @@ function delete_option( $option ) {
 
 	$result = $wpdb->delete( $wpdb->options, array( 'option_name' => $option ) );
 
-	if ( ! Load::wp_installing() ) {
+	if ( ! wp_installing() ) {
 		if ( 'yes' === $row->autoload ) {
 			$alloptions = wp_load_alloptions( true );
 			if ( is_array( $alloptions ) && isset( $alloptions[ $option ] ) ) {
@@ -733,7 +726,7 @@ function delete_transient( $transient ) {
 	 */
 	do_action( "delete_transient_{$transient}", $transient );
 
-	if ( Load::wp_using_ext_object_cache() ) {
+	if ( wp_using_ext_object_cache() ) {
 		$result = wp_cache_delete( $transient, 'transient' );
 	} else {
 		$option_timeout = '_transient_timeout_' . $transient;
@@ -795,11 +788,11 @@ function get_transient( $transient ) {
 		return $pre;
 	}
 
-	if ( Load::wp_using_ext_object_cache() ) {
+	if ( wp_using_ext_object_cache() ) {
 		$value = wp_cache_get( $transient, 'transient' );
 	} else {
 		$transient_option = '_transient_' . $transient;
-		if ( ! Load::wp_installing() ) {
+		if ( ! wp_installing() ) {
 			// If option is not in alloptions, it is not autoloaded and thus has a timeout.
 			$alloptions = wp_load_alloptions();
 			if ( ! isset( $alloptions[ $transient_option ] ) ) {
@@ -879,7 +872,7 @@ function set_transient( $transient, $value, $expiration = 0 ) {
 	 */
 	$expiration = apply_filters( "expiration_of_transient_{$transient}", $expiration, $value, $transient );
 
-	if ( Load::wp_using_ext_object_cache() ) {
+	if ( wp_using_ext_object_cache() ) {
 		$result = wp_cache_set( $transient, $value, 'transient', $expiration );
 	} else {
 		$transient_timeout = '_transient_timeout_' . $transient;
@@ -960,7 +953,7 @@ function set_transient( $transient, $value, $expiration = 0 ) {
 function delete_expired_transients( $force_db = false ) {
 	global $wpdb;
 
-	if ( ! $force_db && Load::wp_using_ext_object_cache() ) {
+	if ( ! $force_db && wp_using_ext_object_cache() ) {
 		return;
 	}
 
@@ -977,7 +970,7 @@ function delete_expired_transients( $force_db = false ) {
 		)
 	);
 
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		// Single site stores site transients in the options table.
 		$wpdb->query(
 			$wpdb->prepare(
@@ -991,7 +984,7 @@ function delete_expired_transients( $force_db = false ) {
 				time()
 			)
 		);
-	} elseif ( Load::is_multisite() && is_main_site() && is_main_network() ) {
+	} elseif ( is_multisite() && is_main_site() && is_main_network() ) {
 		// Multisite stores site transients in the sitemeta table.
 		$wpdb->query(
 			$wpdb->prepare(
@@ -1019,7 +1012,7 @@ function delete_expired_transients( $force_db = false ) {
  */
 function wp_user_settings() {
 
-	if ( ! Load::is_admin() || Load::wp_doing_ajax() ) {
+	if ( ! is_admin() || wp_doing_ajax() ) {
 		return;
 	}
 
@@ -1305,17 +1298,16 @@ function update_site_option( $option, $value ) {
 /**
  * Retrieves a network's option value based on the option name.
  *
+ * @since 4.4.0
+ *
+ * @see get_option()
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int    $network_id ID of the network. Can be null to default to the current network ID.
  * @param string $option     Name of the option to retrieve. Expected to not be SQL-escaped.
  * @param mixed  $default    Optional. Value to return if the option doesn't exist. Default false.
- *
  * @return mixed Value set for the option.
- *@see get_option()
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
- * @since 4.4.0
- *
  */
 function get_network_option( $network_id, $option, $default = false ) {
 	global $wpdb;
@@ -1328,7 +1320,7 @@ function get_network_option( $network_id, $option, $default = false ) {
 
 	// Fallback to the current network if a network ID is not specified.
 	if ( ! $network_id ) {
-		$network_id = Load::get_current_network_id();
+		$network_id = get_current_network_id();
 	}
 
 	/**
@@ -1383,7 +1375,7 @@ function get_network_option( $network_id, $option, $default = false ) {
 		return apply_filters( "default_site_option_{$option}", $default, $option, $network_id );
 	}
 
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		/** This filter is documented in wp-includes/option.php */
 		$default = apply_filters( 'default_site_option_' . $option, $default, $option, $network_id );
 		$value   = get_option( $option, $default );
@@ -1440,17 +1432,16 @@ function get_network_option( $network_id, $option, $default = false ) {
  *
  * Existing options will not be updated.
  *
+ * @since 4.4.0
+ *
+ * @see add_option()
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int    $network_id ID of the network. Can be null to default to the current network ID.
  * @param string $option     Name of the option to add. Expected to not be SQL-escaped.
  * @param mixed  $value      Option value, can be anything. Expected to not be SQL-escaped.
- *
  * @return bool True if the option was added, false otherwise.
- *@see add_option()
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
- * @since 4.4.0
- *
  */
 function add_network_option( $network_id, $option, $value ) {
 	global $wpdb;
@@ -1463,7 +1454,7 @@ function add_network_option( $network_id, $option, $value ) {
 
 	// Fallback to the current network if a network ID is not specified.
 	if ( ! $network_id ) {
-		$network_id = Load::get_current_network_id();
+		$network_id = get_current_network_id();
 	}
 
 	wp_protect_special_option( $option );
@@ -1486,7 +1477,7 @@ function add_network_option( $network_id, $option, $value ) {
 
 	$notoptions_key = "$network_id:notoptions";
 
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		$result = add_option( $option, $value, '', 'no' );
 	} else {
 		$cache_key = "$network_id:$option";
@@ -1566,16 +1557,15 @@ function add_network_option( $network_id, $option, $value ) {
 /**
  * Removes a network option by name.
  *
- * @param int    $network_id ID of the network. Can be null to default to the current network ID.
- * @param string $option     Name of the option to delete. Expected to not be SQL-escaped.
- *
- * @return bool True if the option was deleted, false otherwise.
- *@since 4.4.0
+ * @since 4.4.0
  *
  * @see delete_option()
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  *
+ * @param int    $network_id ID of the network. Can be null to default to the current network ID.
+ * @param string $option     Name of the option to delete. Expected to not be SQL-escaped.
+ * @return bool True if the option was deleted, false otherwise.
  */
 function delete_network_option( $network_id, $option ) {
 	global $wpdb;
@@ -1588,7 +1578,7 @@ function delete_network_option( $network_id, $option ) {
 
 	// Fallback to the current network if a network ID is not specified.
 	if ( ! $network_id ) {
-		$network_id = Load::get_current_network_id();
+		$network_id = get_current_network_id();
 	}
 
 	/**
@@ -1605,7 +1595,7 @@ function delete_network_option( $network_id, $option ) {
 	 */
 	do_action( "pre_delete_site_option_{$option}", $option, $network_id );
 
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		$result = delete_option( $option );
 	} else {
 		$row = $wpdb->get_row( $wpdb->prepare( "SELECT meta_id FROM {$wpdb->sitemeta} WHERE meta_key = %s AND site_id = %d", $option, $network_id ) );
@@ -1660,17 +1650,16 @@ function delete_network_option( $network_id, $option ) {
 /**
  * Updates the value of a network option that was already added.
  *
+ * @since 4.4.0
+ *
+ * @see update_option()
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int    $network_id ID of the network. Can be null to default to the current network ID.
  * @param string $option     Name of the option. Expected to not be SQL-escaped.
  * @param mixed  $value      Option value. Expected to not be SQL-escaped.
- *
  * @return bool True if the value was updated, false otherwise.
- *@see update_option()
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
- * @since 4.4.0
- *
  */
 function update_network_option( $network_id, $option, $value ) {
 	global $wpdb;
@@ -1683,7 +1672,7 @@ function update_network_option( $network_id, $option, $value ) {
 
 	// Fallback to the current network if a network ID is not specified.
 	if ( ! $network_id ) {
-		$network_id = Load::get_current_network_id();
+		$network_id = get_current_network_id();
 	}
 
 	wp_protect_special_option( $option );
@@ -1732,7 +1721,7 @@ function update_network_option( $network_id, $option, $value ) {
 		wp_cache_set( $notoptions_key, $notoptions, 'site-options' );
 	}
 
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		$result = update_option( $option, $value, 'no' );
 	} else {
 		$value = sanitize_option( $option, $value );
@@ -1811,7 +1800,7 @@ function delete_site_transient( $transient ) {
 	 */
 	do_action( "delete_site_transient_{$transient}", $transient );
 
-	if ( Load::wp_using_ext_object_cache() ) {
+	if ( wp_using_ext_object_cache() ) {
 		$result = wp_cache_delete( $transient, 'site-transient' );
 	} else {
 		$option_timeout = '_site_transient_timeout_' . $transient;
@@ -1875,7 +1864,7 @@ function get_site_transient( $transient ) {
 		return $pre;
 	}
 
-	if ( Load::wp_using_ext_object_cache() ) {
+	if ( wp_using_ext_object_cache() ) {
 		$value = wp_cache_get( $transient, 'site-transient' );
 	} else {
 		// Core transients that do not have a timeout. Listed here so querying timeouts can be avoided.
@@ -1956,7 +1945,7 @@ function set_site_transient( $transient, $value, $expiration = 0 ) {
 	 */
 	$expiration = apply_filters( "expiration_of_site_transient_{$transient}", $expiration, $value, $transient );
 
-	if ( Load::wp_using_ext_object_cache() ) {
+	if ( wp_using_ext_object_cache() ) {
 		$result = wp_cache_set( $transient, $value, 'site-transient', $expiration );
 	} else {
 		$transient_timeout = '_site_transient_timeout_' . $transient;
@@ -2039,7 +2028,7 @@ function register_initial_settings() {
 		)
 	);
 
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		register_setting(
 			'general',
 			'siteurl',
@@ -2056,7 +2045,7 @@ function register_initial_settings() {
 		);
 	}
 
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		register_setting(
 			'general',
 			'admin_email',

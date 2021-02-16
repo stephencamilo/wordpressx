@@ -1,6 +1,4 @@
 <?php
-
-use Core\WPIncludes\Load;
 /**
  * HTTP API: WP_Http class
  *
@@ -8,9 +6,7 @@ use Core\WPIncludes\Load;
  * @subpackage HTTP
  * @since 2.7.0
  */
-if (!defined('ABSPATH')) {
-	define('ABSPATH', dirname(__DIR__) . '/');
-}
+
 if ( ! class_exists( 'Requests' ) ) {
 	require ABSPATH . WPINC . '/class-requests.php';
 
@@ -421,7 +417,7 @@ class WP_Http {
 		 * @param string         $url         The request URL.
 		 */
 		do_action( 'http_api_debug', $response, 'response', 'Requests', $parsed_args, $url );
-		if ( Load::is_wp_error( $response ) ) {
+		if ( is_wp_error( $response ) ) {
 			return $response;
 		}
 
@@ -586,7 +582,7 @@ class WP_Http {
 		/** This action is documented in wp-includes/class-http.php */
 		do_action( 'http_api_debug', $response, 'response', $class, $args, $url );
 
-		if ( Load::is_wp_error( $response ) ) {
+		if ( is_wp_error( $response ) ) {
 			return $response;
 		}
 

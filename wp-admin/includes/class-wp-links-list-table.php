@@ -226,7 +226,7 @@ class WP_Links_List_Table extends WP_List_Table {
 		$cat_names = array();
 		foreach ( $link->link_category as $category ) {
 			$cat = get_term( $category, 'link_category', OBJECT, 'display' );
-			if ( Load::is_wp_error( $cat ) ) {
+			if ( is_wp_error( $cat ) ) {
 				echo $cat->get_error_message();
 			}
 			$cat_name = $cat->name;

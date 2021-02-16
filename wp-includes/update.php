@@ -6,8 +6,6 @@
  * @since 2.3.0
  */
 
-use Core\WPIncludes\Load;
-
 /**
  * Check WordPress version against the newest version.
  *
@@ -19,7 +17,7 @@ use Core\WPIncludes\Load;
  * @since 2.3.0
  *
  * @global string $wp_version       Used to check against the newest WordPress version.
- * @global WPDB   $wpdb             WordPress database abstraction object.
+ * @global wpdb   $wpdb             WordPress database abstraction object.
  * @global string $wp_local_package Locale code of the package.
  *
  * @param array $extra_stats Extra statistics to report to the WordPress.org API.
@@ -28,7 +26,7 @@ use Core\WPIncludes\Load;
 function wp_version_check( $extra_stats = array(), $force_check = false ) {
 	global $wpdb, $wp_local_package;
 
-	if ( Load::wp_installing() ) {
+	if ( wp_installing() ) {
 		return;
 	}
 
@@ -81,7 +79,7 @@ function wp_version_check( $extra_stats = array(), $force_check = false ) {
 		$mysql_version = 'N/A';
 	}
 
-	if ( Load::is_multisite() ) {
+	if ( is_multisite() ) {
 		$user_count        = get_user_count();
 		$num_blogs         = get_blog_count();
 		$wp_install        = network_site_url();
@@ -151,7 +149,7 @@ function wp_version_check( $extra_stats = array(), $force_check = false ) {
 		$url = set_url_scheme( $url, 'https' );
 	}
 
-	$doing_cron = Load::wp_doing_cron();
+	$doing_cron = wp_doing_cron();
 
 	$options = array(
 		'timeout'    => $doing_cron ? 30 : 3,
@@ -165,7 +163,7 @@ function wp_version_check( $extra_stats = array(), $force_check = false ) {
 
 	$response = wp_remote_post( $url, $options );
 
-	if ( $ssl && Load::is_wp_error( $response ) ) {
+	if ( $ssl && is_wp_error( $response ) ) {
 		trigger_error(
 			sprintf(
 				/* translators: %s: Support forums URL. */
@@ -177,7 +175,7 @@ function wp_version_check( $extra_stats = array(), $force_check = false ) {
 		$response = wp_remote_post( $http_url, $options );
 	}
 
-	if ( Load::is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+	if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
 		return;
 	}
 
@@ -274,7 +272,7 @@ function wp_version_check( $extra_stats = array(), $force_check = false ) {
  * @param array $extra_stats Extra statistics to report to the WordPress.org API.
  */
 function wp_update_plugins( $extra_stats = array() ) {
-	if ( Load::wp_installing() ) {
+	if ( wp_installing() ) {
 		return;
 	}
 
@@ -299,7 +297,7 @@ function wp_update_plugins( $extra_stats = array() ) {
 	$new_option               = new stdClass;
 	$new_option->last_checked = time();
 
-	$doing_cron = Load::wp_doing_cron();
+	$doing_cron = wp_doing_cron();
 
 	// Check for update on a different schedule, depending on the page.
 	switch ( current_filter() ) {
@@ -400,7 +398,7 @@ function wp_update_plugins( $extra_stats = array() ) {
 
 	$raw_response = wp_remote_post( $url, $options );
 
-	if ( $ssl && Load::is_wp_error( $raw_response ) ) {
+	if ( $ssl && is_wp_error( $raw_response ) ) {
 		trigger_error(
 			sprintf(
 				/* translators: %s: Support forums URL. */
@@ -412,7 +410,7 @@ function wp_update_plugins( $extra_stats = array() ) {
 		$raw_response = wp_remote_post( $http_url, $options );
 	}
 
-	if ( Load::is_wp_error( $raw_response ) || 200 !== wp_remote_retrieve_response_code( $raw_response ) ) {
+	if ( is_wp_error( $raw_response ) || 200 !== wp_remote_retrieve_response_code( $raw_response ) ) {
 		return;
 	}
 
@@ -469,7 +467,7 @@ function wp_update_plugins( $extra_stats = array() ) {
  * @param array $extra_stats Extra statistics to report to the WordPress.org API.
  */
 function wp_update_themes( $extra_stats = array() ) {
-	if ( Load::wp_installing() ) {
+	if ( wp_installing() ) {
 		return;
 	}
 
@@ -506,7 +504,7 @@ function wp_update_themes( $extra_stats = array() ) {
 		);
 	}
 
-	$doing_cron = Load::wp_doing_cron();
+	$doing_cron = wp_doing_cron();
 
 	// Check for update on a different schedule, depending on the page.
 	switch ( current_filter() ) {
@@ -604,7 +602,7 @@ function wp_update_themes( $extra_stats = array() ) {
 
 	$raw_response = wp_remote_post( $url, $options );
 
-	if ( $ssl && Load::is_wp_error( $raw_response ) ) {
+	if ( $ssl && is_wp_error( $raw_response ) ) {
 		trigger_error(
 			sprintf(
 				/* translators: %s: Support forums URL. */
@@ -616,7 +614,7 @@ function wp_update_themes( $extra_stats = array() ) {
 		$raw_response = wp_remote_post( $http_url, $options );
 	}
 
-	if ( Load::is_wp_error( $raw_response ) || 200 !== wp_remote_retrieve_response_code( $raw_response ) ) {
+	if ( is_wp_error( $raw_response ) || 200 !== wp_remote_retrieve_response_code( $raw_response ) ) {
 		return;
 	}
 
@@ -847,15 +845,15 @@ function _maybe_update_themes() {
  * @since 3.1.0
  */
 function wp_schedule_update_checks() {
-	if ( ! wp_next_scheduled( 'wp_version_check' ) && ! Load::wp_installing() ) {
+	if ( ! wp_next_scheduled( 'wp_version_check' ) && ! wp_installing() ) {
 		wp_schedule_event( time(), 'twicedaily', 'wp_version_check' );
 	}
 
-	if ( ! wp_next_scheduled( 'wp_update_plugins' ) && ! Load::wp_installing() ) {
+	if ( ! wp_next_scheduled( 'wp_update_plugins' ) && ! wp_installing() ) {
 		wp_schedule_event( time(), 'twicedaily', 'wp_update_plugins' );
 	}
 
-	if ( ! wp_next_scheduled( 'wp_update_themes' ) && ! Load::wp_installing() ) {
+	if ( ! wp_next_scheduled( 'wp_update_themes' ) && ! wp_installing() ) {
 		wp_schedule_event( time(), 'twicedaily', 'wp_update_themes' );
 	}
 }
@@ -877,7 +875,7 @@ function wp_clean_update_cache() {
 	delete_site_transient( 'update_core' );
 }
 
-if ( ( ! is_main_site() && ! Load::is_network_admin() ) || Load::wp_doing_ajax() ) {
+if ( ( ! is_main_site() && ! is_network_admin() ) || wp_doing_ajax() ) {
 	return;
 }
 

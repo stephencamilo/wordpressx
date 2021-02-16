@@ -101,7 +101,7 @@ class WP_Sitemaps_Taxonomies extends WP_Sitemaps_Provider {
 			foreach ( $taxonomy_terms->terms as $term ) {
 				$term_link = get_term_link( $term, $taxonomy );
 
-				if ( Load::is_wp_error( $term_link ) ) {
+				if ( is_wp_error( $term_link ) ) {
 					continue;
 				}
 

@@ -11,8 +11,6 @@
  *
  * @since 5.2.0
  */
-
-use Core\WPIncludes\Load;
 class WP_Recovery_Mode {
 
 	const EXIT_ACTION = 'exit_recovery_mode';
@@ -97,7 +95,7 @@ class WP_Recovery_Mode {
 		add_action( 'login_form_' . self::EXIT_ACTION, array( $this, 'handle_exit_recovery_mode' ) );
 		add_action( 'recovery_mode_clean_expired_keys', array( $this, 'clean_expired_keys' ) );
 
-		if ( ! wp_next_scheduled( 'recovery_mode_clean_expired_keys' ) && ! Load::wp_installing() ) {
+		if ( ! wp_next_scheduled( 'recovery_mode_clean_expired_keys' ) && ! wp_installing() ) {
 			wp_schedule_event( time(), 'daily', 'recovery_mode_clean_expired_keys' );
 		}
 
@@ -175,7 +173,7 @@ class WP_Recovery_Mode {
 		}
 
 		if ( ! $this->is_active() ) {
-			if ( ! Load::is_protected_endpoint() ) {
+			if ( ! is_protected_endpoint() ) {
 				return new WP_Error( 'non_protected_endpoint', __( 'Error occurred on a non-protected endpoint.' ) );
 			}
 
@@ -271,7 +269,7 @@ class WP_Recovery_Mode {
 	protected function handle_cookie() {
 		$validated = $this->cookie_service->validate_cookie();
 
-		if ( Load::is_wp_error( $validated ) ) {
+		if ( is_wp_error( $validated ) ) {
 			$this->cookie_service->clear_cookie();
 
 			$validated->add_data( array( 'status' => 403 ) );
@@ -279,7 +277,7 @@ class WP_Recovery_Mode {
 		}
 
 		$session_id = $this->cookie_service->get_session_id_from_cookie();
-		if ( Load::is_wp_error( $session_id ) ) {
+		if ( is_wp_error( $session_id ) ) {
 			$this->cookie_service->clear_cookie();
 
 			$session_id->add_data( array( 'status' => 403 ) );
@@ -407,7 +405,7 @@ class WP_Recovery_Mode {
 			return false;
 		}
 
-		if ( ! Load::is_multisite() ) {
+		if ( ! is_multisite() ) {
 			return false;
 		}
 
@@ -463,7 +461,7 @@ class WP_Recovery_Mode {
 			require_once ABSPATH . WPINC . '/pluggable.php';
 		}
 
-		$scheme = Load::is_ssl() ? 'https://' : 'http://';
+		$scheme = is_ssl() ? 'https://' : 'http://';
 
 		$url = "{$scheme}{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 		wp_safe_redirect( $url );

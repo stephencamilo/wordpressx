@@ -11,7 +11,7 @@
 define( 'SHORTINIT', true );
 require_once dirname( __DIR__ ) . '/wp-load.php';
 
-if ( ! Load::is_multisite() ) {
+if ( ! is_multisite() ) {
 	die( 'Multisite support not enabled' );
 }
 

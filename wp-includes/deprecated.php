@@ -1283,7 +1283,7 @@ function get_category_children( $id, $before = '/', $after = '', $visited = arra
 			continue;
 
 		$category = get_category( $cat_id );
-		if ( Load::is_wp_error( $category ) )
+		if ( is_wp_error( $category ) )
 			return $category;
 		if ( $category->parent == $id && !in_array( $category->term_id, $visited ) ) {
 			$visited[] = $category->term_id;
@@ -2382,22 +2382,21 @@ function update_usermeta( $user_id, $meta_key, $meta_value ) {
  * For setups that use the multisite feature. Can be used outside of the
  * multisite feature.
  *
- * @param int $id Site ID.
- *
- * @return array List of users that are part of that site ID
- *@see get_users()
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 2.2.0
  * @deprecated 3.1.0 Use get_users()
+ * @see get_users()
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int $id Site ID.
+ * @return array List of users that are part of that site ID
  */
 function get_users_of_blog( $id = '' ) {
 	_deprecated_function( __FUNCTION__, '3.1.0', 'get_users()' );
 
 	global $wpdb;
 	if ( empty( $id ) ) {
-		$id = Load::get_current_blog_id();
+		$id = get_current_blog_id();
 	}
 	$blog_prefix = $wpdb->get_blog_prefix($id);
 	$users = $wpdb->get_results( "SELECT user_id, user_id AS ID, user_login, display_name, user_email, meta_value FROM $wpdb->users, $wpdb->usermeta WHERE {$wpdb->users}.ID = {$wpdb->usermeta}.user_id AND meta_key = '{$blog_prefix}capabilities' ORDER BY {$wpdb->usermeta}.user_id" );
@@ -2823,9 +2822,9 @@ function wp_admin_bar_dashboard_view_site_menu( $wp_admin_bar ) {
 	$user_id = get_current_user_id();
 
 	if ( 0 != $user_id ) {
-		if ( Load::is_admin() )
+		if ( is_admin() )
 			$wp_admin_bar->add_menu( array( 'id' => 'view-site', 'title' => __( 'Visit Site' ), 'href' => home_url() ) );
-		elseif ( Load::is_multisite() )
+		elseif ( is_multisite() )
 			$wp_admin_bar->add_menu( array( 'id' => 'dashboard', 'title' => __( 'Dashboard' ), 'href' => get_dashboard_url( $user_id ) ) );
 		else
 			$wp_admin_bar->add_menu( array( 'id' => 'dashboard', 'title' => __( 'Dashboard' ), 'href' => admin_url() ) );
@@ -3256,18 +3255,18 @@ function image_resize( $file, $max_w, $max_h, $crop = false, $suffix = null, $de
 	_deprecated_function( __FUNCTION__, '3.5.0', 'wp_get_image_editor()' );
 
 	$editor = wp_get_image_editor( $file );
-	if ( Load::is_wp_error( $editor ) )
+	if ( is_wp_error( $editor ) )
 		return $editor;
 	$editor->set_quality( $jpeg_quality );
 
 	$resized = $editor->resize( $max_w, $max_h, $crop );
-	if ( Load::is_wp_error( $resized ) )
+	if ( is_wp_error( $resized ) )
 		return $resized;
 
 	$dest_file = $editor->generate_filename( $suffix, $dest_path );
 	$saved = $editor->save( $dest_file );
 
-	if ( Load::is_wp_error( $saved ) )
+	if ( is_wp_error( $saved ) )
 		return $saved;
 
 	return $dest_file;
@@ -3306,7 +3305,7 @@ function wp_get_single_post( $postid = 0, $mode = OBJECT ) {
 function user_pass_ok($user_login, $user_pass) {
 	_deprecated_function( __FUNCTION__, '3.5.0', 'wp_authenticate()' );
 	$user = wp_authenticate( $user_login, $user_pass );
-	if ( Load::is_wp_error( $user ) )
+	if ( is_wp_error( $user ) )
 		return false;
 
 	return true;
@@ -3452,13 +3451,12 @@ function format_to_post( $content ) {
 /**
  * Formerly used to escape strings before searching the DB. It was poorly documented and never worked as described.
  *
- * @param string $text The text to be escaped.
- *
- * @return string text, safe for inclusion in LIKE query.
- *@see WPDB::esc_like()
- *
  * @since 2.5.0
  * @deprecated 4.0.0 Use wpdb::esc_like()
+ * @see wpdb::esc_like()
+ *
+ * @param string $text The text to be escaped.
+ * @return string text, safe for inclusion in LIKE query.
  */
 function like_escape($text) {
 	_deprecated_function( __FUNCTION__, '4.0.0', 'wpdb::esc_like()' );
@@ -3482,7 +3480,7 @@ function url_is_accessable_via_ssl( $url ) {
 
 	$response = wp_remote_get( set_url_scheme( $url, 'https' ) );
 
-	if ( ! Load::is_wp_error( $response ) ) {
+	if ( !is_wp_error( $response ) ) {
 		$status = wp_remote_retrieve_response_code( $response );
 		if ( 200 == $status || 401 == $status ) {
 			return true;
@@ -3688,7 +3686,7 @@ function wp_get_http( $url, $file_path = false, $red = 1 ) {
 
 	$response = wp_safe_remote_request( $url, $options );
 
-	if ( Load::is_wp_error( $response ) )
+	if ( is_wp_error( $response ) )
 		return false;
 
 	$headers = wp_remote_retrieve_headers( $response );

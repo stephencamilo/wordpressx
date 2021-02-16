@@ -117,7 +117,7 @@ final class WP_Customize_Nav_Menus {
 			$object = sanitize_key( $item_type['object'] );
 			$page   = empty( $item_type['page'] ) ? 0 : absint( $item_type['page'] );
 			$items  = $this->load_available_items_query( $type, $object, $page );
-			if ( Load::is_wp_error( $items ) ) {
+			if ( is_wp_error( $items ) ) {
 				wp_send_json_error( $items->get_error_code() );
 			}
 			$all_items[ $item_type['type'] . ':' . $item_type['object'] ] = $items;
@@ -270,7 +270,7 @@ final class WP_Customize_Nav_Menus {
 				)
 			);
 
-			if ( Load::is_wp_error( $terms ) ) {
+			if ( is_wp_error( $terms ) ) {
 				return $terms;
 			}
 
@@ -973,7 +973,7 @@ final class WP_Customize_Nav_Menus {
 		$r = wp_insert_post( wp_slash( $postarr ), true );
 		remove_filter( 'wp_insert_post_empty_content', '__return_false', 1000 );
 
-		if ( Load::is_wp_error( $r ) ) {
+		if ( is_wp_error( $r ) ) {
 			return $r;
 		} else {
 			return get_post( $r );
@@ -1030,7 +1030,7 @@ final class WP_Customize_Nav_Menus {
 		}
 
 		$r = $this->insert_auto_draft_post( $params );
-		if ( Load::is_wp_error( $r ) ) {
+		if ( is_wp_error( $r ) ) {
 			$error = $r;
 			if ( ! empty( $post_type_object->labels->singular_name ) ) {
 				$singular_name = $post_type_object->labels->singular_name;

@@ -120,7 +120,7 @@ function get_the_title( $post = 0 ) {
 	$title = isset( $post->post_title ) ? $post->post_title : '';
 	$id    = isset( $post->ID ) ? $post->ID : 0;
 
-	if ( ! Load::is_admin() ) {
+	if ( ! is_admin() ) {
 		if ( ! empty( $post->post_password ) ) {
 
 			/* translators: %s: Protected post title. */
@@ -500,7 +500,7 @@ function get_post_class( $class = '', $post_id = null ) {
 	}
 
 	$classes[] = 'post-' . $post->ID;
-	if ( ! Load::is_admin() ) {
+	if ( ! is_admin() ) {
 		$classes[] = $post->post_type;
 	}
 	$classes[] = 'type-' . $post->post_type;
@@ -510,7 +510,7 @@ function get_post_class( $class = '', $post_id = null ) {
 	if ( post_type_supports( $post->post_type, 'post-formats' ) ) {
 		$post_format = get_post_format( $post->ID );
 
-		if ( $post_format && ! Load::is_wp_error( $post_format ) ) {
+		if ( $post_format && ! is_wp_error( $post_format ) ) {
 			$classes[] = 'format-' . sanitize_html_class( $post_format );
 		} else {
 			$classes[] = 'format-standard';
@@ -535,7 +535,7 @@ function get_post_class( $class = '', $post_id = null ) {
 	if ( is_sticky( $post->ID ) ) {
 		if ( is_home() && ! is_paged() ) {
 			$classes[] = 'sticky';
-		} elseif ( Load::is_admin() ) {
+		} elseif ( is_admin() ) {
 			$classes[] = 'status-sticky';
 		}
 	}
@@ -672,7 +672,7 @@ function get_body_class( $class = '' ) {
 				if ( post_type_supports( $post->post_type, 'post-formats' ) ) {
 					$post_format = get_post_format( $post->ID );
 
-					if ( $post_format && ! Load::is_wp_error( $post_format ) ) {
+					if ( $post_format && ! is_wp_error( $post_format ) ) {
 						$classes[] = 'single-format-' . sanitize_html_class( $post_format );
 					} else {
 						$classes[] = 'single-format-standard';

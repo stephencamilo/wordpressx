@@ -1,6 +1,4 @@
 <?php
-
-use Core\WPIncludes\Load;
 /**
  * These functions can be replaced via plugins. If plugins do not redefine these
  * functions, then these will be used instead.
@@ -116,12 +114,11 @@ if ( ! function_exists( 'cache_users' ) ) :
 	/**
 	 * Retrieve info for user lists to prevent multiple queries by get_userdata()
 	 *
-	 * @param array $user_ids User ID numbers list
-	 *
-	 *@global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 * @since 3.0.0
 	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
+	 * @param array $user_ids User ID numbers list
 	 */
 	function cache_users( $user_ids ) {
 		global $wpdb;
@@ -559,7 +556,7 @@ if ( ! function_exists( 'wp_authenticate' ) ) :
 
 		$ignore_codes = array( 'empty_username', 'empty_password' );
 
-		if ( Load::is_wp_error( $user ) && ! in_array( $user->get_error_code(), $ignore_codes, true ) ) {
+		if ( is_wp_error( $user ) && ! in_array( $user->get_error_code(), $ignore_codes, true ) ) {
 			$error = $user;
 
 			/**
@@ -646,7 +643,7 @@ if ( ! function_exists( 'wp_validate_auth_cookie' ) ) :
 		$expiration = $cookie_elements['expiration'];
 
 		// Allow a grace period for POST and Ajax requests.
-		if ( Load::wp_doing_ajax() || 'POST' === $_SERVER['REQUEST_METHOD'] ) {
+		if ( wp_doing_ajax() || 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 			$expired += HOUR_IN_SECONDS;
 		}
 
@@ -802,7 +799,7 @@ if ( ! function_exists( 'wp_parse_auth_cookie' ) ) :
 					$cookie_name = LOGGED_IN_COOKIE;
 					break;
 				default:
-					if ( Load::is_ssl() ) {
+					if ( is_ssl() ) {
 						$cookie_name = SECURE_AUTH_COOKIE;
 						$scheme      = 'secure_auth';
 					} else {
@@ -870,7 +867,7 @@ if ( ! function_exists( 'wp_set_auth_cookie' ) ) :
 		}
 
 		if ( '' === $secure ) {
-			$secure = Load::is_ssl();
+			$secure = is_ssl();
 		}
 
 		// Front-end cookie is secure when the auth cookie is secure and the site's home URL uses HTTPS.
@@ -1046,7 +1043,7 @@ if ( ! function_exists( 'auth_redirect' ) ) :
 	 * @since 1.5.0
 	 */
 	function auth_redirect() {
-		$secure = ( Load::is_ssl() || force_ssl_admin() );
+		$secure = ( is_ssl() || force_ssl_admin() );
 
 		/**
 		 * Filters whether to use a secure authentication redirect.
@@ -1058,7 +1055,7 @@ if ( ! function_exists( 'auth_redirect' ) ) :
 		$secure = apply_filters( 'secure_auth_redirect', $secure );
 
 		// If https is required and request is http, redirect.
-		if ( $secure && ! Load::is_ssl() && false !== strpos( $_SERVER['REQUEST_URI'], 'wp-admin' ) ) {
+		if ( $secure && ! is_ssl() && false !== strpos( $_SERVER['REQUEST_URI'], 'wp-admin' ) ) {
 			if ( 0 === strpos( $_SERVER['REQUEST_URI'], 'http' ) ) {
 				wp_redirect( set_url_scheme( $_SERVER['REQUEST_URI'], 'https' ) );
 				exit;
@@ -1207,7 +1204,7 @@ if ( ! function_exists( 'check_ajax_referer' ) ) :
 		do_action( 'check_ajax_referer', $action, $result );
 
 		if ( $die && false === $result ) {
-			if ( Load::wp_doing_ajax() ) {
+			if ( wp_doing_ajax() ) {
 				wp_die( -1, 403 );
 			} else {
 				die( '-1' );
@@ -1724,16 +1721,15 @@ if ( ! function_exists( 'wp_notify_moderator' ) ) :
 	/**
 	 * Notifies the moderator of the site about a new comment that is awaiting approval.
 	 *
-	 * @param int $comment_id Comment ID.
+	 * @since 1.0.0
 	 *
-	 * @return true Always returns true.
-	 *@since 1.0.0
-	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
+	 * @global wpdb $wpdb WordPress database abstraction object.
 	 *
 	 * Uses the {@see 'notify_moderator'} filter to determine whether the site moderator
 	 * should be notified, overriding the site setting.
 	 *
+	 * @param int $comment_id Comment ID.
+	 * @return true Always returns true.
 	 */
 	function wp_notify_moderator( $comment_id ) {
 		global $wpdb;
@@ -2044,7 +2040,7 @@ if ( ! function_exists( 'wp_new_user_notification' ) ) :
 		}
 
 		$key = get_password_reset_key( $user );
-		if ( Load::is_wp_error( $key ) ) {
+		if ( is_wp_error( $key ) ) {
 			return;
 		}
 
@@ -2559,13 +2555,12 @@ if ( ! function_exists( 'wp_set_password' ) ) :
 	 * application. Leveraging this improperly in a plugin or theme could result in an endless loop
 	 * of password resets if precautions are not taken to ensure it does not execute on every page load.
 	 *
+	 * @since 2.5.0
+	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
 	 * @param string $password The plaintext new user password
 	 * @param int    $user_id  User ID
-	 *
-	 *@since 2.5.0
-	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 */
 	function wp_set_password( $password, $user_id ) {
 		global $wpdb;
@@ -2693,7 +2688,7 @@ if ( ! function_exists( 'get_avatar' ) ) :
 
 		$url = $args['url'];
 
-		if ( ! $url || Load::is_wp_error( $url ) ) {
+		if ( ! $url || is_wp_error( $url ) ) {
 			return false;
 		}
 

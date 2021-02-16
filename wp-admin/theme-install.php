@@ -16,7 +16,7 @@ if ( ! current_user_can( 'install_themes' ) ) {
 	wp_die( __( 'Sorry, you are not allowed to install themes on this site.' ) );
 }
 
-if ( Load::is_multisite() && ! Load::is_network_admin() ) {
+if ( is_multisite() && ! is_network_admin() ) {
 	wp_redirect( network_admin_url( 'theme-install.php' ) );
 	exit;
 }
@@ -24,7 +24,7 @@ if ( Load::is_multisite() && ! Load::is_network_admin() ) {
 $title       = __( 'Add Themes' );
 $parent_file = 'themes.php';
 
-if ( ! Load::is_network_admin() ) {
+if ( ! is_network_admin() ) {
 	$submenu_file = 'themes.php';
 }
 

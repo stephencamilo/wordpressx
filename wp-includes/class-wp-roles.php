@@ -7,8 +7,6 @@
  * @since 4.4.0
  */
 
-use Core\WPIncludes\Load;
-
 /**
  * Core class used to implement a user roles API.
  *
@@ -308,7 +306,7 @@ class WP_Roles {
 	 *
 	 * @since 4.9.0
 	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
+	 * @global wpdb $wpdb WordPress database abstraction object.
 	 *
 	 * @param int $site_id Site ID to initialize roles for. Default is the current site.
 	 */
@@ -318,7 +316,7 @@ class WP_Roles {
 		if ( ! empty( $site_id ) ) {
 			$this->site_id = absint( $site_id );
 		} else {
-			$this->site_id = Load::get_current_blog_id();
+			$this->site_id = get_current_blog_id();
 		}
 
 		$this->role_key = $wpdb->get_blog_prefix( $this->site_id ) . 'user_roles';
@@ -359,7 +357,7 @@ class WP_Roles {
 			return $wp_user_roles;
 		}
 
-		if ( Load::is_multisite() && Load::get_current_blog_id() != $this->site_id ) {
+		if ( is_multisite() && get_current_blog_id() != $this->site_id ) {
 			remove_action( 'switch_blog', 'wp_switch_roles_and_user', 1 );
 
 			$roles = get_blog_option( $this->site_id, $this->role_key, array() );

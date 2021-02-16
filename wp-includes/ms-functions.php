@@ -48,8 +48,8 @@ function get_active_blog_for_user( $user_id ) {
 		return;
 	}
 
-	if ( ! Load::is_multisite() ) {
-		return $blogs[ Load::get_current_blog_id() ];
+	if ( ! is_multisite() ) {
+		return $blogs[ get_current_blog_id() ];
 	}
 
 	$primary_blog = get_user_meta( $user_id, 'primary_blog', true );
@@ -65,7 +65,7 @@ function get_active_blog_for_user( $user_id ) {
 		// TODO: Review this call to add_user_to_blog too - to get here the user must have a role on this blog?
 		$result = add_user_to_blog( $first_blog->userblog_id, $user_id, 'subscriber' );
 
-		if ( ! Load::is_wp_error( $result ) ) {
+		if ( ! is_wp_error( $result ) ) {
 			update_user_meta( $user_id, 'primary_blog', $first_blog->userblog_id );
 			$primary = $first_blog;
 		}
@@ -76,7 +76,7 @@ function get_active_blog_for_user( $user_id ) {
 		$ret   = false;
 		if ( is_array( $blogs ) && count( $blogs ) > 0 ) {
 			foreach ( (array) $blogs as $blog_id => $blog ) {
-				if ( Load::get_current_network_id() != $blog->site_id ) {
+				if ( get_current_network_id() != $blog->site_id ) {
 					continue;
 				}
 				$details = get_site( $blog_id );
@@ -190,7 +190,7 @@ function add_user_to_blog( $blog_id, $user_id, $role ) {
 	if ( true !== $can_add_user ) {
 		restore_current_blog();
 
-		if ( Load::is_wp_error( $can_add_user ) ) {
+		if ( is_wp_error( $can_add_user ) ) {
 			return $can_add_user;
 		}
 
@@ -233,15 +233,14 @@ function add_user_to_blog( $blog_id, $user_id, $role ) {
  * Accepts an optional `$reassign` parameter, if you want to
  * reassign the user's blog posts to another user upon removal.
  *
+ * @since MU (3.0.0)
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int $user_id  ID of the user being removed.
  * @param int $blog_id  Optional. ID of the blog the user is being removed from. Default 0.
  * @param int $reassign Optional. ID of the user to whom to reassign posts. Default 0.
- *
  * @return true|WP_Error True on success or a WP_Error object if the user doesn't exist.
- *@since MU (3.0.0)
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function remove_user_from_blog( $user_id, $blog_id = 0, $reassign = 0 ) {
 	global $wpdb;
@@ -342,14 +341,13 @@ function get_blog_permalink( $blog_id, $post_id ) {
  * subdirectory '/blog1/'. With subdomains like blog1.example.com,
  * $domain is 'blog1.example.com' and $path is '/'.
  *
- * @param string $domain
- * @param string $path   Optional. Not required for subdomain installations.
- *
- * @return int 0 if no blog found, otherwise the ID of the matching blog
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since MU (3.0.0)
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $domain
+ * @param string $path   Optional. Not required for subdomain installations.
+ * @return int 0 if no blog found, otherwise the ID of the matching blog
  */
 function get_blog_id_from_url( $domain, $path = '/' ) {
 	$domain = strtolower( $domain );
@@ -455,9 +453,12 @@ function is_email_address_unsafe( $user_email ) {
  * allows you to process the data in any way you'd like, and unset the relevant errors if
  * necessary.
  *
+ * @since MU (3.0.0)
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param string $user_name  The login name provided by the user.
  * @param string $user_email The email provided by the user.
- *
  * @return array {
  *     The array of user name, email, and the error messages.
  *
@@ -466,10 +467,6 @@ function is_email_address_unsafe( $user_email ) {
  *     @type string   $user_email    User email address.
  *     @type WP_Error $errors        WP_Error object containing any errors found.
  * }
- *@global WPDB $wpdb WordPress database abstraction object.
- *
- * @since MU (3.0.0)
- *
  */
 function wpmu_validate_user_signup( $user_name, $user_email ) {
 	global $wpdb;
@@ -610,10 +607,14 @@ function wpmu_validate_user_signup( $user_name, $user_email ) {
  * Filter {@see 'wpmu_validate_blog_signup'} if you want to modify
  * the way that WordPress validates new site signups.
  *
- * @param string         $blogname The blog name provided by the user. Must be unique.
+ * @since MU (3.0.0)
+ *
+ * @global wpdb   $wpdb   WordPress database abstraction object.
+ * @global string $domain
+ *
+ * @param string         $blogname   The blog name provided by the user. Must be unique.
  * @param string         $blog_title The blog title provided by the user.
  * @param WP_User|string $user       Optional. The user object to check against the new site name.
- *
  * @return array {
  *     Array of domain, path, blog name, blog title, user and error messages.
  *
@@ -624,11 +625,6 @@ function wpmu_validate_user_signup( $user_name, $user_email ) {
  *     @type string|WP_User $user       By default, an empty string. A user object if provided.
  *     @type WP_Error       $errors     WP_Error containing any errors found.
  * }
- *@global WPDB   $wpdb   WordPress database abstraction object.
- * @global string $domain
- *
- * @since MU (3.0.0)
- *
  */
 function wpmu_validate_blog_signup( $blogname, $blog_title, $user = '' ) {
 	global $wpdb, $domain;
@@ -775,17 +771,16 @@ function wpmu_validate_blog_signup( $blogname, $blog_title, $user = '' ) {
 /**
  * Record site signup information for future activation.
  *
- * @param string $domain The requested domain.
+ * @since MU (3.0.0)
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $domain     The requested domain.
  * @param string $path       The requested path.
  * @param string $title      The requested site title.
  * @param string $user       The user's requested login name.
  * @param string $user_email The user's email address.
  * @param array  $meta       Optional. Signup meta data. By default, contains the requested privacy setting and lang_id.
- *
- *@since MU (3.0.0)
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function wpmu_signup_blog( $domain, $path, $title, $user, $user_email, $meta = array() ) {
 	global $wpdb;
@@ -845,14 +840,13 @@ function wpmu_signup_blog( $domain, $path, $title, $user, $user_email, $meta = a
  * This function is used when user registration is open but
  * new site registration is not.
  *
- * @param string $user The user's requested login name.
- * @param string $user_email The user's email address.
- * @param array  $meta       Optional. Signup meta data. Default empty array.
- *
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since MU (3.0.0)
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $user       The user's requested login name.
+ * @param string $user_email The user's email address.
+ * @param array  $meta       Optional. Signup meta data. Default empty array.
  */
 function wpmu_signup_user( $user, $user_email, $meta = array() ) {
 	global $wpdb;
@@ -947,7 +941,7 @@ function wpmu_signup_blog_notification( $domain, $path, $title, $user_login, $us
 	}
 
 	// Send email with activation link.
-	if ( ! is_subdomain_install() || Load::get_current_network_id() != 1 ) {
+	if ( ! is_subdomain_install() || get_current_network_id() != 1 ) {
 		$activate_url = network_site_url( "wp-activate.php?key=$key" );
 	} else {
 		$activate_url = "http://{$domain}{$path}wp-activate.php?key=$key"; // @todo Use *_url() API.
@@ -1158,13 +1152,12 @@ function wpmu_signup_user_notification( $user_login, $user_email, $key, $meta = 
  * those actions are not called when users and sites are created
  * by a Super Admin).
  *
+ * @since MU (3.0.0)
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param string $key The activation key provided to the user.
- *
  * @return array|WP_Error An array containing information about the activated user and/or blog
- *@since MU (3.0.0)
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function wpmu_activate_signup( $key ) {
 	global $wpdb;
@@ -1232,10 +1225,10 @@ function wpmu_activate_signup( $key ) {
 		);
 	}
 
-	$blog_id = wpmu_create_blog( $signup->domain, $signup->path, $signup->title, $user_id, $meta, Load::get_current_network_id() );
+	$blog_id = wpmu_create_blog( $signup->domain, $signup->path, $signup->title, $user_id, $meta, get_current_network_id() );
 
 	// TODO: What to do if we create a user but cannot create a blog?
-	if ( Load::is_wp_error( $blog_id ) ) {
+	if ( is_wp_error( $blog_id ) ) {
 		/*
 		 * If blog is taken, that means a previous attempt to activate this blog
 		 * failed in between creating the blog and setting the activation flag.
@@ -1320,7 +1313,7 @@ function wpmu_create_user( $user_name, $password, $email ) {
 	$user_name = preg_replace( '/\s+/', '', sanitize_user( $user_name, true ) );
 
 	$user_id = wp_create_user( $user_name, $password, $email );
-	if ( Load::is_wp_error( $user_id ) ) {
+	if ( is_wp_error( $user_id ) ) {
 		return false;
 	}
 
@@ -1380,8 +1373,8 @@ function wpmu_create_blog( $domain, $path, $title, $user_id, $options = array(),
 		return new WP_Error( 'blog_taken', __( 'Sorry, that site already exists!' ) );
 	}
 
-	if ( ! Load::wp_installing() ) {
-		Load::wp_installing( true );
+	if ( ! wp_installing() ) {
+		wp_installing( true );
 	}
 
 	$allowed_data_fields = array( 'public', 'archived', 'mature', 'spam', 'deleted', 'lang_id' );
@@ -1404,7 +1397,7 @@ function wpmu_create_blog( $domain, $path, $title, $user_id, $options = array(),
 
 	$blog_id = wp_insert_site( array_merge( $site_data, $site_initialization_data ) );
 
-	if ( Load::is_wp_error( $blog_id ) ) {
+	if ( is_wp_error( $blog_id ) ) {
 		return $blog_id;
 	}
 
@@ -1933,13 +1926,12 @@ function get_current_site() {
  * Walks through each of a user's blogs to find the post with
  * the most recent post_date_gmt.
  *
+ * @since MU (3.0.0)
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
  * @param int $user_id
- *
  * @return array Contains the blog_id, post_id, post_date_gmt, and post_gmt_ts
- *@since MU (3.0.0)
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  */
 function get_most_recent_post_of_user( $user_id ) {
 	global $wpdb;
@@ -2015,12 +2007,11 @@ function check_upload_mimes( $mimes ) {
  * with get_site(). This function is called when posts are published
  * or unpublished to make sure the count stays current.
  *
- * @param string $deprecated Not used.
- *
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since MU (3.0.0)
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $deprecated Not used.
  */
 function update_posts_count( $deprecated = '' ) {
 	global $wpdb;
@@ -2030,14 +2021,13 @@ function update_posts_count( $deprecated = '' ) {
 /**
  * Logs the user email, IP, and registration date of a new site.
  *
- * @param WP_Site|int $blog_id The new site's object or ID.
- * @param int|array   $user_id User ID, or array of arguments including 'user_id'.
- *
- *@global WPDB $wpdb WordPress database abstraction object.
- *
  * @since MU (3.0.0)
  * @since 5.1.0 Parameters now support input from the {@see 'wp_initialize_site'} action.
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param WP_Site|int $blog_id The new site's object or ID.
+ * @param int|array   $user_id User ID, or array of arguments including 'user_id'.
  */
 function wpmu_log_new_registrations( $blog_id, $user_id ) {
 	global $wpdb;
@@ -2067,16 +2057,15 @@ function wpmu_log_new_registrations( $blog_id, $user_id ) {
 /**
  * Maintains a canonical list of terms by syncing terms created for each blog with the global terms table.
  *
- * @param int    $term_id    An ID for a term on the current blog.
- * @param string $deprecated Not used.
- *
- * @return int An ID from the global terms table mapped from $term_id.
- *@since 3.0.0
+ * @since 3.0.0
  *
  * @see term_id_filter
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  *
+ * @param int    $term_id    An ID for a term on the current blog.
+ * @param string $deprecated Not used.
+ * @return int An ID from the global terms table mapped from $term_id.
  */
 function global_terms( $term_id, $deprecated = '' ) {
 	global $wpdb;
@@ -2282,7 +2271,7 @@ function maybe_add_existing_user_to_blog() {
 		delete_option( 'new_user_' . $key );
 	}
 
-	if ( empty( $details ) || Load::is_wp_error( add_existing_user_to_blog( $details ) ) ) {
+	if ( empty( $details ) || is_wp_error( add_existing_user_to_blog( $details ) ) ) {
 		wp_die(
 			sprintf(
 				/* translators: %s: Home URL. */
@@ -2320,7 +2309,7 @@ function maybe_add_existing_user_to_blog() {
  */
 function add_existing_user_to_blog( $details = false ) {
 	if ( is_array( $details ) ) {
-		$blog_id = Load::get_current_blog_id();
+		$blog_id = get_current_blog_id();
 		$result  = add_user_to_blog( $blog_id, $details['user_id'], $details['role'] );
 
 		/**
@@ -2360,7 +2349,7 @@ function add_new_user_to_blog( $user_id, $password, $meta ) {
 
 		$result = add_user_to_blog( $blog_id, $user_id, $role );
 
-		if ( ! Load::is_wp_error( $result ) ) {
+		if ( ! is_wp_error( $result ) ) {
 			update_user_meta( $user_id, 'primary_blog', $blog_id );
 		}
 	}
@@ -2409,7 +2398,7 @@ function is_user_spammy( $user = null ) {
  * @param int $value     The new public value
  */
 function update_blog_public( $old_value, $value ) {
-	update_blog_status( Load::get_current_blog_id(), 'public', (int) $value );
+	update_blog_status( get_current_blog_id(), 'public', (int) $value );
 }
 
 /**
@@ -2491,7 +2480,7 @@ function filter_SSL( $url ) {  // phpcs:ignore WordPress.NamingConventions.Valid
 		return get_bloginfo( 'url' ); // Return home blog URL with proper scheme.
 	}
 
-	if ( force_ssl_content() && Load::is_ssl() ) {
+	if ( force_ssl_content() && is_ssl() ) {
 		$url = set_url_scheme( $url, 'https' );
 	}
 
@@ -2508,7 +2497,7 @@ function wp_schedule_update_network_counts() {
 		return;
 	}
 
-	if ( ! wp_next_scheduled( 'update_network_counts' ) && ! Load::wp_installing() ) {
+	if ( ! wp_next_scheduled( 'update_network_counts' ) && ! wp_installing() ) {
 		wp_schedule_event( time(), 'twicedaily', 'update_network_counts' );
 	}
 }
@@ -2590,7 +2579,7 @@ function wp_maybe_update_network_user_counts( $network_id = null ) {
 function wp_update_network_site_counts( $network_id = null ) {
 	$network_id = (int) $network_id;
 	if ( ! $network_id ) {
-		$network_id = Load::get_current_network_id();
+		$network_id = get_current_network_id();
 	}
 
 	$count = get_sites(
@@ -2610,13 +2599,12 @@ function wp_update_network_site_counts( $network_id = null ) {
 /**
  * Update the network-wide user count.
  *
- * @param int|null $network_id ID of the network. Default is the current network.
- *
- *@since 4.8.0 The `$network_id` parameter has been added.
- *
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 3.7.0
+ * @since 4.8.0 The `$network_id` parameter has been added.
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param int|null $network_id ID of the network. Default is the current network.
  */
 function wp_update_network_user_counts( $network_id = null ) {
 	global $wpdb;
@@ -2751,7 +2739,7 @@ function upload_size_limit_filter( $size ) {
 function wp_is_large_network( $using = 'sites', $network_id = null ) {
 	$network_id = (int) $network_id;
 	if ( ! $network_id ) {
-		$network_id = Load::get_current_network_id();
+		$network_id = get_current_network_id();
 	}
 
 	if ( 'users' === $using ) {

@@ -1,6 +1,4 @@
 <?php
-
-use Core\WPIncludes\Load;
 /**
  * WordPress Administration Scheme API
  *
@@ -13,8 +11,8 @@ use Core\WPIncludes\Load;
 /**
  * Declare these as global in case schema.php is included from a function.
  *
- * @global WPDB $wpdb WordPress database abstraction object.
- * @global array $wp_queries
+ * @global wpdb   $wpdb            WordPress database abstraction object.
+ * @global array  $wp_queries
  * @global string $charset_collate
  */
 global $wpdb, $wp_queries, $charset_collate;
@@ -27,14 +25,13 @@ $charset_collate = $wpdb->get_charset_collate();
 /**
  * Retrieve the SQL for creating database tables.
  *
- * @param string $scope Optional. The tables for which to retrieve SQL. Can be all, global, ms_global, or blog tables. Defaults to all.
- * @param int $blog_id Optional. The site ID for which to retrieve SQL. Default is the current site ID.
- *
- * @return string The SQL needed to create the requested tables.
- * @global WPDB $wpdb WordPress database abstraction object.
- *
  * @since 3.3.0
  *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $scope   Optional. The tables for which to retrieve SQL. Can be all, global, ms_global, or blog tables. Defaults to all.
+ * @param int    $blog_id Optional. The site ID for which to retrieve SQL. Default is the current site ID.
+ * @return string The SQL needed to create the requested tables.
  */
 function wp_get_db_schema( $scope = 'all', $blog_id = null ) {
 	global $wpdb;
@@ -46,7 +43,7 @@ function wp_get_db_schema( $scope = 'all', $blog_id = null ) {
 	}
 
 	// Engage multisite if in the middle of turning it on from network.php.
-	$is_multisite = Load::is_multisite() || ( defined( 'WP_INSTALLING_NETWORK' ) && WP_INSTALLING_NETWORK );
+	$is_multisite = is_multisite() || ( defined( 'WP_INSTALLING_NETWORK' ) && WP_INSTALLING_NETWORK );
 
 	/*
 	 * Indexes have a maximum size of 767 bytes. Historically, we haven't need to be concerned about that.
@@ -352,15 +349,14 @@ $wp_queries = wp_get_db_schema( 'all' );
 /**
  * Create WordPress options and set the default values.
  *
- * @param array $options Optional. Custom option $key => $value pairs to use. Default empty array.
- *
+ * @since 1.5.0
  * @since 5.1.0 The $options parameter has been added.
  *
- * @global WPDB $wpdb WordPress database abstraction object.
- * @global int $wp_db_version WordPress database version.
- * @global int $wp_current_db_version The old (current) database version.
+ * @global wpdb $wpdb                  WordPress database abstraction object.
+ * @global int  $wp_db_version         WordPress database version.
+ * @global int  $wp_current_db_version The old (current) database version.
  *
- * @since 1.5.0
+ * @param array $options Optional. Custom option $key => $value pairs to use. Default empty array.
  */
 function populate_options( array $options = array() ) {
 	global $wpdb, $wp_db_version, $wp_current_db_version;
@@ -398,7 +394,7 @@ function populate_options( array $options = array() ) {
 	if ( is_numeric( $offset_or_tz ) ) {
 		$gmt_offset = $offset_or_tz;
 	} elseif ( $offset_or_tz && in_array( $offset_or_tz, timezone_identifiers_list(), true ) ) {
-		$timezone_string = $offset_or_tz;
+			$timezone_string = $offset_or_tz;
 	}
 
 	$defaults = array(
@@ -549,13 +545,13 @@ function populate_options( array $options = array() ) {
 	);
 
 	// 3.3.0
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		$defaults['initial_db_version'] = ! empty( $wp_current_db_version ) && $wp_current_db_version < $wp_db_version
 			? $wp_current_db_version : $wp_db_version;
 	}
 
 	// 3.0.0 multisite.
-	if ( Load::is_multisite() ) {
+	if ( is_multisite() ) {
 		/* translators: %s: Network title. */
 		$defaults['blogdescription']     = sprintf( __( 'Just another %s site' ), get_network()->site_name );
 		$defaults['permalink_structure'] = '/%year%/%monthnum%/%day%/%postname%/';
@@ -958,22 +954,21 @@ endif;
 /**
  * Populate network settings.
  *
- * @param int $network_id ID of network to populate.
- * @param string $domain The domain name for the network (eg. "example.com").
- * @param string $email Email address for the network administrator.
- * @param string $site_name The name of the network.
- * @param string $path Optional. The path to append to the network's domain name. Default '/'.
- * @param bool $subdomain_install Optional. Whether the network is a subdomain installation or a subdirectory installation.
- *                                  Default false, meaning the network is a subdirectory installation.
- *
- * @return bool|WP_Error True on success, or WP_Error on warning (with the installation otherwise successful,
- *                       so the error code must be checked) or failure.
  * @since 3.0.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
- * @global object $current_site
- * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
+ * @global wpdb       $wpdb         WordPress database abstraction object.
+ * @global object     $current_site
+ * @global WP_Rewrite $wp_rewrite   WordPress rewrite component.
  *
+ * @param int    $network_id        ID of network to populate.
+ * @param string $domain            The domain name for the network (eg. "example.com").
+ * @param string $email             Email address for the network administrator.
+ * @param string $site_name         The name of the network.
+ * @param string $path              Optional. The path to append to the network's domain name. Default '/'.
+ * @param bool   $subdomain_install Optional. Whether the network is a subdomain installation or a subdirectory installation.
+ *                                  Default false, meaning the network is a subdirectory installation.
+ * @return bool|WP_Error True on success, or WP_Error on warning (with the installation otherwise successful,
+ *                       so the error code must be checked) or failure.
  */
 function populate_network( $network_id = 1, $domain = '', $email = '', $site_name = '', $path = '/', $subdomain_install = false ) {
 	global $wpdb, $current_site, $wp_rewrite;
@@ -988,7 +983,7 @@ function populate_network( $network_id = 1, $domain = '', $email = '', $site_nam
 
 	// Check for network collision.
 	$network_exists = false;
-	if ( Load::is_multisite() ) {
+	if ( is_multisite() ) {
 		if ( get_network( (int) $network_id ) ) {
 			$errors->add( 'siteid_exists', __( 'The network already exists.' ) );
 		}
@@ -1044,7 +1039,7 @@ function populate_network( $network_id = 1, $domain = '', $email = '', $site_nam
 	 * these steps since the main site of the new network has not yet been
 	 * created.
 	 */
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		$current_site            = new stdClass;
 		$current_site->domain    = $domain;
 		$current_site->path      = $path;
@@ -1085,10 +1080,10 @@ function populate_network( $network_id = 1, $domain = '', $email = '', $site_nam
 				'httpversion' => '1.1',
 			)
 		);
-		if ( Load::is_wp_error( $page ) ) {
+		if ( is_wp_error( $page ) ) {
 			$errstr = $page->get_error_message();
 		} elseif ( 200 == wp_remote_retrieve_response_code( $page ) ) {
-			$vhost_ok = true;
+				$vhost_ok = true;
 		}
 
 		if ( ! $vhost_ok ) {
@@ -1096,9 +1091,9 @@ function populate_network( $network_id = 1, $domain = '', $email = '', $site_nam
 
 			$msg .= '<p>' . sprintf(
 				/* translators: %s: Host name. */
-					__( 'The installer attempted to contact a random hostname (%s) on your domain.' ),
-					'<code>' . $hostname . '</code>'
-				);
+				__( 'The installer attempted to contact a random hostname (%s) on your domain.' ),
+				'<code>' . $hostname . '</code>'
+			);
 			if ( ! empty( $errstr ) ) {
 				/* translators: %s: Error message. */
 				$msg .= ' ' . sprintf( __( 'This resulted in an error message: %s' ), '<code>' . $errstr . '</code>' );
@@ -1107,9 +1102,9 @@ function populate_network( $network_id = 1, $domain = '', $email = '', $site_nam
 
 			$msg .= '<p>' . sprintf(
 				/* translators: %s: Asterisk symbol (*). */
-					__( 'To use a subdomain configuration, you must have a wildcard entry in your DNS. This usually means adding a %s hostname record pointing at your web server in your DNS configuration tool.' ),
-					'<code>*</code>'
-				) . '</p>';
+				__( 'To use a subdomain configuration, you must have a wildcard entry in your DNS. This usually means adding a %s hostname record pointing at your web server in your DNS configuration tool.' ),
+				'<code>*</code>'
+			) . '</p>';
 
 			$msg .= '<p>' . __( 'You can still use your site but any subdomain you create may not be accessible. If you know your DNS is correct, ignore this message.' ) . '</p>';
 
@@ -1123,14 +1118,13 @@ function populate_network( $network_id = 1, $domain = '', $email = '', $site_nam
 /**
  * Creates WordPress network meta and sets the default values.
  *
- * @param int $network_id Network ID to populate meta for.
- * @param array $meta Optional. Custom meta $key => $value pairs to use. Default empty array.
- *
- * @global int $wp_db_version WordPress database version.
- *
  * @since 5.1.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb          WordPress database abstraction object.
+ * @global int  $wp_db_version WordPress database version.
+ *
+ * @param int   $network_id Network ID to populate meta for.
+ * @param array $meta       Optional. Custom meta $key => $value pairs to use. Default empty array.
  */
 function populate_network_meta( $network_id, array $meta = array() ) {
 	global $wpdb, $wp_db_version;
@@ -1178,7 +1172,7 @@ function populate_network_meta( $network_id, array $meta = array() ) {
 
 	wp_cache_delete( 'networks_have_paths', 'site-options' );
 
-	if ( ! Load::is_multisite() ) {
+	if ( ! is_multisite() ) {
 		$site_admins = array( $site_user->user_login );
 		$users       = get_users(
 			array(
@@ -1257,16 +1251,7 @@ We hope you enjoy your new site. Thanks!
 		'fileupload_maxk'             => 1500,
 		'site_admins'                 => $site_admins,
 		'allowedthemes'               => $allowed_themes,
-		'illegal_names'               => array(
-			'www',
-			'web',
-			'root',
-			'admin',
-			'main',
-			'invite',
-			'administrator',
-			'files'
-		),
+		'illegal_names'               => array( 'www', 'web', 'root', 'admin', 'main', 'invite', 'administrator', 'files' ),
 		'wpmu_upgrade_site'           => $wp_db_version,
 		'welcome_email'               => $welcome_email,
 		/* translators: %s: Site link. */
@@ -1274,10 +1259,10 @@ We hope you enjoy your new site. Thanks!
 		// @todo - Network admins should have a method of editing the network siteurl (used for cookie hash).
 		'siteurl'                     => get_option( 'siteurl' ) . '/',
 		'add_new_users'               => '0',
-		'upload_space_check_disabled' => Load::is_multisite() ? get_site_option( 'upload_space_check_disabled' ) : '1',
+		'upload_space_check_disabled' => is_multisite() ? get_site_option( 'upload_space_check_disabled' ) : '1',
 		'subdomain_install'           => $subdomain_install,
 		'global_terms_enabled'        => global_terms_enabled() ? '1' : '0',
-		'ms_files_rewriting'          => Load::is_multisite() ? get_site_option( 'ms_files_rewriting' ) : '0',
+		'ms_files_rewriting'          => is_multisite() ? get_site_option( 'ms_files_rewriting' ) : '0',
 		'initial_db_version'          => get_option( 'initial_db_version' ),
 		'active_sitewide_plugins'     => array(),
 		'WPLANG'                      => get_locale(),
@@ -1291,11 +1276,10 @@ We hope you enjoy your new site. Thanks!
 	/**
 	 * Filters meta for a network on creation.
 	 *
-	 * @param array $sitemeta Associative array of network meta keys and values to be inserted.
-	 * @param int $network_id ID of network to populate.
-	 *
 	 * @since 3.7.0
 	 *
+	 * @param array $sitemeta   Associative array of network meta keys and values to be inserted.
+	 * @param int   $network_id ID of network to populate.
 	 */
 	$sitemeta = apply_filters( 'populate_network_meta', $sitemeta, $network_id );
 
@@ -1315,13 +1299,12 @@ We hope you enjoy your new site. Thanks!
 /**
  * Creates WordPress site meta and sets the default values.
  *
- * @param int $site_id Site ID to populate meta for.
- * @param array $meta Optional. Custom meta $key => $value pairs to use. Default empty array.
- *
  * @since 5.1.0
  *
- * @global WPDB $wpdb WordPress database abstraction object.
+ * @global wpdb $wpdb WordPress database abstraction object.
  *
+ * @param int   $site_id Site ID to populate meta for.
+ * @param array $meta    Optional. Custom meta $key => $value pairs to use. Default empty array.
  */
 function populate_site_meta( $site_id, array $meta = array() ) {
 	global $wpdb;
@@ -1339,11 +1322,10 @@ function populate_site_meta( $site_id, array $meta = array() ) {
 	/**
 	 * Filters meta for a site on creation.
 	 *
-	 * @param array $meta Associative array of site meta keys and values to be inserted.
-	 * @param int $site_id ID of site to populate.
-	 *
 	 * @since 5.2.0
 	 *
+	 * @param array $meta    Associative array of site meta keys and values to be inserted.
+	 * @param int   $site_id ID of site to populate.
 	 */
 	$site_meta = apply_filters( 'populate_site_meta', $meta, $site_id );
 

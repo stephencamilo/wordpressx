@@ -325,7 +325,7 @@ class Language_Pack_Upgrader extends WP_Upgrader {
 	public function check_package( $source, $remote_source ) {
 		global $wp_filesystem;
 
-		if ( Load::is_wp_error( $source ) ) {
+		if ( is_wp_error( $source ) ) {
 			return $source;
 		}
 

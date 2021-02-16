@@ -174,7 +174,7 @@ function wp_login($username, $password, $deprecated = '') {
 
 	$user = wp_authenticate($username, $password);
 
-	if ( ! Load::is_wp_error( $user ) )
+	if ( ! is_wp_error($user) )
 		return true;
 
 	$error = $user->get_error_message();

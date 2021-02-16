@@ -1,5 +1,4 @@
 <?php
-
 /**
  * WP_Importer base class
  */
@@ -7,18 +6,16 @@ class WP_Importer {
 	/**
 	 * Class Constructor
 	 */
-	public function __construct() {
-	}
+	public function __construct() {}
 
 	/**
 	 * Returns array with imported permalinks from WordPress database
 	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
 	 * @param string $importer_name
 	 * @param string $bid
-	 *
 	 * @return array
-	 * @global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 */
 	public function get_imported_posts( $importer_name, $bid ) {
 		global $wpdb;
@@ -54,12 +51,11 @@ class WP_Importer {
 	/**
 	 * Return count of imported permalinks from WordPress database
 	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
 	 * @param string $importer_name
 	 * @param string $bid
-	 *
 	 * @return int
-	 * @global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 */
 	public function count_imported_posts( $importer_name, $bid ) {
 		global $wpdb;
@@ -85,11 +81,10 @@ class WP_Importer {
 	/**
 	 * Set array with imported comments from WordPress database
 	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
 	 * @param string $bid
-	 *
 	 * @return array
-	 * @global WPDB $wpdb WordPress database abstraction object.
-	 *
 	 */
 	public function get_imported_comments( $bid ) {
 		global $wpdb;
@@ -111,7 +106,7 @@ class WP_Importer {
 				foreach ( $results as $r ) {
 					// Explode comment_agent key.
 					list ( $ca_bid, $source_comment_id ) = explode( '-', $r->comment_agent );
-					$source_comment_id = (int) $source_comment_id;
+					$source_comment_id                   = (int) $source_comment_id;
 
 					// Check if this comment came from this blog.
 					if ( $bid == $ca_bid ) {
@@ -129,7 +124,6 @@ class WP_Importer {
 
 	/**
 	 * @param int $blog_id
-	 *
 	 * @return int|void
 	 */
 	public function set_blog( $blog_id ) {
@@ -160,8 +154,8 @@ class WP_Importer {
 			$blog_id = (int) $blog->blog_id;
 		}
 
-		if ( function_exists( array( "\Load", "is_multisite" ) ) ) {
-			if ( Load::is_multisite() ) {
+		if ( function_exists( 'is_multisite' ) ) {
+			if ( is_multisite() ) {
 				switch_to_blog( $blog_id );
 			}
 		}
@@ -171,7 +165,6 @@ class WP_Importer {
 
 	/**
 	 * @param int $user_id
-	 *
 	 * @return int|void
 	 */
 	public function set_user( $user_id ) {
@@ -194,7 +187,6 @@ class WP_Importer {
 	 *
 	 * @param string $a
 	 * @param string $b
-	 *
 	 * @return int
 	 */
 	public function cmpr_strlen( $a, $b ) {
@@ -207,8 +199,7 @@ class WP_Importer {
 	 * @param string $url
 	 * @param string $username
 	 * @param string $password
-	 * @param bool $head
-	 *
+	 * @param bool   $head
 	 * @return array
 	 */
 	public function get_page( $url, $username = '', $password = '', $head = false ) {
@@ -233,7 +224,6 @@ class WP_Importer {
 	 * Bump up the request timeout for http requests
 	 *
 	 * @param int $val
-	 *
 	 * @return int
 	 */
 	public function bump_request_timeout( $val ) {
@@ -259,7 +249,6 @@ class WP_Importer {
 	 * Replace newlines, tabs, and multiple spaces with a single space
 	 *
 	 * @param string $string
-	 *
 	 * @return string
 	 */
 	public function min_whitespace( $string ) {
@@ -271,7 +260,7 @@ class WP_Importer {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @global WPDB $wpdb WordPress database abstraction object.
+	 * @global wpdb  $wpdb       WordPress database abstraction object.
 	 * @global int[] $wp_actions
 	 */
 	public function stop_the_insanity() {
@@ -288,8 +277,7 @@ class WP_Importer {
  * Exits when a required param is not set.
  *
  * @param string $param
- * @param bool $required
- *
+ * @param bool   $required
  * @return mixed
  */
 function get_cli_args( $param, $required = false ) {
@@ -305,7 +293,7 @@ function get_cli_args( $param, $required = false ) {
 
 	$il = count( $args );
 
-	for ( $i = 1, $il; $i < $il; $i ++ ) {
+	for ( $i = 1, $il; $i < $il; $i++ ) {
 		if ( (bool) preg_match( '/^--(.+)/', $args[ $i ], $match ) ) {
 			$parts = explode( '=', $match[1] );
 			$key   = preg_replace( '/[^a-z0-9]+/', '', $parts[0] );
@@ -318,7 +306,7 @@ function get_cli_args( $param, $required = false ) {
 
 			$last_arg = $key;
 		} elseif ( (bool) preg_match( '/^-([a-zA-Z0-9]+)/', $args[ $i ], $match ) ) {
-			for ( $j = 0, $jl = strlen( $match[1] ); $j < $jl; $j ++ ) {
+			for ( $j = 0, $jl = strlen( $match[1] ); $j < $jl; $j++ ) {
 				$key         = $match[1][ $j ];
 				$out[ $key ] = true;
 			}

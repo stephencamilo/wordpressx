@@ -105,7 +105,7 @@ add_filter( 'get_the_archive_title', 'twentynineteen_get_the_archive_title' );
  */
 function twentynineteen_post_thumbnail_sizes_attr( $attr ) {
 
-	if ( Load::is_admin() ) {
+	if ( is_admin() ) {
 		return $attr;
 	}
 

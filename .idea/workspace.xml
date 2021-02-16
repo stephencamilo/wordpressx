@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4f7dfee6-17b1-416d-b8ac-0c92c11b275a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.htaccess" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/SetupConfig.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/WPIncludes/Load.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/WPIncludes/WPDB.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/wp-settings.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/debug.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-activate.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-activate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/about.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/about.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/admin-header.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/admin-header.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/admin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/async-upload.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/async-upload.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/authorize-application.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/authorize-application.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/comment.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/comment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/about-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/about-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/about.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/about.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/admin-menu-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/admin-menu-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/admin-menu.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/admin-menu.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/code-editor-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/code-editor-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/code-editor.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/code-editor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/color-picker-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/color-picker-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/color-picker.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/color-picker.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/_admin.scss" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/_admin.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/_mixins.scss" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/_mixins.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/_variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/_variables.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/blue/colors-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/blue/colors-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/blue/colors.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/blue/colors.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/coffee/colors-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/coffee/colors-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/coffee/colors.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/coffee/colors.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/ectoplasm/colors-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/ectoplasm/colors-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/ectoplasm/colors.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/ectoplasm/colors.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/light/colors-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/light/colors-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/light/colors.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/light/colors.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/light/colors.scss" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/light/colors.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/midnight/colors-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/midnight/colors-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/midnight/colors.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/midnight/colors.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/modern/colors-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/modern/colors-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/modern/colors.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/modern/colors.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/ocean/colors-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/ocean/colors-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/ocean/colors.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/ocean/colors.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/sunrise/colors-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/sunrise/colors-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/sunrise/colors.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/sunrise/colors.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/colors/sunrise/colors.scss" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/colors/sunrise/colors.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/common-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/common-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/common.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/common.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/customize-controls-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/customize-controls-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/customize-controls.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/customize-controls.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/customize-nav-menus-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/customize-nav-menus-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/customize-nav-menus.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/customize-nav-menus.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/customize-widgets-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/customize-widgets-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/customize-widgets.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/customize-widgets.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/dashboard-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/dashboard-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/dashboard.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/deprecated-media-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/deprecated-media-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/deprecated-media.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/deprecated-media.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/edit-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/edit-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/edit.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/edit.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/farbtastic-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/farbtastic-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/farbtastic.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/farbtastic.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/forms-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/forms-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/forms.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/forms.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/install-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/install-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/install.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/install.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/l10n-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/l10n-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/l10n.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/l10n.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/list-tables-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/list-tables-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/list-tables.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/list-tables.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/login-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/login-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/login.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/media-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/media-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/media.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/media.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/nav-menus-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/nav-menus-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/nav-menus.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/nav-menus.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/revisions-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/revisions-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/revisions.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/revisions.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/site-health-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/site-health-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/site-health.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/site-health.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/site-icon-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/site-icon-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/site-icon.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/site-icon.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/themes-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/themes-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/themes.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/themes.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/widgets-rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/widgets-rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/css/widgets.css" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/css/widgets.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/edit-form-advanced.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/edit-form-advanced.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/edit-form-blocks.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/edit-form-blocks.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/edit-tags.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/edit-tags.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/edit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/export.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/export.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/images/wordpress-logo-white.svg" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/images/wordpress-logo-white.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/images/wordpress-logo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/images/wordpress-logo.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/import.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/import.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/admin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/ajax-actions.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/ajax-actions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/bookmark.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/bookmark.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-automatic-upgrader-skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-automatic-upgrader-skin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-bulk-upgrader-skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-bulk-upgrader-skin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-core-upgrader.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-core-upgrader.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-custom-image-header.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-custom-image-header.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-ftp-pure.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-ftp-pure.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-ftp-sockets.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-ftp-sockets.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-ftp.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-ftp.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-language-pack-upgrader.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-language-pack-upgrader.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-pclzip.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-pclzip.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-plugin-installer-skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-plugin-installer-skin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-plugin-upgrader-skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-plugin-upgrader-skin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-plugin-upgrader.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-plugin-upgrader.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-theme-installer-skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-theme-installer-skin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-theme-upgrader-skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-theme-upgrader-skin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-theme-upgrader.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-theme-upgrader.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-walker-nav-menu-edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-walker-nav-menu-edit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-ajax-upgrader-skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-ajax-upgrader-skin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-automatic-updater.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-automatic-updater.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-comments-list-table.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-comments-list-table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-community-events.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-community-events.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-debug-data.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-debug-data.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-importer.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-importer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-links-list-table.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-links-list-table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-list-table.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-list-table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-ms-sites-list-table.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-ms-sites-list-table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-plugin-install-list-table.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-plugin-install-list-table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-plugins-list-table.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-plugins-list-table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-posts-list-table.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-posts-list-table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-privacy-requests-table.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-privacy-requests-table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-screen.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-screen.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-site-health.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-site-health.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-site-icon.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-site-icon.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-terms-list-table.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-terms-list-table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-theme-install-list-table.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-theme-install-list-table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-themes-list-table.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-themes-list-table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-upgrader-skin.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-upgrader-skin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-upgrader.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-upgrader.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/class-wp-users-list-table.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/class-wp-users-list-table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/comment.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/comment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/credits.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/credits.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/dashboard.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/dashboard.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/deprecated.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/deprecated.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/edit-tag-messages.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/edit-tag-messages.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/export.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/export.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/file.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/file.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/image-edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/image-edit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/image.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/image.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/import.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/import.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/list-table.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/list-table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/media.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/media.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/meta-boxes.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/meta-boxes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/misc.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/misc.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/ms-deprecated.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/ms-deprecated.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/ms.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/ms.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/nav-menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/nav-menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/network.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/network.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/noop.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/noop.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/options.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/options.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/plugin-install.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/plugin-install.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/plugin.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/plugin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/post.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/post.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/privacy-tools.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/privacy-tools.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/revision.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/revision.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/schema.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/schema.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/screen.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/screen.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/taxonomy.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/taxonomy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/template.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/theme-install.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/theme-install.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/theme.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/theme.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/translation-install.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/translation-install.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/update-core.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/update-core.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/update.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/update.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/upgrade.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/upgrade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/user.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/includes/widgets.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/includes/widgets.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/install-helper.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/install-helper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/install.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/install.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/accordion.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/accordion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/application-passwords.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/application-passwords.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/auth-app.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/auth-app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/code-editor.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/code-editor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/color-picker.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/color-picker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/comment.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/comment.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/common.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/common.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/custom-background.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/custom-background.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/custom-header.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/custom-header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/customize-controls.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/customize-controls.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/customize-nav-menus.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/customize-nav-menus.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/customize-widgets.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/customize-widgets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/edit-comments.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/edit-comments.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/editor-expand.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/editor-expand.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/editor.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/editor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/farbtastic.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/farbtastic.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/gallery.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/gallery.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/image-edit.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/image-edit.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/inline-edit-post.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/inline-edit-post.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/inline-edit-tax.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/inline-edit-tax.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/language-chooser.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/language-chooser.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/link.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/link.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/media-gallery.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/media-gallery.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/media-upload.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/media-upload.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/media.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/media.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/nav-menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/nav-menu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/password-strength-meter.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/password-strength-meter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/plugin-install.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/plugin-install.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/post.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/post.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/postbox.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/postbox.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/privacy-tools.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/privacy-tools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/revisions.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/revisions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/set-post-thumbnail.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/set-post-thumbnail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/site-health.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/site-health.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/svg-painter.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/svg-painter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/tags-box.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/tags-box.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/tags-suggest.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/tags-suggest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/tags.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/tags.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/theme-plugin-editor.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/theme-plugin-editor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/theme.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/theme.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/updates.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/updates.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/user-profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/user-profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/user-suggest.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/user-suggest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/widgets.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/widgets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/widgets/custom-html-widgets.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/widgets/custom-html-widgets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/widgets/media-audio-widget.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/widgets/media-audio-widget.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/widgets/media-gallery-widget.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/widgets/media-gallery-widget.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/widgets/media-image-widget.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/widgets/media-image-widget.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/widgets/media-video-widget.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/widgets/media-video-widget.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/widgets/media-widgets.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/widgets/media-widgets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/widgets/text-widgets.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/widgets/text-widgets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/word-count.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/word-count.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/js/xfn.js" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/js/xfn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/maint/repair.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/maint/repair.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/media-new.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/media-new.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/ms-delete-site.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/ms-delete-site.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/my-sites.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/my-sites.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/nav-menus.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/nav-menus.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/admin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/settings.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/site-info.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/site-info.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/site-new.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/site-new.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/site-settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/site-settings.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/site-themes.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/site-themes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/site-users.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/site-users.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/sites.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/sites.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/themes.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/themes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/update.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/update.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/upgrade.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/upgrade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/user-new.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/user-new.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/network/users.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/network/users.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/options-discussion.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/options-discussion.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/options-general.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/options-general.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/options-media.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/options-media.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/options-permalink.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/options-permalink.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/options-privacy.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/options-privacy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/options.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/options.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/plugin-editor.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/plugin-editor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/plugin-install.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/plugin-install.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/plugins.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/plugins.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/post.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/post.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/press-this.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/press-this.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/setup-config.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/setup-config.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/theme-editor.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/theme-editor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/theme-install.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/theme-install.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/themes.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/themes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/update-core.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/update-core.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/update.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/update.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/user-edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/user-edit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/user-new.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/user-new.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/user/admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/user/admin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/user/menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/user/menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-admin/users.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-admin/users.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-blog-header.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-blog-header.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-comments-post.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-comments-post.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/plugins/akismet/akismet.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/plugins/akismet/akismet.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/plugins/akismet/class.akismet-cli.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/plugins/akismet/class.akismet-cli.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/plugins/akismet/class.akismet.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/plugins/akismet/class.akismet.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twentynineteen/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twentynineteen/functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twentynineteen/inc/color-patterns.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twentynineteen/inc/color-patterns.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twentynineteen/inc/template-functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twentynineteen/inc/template-functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twentynineteen/inc/template-tags.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twentynineteen/inc/template-tags.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twentytwenty/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twentytwenty/functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twentytwenty/inc/template-tags.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twentytwenty/inc/template-tags.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twentytwentyone/classes/class-twenty-twenty-one-dark-mode.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twentytwentyone/classes/class-twenty-twenty-one-dark-mode.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-content/themes/twentytwentyone/inc/template-functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-content/themes/twentytwentyone/inc/template-functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-cron.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-cron.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/admin-bar.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/admin-bar.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/author-template.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/author-template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/blocks/categories.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/blocks/categories.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/blocks/rss.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/blocks/rss.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/bookmark.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/bookmark.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/canonical.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/canonical.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/capabilities.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/capabilities.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/category-template.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/category-template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/category.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/category.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-http.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-http.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-admin-bar.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-admin-bar.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-ajax-response.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-ajax-response.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-block-type.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-block-type.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-comment-query.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-comment-query.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-comment.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-comment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-customize-manager.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-customize-manager.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-customize-nav-menus.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-customize-nav-menus.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-customize-setting.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-customize-setting.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-customize-widgets.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-customize-widgets.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-editor.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-editor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-fatal-error-handler.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-fatal-error-handler.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-http-ixr-client.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-http-ixr-client.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-image-editor-gd.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-image-editor-gd.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-image-editor-imagick.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-image-editor-imagick.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-image-editor.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-image-editor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-meta-query.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-meta-query.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-network-query.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-network-query.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-network.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-network.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-object-cache.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-object-cache.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-oembed.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-oembed.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-post-type.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-post-type.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-post.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-post.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-query.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-query.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-recovery-mode-cookie-service.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-recovery-mode-cookie-service.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-recovery-mode-link-service.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-recovery-mode-link-service.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-recovery-mode.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-recovery-mode.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-rewrite.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-rewrite.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-roles.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-roles.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-simplepie-file.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-simplepie-file.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-site-query.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-site-query.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-site.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-site.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-tax-query.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-tax-query.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-taxonomy.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-taxonomy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-term-query.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-term-query.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-term.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-term.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-theme.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-theme.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-user-query.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-user-query.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-user.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp-xmlrpc-server.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp-xmlrpc-server.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class-wp.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class-wp.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class.wp-scripts.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class.wp-scripts.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/class.wp-styles.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/class.wp-styles.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/comment-template.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/comment-template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/comment.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/comment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/cron.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/cron.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/customize/class-wp-customize-nav-menu-item-setting.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/customize/class-wp-customize-nav-menu-item-setting.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/customize/class-wp-customize-nav-menu-setting.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/customize/class-wp-customize-nav-menu-setting.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/customize/class-wp-customize-theme-control.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/customize/class-wp-customize-theme-control.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/customize/class-wp-customize-themes-panel.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/customize/class-wp-customize-themes-panel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/customize/class-wp-customize-themes-section.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/customize/class-wp-customize-themes-section.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/default-constants.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/default-constants.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/default-filters.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/default-filters.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/deprecated.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/deprecated.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/embed.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/embed.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/error-protection.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/error-protection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/formatting.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/formatting.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/functions.wp-scripts.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/functions.wp-scripts.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/general-template.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/general-template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/http.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/http.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/l10n.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/l10n.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/link-template.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/link-template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/load.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/load.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/media-template.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/media-template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/media.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/media.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/meta.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/meta.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/ms-blogs.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/ms-blogs.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/ms-default-constants.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/ms-default-constants.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/ms-deprecated.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/ms-deprecated.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/ms-files.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/ms-files.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/ms-functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/ms-functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/ms-load.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/ms-load.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/ms-network.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/ms-network.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/ms-settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/ms-settings.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/ms-site.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/ms-site.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/nav-menu-template.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/nav-menu-template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/nav-menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/nav-menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/option.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/option.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/pluggable-deprecated.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/pluggable-deprecated.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/pluggable.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/pluggable.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/post-formats.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/post-formats.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/post-template.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/post-template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/post.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/post.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/query.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/query.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/class-wp-rest-request.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/class-wp-rest-request.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/class-wp-rest-server.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/class-wp-rest-server.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-autosaves-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-autosaves-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-block-directory-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-block-directory-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-block-types-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-block-types-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-plugins-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-plugins-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-revisions-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-revisions-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-search-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-search-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-settings-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-settings-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-site-health-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-site-health-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-terms-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-terms-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-themes-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-themes-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rest-api/fields/class-wp-rest-meta-fields.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rest-api/fields/class-wp-rest-meta-fields.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/revision.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/revision.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/rss.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/rss.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/script-loader.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/script-loader.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/sitemaps/providers/class-wp-sitemaps-taxonomies.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/sitemaps/providers/class-wp-sitemaps-taxonomies.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/taxonomy.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/taxonomy.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/template-loader.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/template-loader.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/template.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/template.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/theme.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/theme.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/update.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/update.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/user.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/vars.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/vars.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/widgets.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/widgets.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/widgets/class-wp-widget-media.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/widgets/class-wp-widget-media.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-includes/widgets/class-wp-widget-rss.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-includes/widgets/class-wp-widget-rss.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-load.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-load.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-login.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-login.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-mail.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-mail.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-signup.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-signup.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wp-trackback.php" beforeDir="false" afterPath="$PROJECT_DIR$/wp-trackback.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="PhpDebugGeneral" xdebug_show_addresses="true" hide_empty_superglobals="false" listening_started="true" />
+  <component name="PhpServers">
+    <servers>
+      <server host="localhost" id="f57475d8-ec9b-48f9-941b-517b38596c29" name="localhost" port="9001" />
+    </servers>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 8.0">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/klein/klein" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/schuhwerk/php-error-log-viewer" />
+    </include_path>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
+  </component>
+  <component name="ProjectId" id="1nuCpLnAmaNJ9L377UTKblqzhV1" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.jetbrains.php.phpunit.codeGeneration.PhpNewTestDialog.defaultLibrary" value="PHPUnit" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Core/WPAdmin/Includes" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\wordpressx\Core\WPIncludes" />
+      <recent name="C:\xampp\htdocs\wordpressx\Core" />
+    </key>
+  </component>
+  <component name="RunManager" selected="PHP Script.setup-config.php">
+    <configuration name="locahost" type="PhpHttpRequestRunConfigurationType" factoryName="PHP HTTP Request" server_name="localhost">
+      <method v="2" />
+    </configuration>
+    <configuration name="setup-config.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/wp-admin/setup-config.php">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="PHP HTTP Request.locahost" />
+      <item itemvalue="PHP Script.setup-config.php" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="PHP Script.setup-config.php" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4f7dfee6-17b1-416d-b8ac-0c92c11b275a" name="Default Changelist" comment="" />
+      <created>1612230777023</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1612230777023</updated>
+      <workItem from="1612230779757" duration="51000" />
+      <workItem from="1613354535542" duration="1207000" />
+      <workItem from="1613405726690" duration="7541000" />
+      <workItem from="1613425930137" duration="6957000" />
+      <workItem from="1613439428585" duration="22000" />
+      <workItem from="1613441374395" duration="2387000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WordPressConfiguration" enabled="true">
+    <wordpressPath>C:\xampp\htdocs\wordpressx</wordpressPath>
+  </component>
+</project>

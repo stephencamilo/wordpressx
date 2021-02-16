@@ -9,7 +9,7 @@
 
 require_once __DIR__ . '/admin.php';
 
-if ( ! Load::is_multisite() ) {
+if ( ! is_multisite() ) {
 	wp_die( __( 'Multisite support is not enabled.' ) );
 }
 
