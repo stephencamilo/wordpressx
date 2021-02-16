@@ -150,7 +150,7 @@ class WP_Scripts extends WP_Dependencies {
 	 */
 	public function init() {
 		if (
-			function_exists( 'is_admin' ) && ! is_admin()
+			function_exists( array( "\Load", "is_admin" ) ) && ! Load::is_admin()
 		&&
 			function_exists( 'current_theme_supports' ) && ! current_theme_supports( 'html5', 'script' )
 		) {

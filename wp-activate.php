@@ -13,7 +13,7 @@ require __DIR__ . '/wp-load.php';
 
 require __DIR__ . '/wp-blog-header.php';
 
-if ( ! is_multisite() ) {
+if ( ! Load::is_multisite() ) {
 	wp_redirect( wp_registration_url() );
 	die();
 }
@@ -38,7 +38,7 @@ if ( $key ) {
 	$redirect_url = remove_query_arg( 'key' );
 
 	if ( remove_query_arg( false ) !== $redirect_url ) {
-		setcookie( $activate_cookie, $key, 0, $activate_path, COOKIE_DOMAIN, is_ssl(), true );
+		setcookie( $activate_cookie, $key, 0, $activate_path, COOKIE_DOMAIN, Load::is_ssl(), true );
 		wp_safe_redirect( $redirect_url );
 		exit;
 	} else {
@@ -49,12 +49,12 @@ if ( $key ) {
 if ( null === $result && isset( $_COOKIE[ $activate_cookie ] ) ) {
 	$key    = $_COOKIE[ $activate_cookie ];
 	$result = wpmu_activate_signup( $key );
-	setcookie( $activate_cookie, ' ', time() - YEAR_IN_SECONDS, $activate_path, COOKIE_DOMAIN, is_ssl(), true );
+	setcookie( $activate_cookie, ' ', time() - YEAR_IN_SECONDS, $activate_path, COOKIE_DOMAIN, Load::is_ssl(), true );
 }
 
-if ( null === $result || ( is_wp_error( $result ) && 'invalid_key' === $result->get_error_code() ) ) {
+if ( null === $result || ( Load::is_wp_error( $result ) && 'invalid_key' === $result->get_error_code() ) ) {
 	status_header( 404 );
-} elseif ( is_wp_error( $result ) ) {
+} elseif ( Load::is_wp_error( $result ) ) {
 	$error_code = $result->get_error_code();
 
 	if ( ! in_array( $error_code, $valid_error_codes, true ) ) {
@@ -138,7 +138,7 @@ $blog_details = get_blog_details();
 
 		<?php
 	} else {
-		if ( is_wp_error( $result ) && in_array( $result->get_error_code(), $valid_error_codes, true ) ) {
+		if ( Load::is_wp_error( $result ) && in_array( $result->get_error_code(), $valid_error_codes, true ) ) {
 			$signup = $result->get_error_data();
 			?>
 			<h2><?php _e( 'Your account is now active!' ); ?></h2>
@@ -164,10 +164,10 @@ $blog_details = get_blog_details();
 				);
 			}
 			echo '</p>';
-		} elseif ( null === $result || is_wp_error( $result ) ) {
+		} elseif ( null === $result || Load::is_wp_error( $result ) ) {
 			?>
 			<h2><?php _e( 'An error occurred during the activation' ); ?></h2>
-			<?php if ( is_wp_error( $result ) ) : ?>
+			<?php if ( Load::is_wp_error( $result ) ) : ?>
 				<p><?php echo $result->get_error_message(); ?></p>
 			<?php endif; ?>
 			<?php

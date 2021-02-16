@@ -94,8 +94,8 @@ class WP_Themes_List_Table extends WP_List_Table {
 			return;
 		}
 
-		$blog_id = get_current_blog_id();
-		if ( is_multisite() ) {
+		$blog_id = Load::get_current_blog_id();
+		if ( Load::is_multisite() ) {
 			if ( current_user_can( 'install_themes' ) && current_user_can( 'manage_network_themes' ) ) {
 				printf(
 					/* translators: 1: URL to Themes tab on Edit Site screen, 2: URL to Add Themes screen. */
@@ -224,7 +224,7 @@ class WP_Themes_List_Table extends WP_List_Table {
 				);
 			}
 
-			if ( ! is_multisite() && current_user_can( 'delete_themes' ) ) {
+			if ( ! Load::is_multisite() && current_user_can( 'delete_themes' ) ) {
 				$actions['delete'] = sprintf(
 					'<a class="submitdelete deletion" href="%s" onclick="return confirm( \'%s\' );">%s</a>',
 					wp_nonce_url( 'themes.php?action=delete&amp;stylesheet=' . urlencode( $stylesheet ), 'delete-theme_' . $stylesheet ),

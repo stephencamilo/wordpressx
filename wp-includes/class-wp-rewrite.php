@@ -419,7 +419,7 @@ class WP_Rewrite {
 	 *
 	 * @since 2.5.0
 	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
+	 * @global WPDB $wpdb WordPress database abstraction object.
 	 *
 	 * @return array Array of page URIs as first element and attachment URIs as second element.
 	 */
@@ -1275,7 +1275,7 @@ class WP_Rewrite {
 
 		// Registration rules.
 		$registration_pages = array();
-		if ( is_multisite() && is_main_site() ) {
+		if ( Load::is_multisite() && is_main_site() ) {
 			$registration_pages['.*wp-signup.php$']   = $this->index . '?signup=true';
 			$registration_pages['.*wp-activate.php$'] = $this->index . '?activate=true';
 		}

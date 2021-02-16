@@ -106,7 +106,7 @@ class WP_Ajax_Upgrader_Skin extends Automatic_Upgrader_Skin {
 			// Count existing errors to generate a unique error code.
 			$errors_count = count( $this->errors->get_error_codes() );
 			$this->errors->add( 'unknown_upgrade_error_' . ( $errors_count + 1 ), $string );
-		} elseif ( is_wp_error( $errors ) ) {
+		} elseif ( Load::is_wp_error( $errors ) ) {
 			foreach ( $errors->get_error_codes() as $error_code ) {
 				$this->errors->add( $error_code, $errors->get_error_message( $error_code ), $errors->get_error_data( $error_code ) );
 			}
@@ -126,7 +126,7 @@ class WP_Ajax_Upgrader_Skin extends Automatic_Upgrader_Skin {
 	 * @param mixed                 ...$args Optional text replacements.
 	 */
 	public function feedback( $data, ...$args ) {
-		if ( is_wp_error( $data ) ) {
+		if ( Load::is_wp_error( $data ) ) {
 			foreach ( $data->get_error_codes() as $error_code ) {
 				$this->errors->add( $error_code, $data->get_error_message( $error_code ), $data->get_error_data( $error_code ) );
 			}

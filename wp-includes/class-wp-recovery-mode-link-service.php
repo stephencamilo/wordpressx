@@ -82,7 +82,7 @@ class WP_Recovery_Mode_Link_Service {
 
 		$validated = $this->key_service->validate_recovery_mode_key( $_GET['rm_token'], $_GET['rm_key'], $ttl );
 
-		if ( is_wp_error( $validated ) ) {
+		if ( Load::is_wp_error( $validated ) ) {
 			wp_die( $validated, '' );
 		}
 

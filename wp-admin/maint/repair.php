@@ -14,10 +14,10 @@ header( 'Content-Type: text/html; charset=utf-8' );
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
-	<meta name="viewport" content="width=device-width" />
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="robots" content="noindex,nofollow" />
-	<title><?php _e( 'WordPress &rsaquo; Database Repair' ); ?></title>
+    <meta name="viewport" content="width=device-width"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="robots" content="noindex,nofollow"/>
+    <title><?php _e( 'WordPress &rsaquo; Database Repair' ); ?></title>
 	<?php wp_admin_css( 'install', true ); ?>
 </head>
 <body class="wp-core-ui">
@@ -31,17 +31,28 @@ if ( ! defined( 'WP_ALLOW_REPAIR' ) || ! WP_ALLOW_REPAIR ) {
 
 	echo '<p>';
 	printf(
-		/* translators: %s: wp-config.php */
+	/* translators: %s: wp-config.php */
 		__( 'To allow use of this page to automatically repair database problems, please add the following line to your %s file. Once this line is added to your config, reload this page.' ),
 		'<code>wp-config.php</code>'
 	);
 	echo "</p><p><code>define('WP_ALLOW_REPAIR', true);</code></p>";
 
-	$default_key     = 'put your unique phrase here';
-	$missing_key     = false;
+	$default_key = 'put your unique phrase here';
+	$missing_key = false;
 	$duplicated_keys = array();
 
-	foreach ( array( 'AUTH_KEY', 'SECURE_AUTH_KEY', 'LOGGED_IN_KEY', 'NONCE_KEY', 'AUTH_SALT', 'SECURE_AUTH_SALT', 'LOGGED_IN_SALT', 'NONCE_SALT' ) as $key ) {
+	foreach (
+		array(
+			'AUTH_KEY',
+			'SECURE_AUTH_KEY',
+			'LOGGED_IN_KEY',
+			'NONCE_KEY',
+			'AUTH_SALT',
+			'SECURE_AUTH_SALT',
+			'LOGGED_IN_SALT',
+			'NONCE_SALT'
+		) as $key
+	) {
 		if ( defined( $key ) ) {
 			// Check for unique values of each key.
 			$duplicated_keys[ constant( $key ) ] = isset( $duplicated_keys[ constant( $key ) ] );
@@ -78,16 +89,17 @@ if ( ! defined( 'WP_ALLOW_REPAIR' ) || ! WP_ALLOW_REPAIR ) {
 
 	// Sitecategories may not exist if global terms are disabled.
 	$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $wpdb->sitecategories ) );
-	if ( is_multisite() && ! $wpdb->get_var( $query ) ) {
+	if ( Load::is_multisite() && ! $wpdb->get_var( $query ) ) {
 		unset( $tables['sitecategories'] );
 	}
 
 	/**
 	 * Filters additional database tables to repair.
 	 *
+	 * @param string[] $tables Array of prefixed table names to be repaired.
+	 *
 	 * @since 3.0.0
 	 *
-	 * @param string[] $tables Array of prefixed table names to be repaired.
 	 */
 	$tables = array_merge( $tables, (array) apply_filters( 'tables_to_repair', array() ) );
 
@@ -142,7 +154,7 @@ if ( ! defined( 'WP_ALLOW_REPAIR' ) || ! WP_ALLOW_REPAIR ) {
 
 	if ( $problems ) {
 		printf(
-			/* translators: %s: URL to "Fixing WordPress" forum. */
+		/* translators: %s: URL to "Fixing WordPress" forum. */
 			'<p>' . __( 'Some database problems could not be repaired. Please copy-and-paste the following list of errors to the <a href="%s">WordPress support forums</a> to get additional assistance.' ) . '</p>',
 			__( 'https://wordpress.org/support/forum/how-to-and-troubleshooting' )
 		);
@@ -164,9 +176,10 @@ if ( ! defined( 'WP_ALLOW_REPAIR' ) || ! WP_ALLOW_REPAIR ) {
 		echo '<p>' . __( 'WordPress can automatically look for some common database problems and repair them. Repairing can take a while, so please be patient.' ) . '</p>';
 	}
 	?>
-	<p class="step"><a class="button button-large" href="repair.php?repair=1"><?php _e( 'Repair Database' ); ?></a></p>
-	<p><?php _e( 'WordPress can also attempt to optimize the database. This improves performance in some situations. Repairing and optimizing the database can take a long time and the database will be locked while optimizing.' ); ?></p>
-	<p class="step"><a class="button button-large" href="repair.php?repair=2"><?php _e( 'Repair and Optimize Database' ); ?></a></p>
+    <p class="step"><a class="button button-large" href="repair.php?repair=1"><?php _e( 'Repair Database' ); ?></a></p>
+    <p><?php _e( 'WordPress can also attempt to optimize the database. This improves performance in some situations. Repairing and optimizing the database can take a long time and the database will be locked while optimizing.' ); ?></p>
+    <p class="step"><a class="button button-large"
+                       href="repair.php?repair=2"><?php _e( 'Repair and Optimize Database' ); ?></a></p>
 	<?php
 }
 ?>

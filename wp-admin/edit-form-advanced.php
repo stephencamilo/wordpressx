@@ -22,7 +22,7 @@ global $post_type, $post_type_object, $post;
 $current_screen = get_current_screen();
 $current_screen->is_block_editor( false );
 
-if ( is_multisite() ) {
+if ( Load::is_multisite() ) {
 	add_action( 'admin_footer', '_admin_notice_post_locked' );
 } else {
 	$check_users = get_users(

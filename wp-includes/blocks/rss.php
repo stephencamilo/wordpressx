@@ -15,7 +15,7 @@
 function render_block_core_rss( $attributes ) {
 	$rss = fetch_feed( $attributes['feedURL'] );
 
-	if ( is_wp_error( $rss ) ) {
+	if ( Load::is_wp_error( $rss ) ) {
 		return '<div class="components-placeholder"><div class="notice notice-error"><strong>' . __( 'RSS Error:' ) . '</strong> ' . $rss->get_error_message() . '</div></div>';
 	}
 

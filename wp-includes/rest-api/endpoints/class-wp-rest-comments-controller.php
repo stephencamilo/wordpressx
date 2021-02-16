@@ -377,7 +377,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 	 */
 	public function get_item_permissions_check( $request ) {
 		$comment = $this->get_comment( $request['id'] );
-		if ( is_wp_error( $comment ) ) {
+		if ( Load::is_wp_error( $comment ) ) {
 			return $comment;
 		}
 
@@ -420,7 +420,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 	 */
 	public function get_item( $request ) {
 		$comment = $this->get_comment( $request['id'] );
-		if ( is_wp_error( $comment ) ) {
+		if ( Load::is_wp_error( $comment ) ) {
 			return $comment;
 		}
 
@@ -581,7 +581,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 		}
 
 		$prepared_comment = $this->prepare_item_for_database( $request );
-		if ( is_wp_error( $prepared_comment ) ) {
+		if ( Load::is_wp_error( $prepared_comment ) ) {
 			return $prepared_comment;
 		}
 
@@ -644,7 +644,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 
 		$check_comment_lengths = wp_check_comment_data_max_lengths( $prepared_comment );
 
-		if ( is_wp_error( $check_comment_lengths ) ) {
+		if ( Load::is_wp_error( $check_comment_lengths ) ) {
 			$error_code = $check_comment_lengths->get_error_code();
 			return new WP_Error(
 				$error_code,
@@ -655,7 +655,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 
 		$prepared_comment['comment_approved'] = wp_allow_comment( $prepared_comment, true );
 
-		if ( is_wp_error( $prepared_comment['comment_approved'] ) ) {
+		if ( Load::is_wp_error( $prepared_comment['comment_approved'] ) ) {
 			$error_code    = $prepared_comment['comment_approved']->get_error_code();
 			$error_message = $prepared_comment['comment_approved']->get_error_message();
 
@@ -692,7 +692,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 		 * @param WP_REST_Request $request          Request used to insert the comment.
 		 */
 		$prepared_comment = apply_filters( 'rest_pre_insert_comment', $prepared_comment, $request );
-		if ( is_wp_error( $prepared_comment ) ) {
+		if ( Load::is_wp_error( $prepared_comment ) ) {
 			return $prepared_comment;
 		}
 
@@ -729,14 +729,14 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 		if ( ! empty( $schema['properties']['meta'] ) && isset( $request['meta'] ) ) {
 			$meta_update = $this->meta->update_value( $request['meta'], $comment_id );
 
-			if ( is_wp_error( $meta_update ) ) {
+			if ( Load::is_wp_error( $meta_update ) ) {
 				return $meta_update;
 			}
 		}
 
 		$fields_update = $this->update_additional_fields_for_object( $comment, $request );
 
-		if ( is_wp_error( $fields_update ) ) {
+		if ( Load::is_wp_error( $fields_update ) ) {
 			return $fields_update;
 		}
 
@@ -774,7 +774,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 	 */
 	public function update_item_permissions_check( $request ) {
 		$comment = $this->get_comment( $request['id'] );
-		if ( is_wp_error( $comment ) ) {
+		if ( Load::is_wp_error( $comment ) ) {
 			return $comment;
 		}
 
@@ -799,7 +799,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 	 */
 	public function update_item( $request ) {
 		$comment = $this->get_comment( $request['id'] );
-		if ( is_wp_error( $comment ) ) {
+		if ( Load::is_wp_error( $comment ) ) {
 			return $comment;
 		}
 
@@ -815,7 +815,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 
 		$prepared_args = $this->prepare_item_for_database( $request );
 
-		if ( is_wp_error( $prepared_args ) ) {
+		if ( Load::is_wp_error( $prepared_args ) ) {
 			return $prepared_args;
 		}
 
@@ -843,7 +843,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 				);
 			}
 		} elseif ( ! empty( $prepared_args ) ) {
-			if ( is_wp_error( $prepared_args ) ) {
+			if ( Load::is_wp_error( $prepared_args ) ) {
 				return $prepared_args;
 			}
 
@@ -859,7 +859,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 
 			$check_comment_lengths = wp_check_comment_data_max_lengths( $prepared_args );
 
-			if ( is_wp_error( $check_comment_lengths ) ) {
+			if ( Load::is_wp_error( $check_comment_lengths ) ) {
 				$error_code = $check_comment_lengths->get_error_code();
 				return new WP_Error(
 					$error_code,
@@ -870,7 +870,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 
 			$updated = wp_update_comment( wp_slash( (array) $prepared_args ), true );
 
-			if ( is_wp_error( $updated ) ) {
+			if ( Load::is_wp_error( $updated ) ) {
 				return new WP_Error(
 					'rest_comment_failed_edit',
 					__( 'Updating comment failed.' ),
@@ -893,14 +893,14 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 		if ( ! empty( $schema['properties']['meta'] ) && isset( $request['meta'] ) ) {
 			$meta_update = $this->meta->update_value( $request['meta'], $id );
 
-			if ( is_wp_error( $meta_update ) ) {
+			if ( Load::is_wp_error( $meta_update ) ) {
 				return $meta_update;
 			}
 		}
 
 		$fields_update = $this->update_additional_fields_for_object( $comment, $request );
 
-		if ( is_wp_error( $fields_update ) ) {
+		if ( Load::is_wp_error( $fields_update ) ) {
 			return $fields_update;
 		}
 
@@ -924,7 +924,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 	 */
 	public function delete_item_permissions_check( $request ) {
 		$comment = $this->get_comment( $request['id'] );
-		if ( is_wp_error( $comment ) ) {
+		if ( Load::is_wp_error( $comment ) ) {
 			return $comment;
 		}
 
@@ -948,7 +948,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 	 */
 	public function delete_item( $request ) {
 		$comment = $this->get_comment( $request['id'] );
-		if ( is_wp_error( $comment ) ) {
+		if ( Load::is_wp_error( $comment ) ) {
 			return $comment;
 		}
 
@@ -1860,7 +1860,7 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 		}
 
 		$check_email = rest_validate_request_arg( $email, $request, $param );
-		if ( is_wp_error( $check_email ) ) {
+		if ( Load::is_wp_error( $check_email ) ) {
 			return $check_email;
 		}
 

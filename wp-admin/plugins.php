@@ -48,15 +48,15 @@ if ( $action ) {
 				wp_die( __( 'Sorry, you are not allowed to activate this plugin.' ) );
 			}
 
-			if ( is_multisite() && ! is_network_admin() && is_network_only_plugin( $plugin ) ) {
+			if ( Load::is_multisite() && ! Load::is_network_admin() && is_network_only_plugin( $plugin ) ) {
 				wp_redirect( self_admin_url( "plugins.php?plugin_status=$status&paged=$page&s=$s" ) );
 				exit;
 			}
 
 			check_admin_referer( 'activate-plugin_' . $plugin );
 
-			$result = activate_plugin( $plugin, self_admin_url( 'plugins.php?error=true&plugin=' . urlencode( $plugin ) ), is_network_admin() );
-			if ( is_wp_error( $result ) ) {
+			$result = activate_plugin( $plugin, self_admin_url( 'plugins.php?error=true&plugin=' . urlencode( $plugin ) ), Load::is_network_admin() );
+			if ( Load::is_wp_error( $result ) ) {
 				if ( 'unexpected_output' === $result->get_error_code() ) {
 					$redirect = self_admin_url( 'plugins.php?error=true&charsout=' . strlen( $result->get_error_data() ) . '&plugin=' . urlencode( $plugin ) . "&plugin_status=$status&paged=$page&s=$s" );
 					wp_redirect( add_query_arg( '_error_nonce', wp_create_nonce( 'plugin-activation-error_' . $plugin ), $redirect ) );
@@ -66,7 +66,7 @@ if ( $action ) {
 				}
 			}
 
-			if ( ! is_network_admin() ) {
+			if ( ! Load::is_network_admin() ) {
 				$recent = (array) get_option( 'recently_activated' );
 				unset( $recent[ $plugin ] );
 				update_option( 'recently_activated', $recent );
@@ -96,7 +96,7 @@ if ( $action ) {
 
 			$plugins = isset( $_POST['checked'] ) ? (array) wp_unslash( $_POST['checked'] ) : array();
 
-			if ( is_network_admin() ) {
+			if ( Load::is_network_admin() ) {
 				foreach ( $plugins as $i => $plugin ) {
 					// Only activate plugins which are not already network activated.
 					if ( is_plugin_active_for_network( $plugin ) ) {
@@ -106,7 +106,7 @@ if ( $action ) {
 			} else {
 				foreach ( $plugins as $i => $plugin ) {
 					// Only activate plugins which are not already active and are not network-only when on Multisite.
-					if ( is_plugin_active( $plugin ) || ( is_multisite() && is_network_only_plugin( $plugin ) ) ) {
+					if ( is_plugin_active( $plugin ) || ( Load::is_multisite() && is_network_only_plugin( $plugin ) ) ) {
 						unset( $plugins[ $i ] );
 					}
 					// Only activate plugins which the user can activate.
@@ -121,9 +121,9 @@ if ( $action ) {
 				exit;
 			}
 
-			activate_plugins( $plugins, self_admin_url( 'plugins.php?error=true' ), is_network_admin() );
+			activate_plugins( $plugins, self_admin_url( 'plugins.php?error=true' ), Load::is_network_admin() );
 
-			if ( ! is_network_admin() ) {
+			if ( ! Load::is_network_admin() ) {
 				$recent = (array) get_option( 'recently_activated' );
 			} else {
 				$recent = (array) get_site_option( 'recently_activated' );
@@ -133,7 +133,7 @@ if ( $action ) {
 				unset( $recent[ $plugin ] );
 			}
 
-			if ( ! is_network_admin() ) {
+			if ( ! Load::is_network_admin() ) {
 				update_option( 'recently_activated', $recent );
 			} else {
 				update_site_option( 'recently_activated', $recent );
@@ -178,7 +178,7 @@ if ( $action ) {
 			check_admin_referer( 'plugin-activation-error_' . $plugin );
 
 			$valid = validate_plugin( $plugin );
-			if ( is_wp_error( $valid ) ) {
+			if ( Load::is_wp_error( $valid ) ) {
 				wp_die( $valid );
 			}
 
@@ -200,14 +200,14 @@ if ( $action ) {
 
 			check_admin_referer( 'deactivate-plugin_' . $plugin );
 
-			if ( ! is_network_admin() && is_plugin_active_for_network( $plugin ) ) {
+			if ( ! Load::is_network_admin() && is_plugin_active_for_network( $plugin ) ) {
 				wp_redirect( self_admin_url( "plugins.php?plugin_status=$status&paged=$page&s=$s" ) );
 				exit;
 			}
 
-			deactivate_plugins( $plugin, false, is_network_admin() );
+			deactivate_plugins( $plugin, false, Load::is_network_admin() );
 
-			if ( ! is_network_admin() ) {
+			if ( ! Load::is_network_admin() ) {
 				update_option( 'recently_activated', array( $plugin => time() ) + (array) get_option( 'recently_activated' ) );
 			} else {
 				update_site_option( 'recently_activated', array( $plugin => time() ) + (array) get_site_option( 'recently_activated' ) );
@@ -229,7 +229,7 @@ if ( $action ) {
 
 			$plugins = isset( $_POST['checked'] ) ? (array) wp_unslash( $_POST['checked'] ) : array();
 			// Do not deactivate plugins which are already deactivated.
-			if ( is_network_admin() ) {
+			if ( Load::is_network_admin() ) {
 				$plugins = array_filter( $plugins, 'is_plugin_active_for_network' );
 			} else {
 				$plugins = array_filter( $plugins, 'is_plugin_active' );
@@ -247,14 +247,14 @@ if ( $action ) {
 				exit;
 			}
 
-			deactivate_plugins( $plugins, false, is_network_admin() );
+			deactivate_plugins( $plugins, false, Load::is_network_admin() );
 
 			$deactivated = array();
 			foreach ( $plugins as $plugin ) {
 				$deactivated[ $plugin ] = time();
 			}
 
-			if ( ! is_network_admin() ) {
+			if ( ! Load::is_network_admin() ) {
 				update_option( 'recently_activated', $deactivated + (array) get_option( 'recently_activated' ) );
 			} else {
 				update_site_option( 'recently_activated', $deactivated + (array) get_site_option( 'recently_activated' ) );
@@ -338,13 +338,13 @@ if ( $action ) {
 				?>
 				<?php if ( 1 === $plugins_to_delete ) : ?>
 					<h1><?php _e( 'Delete Plugin' ); ?></h1>
-					<?php if ( $have_non_network_plugins && is_network_admin() ) : ?>
+					<?php if ( $have_non_network_plugins && Load::is_network_admin() ) : ?>
 						<div class="error"><p><strong><?php _e( 'Caution:' ); ?></strong> <?php _e( 'This plugin may be active on other sites in the network.' ); ?></p></div>
 					<?php endif; ?>
 					<p><?php _e( 'You are about to remove the following plugin:' ); ?></p>
 				<?php else : ?>
 					<h1><?php _e( 'Delete Plugins' ); ?></h1>
-					<?php if ( $have_non_network_plugins && is_network_admin() ) : ?>
+					<?php if ( $have_non_network_plugins && Load::is_network_admin() ) : ?>
 						<div class="error"><p><strong><?php _e( 'Caution:' ); ?></strong> <?php _e( 'These plugins may be active on other sites in the network.' ); ?></p></div>
 					<?php endif; ?>
 					<p><?php _e( 'You are about to remove the following plugins:' ); ?></p>
@@ -415,7 +415,7 @@ if ( $action ) {
 			wp_redirect( self_admin_url( "plugins.php?deleted=$plugins_to_delete&plugin_status=$status&paged=$page&s=$s" ) );
 			exit;
 		case 'clear-recent-list':
-			if ( ! is_network_admin() ) {
+			if ( ! Load::is_network_admin() ) {
 				update_option( 'recently_activated', array() );
 			} else {
 				update_site_option( 'recently_activated', array() );
@@ -423,7 +423,7 @@ if ( $action ) {
 
 			break;
 		case 'resume':
-			if ( is_multisite() ) {
+			if ( Load::is_multisite() ) {
 				return;
 			}
 
@@ -435,7 +435,7 @@ if ( $action ) {
 
 			$result = resume_plugin( $plugin, self_admin_url( "plugins.php?error=resuming&plugin_status=$status&paged=$page&s=$s" ) );
 
-			if ( is_wp_error( $result ) ) {
+			if ( Load::is_wp_error( $result ) ) {
 				wp_die( $result );
 			}
 
@@ -449,7 +449,7 @@ if ( $action ) {
 				wp_die( __( 'Sorry, you are not allowed to manage plugins automatic updates.' ) );
 			}
 
-			if ( is_multisite() && ! is_network_admin() ) {
+			if ( Load::is_multisite() && ! Load::is_network_admin() ) {
 				wp_die( __( 'Please connect to your network admin to manage plugins automatic updates.' ) );
 			}
 
@@ -664,7 +664,7 @@ elseif ( isset( $_GET['deleted'] ) ) :
 	// Delete it once we're done.
 	delete_transient( 'plugins_delete_result_' . $user_ID );
 
-	if ( is_wp_error( $delete_result ) ) :
+	if ( Load::is_wp_error( $delete_result ) ) :
 		?>
 		<div id="message" class="error notice is-dismissible">
 			<p>
@@ -720,7 +720,7 @@ echo esc_html( $title );
 </h1>
 
 <?php
-if ( ( ! is_multisite() || is_network_admin() ) && current_user_can( 'install_plugins' ) ) {
+if ( ( ! Load::is_multisite() || Load::is_network_admin() ) && current_user_can( 'install_plugins' ) ) {
 	?>
 	<a href="<?php echo self_admin_url( 'plugin-install.php' ); ?>" class="page-title-action"><?php echo esc_html_x( 'Add New', 'plugin' ); ?></a>
 	<?php

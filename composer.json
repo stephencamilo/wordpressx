@@ -3,7 +3,9 @@
     "description": "worpdressx",
     "autoload": {
         "psr-4": {
-            "Core\\": "Core/"
+            "Root\\": "./",
+            "Core\\": "./Core/"
+
         }
     }
 }

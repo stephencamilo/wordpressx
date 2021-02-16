@@ -740,7 +740,7 @@ function spawn_cron( $gmt_time = 0 ) {
 	);
 
 	$result = wp_remote_post( $cron_request['url'], $cron_request['args'] );
-	return ! is_wp_error( $result );
+	return ! Load::is_wp_error( $result );
 }
 
 /**

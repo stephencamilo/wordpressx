@@ -268,8 +268,8 @@ function wp_deregister_script( $handle ) {
 	 * Show minimal remorse if the correct hook is used.
 	 */
 	$current_filter = current_filter();
-	if ( ( is_admin() && 'admin_enqueue_scripts' !== $current_filter ) ||
-		( 'wp-login.php' === $GLOBALS['pagenow'] && 'login_enqueue_scripts' !== $current_filter )
+	if ( ( Load::is_admin() && 'admin_enqueue_scripts' !== $current_filter ) ||
+	     ( 'wp-login.php' === $GLOBALS['pagenow'] && 'login_enqueue_scripts' !== $current_filter )
 	) {
 		$not_allowed = array(
 			'jquery',

@@ -42,7 +42,7 @@ require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 
 /** Load wpdb */
-require_once ABSPATH . WPINC . '/wp-db.php';
+require_once ABSPATH . WPINC . '/wpdb.php';
 
 nocache_headers();
 
@@ -84,7 +84,7 @@ function display_header( $body_classes = '' ) {
  *
  * @since 2.8.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string|null $error
  */

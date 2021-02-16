@@ -47,11 +47,11 @@ if ( get_option( 'db_upgraded' ) ) {
 	 */
 	do_action( 'after_db_upgrade' );
 
-} elseif ( ! wp_doing_ajax() && empty( $_POST )
+} elseif ( ! Load::wp_doing_ajax() && empty( $_POST )
 	&& (int) get_option( 'db_version' ) !== $wp_db_version
 ) {
 
-	if ( ! is_multisite() ) {
+	if ( ! Load::is_multisite() ) {
 		wp_redirect( admin_url( 'upgrade.php?_wp_http_referer=' . urlencode( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) );
 		exit;
 	}
@@ -99,12 +99,12 @@ require_once ABSPATH . 'wp-admin/includes/admin.php';
 auth_redirect();
 
 // Schedule Trash collection.
-if ( ! wp_next_scheduled( 'wp_scheduled_delete' ) && ! wp_installing() ) {
+if ( ! wp_next_scheduled( 'wp_scheduled_delete' ) && ! Load::wp_installing() ) {
 	wp_schedule_event( time(), 'daily', 'wp_scheduled_delete' );
 }
 
 // Schedule transient cleanup.
-if ( ! wp_next_scheduled( 'delete_expired_transients' ) && ! wp_installing() ) {
+if ( ! wp_next_scheduled( 'delete_expired_transients' ) && ! Load::wp_installing() ) {
 	wp_schedule_event( time(), 'daily', 'delete_expired_transients' );
 }
 

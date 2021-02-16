@@ -300,11 +300,11 @@ class WP_Term_Query {
 	/**
 	 * Get terms, based on query_vars.
 	 *
+	 * @return array List of terms.
+	 *@global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 * @since 4.6.0
 	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
-	 * @return array List of terms.
 	 */
 	public function get_terms() {
 		global $wpdb;
@@ -855,12 +855,13 @@ class WP_Term_Query {
 	/**
 	 * Parse and sanitize 'orderby' keys passed to the term query.
 	 *
-	 * @since 4.6.0
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
 	 * @param string $orderby_raw Alias for the field to order by.
+	 *
 	 * @return string|false Value to used in the ORDER clause. False otherwise.
+	 *@since 4.6.0
+	 *
+	 * @global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 */
 	protected function parse_orderby( $orderby_raw ) {
 		$_orderby           = strtolower( $orderby_raw );
@@ -993,12 +994,13 @@ class WP_Term_Query {
 	/**
 	 * Used internally to generate a SQL string related to the 'search' parameter.
 	 *
-	 * @since 4.6.0
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
 	 * @param string $string
+	 *
 	 * @return string
+	 *@since 4.6.0
+	 *
+	 * @global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 */
 	protected function get_search_sql( $string ) {
 		global $wpdb;

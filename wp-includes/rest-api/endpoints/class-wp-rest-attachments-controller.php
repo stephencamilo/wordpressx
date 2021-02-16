@@ -106,7 +106,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 	public function create_item_permissions_check( $request ) {
 		$ret = parent::create_item_permissions_check( $request );
 
-		if ( ! $ret || is_wp_error( $ret ) ) {
+		if ( ! $ret || Load::is_wp_error( $ret ) ) {
 			return $ret;
 		}
 
@@ -149,7 +149,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 
 		$insert = $this->insert_attachment( $request );
 
-		if ( is_wp_error( $insert ) ) {
+		if ( Load::is_wp_error( $insert ) ) {
 			return $insert;
 		}
 
@@ -166,7 +166,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 		if ( ! empty( $schema['properties']['meta'] ) && isset( $request['meta'] ) ) {
 			$meta_update = $this->meta->update_value( $request['meta'], $attachment_id );
 
-			if ( is_wp_error( $meta_update ) ) {
+			if ( Load::is_wp_error( $meta_update ) ) {
 				return $meta_update;
 			}
 		}
@@ -174,7 +174,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 		$attachment    = get_post( $attachment_id );
 		$fields_update = $this->update_additional_fields_for_object( $attachment, $request );
 
-		if ( is_wp_error( $fields_update ) ) {
+		if ( Load::is_wp_error( $fields_update ) ) {
 			return $fields_update;
 		}
 
@@ -234,7 +234,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 			$file = $this->upload_from_data( $request->get_body(), $headers );
 		}
 
-		if ( is_wp_error( $file ) ) {
+		if ( Load::is_wp_error( $file ) ) {
 			return $file;
 		}
 
@@ -274,7 +274,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 		// $post_parent is inherited from $attachment['post_parent'].
 		$id = wp_insert_attachment( wp_slash( (array) $attachment ), $file, 0, true, false );
 
-		if ( is_wp_error( $id ) ) {
+		if ( Load::is_wp_error( $id ) ) {
 			if ( 'db_update_error' === $id->get_error_code() ) {
 				$id->add_data( array( 'status' => 500 ) );
 			} else {
@@ -324,7 +324,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 		$attachment_before = get_post( $request['id'] );
 		$response          = parent::update_item( $request );
 
-		if ( is_wp_error( $response ) ) {
+		if ( Load::is_wp_error( $response ) ) {
 			return $response;
 		}
 
@@ -339,7 +339,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 
 		$fields_update = $this->update_additional_fields_for_object( $attachment, $request );
 
-		if ( is_wp_error( $fields_update ) ) {
+		if ( Load::is_wp_error( $fields_update ) ) {
 			return $fields_update;
 		}
 
@@ -481,7 +481,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 
 		$image_editor = wp_get_image_editor( $image_file_to_edit );
 
-		if ( is_wp_error( $image_editor ) ) {
+		if ( Load::is_wp_error( $image_editor ) ) {
 			return new WP_Error(
 				'rest_unknown_image_file_type',
 				__( 'Unable to edit this image.' ),
@@ -492,7 +492,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 		if ( 0 !== $rotate ) {
 			$result = $image_editor->rotate( $rotate );
 
-			if ( is_wp_error( $result ) ) {
+			if ( Load::is_wp_error( $result ) ) {
 				return new WP_Error(
 					'rest_image_rotation_failed',
 					__( 'Unable to rotate this image.' ),
@@ -511,7 +511,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 
 			$result = $image_editor->crop( $crop_x, $crop_y, $width, $height );
 
-			if ( is_wp_error( $result ) ) {
+			if ( Load::is_wp_error( $result ) ) {
 				return new WP_Error(
 					'rest_image_crop_failed',
 					__( 'Unable to crop this image.' ),
@@ -545,7 +545,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 		// Save to disk.
 		$saved = $image_editor->save( $uploads['path'] . "/$filename" );
 
-		if ( is_wp_error( $saved ) ) {
+		if ( Load::is_wp_error( $saved ) ) {
 			return $saved;
 		}
 
@@ -568,7 +568,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 
 		$new_attachment_id = wp_insert_attachment( wp_slash( $new_attachment_post ), $saved['path'], 0, true );
 
-		if ( is_wp_error( $new_attachment_id ) ) {
+		if ( Load::is_wp_error( $new_attachment_id ) ) {
 			if ( 'db_update_error' === $new_attachment_id->get_error_code() ) {
 				$new_attachment_id->add_data( array( 'status' => 500 ) );
 			} else {
@@ -1011,7 +1011,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 		);
 
 		$size_check = self::check_upload_size( $file_data );
-		if ( is_wp_error( $size_check ) ) {
+		if ( Load::is_wp_error( $size_check ) ) {
 			return $size_check;
 		}
 
@@ -1177,7 +1177,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 		}
 
 		$size_check = self::check_upload_size( $files['file'] );
-		if ( is_wp_error( $size_check ) ) {
+		if ( Load::is_wp_error( $size_check ) ) {
 			return $size_check;
 		}
 
@@ -1233,7 +1233,7 @@ class WP_REST_Attachments_Controller extends WP_REST_Posts_Controller {
 	 * @return true|WP_Error True if can upload, error for errors.
 	 */
 	protected function check_upload_size( $file ) {
-		if ( ! is_multisite() ) {
+		if ( ! Load::is_multisite() ) {
 			return true;
 		}
 

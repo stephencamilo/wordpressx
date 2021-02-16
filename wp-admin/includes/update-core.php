@@ -881,19 +881,20 @@ $_new_bundled_files = array(
  * themes, then if you edit the default theme, you should rename it, so that
  * your changes remain.
  *
+ * @param string $from New release unzipped path.
+ * @param string $to Path to old WordPress installation.
+ *
+ * @return string|WP_Error New WordPress version on success, WP_Error on failure.
  * @since 2.7.0
  *
- * @global WP_Filesystem_Base $wp_filesystem          WordPress filesystem subclass.
- * @global array              $_old_files
- * @global array              $_new_bundled_files
- * @global wpdb               $wpdb                   WordPress database abstraction object.
- * @global string             $wp_version
- * @global string             $required_php_version
- * @global string             $required_mysql_version
+ * @global WP_Filesystem_Base $wp_filesystem WordPress filesystem subclass.
+ * @global array $_old_files
+ * @global array $_new_bundled_files
+ * @global WPDB $wpdb WordPress database abstraction object.
+ * @global string $wp_version
+ * @global string $required_php_version
+ * @global string $required_mysql_version
  *
- * @param string $from New release unzipped path.
- * @param string $to   Path to old WordPress installation.
- * @return string|WP_Error New WordPress version on success, WP_Error on failure.
  */
 function update_core( $from, $to ) {
 	global $wp_filesystem, $_old_files, $_new_bundled_files, $wpdb;
@@ -913,9 +914,10 @@ function update_core( $from, $to ) {
 	 * 4. Before Maintenance Mode is disabled.
 	 * 5. Before the database is upgraded.
 	 *
+	 * @param string $feedback The core update feedback messages.
+	 *
 	 * @since 2.5.0
 	 *
-	 * @param string $feedback The core update feedback messages.
 	 */
 	apply_filters( 'update_feedback', __( 'Verifying the unpacked files&#8230;' ) );
 
@@ -930,6 +932,7 @@ function update_core( $from, $to ) {
 	}
 	if ( ! $distro ) {
 		$wp_filesystem->delete( $from, true );
+
 		return new WP_Error( 'insane_distro', __( 'The update could not be unpacked' ) );
 	}
 
@@ -942,6 +945,7 @@ function update_core( $from, $to ) {
 	$versions_file = trailingslashit( $wp_filesystem->wp_content_dir() ) . 'upgrade/version-current.php';
 	if ( ! $wp_filesystem->copy( $from . $distro . 'wp-includes/version.php', $versions_file ) ) {
 		$wp_filesystem->delete( $from, true );
+
 		return new WP_Error( 'copy_failed_for_version_file', __( 'The update cannot be installed because we will be unable to copy some files. This is usually due to inconsistent file permissions.' ), 'wp-includes/version.php' );
 	}
 
@@ -969,9 +973,9 @@ function update_core( $from, $to ) {
 	if ( function_exists( 'wp_get_update_php_url' ) ) {
 		/* translators: %s: URL to Update PHP page. */
 		$php_update_message = '</p><p>' . sprintf(
-			__( '<a href="%s">Learn more about updating PHP</a>.' ),
-			esc_url( wp_get_update_php_url() )
-		);
+				__( '<a href="%s">Learn more about updating PHP</a>.' ),
+				esc_url( wp_get_update_php_url() )
+			);
 
 		if ( function_exists( 'wp_get_update_php_annotation' ) ) {
 			$annotation = wp_get_update_php_annotation();
@@ -986,7 +990,7 @@ function update_core( $from, $to ) {
 		return new WP_Error(
 			'php_mysql_not_compatible',
 			sprintf(
-				/* translators: 1: WordPress version number, 2: Minimum required PHP version number, 3: Minimum required MySQL version number, 4: Current PHP version number, 5: Current MySQL version number. */
+			/* translators: 1: WordPress version number, 2: Minimum required PHP version number, 3: Minimum required MySQL version number, 4: Current PHP version number, 5: Current MySQL version number. */
 				__( 'The update cannot be installed because WordPress %1$s requires PHP version %2$s or higher and MySQL version %3$s or higher. You are running PHP version %4$s and MySQL version %5$s.' ),
 				$wp_version,
 				$required_php_version,
@@ -999,7 +1003,7 @@ function update_core( $from, $to ) {
 		return new WP_Error(
 			'php_not_compatible',
 			sprintf(
-				/* translators: 1: WordPress version number, 2: Minimum required PHP version number, 3: Current PHP version number. */
+			/* translators: 1: WordPress version number, 2: Minimum required PHP version number, 3: Current PHP version number. */
 				__( 'The update cannot be installed because WordPress %1$s requires PHP version %2$s or higher. You are running version %3$s.' ),
 				$wp_version,
 				$required_php_version,
@@ -1010,7 +1014,7 @@ function update_core( $from, $to ) {
 		return new WP_Error(
 			'mysql_not_compatible',
 			sprintf(
-				/* translators: 1: WordPress version number, 2: Minimum required MySQL version number, 3: Current MySQL version number. */
+			/* translators: 1: WordPress version number, 2: Minimum required MySQL version number, 3: Current MySQL version number. */
 				__( 'The update cannot be installed because WordPress %1$s requires MySQL version %2$s or higher. You are running version %3$s.' ),
 				$wp_version,
 				$required_mysql_version,
@@ -1024,7 +1028,7 @@ function update_core( $from, $to ) {
 		return new WP_Error(
 			'php_not_compatible_json',
 			sprintf(
-				/* translators: 1: WordPress version number, 2: The PHP extension name needed. */
+			/* translators: 1: WordPress version number, 2: The PHP extension name needed. */
 				__( 'The update cannot be installed because WordPress %1$s requires the %2$s PHP extension.' ),
 				$wp_version,
 				'JSON'
@@ -1060,7 +1064,10 @@ function update_core( $from, $to ) {
 				if ( ! file_exists( $working_dir_local . $file ) ) {
 					continue;
 				}
-				if ( '.' === dirname( $file ) && in_array( pathinfo( $file, PATHINFO_EXTENSION ), array( 'html', 'txt' ), true ) ) {
+				if ( '.' === dirname( $file ) && in_array( pathinfo( $file, PATHINFO_EXTENSION ), array(
+						'html',
+						'txt'
+					), true ) ) {
 					continue;
 				}
 				if ( md5_file( ABSPATH . $file ) === $checksum ) {
@@ -1106,12 +1113,12 @@ function update_core( $from, $to ) {
 	apply_filters( 'update_feedback', __( 'Copying the required files&#8230;' ) );
 	// Copy new versions of WP files into place.
 	$result = _copy_dir( $from . $distro, $to, $skip );
-	if ( is_wp_error( $result ) ) {
+	if ( Load::is_wp_error( $result ) ) {
 		$result = new WP_Error( $result->get_error_code(), $result->get_error_message(), substr( $result->get_error_data(), strlen( $to ) ) );
 	}
 
 	// Since we know the core files have copied over, we can now copy the version file.
-	if ( ! is_wp_error( $result ) ) {
+	if ( ! Load::is_wp_error( $result ) ) {
 		if ( ! $wp_filesystem->copy( $from . $distro . 'wp-includes/version.php', $to . 'wp-includes/version.php', true /* overwrite */ ) ) {
 			$wp_filesystem->delete( $from, true );
 			$result = new WP_Error( 'copy_failed_for_version_file', __( 'The update cannot be installed because we will be unable to copy some files. This is usually due to inconsistent file permissions.' ), 'wp-includes/version.php' );
@@ -1130,7 +1137,10 @@ function update_core( $from, $to ) {
 			if ( ! file_exists( $working_dir_local . $file ) ) {
 				continue;
 			}
-			if ( '.' === dirname( $file ) && in_array( pathinfo( $file, PATHINFO_EXTENSION ), array( 'html', 'txt' ), true ) ) {
+			if ( '.' === dirname( $file ) && in_array( pathinfo( $file, PATHINFO_EXTENSION ), array(
+					'html',
+					'txt'
+				), true ) ) {
 				$skip[] = $file;
 				continue;
 			}
@@ -1158,7 +1168,7 @@ function update_core( $from, $to ) {
 			$result = new WP_Error( 'disk_full', __( 'There is not enough free disk space to complete the update.' ) );
 		} else {
 			$result = _copy_dir( $from . $distro, $to, $skip );
-			if ( is_wp_error( $result ) ) {
+			if ( Load::is_wp_error( $result ) ) {
 				$result = new WP_Error( $result->get_error_code() . '_retry', $result->get_error_message(), substr( $result->get_error_data(), strlen( $to ) ) );
 			}
 		}
@@ -1166,7 +1176,7 @@ function update_core( $from, $to ) {
 
 	// Custom content directory needs updating now.
 	// Copy languages.
-	if ( ! is_wp_error( $result ) && $wp_filesystem->is_dir( $from . $distro . 'wp-content/languages' ) ) {
+	if ( ! Load::is_wp_error( $result ) && $wp_filesystem->is_dir( $from . $distro . 'wp-content/languages' ) ) {
 		if ( WP_LANG_DIR != ABSPATH . WPINC . '/languages' || @is_dir( WP_LANG_DIR ) ) {
 			$lang_dir = WP_LANG_DIR;
 		} else {
@@ -1184,7 +1194,7 @@ function update_core( $from, $to ) {
 			$wp_lang_dir = $wp_filesystem->find_folder( $lang_dir );
 			if ( $wp_lang_dir ) {
 				$result = copy_dir( $from . $distro . 'wp-content/languages/', $wp_lang_dir );
-				if ( is_wp_error( $result ) ) {
+				if ( Load::is_wp_error( $result ) ) {
 					$result = new WP_Error( $result->get_error_code() . '_languages', $result->get_error_message(), substr( $result->get_error_data(), strlen( $wp_lang_dir ) ) );
 				}
 			}
@@ -1209,7 +1219,7 @@ function update_core( $from, $to ) {
 	 * future versions of WordPress whilst avoiding the re-install upon upgrade issue.
 	 * $development_build controls us overwriting bundled themes and plugins when a non-stable release is being updated.
 	 */
-	if ( ! is_wp_error( $result ) && ( ! defined( 'CORE_UPGRADE_SKIP_NEW_BUNDLED' ) || ! CORE_UPGRADE_SKIP_NEW_BUNDLED ) ) {
+	if ( ! Load::is_wp_error( $result ) && ( ! defined( 'CORE_UPGRADE_SKIP_NEW_BUNDLED' ) || ! CORE_UPGRADE_SKIP_NEW_BUNDLED ) ) {
 		foreach ( (array) $_new_bundled_files as $file => $introduced_version ) {
 			// If a $development_build or if $introduced version is greater than what the site was previously running.
 			if ( $development_build || version_compare( $introduced_version, $old_wp_version, '>' ) ) {
@@ -1248,8 +1258,8 @@ function update_core( $from, $to ) {
 					$_result = copy_dir( $from . $distro . 'wp-content/' . $file, $dest . $filename );
 
 					// If a error occurs partway through this final step, keep the error flowing through, but keep process going.
-					if ( is_wp_error( $_result ) ) {
-						if ( ! is_wp_error( $result ) ) {
+					if ( Load::is_wp_error( $_result ) ) {
+						if ( ! Load::is_wp_error( $result ) ) {
 							$result = new WP_Error;
 						}
 						$result->add( $_result->get_error_code() . "_$type", $_result->get_error_message(), substr( $_result->get_error_data(), strlen( $dest ) ) );
@@ -1260,8 +1270,9 @@ function update_core( $from, $to ) {
 	}
 
 	// Handle $result error from the above blocks.
-	if ( is_wp_error( $result ) ) {
+	if ( Load::is_wp_error( $result ) ) {
 		$wp_filesystem->delete( $from, true );
+
 		return $result;
 	}
 
@@ -1308,9 +1319,10 @@ function update_core( $from, $to ) {
 	/**
 	 * Fires after WordPress core has been successfully updated.
 	 *
+	 * @param string $wp_version The current WordPress version.
+	 *
 	 * @since 3.3.0
 	 *
-	 * @param string $wp_version The current WordPress version.
 	 */
 	do_action( '_core_updated_successfully', $wp_version );
 
@@ -1333,6 +1345,11 @@ function update_core( $from, $to ) {
  *
  * It was initially added for the 3.1 -> 3.2 upgrade.
  *
+ * @param string $from Source directory.
+ * @param string $to Destination directory.
+ * @param string[] $skip_list Array of files/folders to skip copying.
+ *
+ * @return true|WP_Error True on success, WP_Error on failure.
  * @ignore
  * @since 3.2.0
  * @since 3.7.0 Updated not to use a regular expression for the skip list.
@@ -1342,10 +1359,6 @@ function update_core( $from, $to ) {
  *
  * @global WP_Filesystem_Base $wp_filesystem
  *
- * @param string   $from      Source directory.
- * @param string   $to        Destination directory.
- * @param string[] $skip_list Array of files/folders to skip copying.
- * @return true|WP_Error True on success, WP_Error on failure.
  */
 function _copy_dir( $from, $to, $skip_list = array() ) {
 	global $wp_filesystem;
@@ -1392,11 +1405,12 @@ function _copy_dir( $from, $to, $skip_list = array() ) {
 			}
 
 			$result = _copy_dir( $from . $filename, $to . $filename, $sub_skip_list );
-			if ( is_wp_error( $result ) ) {
+			if ( Load::is_wp_error( $result ) ) {
 				return $result;
 			}
 		}
 	}
+
 	return true;
 }
 
@@ -1405,13 +1419,14 @@ function _copy_dir( $from, $to, $skip_list = array() ) {
  *
  * This function is only needed when the existing installation is older than 3.4.0.
  *
- * @since 3.3.0
+ * @param string $new_version
  *
  * @global string $wp_version The WordPress version string.
  * @global string $pagenow
  * @global string $action
  *
- * @param string $new_version
+ * @since 3.3.0
+ *
  */
 function _redirect_to_about_wordpress( $new_version ) {
 	global $wp_version, $pagenow, $action;
@@ -1438,7 +1453,7 @@ function _redirect_to_about_wordpress( $new_version ) {
 	// self_admin_url() won't exist when upgrading from <= 3.0, so relative URLs are intentional.
 	show_message(
 		'<span class="hide-if-no-js">' . sprintf(
-			/* translators: 1: WordPress version, 2: URL to About screen. */
+		/* translators: 1: WordPress version, 2: URL to About screen. */
 			__( 'Welcome to WordPress %1$s. You will be redirected to the About WordPress screen. If not, click <a href="%2$s">here</a>.' ),
 			$new_version,
 			'about.php?updated'
@@ -1446,7 +1461,7 @@ function _redirect_to_about_wordpress( $new_version ) {
 	);
 	show_message(
 		'<span class="hide-if-js">' . sprintf(
-			/* translators: 1: WordPress version, 2: URL to About screen. */
+		/* translators: 1: WordPress version, 2: URL to About screen. */
 			__( 'Welcome to WordPress %1$s. <a href="%2$s">Learn more</a>.' ),
 			$new_version,
 			'about.php?updated'
@@ -1454,9 +1469,9 @@ function _redirect_to_about_wordpress( $new_version ) {
 	);
 	echo '</div>';
 	?>
-<script type="text/javascript">
-window.location = 'about.php?updated';
-</script>
+    <script type="text/javascript">
+        window.location = 'about.php?updated';
+    </script>
 	<?php
 
 	// Include admin-footer.php and exit.
@@ -1469,7 +1484,7 @@ window.location = 'about.php?updated';
  *
  * @since 4.2.2
  *
- * @global array              $wp_theme_directories
+ * @global array $wp_theme_directories
  * @global WP_Filesystem_Base $wp_filesystem
  */
 function _upgrade_422_remove_genericons() {
@@ -1510,11 +1525,12 @@ function _upgrade_422_remove_genericons() {
 /**
  * Recursively find Genericons example files in a given folder.
  *
+ * @param string $directory Directory path. Expects trailingslashed.
+ *
+ * @return array
  * @ignore
  * @since 4.2.2
  *
- * @param string $directory Directory path. Expects trailingslashed.
- * @return array
  */
 function _upgrade_422_find_genericons_files_in_folder( $directory ) {
 	$directory = trailingslashit( $directory );

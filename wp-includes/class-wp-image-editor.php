@@ -444,7 +444,7 @@ abstract class WP_Image_Editor {
 				// Rotate 90 degrees counter-clockwise and flip vertically.
 				$result = $this->rotate( 90 );
 
-				if ( ! is_wp_error( $result ) ) {
+				if ( ! Load::is_wp_error( $result ) ) {
 					$result = $this->flip( false, true );
 				}
 
@@ -457,7 +457,7 @@ abstract class WP_Image_Editor {
 				// Rotate 90 degrees counter-clockwise and flip horizontally.
 				$result = $this->rotate( 90 );
 
-				if ( ! is_wp_error( $result ) ) {
+				if ( ! Load::is_wp_error( $result ) ) {
 					$result = $this->flip( true, false );
 				}
 

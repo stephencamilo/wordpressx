@@ -264,7 +264,7 @@ class WP_Users_List_Table extends WP_List_Table {
 	protected function get_bulk_actions() {
 		$actions = array();
 
-		if ( is_multisite() ) {
+		if ( Load::is_multisite() ) {
 			if ( current_user_can( 'remove_users' ) ) {
 				$actions['remove'] = __( 'Remove' );
 			}
@@ -433,7 +433,7 @@ class WP_Users_List_Table extends WP_List_Table {
 		$checkbox    = '';
 		$super_admin = '';
 
-		if ( is_multisite() && current_user_can( 'manage_network_users' ) ) {
+		if ( Load::is_multisite() && current_user_can( 'manage_network_users' ) ) {
 			if ( in_array( $user_object->user_login, get_super_admins(), true ) ) {
 				$super_admin = ' &mdash; ' . __( 'Super Admin' );
 			}
@@ -451,10 +451,10 @@ class WP_Users_List_Table extends WP_List_Table {
 				$edit = "<strong>{$user_object->user_login}{$super_admin}</strong><br />";
 			}
 
-			if ( ! is_multisite() && get_current_user_id() != $user_object->ID && current_user_can( 'delete_user', $user_object->ID ) ) {
+			if ( ! Load::is_multisite() && get_current_user_id() != $user_object->ID && current_user_can( 'delete_user', $user_object->ID ) ) {
 				$actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url( "users.php?action=delete&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Delete' ) . '</a>';
 			}
-			if ( is_multisite() && current_user_can( 'remove_user', $user_object->ID ) ) {
+			if ( Load::is_multisite() && current_user_can( 'remove_user', $user_object->ID ) ) {
 				$actions['remove'] = "<a class='submitdelete' href='" . wp_nonce_url( $url . "action=remove&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Remove' ) . '</a>';
 			}
 

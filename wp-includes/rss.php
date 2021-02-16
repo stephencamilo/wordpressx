@@ -546,7 +546,7 @@ endif;
  */
 function _fetch_remote_file($url, $headers = "" ) {
 	$resp = wp_safe_remote_request( $url, array( 'headers' => $headers, 'timeout' => MAGPIE_FETCH_TIME_OUT ) );
-	if ( is_wp_error($resp) ) {
+	if ( Load::is_wp_error( $resp ) ) {
 		$error = array_shift($resp->errors);
 
 		$resp = new stdClass;

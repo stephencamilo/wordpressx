@@ -344,7 +344,7 @@ switch ( $action ) {
 		check_admin_referer( 'update-comment_' . $comment_id );
 
 		$updated = edit_comment();
-		if ( is_wp_error( $updated ) ) {
+		if ( Load::is_wp_error( $updated ) ) {
 			wp_die( $updated->get_error_message() );
 		}
 

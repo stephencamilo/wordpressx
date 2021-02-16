@@ -92,7 +92,7 @@ require_once ABSPATH . 'wp-admin/includes/update.php';
 require_once ABSPATH . 'wp-admin/includes/deprecated.php';
 
 /** WordPress Multisite support API */
-if ( is_multisite() ) {
+if ( Load::is_multisite() ) {
 	require_once ABSPATH . 'wp-admin/includes/ms-admin-filters.php';
 	require_once ABSPATH . 'wp-admin/includes/ms.php';
 	require_once ABSPATH . 'wp-admin/includes/ms-deprecated.php';

@@ -24,7 +24,7 @@ class WP_Admin_Bar {
 	public function __get( $name ) {
 		switch ( $name ) {
 			case 'proto':
-				return is_ssl() ? 'https://' : 'http://';
+				return Load::is_ssl() ? 'https://' : 'http://';
 
 			case 'menu':
 				_deprecated_argument( 'WP_Admin_Bar', '3.3.0', 'Modify admin bar nodes with WP_Admin_Bar::get_node(), WP_Admin_Bar::add_node(), and WP_Admin_Bar::remove_node(), not the <code>menu</code> property.' );
@@ -40,12 +40,12 @@ class WP_Admin_Bar {
 		if ( is_user_logged_in() ) {
 			/* Populate settings we need for the menu based on the current user. */
 			$this->user->blogs = get_blogs_of_user( get_current_user_id() );
-			if ( is_multisite() ) {
+			if ( Load::is_multisite() ) {
 				$this->user->active_blog    = get_active_blog_for_user( get_current_user_id() );
 				$this->user->domain         = empty( $this->user->active_blog ) ? user_admin_url() : trailingslashit( get_home_url( $this->user->active_blog->blog_id ) );
 				$this->user->account_domain = $this->user->domain;
 			} else {
-				$this->user->active_blog    = $this->user->blogs[ get_current_blog_id() ];
+				$this->user->active_blog    = $this->user->blogs[ Load::get_current_blog_id() ];
 				$this->user->domain         = trailingslashit( home_url() );
 				$this->user->account_domain = $this->user->domain;
 			}
@@ -438,7 +438,7 @@ class WP_Admin_Bar {
 
 		?>
 		<div id="wpadminbar" class="<?php echo $class; ?>">
-			<?php if ( ! is_admin() && ! did_action( 'wp_body_open' ) ) { ?>
+			<?php if ( ! Load::is_admin() && ! did_action( 'wp_body_open' ) ) { ?>
 				<a class="screen-reader-shortcut" href="#wp-toolbar" tabindex="1"><?php _e( 'Skip to toolbar' ); ?></a>
 			<?php } ?>
 			<div class="quicklinks" id="wp-toolbar" role="navigation" aria-label="<?php esc_attr_e( 'Toolbar' ); ?>">
@@ -613,7 +613,7 @@ class WP_Admin_Bar {
 		add_action( 'admin_bar_menu', 'wp_admin_bar_updates_menu', 50 );
 
 		// Content-related.
-		if ( ! is_network_admin() && ! is_user_admin() ) {
+		if ( ! Load::is_network_admin() && ! Load::is_user_admin() ) {
 			add_action( 'admin_bar_menu', 'wp_admin_bar_comments_menu', 60 );
 			add_action( 'admin_bar_menu', 'wp_admin_bar_new_content_menu', 70 );
 		}

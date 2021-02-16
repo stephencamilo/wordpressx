@@ -7,6 +7,8 @@
  * @since 4.7.0
  */
 
+use Core\WPIncludes\Load;
+
 /**
  * Core class used for interacting with taxonomies.
  *
@@ -308,7 +310,7 @@ final class WP_Taxonomy {
 			$args['publicly_queryable'] = $args['public'];
 		}
 
-		if ( false !== $args['query_var'] && ( is_admin() || false !== $args['publicly_queryable'] ) ) {
+		if ( false !== $args['query_var'] && ( Load::is_admin() || false !== $args['publicly_queryable'] ) ) {
 			if ( true === $args['query_var'] ) {
 				$args['query_var'] = $this->name;
 			} else {
@@ -319,7 +321,7 @@ final class WP_Taxonomy {
 			$args['query_var'] = false;
 		}
 
-		if ( false !== $args['rewrite'] && ( is_admin() || get_option( 'permalink_structure' ) ) ) {
+		if ( false !== $args['rewrite'] && ( Load::is_admin() || get_option( 'permalink_structure' ) ) ) {
 			$args['rewrite'] = wp_parse_args(
 				$args['rewrite'],
 				array(
@@ -435,7 +437,7 @@ final class WP_Taxonomy {
 			$wp->add_query_var( $this->query_var );
 		}
 
-		if ( false !== $this->rewrite && ( is_admin() || get_option( 'permalink_structure' ) ) ) {
+		if ( false !== $this->rewrite && ( Load::is_admin() || get_option( 'permalink_structure' ) ) ) {
 			if ( $this->hierarchical && $this->rewrite['hierarchical'] ) {
 				$tag = '(.+?)';
 			} else {

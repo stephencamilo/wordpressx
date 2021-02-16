@@ -44,7 +44,7 @@ if ( current_user_can( 'edit_users' ) && ! IS_PROFILE_PAGE ) {
 	$submenu_file = 'profile.php';
 }
 
-if ( current_user_can( 'edit_users' ) && ! is_user_admin() ) {
+if ( current_user_can( 'edit_users' ) && ! Load::is_user_admin() ) {
 	$parent_file = 'users.php';
 } else {
 	$parent_file = 'profile.php';
@@ -89,10 +89,10 @@ $user_can_edit = current_user_can( 'edit_posts' ) || current_user_can( 'edit_pag
  *
  * @param bool $allow Whether to allow editing of any user. Default true.
  */
-if ( is_multisite()
-	&& ! current_user_can( 'manage_network_users' )
-	&& $user_id != $current_user->ID
-	&& ! apply_filters( 'enable_edit_any_user_configuration', true )
+if ( Load::is_multisite()
+     && ! current_user_can( 'manage_network_users' )
+     && $user_id != $current_user->ID
+     && ! apply_filters( 'enable_edit_any_user_configuration', true )
 ) {
 	wp_die( __( 'Sorry, you are not allowed to edit this user.' ) );
 }
@@ -104,7 +104,7 @@ if ( IS_PROFILE_PAGE && isset( $_GET['newuseremail'] ) && $current_user->ID ) {
 		$user             = new stdClass;
 		$user->ID         = $current_user->ID;
 		$user->user_email = esc_html( trim( $new_email['newemail'] ) );
-		if ( is_multisite() && $wpdb->get_var( $wpdb->prepare( "SELECT user_login FROM {$wpdb->signups} WHERE user_login = %s", $current_user->user_login ) ) ) {
+		if ( Load::is_multisite() && $wpdb->get_var( $wpdb->prepare( "SELECT user_login FROM {$wpdb->signups} WHERE user_login = %s", $current_user->user_login ) ) ) {
 			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->signups} SET user_email = %s WHERE user_login = %s", $user->user_email, $current_user->user_login ) );
 		}
 		wp_update_user( $user );
@@ -152,7 +152,7 @@ switch ( $action ) {
 		}
 
 		// Update the email address in signups, if present.
-		if ( is_multisite() ) {
+		if ( Load::is_multisite() ) {
 			$user = get_userdata( $user_id );
 
 			if ( $user->user_login && isset( $_POST['email'] ) && is_email( $_POST['email'] ) && $wpdb->get_var( $wpdb->prepare( "SELECT user_login FROM {$wpdb->signups} WHERE user_login = %s", $user->user_login ) ) ) {
@@ -164,11 +164,11 @@ switch ( $action ) {
 		$errors = edit_user( $user_id );
 
 		// Grant or revoke super admin status if requested.
-		if ( is_multisite() && is_network_admin() && ! IS_PROFILE_PAGE && current_user_can( 'manage_network_options' ) && ! isset( $super_admins ) && empty( $_POST['super_admin'] ) == is_super_admin( $user_id ) ) {
+		if ( Load::is_multisite() && Load::is_network_admin() && ! IS_PROFILE_PAGE && current_user_can( 'manage_network_options' ) && ! isset( $super_admins ) && empty( $_POST['super_admin'] ) == is_super_admin( $user_id ) ) {
 			empty( $_POST['super_admin'] ) ? revoke_super_admin( $user_id ) : grant_super_admin( $user_id );
 		}
 
-		if ( ! is_wp_error( $errors ) ) {
+		if ( ! Load::is_wp_error( $errors ) ) {
 			$redirect = add_query_arg( 'updated', true, get_edit_user_link( $user_id ) );
 			if ( $wp_http_referer ) {
 				$redirect = add_query_arg( 'wp_http_referer', urlencode( $wp_http_referer ), $redirect );
@@ -213,7 +213,7 @@ switch ( $action ) {
 	<?php endif; ?>
 </div>
 		<?php endif; ?>
-		<?php if ( isset( $errors ) && is_wp_error( $errors ) ) : ?>
+		<?php if ( isset( $errors ) && Load::is_wp_error( $errors ) ) : ?>
 <div class="error"><p><?php echo implode( "</p>\n<p>", $errors->get_error_messages() ); ?></p></div>
 		<?php endif; ?>
 
@@ -229,7 +229,7 @@ switch ( $action ) {
 			if ( current_user_can( 'create_users' ) ) {
 				?>
 		<a href="user-new.php" class="page-title-action"><?php echo esc_html_x( 'Add New', 'user' ); ?></a>
-	<?php } elseif ( is_multisite() && current_user_can( 'promote_users' ) ) { ?>
+	<?php } elseif ( Load::is_multisite() && current_user_can( 'promote_users' ) ) { ?>
 		<a href="user-new.php" class="page-title-action"><?php echo esc_html_x( 'Add Existing', 'user' ); ?></a>
 				<?php
 	}
@@ -410,7 +410,7 @@ endif;
 		<td><input type="text" name="user_login" id="user_login" value="<?php echo esc_attr( $profileuser->user_login ); ?>" disabled="disabled" class="regular-text" /> <span class="description"><?php _e( 'Usernames cannot be changed.' ); ?></span></td>
 	</tr>
 
-		<?php if ( ! IS_PROFILE_PAGE && ! is_network_admin() && current_user_can( 'promote_user', $profileuser->ID ) ) : ?>
+		<?php if ( ! IS_PROFILE_PAGE && ! Load::is_network_admin() && current_user_can( 'promote_user', $profileuser->ID ) ) : ?>
 <tr class="user-role-wrap"><th><label for="role"><?php _e( 'Role' ); ?></label></th>
 <td><select name="role" id="role">
 			<?php
@@ -432,7 +432,7 @@ endif;
 			<?php
 		endif; // End if ! IS_PROFILE_PAGE.
 
-		if ( is_multisite() && is_network_admin() && ! IS_PROFILE_PAGE && current_user_can( 'manage_network_options' ) && ! isset( $super_admins ) ) {
+		if ( Load::is_multisite() && Load::is_network_admin() && ! IS_PROFILE_PAGE && current_user_can( 'manage_network_options' ) && ! isset( $super_admins ) ) {
 			?>
 <tr class="user-super-admin-wrap"><th><?php _e( 'Super Admin' ); ?></th>
 <td>
@@ -716,7 +716,7 @@ endif;
 		<h2><?php _e( 'Application Passwords' ); ?></h2>
 		<p><?php _e( 'Application passwords allow authentication via non-interactive systems, such as XML-RPC or the REST API, without providing your actual password. Application passwords can be easily revoked. They cannot be used for traditional logins to your website.' ); ?></p>
 			<?php
-			if ( is_multisite() ) {
+			if ( Load::is_multisite() ) {
 				$blogs       = get_blogs_of_user( $user_id, true );
 				$blogs_count = count( $blogs );
 				if ( $blogs_count > 1 ) {

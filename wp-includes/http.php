@@ -208,7 +208,7 @@ function wp_remote_head( $url, $args = array() ) {
  * @return array|\Requests_Utility_CaseInsensitiveDictionary The headers of the response. Empty array if incorrect parameter given.
  */
 function wp_remote_retrieve_headers( $response ) {
-	if ( is_wp_error( $response ) || ! isset( $response['headers'] ) ) {
+	if ( Load::is_wp_error( $response ) || ! isset( $response['headers'] ) ) {
 		return array();
 	}
 
@@ -225,7 +225,7 @@ function wp_remote_retrieve_headers( $response ) {
  * @return string The header value. Empty string on if incorrect parameter given, or if the header doesn't exist.
  */
 function wp_remote_retrieve_header( $response, $header ) {
-	if ( is_wp_error( $response ) || ! isset( $response['headers'] ) ) {
+	if ( Load::is_wp_error( $response ) || ! isset( $response['headers'] ) ) {
 		return '';
 	}
 
@@ -247,7 +247,7 @@ function wp_remote_retrieve_header( $response, $header ) {
  * @return int|string The response code as an integer. Empty string on incorrect parameter given.
  */
 function wp_remote_retrieve_response_code( $response ) {
-	if ( is_wp_error( $response ) || ! isset( $response['response'] ) || ! is_array( $response['response'] ) ) {
+	if ( Load::is_wp_error( $response ) || ! isset( $response['response'] ) || ! is_array( $response['response'] ) ) {
 		return '';
 	}
 
@@ -265,7 +265,7 @@ function wp_remote_retrieve_response_code( $response ) {
  * @return string The response message. Empty string on incorrect parameter given.
  */
 function wp_remote_retrieve_response_message( $response ) {
-	if ( is_wp_error( $response ) || ! isset( $response['response'] ) || ! is_array( $response['response'] ) ) {
+	if ( Load::is_wp_error( $response ) || ! isset( $response['response'] ) || ! is_array( $response['response'] ) ) {
 		return '';
 	}
 
@@ -281,7 +281,7 @@ function wp_remote_retrieve_response_message( $response ) {
  * @return string The body of the response. Empty string if no body or incorrect parameter given.
  */
 function wp_remote_retrieve_body( $response ) {
-	if ( is_wp_error( $response ) || ! isset( $response['body'] ) ) {
+	if ( Load::is_wp_error( $response ) || ! isset( $response['body'] ) ) {
 		return '';
 	}
 
@@ -297,7 +297,7 @@ function wp_remote_retrieve_body( $response ) {
  * @return WP_Http_Cookie[] An array of `WP_Http_Cookie` objects from the response. Empty array if there are none, or the response is a WP_Error.
  */
 function wp_remote_retrieve_cookies( $response ) {
-	if ( is_wp_error( $response ) || empty( $response['cookies'] ) ) {
+	if ( Load::is_wp_error( $response ) || empty( $response['cookies'] ) ) {
 		return array();
 	}
 
@@ -618,7 +618,7 @@ function allowed_http_request_hosts( $is_external, $host ) {
  *
  * @since 3.6.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param bool   $is_external
  * @param string $host

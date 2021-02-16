@@ -9,7 +9,7 @@
 /** WordPress Administration Bootstrap */
 require_once __DIR__ . '/admin.php';
 
-if ( is_multisite() && ! is_network_admin() ) {
+if ( Load::is_multisite() && ! Load::is_network_admin() ) {
 	wp_redirect( network_admin_url( 'plugin-editor.php' ) );
 	exit;
 }
@@ -82,7 +82,7 @@ $posted_content = null;
 
 if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 	$r = wp_edit_theme_plugin_file( wp_unslash( $_POST ) );
-	if ( is_wp_error( $r ) ) {
+	if ( Load::is_wp_error( $r ) ) {
 		$edit_error = $r;
 		if ( check_ajax_referer( 'edit-plugin_' . $file, 'nonce', false ) && isset( $_POST['newcontent'] ) ) {
 			$posted_content = wp_unslash( $_POST['newcontent'] );
@@ -133,7 +133,7 @@ get_current_screen()->add_help_tab(
 				'<li id="editor-keyboard-trap-help-4">' . __( 'Screen reader users: when in forms mode, you may need to press the Esc key twice.' ) . '</li>' .
 				'</ul>' .
 				'<p>' . __( 'If you want to make changes but don&#8217;t want them to be overwritten when the plugin is updated, you may be ready to think about writing your own plugin. For information on how to edit plugins, write your own from scratch, or just better understand their anatomy, check out the links below.' ) . '</p>' .
-				( is_network_admin() ? '<p>' . __( 'Any edits to files from this screen will be reflected on all sites in the network.' ) . '</p>' : '' ),
+				( Load::is_network_admin() ? '<p>' . __( 'Any edits to files from this screen will be reflected on all sites in the network.' ) . '</p>' : '' ),
 	)
 );
 
@@ -183,7 +183,7 @@ $content = esc_textarea( $content );
 	<div id="message" class="updated notice is-dismissible">
 		<p><?php _e( 'File edited successfully.' ); ?></p>
 	</div>
-<?php elseif ( is_wp_error( $edit_error ) ) : ?>
+<?php elseif ( Load::is_wp_error( $edit_error ) ) : ?>
 	<div id="message" class="notice notice-error">
 		<p><?php _e( 'There was an error while trying to update the file. You may need to fix something and try updating again.' ); ?></p>
 		<pre><?php echo esc_html( $edit_error->get_error_message() ? $edit_error->get_error_message() : $edit_error->get_error_code() ); ?></pre>

@@ -1958,14 +1958,15 @@ function get_post_types_by_support( $feature, $operator = 'and' ) {
  *
  * The page or post cache will be cleaned for the post ID.
  *
- * @since 2.5.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int    $post_id   Optional. Post ID to change post type. Default 0.
  * @param string $post_type Optional. Post type. Accepts 'post' or 'page' to
  *                          name a few. Default 'post'.
+ *
  * @return int|false Amount of rows changed. Should be 1 for success and 0 for failure.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 2.5.0
+ *
  */
 function set_post_type( $post_id = 0, $post_type = 'post' ) {
 	global $wpdb;
@@ -2642,13 +2643,14 @@ function _count_posts_cache_key( $type = 'post', $perm = '' ) {
  * The $perm parameter checks for 'readable' value and if the user can read
  * private posts, it will display that for the user that is signed in.
  *
- * @since 2.5.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string $type Optional. Post type to retrieve count. Default 'post'.
  * @param string $perm Optional. 'readable' or empty. Default empty.
+ *
  * @return object Number of posts for each status.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 2.5.0
+ *
  */
 function wp_count_posts( $type = 'post', $perm = '' ) {
 	global $wpdb;
@@ -2718,13 +2720,14 @@ function wp_count_posts( $type = 'post', $perm = '' ) {
  * you the number of attachments that are children of a post. You can get that
  * by counting the number of children that post has.
  *
- * @since 2.5.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string|array $mime_type Optional. Array or comma-separated list of
  *                                MIME patterns. Default empty.
+ *
  * @return object An object containing the attachment counts by mime type.
+ *@since 2.5.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function wp_count_attachments( $mime_type = '' ) {
 	global $wpdb;
@@ -2980,16 +2983,17 @@ function wp_post_mime_type_where( $post_mime_types, $table_alias = '' ) {
  * The post or page is moved to Trash instead of permanently deleted unless
  * Trash is disabled, item is already in the Trash, or $force_delete is true.
  *
- * @since 1.0.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- * @see wp_delete_attachment()
- * @see wp_trash_post()
- *
- * @param int  $postid       Optional. Post ID. Default 0.
+ * @param int  $postid Optional. Post ID. Default 0.
  * @param bool $force_delete Optional. Whether to bypass Trash and force deletion.
  *                           Default false.
+ *
  * @return WP_Post|false|null Post data on success, false or null on failure.
+ *@see wp_trash_post()
+ *
+ * @since 1.0.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ * @see wp_delete_attachment()
  */
 function wp_delete_post( $postid = 0, $force_delete = false ) {
 	global $wpdb;
@@ -3344,12 +3348,13 @@ function wp_untrash_post( $post_id = 0 ) {
 /**
  * Moves comments for a post to the Trash.
  *
- * @since 2.9.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int|WP_Post|null $post Optional. Post ID or post object. Defaults to global $post.
+ *
  * @return mixed|void False on failure.
+ *@since 2.9.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function wp_trash_post_comments( $post = null ) {
 	global $wpdb;
@@ -3405,12 +3410,13 @@ function wp_trash_post_comments( $post = null ) {
 /**
  * Restore comments for a post from the Trash.
  *
- * @since 2.9.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int|WP_Post|null $post Optional. Post ID or post object. Defaults to global $post.
+ *
  * @return true|void
+ *@since 2.9.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function wp_untrash_post_comments( $post = null ) {
 	global $wpdb;
@@ -3606,15 +3612,6 @@ function wp_get_recent_posts( $args = array(), $output = ARRAY_A ) {
  * and 'post_date_gmt' keys. You can close the comments or open the comments by
  * setting the value for 'comment_status' key.
  *
- * @since 1.0.0
- * @since 2.6.0 Added the `$wp_error` parameter to allow a WP_Error to be returned on failure.
- * @since 4.2.0 Support was added for encoding emoji in the post title, content, and excerpt.
- * @since 4.4.0 A 'meta_input' array can now be passed to `$postarr` to add post meta data.
- * @since 5.6.0 Added the `$fire_after_hooks` parameter.
- *
- * @see sanitize_post()
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param array $postarr {
  *     An array of elements that make up a post to update or insert.
  *
@@ -3656,9 +3653,20 @@ function wp_get_recent_posts( $args = array(), $output = ARRAY_A ) {
  *     @type array  $tax_input             Array of taxonomy terms keyed by their taxonomy name. Default empty.
  *     @type array  $meta_input            Array of post meta values keyed by their post meta key. Default empty.
  * }
+ *
  * @param bool  $wp_error         Optional. Whether to return a WP_Error on failure. Default false.
  * @param bool  $fire_after_hooks Optional. Whether to fire the after insert hooks. Default true.
+ *
  * @return int|WP_Error The post ID on success. The value 0 or WP_Error on failure.
+ *@since 1.0.0
+ * @since 2.6.0 Added the `$wp_error` parameter to allow a WP_Error to be returned on failure.
+ * @since 4.2.0 Support was added for encoding emoji in the post title, content, and excerpt.
+ * @since 4.4.0 A 'meta_input' array can now be passed to `$postarr` to add post meta data.
+ * @since 5.6.0 Added the `$fire_after_hooks` parameter.
+ *
+ * @see sanitize_post()
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function wp_insert_post( $postarr, $wp_error = false, $fire_after_hooks = true ) {
 	global $wpdb;
@@ -4399,7 +4407,7 @@ function wp_update_post( $postarr = array(), $wp_error = false, $fire_after_hook
 		$tags      = get_the_terms( $postarr['ID'], 'post_tag' );
 		$tag_names = array();
 
-		if ( $tags && ! is_wp_error( $tags ) ) {
+		if ( $tags && ! Load::is_wp_error( $tags ) ) {
 			$tag_names = wp_list_pluck( $tags, 'name' );
 		}
 
@@ -4414,11 +4422,12 @@ function wp_update_post( $postarr = array(), $wp_error = false, $fire_after_hook
 /**
  * Publish a post by transitioning the post status.
  *
+ * @param int|WP_Post $post Post ID or post object.
+ *
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
  * @since 2.1.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param int|WP_Post $post Post ID or post object.
  */
 function wp_publish_post( $post ) {
 	global $wpdb;
@@ -4525,17 +4534,18 @@ function check_and_publish_future_post( $post_id ) {
 /**
  * Computes a unique slug for the post, when given the desired slug and some post details.
  *
- * @since 2.8.0
- *
- * @global wpdb       $wpdb       WordPress database abstraction object.
- * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
- *
  * @param string $slug        The desired slug (post_name).
  * @param int    $post_ID     Post ID.
  * @param string $post_status No uniqueness checks are made if the post is still draft or pending.
  * @param string $post_type   Post type.
  * @param int    $post_parent Post parent ID.
+ *
  * @return string Unique slug for the post, based on $post_name (with a -1, -2, etc. suffix)
+ *@since 2.8.0
+ *
+ * @global WPDB       $wpdb       WordPress database abstraction object.
+ * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
+ *
  */
 function wp_unique_post_slug( $slug, $post_ID, $post_status, $post_type, $post_parent ) {
 	if ( in_array( $post_status, array( 'draft', 'pending', 'auto-draft' ), true )
@@ -4974,15 +4984,16 @@ function wp_after_insert_post( $post, $update, $post_before ) {
 /**
  * Add a URL to those already pinged.
  *
+ * @param int|WP_Post  $post_id Post object or ID.
+ * @param string|array $uri     Ping URI or array of URIs.
+ *
+ * @return int|false How many rows were updated.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
  * @since 1.5.0
  * @since 4.7.0 `$post_id` can be a WP_Post object.
  * @since 4.7.0 `$uri` can be an array of URIs.
  *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param int|WP_Post  $post_id Post object or ID.
- * @param string|array $uri     Ping URI or array of URIs.
- * @return int|false How many rows were updated.
  */
 function add_ping( $post_id, $uri ) {
 	global $wpdb;
@@ -5147,11 +5158,11 @@ function trackback_url_list( $tb_list, $post_id ) {
 /**
  * Get a list of page IDs.
  *
+ * @return string[] List of page IDs as strings.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
  * @since 2.0.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @return string[] List of page IDs as strings.
  */
 function get_all_page_ids() {
 	global $wpdb;
@@ -5188,16 +5199,17 @@ function get_page( $page, $output = OBJECT, $filter = 'raw' ) {
 /**
  * Retrieves a page given its path.
  *
- * @since 2.1.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string       $page_path Page path.
  * @param string       $output    Optional. The required return type. One of OBJECT, ARRAY_A, or ARRAY_N, which
  *                                correspond to a WP_Post object, an associative array, or a numeric array,
  *                                respectively. Default OBJECT.
  * @param string|array $post_type Optional. Post type or array of post types. Default 'page'.
+ *
  * @return WP_Post|array|null WP_Post (or array) on success, or null on failure.
+ *@since 2.1.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function get_page_by_path( $page_path, $output = OBJECT, $post_type = 'page' ) {
 	global $wpdb;
@@ -5290,17 +5302,18 @@ function get_page_by_path( $page_path, $output = OBJECT, $post_type = 'page' ) {
  * Because this function uses the MySQL '=' comparison, $page_title will usually be matched
  * as case-insensitive with default collation.
  *
- * @since 2.1.0
- * @since 3.0.0 The `$post_type` parameter was added.
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string       $page_title Page title.
- * @param string       $output     Optional. The required return type. One of OBJECT, ARRAY_A, or ARRAY_N, which
+ * @param string $output     Optional. The required return type. One of OBJECT, ARRAY_A, or ARRAY_N, which
  *                                 correspond to a WP_Post object, an associative array, or a numeric array,
  *                                 respectively. Default OBJECT.
  * @param string|array $post_type  Optional. Post type or array of post types. Default 'page'.
+ *
  * @return WP_Post|array|null WP_Post (or array) on success, or null on failure.
+ *@since 3.0.0 The `$post_type` parameter was added.
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 2.1.0
  */
 function get_page_by_title( $page_title, $output = OBJECT, $post_type = 'page' ) {
 	global $wpdb;
@@ -5472,10 +5485,6 @@ function get_page_uri( $page = 0 ) {
 /**
  * Retrieve an array of pages (or hierarchical post type items).
  *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @since 1.5.0
- *
  * @param array|string $args {
  *     Optional. Array or string of arguments to retrieve pages.
  *
@@ -5510,6 +5519,10 @@ function get_page_uri( $page = 0 ) {
  *                                      Default 'publish'.
  * }
  * @return array|false Array of pages matching defaults or `$args`.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 1.5.0
+ *
  */
 function get_pages( $args = array() ) {
 	global $wpdb;
@@ -5875,14 +5888,15 @@ function wp_insert_attachment( $args, $file = false, $parent = 0, $wp_error = fa
  * The attachment is moved to the Trash instead of permanently deleted unless Trash
  * for media is disabled, item is already in the Trash, or $force_delete is true.
  *
- * @since 2.0.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int  $post_id      Attachment ID.
  * @param bool $force_delete Optional. Whether to bypass Trash and force deletion.
  *                           Default false.
+ *
  * @return WP_Post|false|null Post data on success, false or null on failure.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 2.0.0
+ *
  */
 function wp_delete_attachment( $post_id, $force_delete = false ) {
 	global $wpdb;
@@ -5924,7 +5938,7 @@ function wp_delete_attachment( $post_id, $force_delete = false ) {
 	$backup_sizes = get_post_meta( $post->ID, '_wp_attachment_backup_sizes', true );
 	$file         = get_attached_file( $post_id );
 
-	if ( is_multisite() ) {
+	if ( Load::is_multisite() ) {
 		clean_dirsize_cache( $file );
 	}
 
@@ -5978,15 +5992,16 @@ function wp_delete_attachment( $post_id, $force_delete = false ) {
 /**
  * Deletes all files that belong to the given attachment.
  *
- * @since 4.9.7
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int    $post_id      Attachment ID.
  * @param array  $meta         The attachment's meta data.
  * @param array  $backup_sizes The meta data for the attachment's backup images.
  * @param string $file         Absolute path to the attachment's file.
+ *
  * @return bool True on success, false on failure.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 4.9.7
+ *
  */
 function wp_delete_attachment_files( $post_id, $meta, $backup_sizes, $file ) {
 	global $wpdb;
@@ -6196,7 +6211,7 @@ function wp_get_attachment_url( $attachment_id = 0 ) {
 	}
 
 	// On SSL front end, URLs should be HTTPS.
-	if ( is_ssl() && ! is_admin() && 'wp-login.php' !== $GLOBALS['pagenow'] ) {
+	if ( Load::is_ssl() && ! Load::is_admin() && 'wp-login.php' !== $GLOBALS['pagenow'] ) {
 		$url = set_url_scheme( $url );
 	}
 
@@ -6654,19 +6669,20 @@ function get_private_posts_cap_sql( $post_type ) {
 /**
  * Retrieve the post SQL based on capability, author, and type.
  *
- * @since 3.0.0
- * @since 4.3.0 Introduced the ability to pass an array of post types to `$post_type`.
- *
- * @see get_private_posts_cap_sql()
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string|string[] $post_type   Single post type or an array of post types.
  * @param bool            $full        Optional. Returns a full WHERE statement instead of just
  *                                     an 'andalso' term. Default true.
  * @param int             $post_author Optional. Query posts having a single author ID. Default null.
  * @param bool            $public_only Optional. Only return public posts. Skips cap checks for
  *                                     $current_user.  Default false.
+ *
  * @return string SQL WHERE code that can be added to a query.
+ *@since 4.3.0 Introduced the ability to pass an array of post types to `$post_type`.
+ *
+ * @see get_private_posts_cap_sql()
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 3.0.0
  */
 function get_posts_by_author_sql( $post_type, $full = true, $post_author = null, $public_only = false ) {
 	global $wpdb;
@@ -6831,17 +6847,18 @@ function get_lastpostmodified( $timezone = 'server', $post_type = 'any' ) {
 /**
  * Gets the timestamp of the last time any post was modified or published.
  *
- * @since 3.1.0
- * @since 4.4.0 The `$post_type` argument was added.
- * @access private
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string $timezone  The timezone for the timestamp. See get_lastpostdate().
  *                          for information on accepted values.
  * @param string $field     Post field to check. Accepts 'date' or 'modified'.
  * @param string $post_type Optional. The post type to check. Default 'any'.
+ *
  * @return string|false The timestamp in 'Y-m-d H:i:s' format, or false on failure.
+ *@since 4.4.0 The `$post_type` argument was added.
+ * @access private
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 3.1.0
  */
 function _get_last_post_time( $timezone, $field, $post_type = 'any' ) {
 	global $wpdb;
@@ -7085,15 +7102,16 @@ function clean_attachment_cache( $id, $clean_terms = false ) {
 /**
  * Hook for managing future post transitions to published.
  *
- * @since 2.3.0
- * @access private
- *
- * @see wp_clear_scheduled_hook()
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string  $new_status New post status.
  * @param string  $old_status Previous post status.
  * @param WP_Post $post       Post object.
+ *
+ *@since 2.3.0
+ * @access private
+ *
+ * @see wp_clear_scheduled_hook()
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function _transition_post_status( $new_status, $old_status, $post ) {
 	global $wpdb;
@@ -7203,7 +7221,7 @@ function _publish_post_hook( $post_id ) {
  */
 function wp_get_post_parent_id( $post ) {
 	$post = get_post( $post );
-	if ( ! $post || is_wp_error( $post ) ) {
+	if ( ! $post || Load::is_wp_error( $post ) ) {
 		return false;
 	}
 	return (int) $post->post_parent;
@@ -7306,7 +7324,7 @@ function delete_post_thumbnail( $post ) {
  *
  * @since 3.4.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  */
 function wp_delete_auto_drafts() {
 	global $wpdb;
@@ -7381,16 +7399,17 @@ function _update_term_count_on_transition_post_status( $new_status, $old_status,
 /**
  * Adds any posts from the given IDs to the cache that do not already exist in cache
  *
- * @since 3.4.0
+ * @param array $ids               ID list.
+ * @param bool  $update_term_cache Optional. Whether to update the term cache. Default true.
+ * @param bool  $update_meta_cache Optional. Whether to update the meta cache. Default true.
+ *
+ *@since 3.4.0
  * @access private
  *
  * @see update_post_caches()
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
- * @param array $ids               ID list.
- * @param bool  $update_term_cache Optional. Whether to update the term cache. Default true.
- * @param bool  $update_meta_cache Optional. Whether to update the meta cache. Default true.
  */
 function _prime_post_caches( $ids, $update_term_cache = true, $update_meta_cache = true ) {
 	global $wpdb;
@@ -7467,14 +7486,15 @@ function wp_add_trashed_suffix_to_post_name_for_post( $post ) {
 /**
  * Filters the SQL clauses of an attachment query to include filenames.
  *
- * @since 4.7.0
- * @access private
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string[] $clauses An array including WHERE, GROUP BY, JOIN, ORDER BY,
  *                          DISTINCT, fields (SELECT), and LIMITS clauses.
+ *
  * @return string[] The modified array of clauses.
+ *@since 4.7.0
+ * @access private
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function _filter_query_attachment_filenames( $clauses ) {
 	global $wpdb;
@@ -7506,12 +7526,13 @@ function wp_cache_set_posts_last_changed() {
 /**
  * Get all available post MIME types for a given post type.
  *
- * @since 2.5.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string $type
+ *
  * @return mixed
+ *@since 2.5.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function get_available_post_mime_types( $type = 'attachment' ) {
 	global $wpdb;

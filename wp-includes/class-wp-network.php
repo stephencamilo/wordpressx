@@ -86,7 +86,7 @@ class WP_Network {
 	 *
 	 * @since 4.4.0
 	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
+	 * @global WPDB $wpdb WordPress database abstraction object.
 	 *
 	 * @param int $network_id The ID of the network to retrieve.
 	 * @return WP_Network|bool The network's object if found. False if not.
@@ -104,7 +104,7 @@ class WP_Network {
 		if ( false === $_network ) {
 			$_network = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->site} WHERE id = %d LIMIT 1", $network_id ) );
 
-			if ( empty( $_network ) || is_wp_error( $_network ) ) {
+			if ( empty( $_network ) || Load::is_wp_error( $_network ) ) {
 				$_network = -1;
 			}
 
@@ -352,7 +352,7 @@ class WP_Network {
 		 * drawbacks depending on the setup, so this is best done per-installation.
 		 */
 		$using_paths = true;
-		if ( wp_using_ext_object_cache() ) {
+		if ( Load::wp_using_ext_object_cache() ) {
 			$using_paths = wp_cache_get( 'networks_have_paths', 'site-options' );
 			if ( false === $using_paths ) {
 				$using_paths = get_networks(

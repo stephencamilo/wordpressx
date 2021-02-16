@@ -211,7 +211,7 @@ class WP_Customize_Nav_Menu_Item_Setting extends WP_Customize_Setting {
 	 * @return array|false Instance data array, or false if the item is marked for deletion.
 	 */
 	public function value() {
-		if ( $this->is_previewed && get_current_blog_id() === $this->_previewed_blog_id ) {
+		if ( $this->is_previewed && Load::get_current_blog_id() === $this->_previewed_blog_id ) {
 			$undefined  = new stdClass(); // Symbol.
 			$post_value = $this->post_value( $undefined );
 
@@ -280,7 +280,7 @@ class WP_Customize_Nav_Menu_Item_Setting extends WP_Customize_Setting {
 			}
 		} elseif ( 'taxonomy' === $item->type && ! empty( $item->object_id ) ) {
 			$original_term_title = get_term_field( 'name', $item->object_id, $item->object, 'raw' );
-			if ( ! is_wp_error( $original_term_title ) ) {
+			if ( ! Load::is_wp_error( $original_term_title ) ) {
 				$original_title = $original_term_title;
 			}
 		} elseif ( 'post_type_archive' === $item->type ) {
@@ -449,7 +449,7 @@ class WP_Customize_Nav_Menu_Item_Setting extends WP_Customize_Setting {
 		$this->is_previewed              = true;
 		$this->_original_value           = $this->value();
 		$this->original_nav_menu_term_id = $this->_original_value['nav_menu_term_id'];
-		$this->_previewed_blog_id        = get_current_blog_id();
+		$this->_previewed_blog_id        = Load::get_current_blog_id();
 
 		add_filter( 'wp_get_nav_menu_items', array( $this, 'filter_wp_get_nav_menu_items' ), 10, 3 );
 
@@ -556,7 +556,7 @@ class WP_Customize_Nav_Menu_Item_Setting extends WP_Customize_Setting {
 		unset( $args['include'] );
 
 		// Remove invalid items only in front end.
-		if ( ! is_admin() ) {
+		if ( ! Load::is_admin() ) {
 			$items = array_filter( $items, '_is_valid_nav_menu_item' );
 		}
 
@@ -630,7 +630,7 @@ class WP_Customize_Nav_Menu_Item_Setting extends WP_Customize_Setting {
 		} elseif ( 'post_type_archive' === $post->type && ! empty( $post->object ) ) {
 			$post->url = get_post_type_archive_link( $post->object );
 		}
-		if ( is_wp_error( $post->url ) ) {
+		if ( Load::is_wp_error( $post->url ) ) {
 			$post->url = '';
 		}
 
@@ -861,7 +861,7 @@ class WP_Customize_Nav_Menu_Item_Setting extends WP_Customize_Setting {
 				wp_slash( $menu_item_data )
 			);
 
-			if ( is_wp_error( $r ) ) {
+			if ( Load::is_wp_error( $r ) ) {
 				$this->update_status = 'error';
 				$this->update_error  = $r;
 			} else {

@@ -291,7 +291,7 @@ abstract class WP_Widget_Media extends WP_Widget {
 			$value = rest_sanitize_value_from_schema( $value, $field_schema );
 
 			// @codeCoverageIgnoreStart
-			if ( is_wp_error( $value ) ) {
+			if ( Load::is_wp_error( $value ) ) {
 				continue; // Handle case when rest_sanitize_value_from_schema() ever returns WP_Error as its phpdoc @return tag indicates.
 			}
 
@@ -299,7 +299,7 @@ abstract class WP_Widget_Media extends WP_Widget {
 			if ( isset( $field_schema['sanitize_callback'] ) ) {
 				$value = call_user_func( $field_schema['sanitize_callback'], $value );
 			}
-			if ( is_wp_error( $value ) ) {
+			if ( Load::is_wp_error( $value ) ) {
 				continue;
 			}
 			$instance[ $field ] = $value;

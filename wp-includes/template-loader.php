@@ -4,7 +4,7 @@
  *
  * @package WordPress
  */
-if ( wp_using_themes() ) {
+if ( Load::wp_using_themes() ) {
 	/**
 	 * Fires before determining which template to load.
 	 *
@@ -52,7 +52,7 @@ if ( is_robots() ) {
 	return;
 }
 
-if ( wp_using_themes() ) {
+if ( Load::wp_using_themes() ) {
 
 	$tag_templates = array(
 		'is_embed'             => 'get_embed_template',

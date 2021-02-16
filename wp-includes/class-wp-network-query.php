@@ -316,11 +316,11 @@ class WP_Network_Query {
 	/**
 	 * Used internally to get a list of network IDs matching the query vars.
 	 *
+	 * @return int|array A single count of network IDs if a count query. An array of network IDs if a full query.
+	 *@global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 * @since 4.6.0
 	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
-	 * @return int|array A single count of network IDs if a count query. An array of network IDs if a full query.
 	 */
 	protected function get_network_ids() {
 		global $wpdb;
@@ -497,7 +497,7 @@ class WP_Network_Query {
 	 *
 	 * @since 4.6.0
 	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
+	 * @global WPDB $wpdb WordPress database abstraction object.
 	 */
 	private function set_found_networks() {
 		global $wpdb;
@@ -520,13 +520,14 @@ class WP_Network_Query {
 	/**
 	 * Used internally to generate an SQL string for searching across multiple columns.
 	 *
-	 * @since 4.6.0
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
 	 * @param string   $string  Search string.
 	 * @param string[] $columns Array of columns to search.
+	 *
 	 * @return string Search SQL.
+	 *@global WPDB $wpdb WordPress database abstraction object.
+	 *
+	 * @since 4.6.0
+	 *
 	 */
 	protected function get_search_sql( $string, $columns ) {
 		global $wpdb;
@@ -544,12 +545,13 @@ class WP_Network_Query {
 	/**
 	 * Parses and sanitizes 'orderby' keys passed to the network query.
 	 *
-	 * @since 4.6.0
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
 	 * @param string $orderby Alias for the field to order by.
+	 *
 	 * @return string|false Value to used in the ORDER clause. False otherwise.
+	 *@since 4.6.0
+	 *
+	 * @global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 */
 	protected function parse_orderby( $orderby ) {
 		global $wpdb;

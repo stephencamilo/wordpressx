@@ -1,4 +1,6 @@
 <?php
+
+use Core\WPIncludes\Load;
 /**
  * Theme, template, and stylesheet functions.
  *
@@ -61,7 +63,7 @@ function wp_get_themes( $args = array() ) {
 		return array();
 	}
 
-	if ( is_multisite() && null !== $args['allowed'] ) {
+	if ( Load::is_multisite() && null !== $args['allowed'] ) {
 		$allowed = $args['allowed'];
 		if ( 'network' === $allowed ) {
 			$theme_directories = array_intersect_key( $theme_directories, WP_Theme::get_allowed_on_network() );
@@ -740,7 +742,7 @@ function switch_theme( $stylesheet ) {
 	global $wp_theme_directories, $wp_customize, $sidebars_widgets;
 
 	$requirements = validate_theme_requirements( $stylesheet );
-	if ( is_wp_error( $requirements ) ) {
+	if ( Load::is_wp_error( $requirements ) ) {
 		wp_die( $requirements );
 	}
 
@@ -775,7 +777,7 @@ function switch_theme( $stylesheet ) {
 	$new_theme = wp_get_theme( $stylesheet );
 	$template  = $new_theme->get_template();
 
-	if ( wp_is_recovery_mode() ) {
+	if ( Load::wp_is_recovery_mode() ) {
 		$paused_themes = wp_paused_themes();
 		$paused_themes->delete( $old_theme->get_stylesheet() );
 		$paused_themes->delete( $old_theme->get_template() );
@@ -797,7 +799,7 @@ function switch_theme( $stylesheet ) {
 	update_option( 'current_theme', $new_name );
 
 	// Migrate from the old mods_{name} option to theme_mods_{slug}.
-	if ( is_admin() && false === get_option( 'theme_mods_' . $stylesheet ) ) {
+	if ( Load::is_admin() && false === get_option( 'theme_mods_' . $stylesheet ) ) {
 		$default_theme_mods = (array) get_option( 'mods_' . $new_name );
 		if ( ! empty( $nav_menu_locations ) && empty( $default_theme_mods['nav_menu_locations'] ) ) {
 			$default_theme_mods['nav_menu_locations'] = $nav_menu_locations;
@@ -853,7 +855,7 @@ function validate_current_theme() {
 	 *
 	 * @param bool $validate Whether to validate the current theme. Default true.
 	 */
-	if ( wp_installing() || ! apply_filters( 'validate_current_theme', true ) ) {
+	if ( Load::wp_installing() || ! apply_filters( 'validate_current_theme', true ) ) {
 		return true;
 	}
 
@@ -981,7 +983,7 @@ function get_theme_mods() {
 			$theme_name = wp_get_theme()->get( 'Name' );
 		}
 		$mods = get_option( "mods_$theme_name" ); // Deprecated location.
-		if ( is_admin() && false !== $mods ) {
+		if ( Load::is_admin() && false !== $mods ) {
 			update_option( "theme_mods_$theme_slug", $mods );
 			delete_option( "mods_$theme_name" );
 		}
@@ -2002,7 +2004,7 @@ function wp_update_custom_css_post( $css, $args = array() ) {
 	} else {
 		$r = wp_insert_post( wp_slash( $post_data ), true );
 
-		if ( ! is_wp_error( $r ) ) {
+		if ( ! Load::is_wp_error( $r ) ) {
 			if ( get_stylesheet() === $args['stylesheet'] ) {
 				set_theme_mod( 'custom_css_post_id', $r );
 			}
@@ -2014,7 +2016,7 @@ function wp_update_custom_css_post( $css, $args = array() ) {
 		}
 	}
 
-	if ( is_wp_error( $r ) ) {
+	if ( Load::is_wp_error( $r ) ) {
 		return $r;
 	}
 	return get_post( $r );
@@ -2072,7 +2074,7 @@ function remove_editor_styles() {
 		return false;
 	}
 	_remove_theme_support( 'editor-style' );
-	if ( is_admin() ) {
+	if ( Load::is_admin() ) {
 		$GLOBALS['editor_styles'] = array();
 	}
 	return true;
@@ -2750,7 +2752,7 @@ function _custom_header_background_just_in_time() {
 			add_action( 'wp_head', $args[0]['wp-head-callback'] );
 		}
 
-		if ( is_admin() ) {
+		if ( Load::is_admin() ) {
 			require_once ABSPATH . 'wp-admin/includes/class-custom-image-header.php';
 			$custom_image_header = new Custom_Image_Header( $args[0]['admin-head-callback'], $args[0]['admin-preview-callback'] );
 		}
@@ -2763,7 +2765,7 @@ function _custom_header_background_just_in_time() {
 		$args = get_theme_support( 'custom-background' );
 		add_action( 'wp_head', $args[0]['wp-head-callback'] );
 
-		if ( is_admin() ) {
+		if ( Load::is_admin() ) {
 			require_once ABSPATH . 'wp-admin/includes/class-custom-background.php';
 			$custom_background = new Custom_Background( $args[0]['admin-head-callback'], $args[0]['admin-preview-callback'] );
 		}
@@ -3302,7 +3304,7 @@ function check_theme_switched() {
  */
 function _wp_customize_include() {
 
-	$is_customize_admin_page = ( is_admin() && 'customize.php' === basename( $_SERVER['PHP_SELF'] ) );
+	$is_customize_admin_page = ( Load::is_admin() && 'customize.php' === basename( $_SERVER['PHP_SELF'] ) );
 	$should_include          = (
 		$is_customize_admin_page
 		||
@@ -3367,7 +3369,7 @@ function _wp_customize_include() {
 	 * there is nothing changed that needs to be saved.
 	 */
 	$is_customize_save_action = (
-		wp_doing_ajax()
+		Load::wp_doing_ajax()
 		&&
 		isset( $_REQUEST['action'] )
 		&&
@@ -3382,15 +3384,16 @@ function _wp_customize_include() {
 /**
  * Publishes a snapshot's changes.
  *
- * @since 4.7.0
- * @access private
- *
- * @global wpdb                 $wpdb         WordPress database abstraction object.
- * @global WP_Customize_Manager $wp_customize Customizer instance.
- *
  * @param string  $new_status     New post status.
  * @param string  $old_status     Old post status.
  * @param WP_Post $changeset_post Changeset post object.
+ *
+ *@since 4.7.0
+ * @access private
+ *
+ * @global WPDB                 $wpdb         WordPress database abstraction object.
+ * @global WP_Customize_Manager $wp_customize Customizer instance.
+ *
  */
 function _wp_customize_publish_changeset( $new_status, $old_status, $changeset_post ) {
 	global $wp_customize, $wpdb;
@@ -3609,7 +3612,7 @@ function is_customize_preview() {
  * @access private
  * @see wp_delete_auto_drafts()
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string   $new_status Transition to this post status.
  * @param string   $old_status Previous post status.

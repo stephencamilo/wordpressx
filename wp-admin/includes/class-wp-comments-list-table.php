@@ -112,7 +112,7 @@ class WP_Comments_List_Table extends WP_List_Table {
 
 		$comments_per_page = $this->get_per_page( $comment_status );
 
-		$doing_ajax = wp_doing_ajax();
+		$doing_ajax = Load::wp_doing_ajax();
 
 		if ( isset( $_REQUEST['number'] ) ) {
 			$number = (int) $_REQUEST['number'];
@@ -827,7 +827,7 @@ class WP_Comments_List_Table extends WP_List_Table {
 			}
 
 			// Reply and quickedit need a hide-if-no-js span when not added with Ajax.
-			if ( ( 'reply' === $action || 'quickedit' === $action ) && ! wp_doing_ajax() ) {
+			if ( ( 'reply' === $action || 'quickedit' === $action ) && ! Load::wp_doing_ajax() ) {
 				$action .= ' hide-if-no-js';
 			} elseif ( ( 'untrash' === $action && 'trash' === $the_comment_status )
 				|| ( 'unspam' === $action && 'spam' === $the_comment_status )

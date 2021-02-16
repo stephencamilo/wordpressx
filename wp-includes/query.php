@@ -1087,14 +1087,15 @@ function wp_old_slug_redirect() {
 /**
  * Find the post ID for redirecting an old slug.
  *
+ * @param string $post_type The current post type based on the query vars.
+ *
+ * @return int The Post ID.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
  * @since 4.9.3
  * @access private
  *
  * @see wp_old_slug_redirect()
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param string $post_type The current post type based on the query vars.
- * @return int The Post ID.
  */
 function _find_post_by_old_slug( $post_type ) {
 	global $wpdb;
@@ -1121,14 +1122,15 @@ function _find_post_by_old_slug( $post_type ) {
 /**
  * Find the post ID for redirecting an old date.
  *
+ * @param string $post_type The current post type based on the query vars.
+ *
+ * @return int The Post ID.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
  * @since 4.9.3
  * @access private
  *
  * @see wp_old_slug_redirect()
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param string $post_type The current post type based on the query vars.
- * @return int The Post ID.
  */
 function _find_post_by_old_date( $post_type ) {
 	global $wpdb;

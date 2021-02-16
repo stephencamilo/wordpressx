@@ -187,7 +187,7 @@ function get_blog_list( $start = 0, $num = 10, $deprecated = '' ) {
 	_deprecated_function( __FUNCTION__, '3.0.0', 'wp_get_sites()' );
 
 	global $wpdb;
-	$blogs = $wpdb->get_results( $wpdb->prepare( "SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' ORDER BY registered DESC", get_current_network_id() ), ARRAY_A );
+	$blogs = $wpdb->get_results( $wpdb->prepare( "SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' ORDER BY registered DESC", Load::get_current_network_id() ), ARRAY_A );
 
 	$blog_list = array();
 	foreach ( (array) $blogs as $details ) {
@@ -422,14 +422,15 @@ function create_empty_blog( $domain, $path, $weblog_title, $site_id = 1 ) {
 /**
  * Get the admin for a domain/path combination.
  *
- * @since MU (3.0.0)
- * @deprecated 4.4.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string $domain Optional. Network domain.
  * @param string $path   Optional. Network path.
+ *
  * @return array|false The network admins.
+ *@since MU (3.0.0)
+ * @deprecated 4.4.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function get_admin_users_for_domain( $domain = '', $path = '' ) {
 	_deprecated_function( __FUNCTION__, '4.4.0' );
@@ -437,7 +438,7 @@ function get_admin_users_for_domain( $domain = '', $path = '' ) {
 	global $wpdb;
 
 	if ( ! $domain ) {
-		$network_id = get_current_network_id();
+		$network_id = Load::get_current_network_id();
 	} else {
 		$_networks  = get_networks( array(
 			'fields' => 'ids',
@@ -484,7 +485,7 @@ function wp_get_sites( $args = array() ) {
 		return array();
 
 	$defaults = array(
-		'network_id' => get_current_network_id(),
+		'network_id' => Load::get_current_network_id(),
 		'public'     => null,
 		'archived'   => null,
 		'mature'     => null,
@@ -528,15 +529,16 @@ function wp_get_sites( $args = array() ) {
 /**
  * Check whether a usermeta key has to do with the current blog.
  *
- * @since MU (3.0.0)
- * @deprecated 4.9.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string $key
  * @param int    $user_id Optional. Defaults to current user.
  * @param int    $blog_id Optional. Defaults to current blog.
+ *
  * @return bool
+ *@deprecated 4.9.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since MU (3.0.0)
  */
 function is_user_option_local( $key, $user_id = 0, $blog_id = 0 ) {
 	global $wpdb;
@@ -545,7 +547,7 @@ function is_user_option_local( $key, $user_id = 0, $blog_id = 0 ) {
 
 	$current_user = wp_get_current_user();
 	if ( $blog_id == 0 ) {
-		$blog_id = get_current_blog_id();
+		$blog_id = Load::get_current_blog_id();
 	}
 	$local_key = $wpdb->get_blog_prefix( $blog_id ) . $key;
 
@@ -577,7 +579,7 @@ function insert_blog($domain, $path, $site_id) {
 	);
 
 	$site_id = wp_insert_site( $data );
-	if ( is_wp_error( $site_id ) ) {
+	if ( Load::is_wp_error( $site_id ) ) {
 		return false;
 	}
 
@@ -593,14 +595,15 @@ function insert_blog($domain, $path, $site_id) {
  * directly, be sure to use switch_to_blog() first, so that $wpdb
  * points to the new blog.
  *
+ * @param int    $blog_id    The value returned by wp_insert_site().
+ * @param string $blog_title The title of the new site.
+ *
+ *@global WPDB     $wpdb     WordPress database abstraction object.
+ * @global WP_Roles $wp_roles WordPress role management object.
+ *
  * @since MU (3.0.0)
  * @deprecated 5.1.0
  *
- * @global wpdb     $wpdb     WordPress database abstraction object.
- * @global WP_Roles $wp_roles WordPress role management object.
- *
- * @param int    $blog_id    The value returned by wp_insert_site().
- * @param string $blog_title The title of the new site.
  */
 function install_blog( $blog_id, $blog_title = '' ) {
 	global $wpdb, $wp_roles;
@@ -663,14 +666,15 @@ function install_blog( $blog_id, $blog_title = '' ) {
  *
  * This function creates a row in the wp_blogs table.
  *
- * @since MU (3.0.0)
- * @deprecated MU
- * @deprecated Use wp_install_defaults()
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int $blog_id Ignored in this function.
  * @param int $user_id
+ *
+ *@deprecated Use wp_install_defaults()
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since MU (3.0.0)
+ * @deprecated MU
  */
 function install_blog_defaults( $blog_id, $user_id ) {
 	global $wpdb;
@@ -691,18 +695,19 @@ function install_blog_defaults( $blog_id, $user_id ) {
  *
  * Previously used in core to mark a user as spam or "ham" (not spam) in Multisite.
  *
- * @since 3.0.0
- * @deprecated 5.3.0 Use wp_update_user()
- * @see wp_update_user()
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int    $id         The user ID.
  * @param string $pref       The column in the wp_users table to update the user's status
  *                           in (presumably user_status, spam, or deleted).
  * @param int    $value      The new status for the user.
  * @param null   $deprecated Deprecated as of 3.0.2 and should not be used.
+ *
  * @return int   The initially passed $value.
+ *@deprecated 5.3.0 Use wp_update_user()
+ * @see wp_update_user()
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 3.0.0
  */
 function update_user_status( $id, $pref, $value, $deprecated = null ) {
 	global $wpdb;

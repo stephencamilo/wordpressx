@@ -7,6 +7,8 @@
  * @since 5.4.0
  */
 
+use Core\WPIncludes\Load;
+
 /**
  * Core class that implements an object cache.
  *
@@ -72,13 +74,14 @@ class WP_Object_Cache {
 	private $multisite;
 
 	/**
+	 *
 	 * Sets up object properties; PHP 5 style constructor.
 	 *
 	 * @since 2.0.8
 	 */
 	public function __construct() {
-		$this->multisite   = is_multisite();
-		$this->blog_prefix = $this->multisite ? get_current_blog_id() . ':' : '';
+		$this->multisite   = Load::is_multisite();
+		$this->blog_prefix = $this->multisite ? Load::get_current_blog_id() . ':' : '';
 	}
 
 	/**

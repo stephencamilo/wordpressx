@@ -332,7 +332,7 @@ class WP {
 		}
 
 		// Don't allow non-publicly queryable taxonomies to be queried from the front end.
-		if ( ! is_admin() ) {
+		if ( ! Load::is_admin() ) {
 			foreach ( get_taxonomies( array( 'publicly_queryable' => false ), 'objects' ) as $taxonomy => $t ) {
 				/*
 				 * Disallow when set to the 'taxonomy' query var.
@@ -667,7 +667,7 @@ class WP {
 		$set_404 = true;
 
 		// Never 404 for the admin, robots, or favicon.
-		if ( is_admin() || is_robots() || is_favicon() ) {
+		if ( Load::is_admin() || is_robots() || is_favicon() ) {
 			$set_404 = false;
 
 			// If posts were found, check for paged content.

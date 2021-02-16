@@ -19,8 +19,8 @@ if ( ! current_user_can( 'setup_network' ) ) {
 	wp_die( __( 'Sorry, you are not allowed to manage options for this site.' ) );
 }
 
-if ( is_multisite() ) {
-	if ( ! is_network_admin() ) {
+if ( Load::is_multisite() ) {
+	if ( ! Load::is_network_admin() ) {
 		wp_redirect( network_admin_url( 'setup.php' ) );
 		exit;
 	}
@@ -48,7 +48,7 @@ if ( ! network_domain_check() && ( ! defined( 'WP_ALLOW_MULTISITE' ) || ! WP_ALL
 	);
 }
 
-if ( is_network_admin() ) {
+if ( Load::is_network_admin() ) {
 	$title       = __( 'Network Setup' );
 	$parent_file = 'settings.php';
 } else {
@@ -98,7 +98,7 @@ if ( $_POST ) {
 	$subdomain_install = allow_subdomain_install() ? ! empty( $_POST['subdomain_install'] ) : false;
 	if ( ! network_domain_check() ) {
 		$result = populate_network( 1, get_clean_basedomain(), sanitize_email( $_POST['email'] ), wp_unslash( $_POST['sitename'] ), $base, $subdomain_install );
-		if ( is_wp_error( $result ) ) {
+		if ( Load::is_wp_error( $result ) ) {
 			if ( 1 === count( $result->get_error_codes() ) && 'no_wildcard_dns' === $result->get_error_code() ) {
 				network_step2( $result );
 			} else {
@@ -110,7 +110,7 @@ if ( $_POST ) {
 	} else {
 		network_step2();
 	}
-} elseif ( is_multisite() || network_domain_check() ) {
+} elseif ( Load::is_multisite() || network_domain_check() ) {
 	network_step2();
 } else {
 	network_step1();

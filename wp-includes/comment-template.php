@@ -1330,7 +1330,7 @@ function wp_comment_form_unfiltered_html_nonce() {
  *
  * @global WP_Query   $wp_query         WordPress Query object.
  * @global WP_Post    $post             Global post object.
- * @global wpdb       $wpdb             WordPress database abstraction object.
+ * @global WPDB       $wpdb             WordPress database abstraction object.
  * @global int        $id
  * @global WP_Comment $comment          Global comment object.
  * @global string     $user_login

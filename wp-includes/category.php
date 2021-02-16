@@ -54,7 +54,7 @@ function get_categories( $args = '' ) {
 
 	$categories = get_terms( $args );
 
-	if ( is_wp_error( $categories ) ) {
+	if ( Load::is_wp_error( $categories ) ) {
 		$categories = array();
 	} else {
 		$categories = (array) $categories;
@@ -91,7 +91,7 @@ function get_categories( $args = '' ) {
 function get_category( $category, $output = OBJECT, $filter = 'raw' ) {
 	$category = get_term( $category, 'category', $output, $filter );
 
-	if ( is_wp_error( $category ) ) {
+	if ( Load::is_wp_error( $category ) ) {
 		return $category;
 	}
 
@@ -152,7 +152,7 @@ function get_category_by_path( $category_path, $full_match = true, $output = OBJ
 		while ( ( 0 != $curcategory->parent ) && ( $curcategory->parent != $curcategory->term_id ) ) {
 			$curcategory = get_term( $curcategory->parent, 'category' );
 
-			if ( is_wp_error( $curcategory ) ) {
+			if ( Load::is_wp_error( $curcategory ) ) {
 				return $curcategory;
 			}
 
@@ -224,7 +224,7 @@ function get_cat_name( $cat_id ) {
 	$cat_id   = (int) $cat_id;
 	$category = get_term( $cat_id, 'category' );
 
-	if ( ! $category || is_wp_error( $category ) ) {
+	if ( ! $category || Load::is_wp_error( $category ) ) {
 		return '';
 	}
 
@@ -374,7 +374,7 @@ function clean_category_cache( $id ) {
  * @param array|object|WP_Term $category Category row object or array.
  */
 function _make_cat_compat( &$category ) {
-	if ( is_object( $category ) && ! is_wp_error( $category ) ) {
+	if ( is_object( $category ) && ! Load::is_wp_error( $category ) ) {
 		$category->cat_ID               = $category->term_id;
 		$category->category_count       = $category->count;
 		$category->category_description = $category->description;

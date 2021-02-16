@@ -89,7 +89,7 @@ class WP_User_Query {
 	 */
 	public static function fill_query_vars( $args ) {
 		$defaults = array(
-			'blog_id'             => get_current_blog_id(),
+			'blog_id'             => Load::get_current_blog_id(),
 			'role'                => '',
 			'role__in'            => array(),
 			'role__not_in'        => array(),
@@ -122,20 +122,6 @@ class WP_User_Query {
 
 	/**
 	 * Prepare the query variables.
-	 *
-	 * @since 3.1.0
-	 * @since 4.1.0 Added the ability to order by the `include` value.
-	 * @since 4.2.0 Added 'meta_value_num' support for `$orderby` parameter. Added multi-dimensional array syntax
-	 *              for `$orderby` parameter.
-	 * @since 4.3.0 Added 'has_published_posts' parameter.
-	 * @since 4.4.0 Added 'paged', 'role__in', and 'role__not_in' parameters. The 'role' parameter was updated to
-	 *              permit an array or comma-separated list of values. The 'number' parameter was updated to support
-	 *              querying for all users with using -1.
-	 * @since 4.7.0 Added 'nicename', 'nicename__in', 'nicename__not_in', 'login', 'login__in',
-	 *              and 'login__not_in' parameters.
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 * @global int  $blog_id
 	 *
 	 * @param string|array $query {
 	 *     Optional. Array or string of Query parameters.
@@ -207,6 +193,20 @@ class WP_User_Query {
 	 *     @type array        $login__not_in       An array of logins to exclude. Users matching one of these
 	 *                                             logins will not be included in results. Default empty array.
 	 * }
+	 *@since 4.1.0 Added the ability to order by the `include` value.
+	 * @since 4.2.0 Added 'meta_value_num' support for `$orderby` parameter. Added multi-dimensional array syntax
+	 *              for `$orderby` parameter.
+	 * @since 4.3.0 Added 'has_published_posts' parameter.
+	 * @since 4.4.0 Added 'paged', 'role__in', and 'role__not_in' parameters. The 'role' parameter was updated to
+	 *              permit an array or comma-separated list of values. The 'number' parameter was updated to support
+	 *              querying for all users with using -1.
+	 * @since 4.7.0 Added 'nicename', 'nicename__in', 'nicename__not_in', 'login', 'login__in',
+	 *              and 'login__not_in' parameters.
+	 *
+	 * @global WPDB $wpdb WordPress database abstraction object.
+	 * @global int  $blog_id
+	 *
+	 * @since 3.1.0
 	 */
 	public function prepare_query( $query = array() ) {
 		global $wpdb;
@@ -362,7 +362,7 @@ class WP_User_Query {
 			$role__not_in = (array) $qv['role__not_in'];
 		}
 
-		if ( $blog_id && ( ! empty( $roles ) || ! empty( $role__in ) || ! empty( $role__not_in ) || is_multisite() ) ) {
+		if ( $blog_id && ( ! empty( $roles ) || ! empty( $role__in ) || ! empty( $role__not_in ) || Load::is_multisite() ) ) {
 			$role_queries = array();
 
 			$roles_clauses = array( 'relation' => 'AND' );
@@ -527,7 +527,7 @@ class WP_User_Query {
 					$search_columns = array( 'user_email' );
 				} elseif ( is_numeric( $search ) ) {
 					$search_columns = array( 'user_login', 'ID' );
-				} elseif ( preg_match( '|^https?://|', $search ) && ! ( is_multisite() && wp_is_large_network( 'users' ) ) ) {
+				} elseif ( preg_match( '|^https?://|', $search ) && ! ( Load::is_multisite() && wp_is_large_network( 'users' ) ) ) {
 					$search_columns = array( 'user_url' );
 				} else {
 					$search_columns = array( 'user_login', 'user_url', 'user_email', 'user_nicename', 'display_name' );
@@ -585,7 +585,7 @@ class WP_User_Query {
 	 *
 	 * @since 3.1.0
 	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
+	 * @global WPDB $wpdb WordPress database abstraction object.
 	 */
 	public function query() {
 		global $wpdb;
@@ -623,13 +623,14 @@ class WP_User_Query {
 				/**
 				 * Filters SELECT FOUND_ROWS() query for the current WP_User_Query instance.
 				 *
+				 * @param string $sql         The SELECT FOUND_ROWS() query for the current WP_User_Query.
+				 * @param WP_User_Query $this The current WP_User_Query instance.
+				 *
+				 *@global WPDB $wpdb WordPress database abstraction object.
+				 *
 				 * @since 3.2.0
 				 * @since 5.1.0 Added the `$this` parameter.
 				 *
-				 * @global wpdb $wpdb WordPress database abstraction object.
-				 *
-				 * @param string $sql         The SELECT FOUND_ROWS() query for the current WP_User_Query.
-				 * @param WP_User_Query $this The current WP_User_Query instance.
 				 */
 				$found_users_query = apply_filters( 'found_users_query', 'SELECT FOUND_ROWS()', $this );
 
@@ -688,15 +689,16 @@ class WP_User_Query {
 	/**
 	 * Used internally to generate an SQL string for searching across multiple columns
 	 *
-	 * @since 3.1.0
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
 	 * @param string $string
 	 * @param array  $cols
 	 * @param bool   $wild   Whether to allow wildcard searches. Default is false for Network Admin, true for single site.
 	 *                       Single site allows leading and trailing wildcards, Network Admin only trailing.
+	 *
 	 * @return string
+	 *@since 3.1.0
+	 *
+	 * @global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 */
 	protected function get_search_sql( $string, $cols, $wild = false ) {
 		global $wpdb;
@@ -742,12 +744,13 @@ class WP_User_Query {
 	/**
 	 * Parse and sanitize 'orderby' keys passed to the user query.
 	 *
-	 * @since 4.2.0
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
 	 * @param string $orderby Alias for the field to order by.
+	 *
 	 * @return string Value to used in the ORDER clause, if `$orderby` is valid.
+	 *@since 4.2.0
+	 *
+	 * @global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 */
 	protected function parse_orderby( $orderby ) {
 		global $wpdb;

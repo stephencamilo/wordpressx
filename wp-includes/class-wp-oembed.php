@@ -537,10 +537,10 @@ class WP_oEmbed {
 
 		foreach ( array( 'json', 'xml' ) as $format ) {
 			$result = $this->_fetch_with_format( $provider, $format );
-			if ( is_wp_error( $result ) && 'not-implemented' === $result->get_error_code() ) {
+			if ( Load::is_wp_error( $result ) && 'not-implemented' === $result->get_error_code() ) {
 				continue;
 			}
-			return ( $result && ! is_wp_error( $result ) ) ? $result : false;
+			return ( $result && ! Load::is_wp_error( $result ) ) ? $result : false;
 		}
 		return false;
 	}

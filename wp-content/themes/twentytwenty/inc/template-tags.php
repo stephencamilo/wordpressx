@@ -191,7 +191,7 @@ function twentytwenty_the_post_meta( $post_id = null, $location = 'single-top' )
  * @param string $text    Anchor text.
  */
 function twentytwenty_edit_post_link( $link, $post_id, $text ) {
-	if ( is_admin() ) {
+	if ( Load::is_admin() ) {
 		return $link;
 	}
 

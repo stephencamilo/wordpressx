@@ -90,7 +90,7 @@ class WP_HTTP_IXR_Client extends IXR_Client {
 
 		$response = wp_remote_post( $url, $args );
 
-		if ( is_wp_error( $response ) ) {
+		if ( Load::is_wp_error( $response ) ) {
 			$errno       = $response->get_error_code();
 			$errorstr    = $response->get_error_message();
 			$this->error = new IXR_Error( -32300, "transport error: $errno $errorstr" );

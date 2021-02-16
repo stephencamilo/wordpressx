@@ -78,7 +78,7 @@ if ( ! got_url_rewrite() ) {
  * network. If the `permalink_structure` option has been changed to remove this
  * base prefix, WordPress core can no longer account for the possible collision.
  */
-if ( is_multisite() && ! is_subdomain_install() && is_main_site() && 0 === strpos( $permalink_structure, '/blog/' ) ) {
+if ( Load::is_multisite() && ! is_subdomain_install() && is_main_site() && 0 === strpos( $permalink_structure, '/blog/' ) ) {
 	$blog_prefix = '/blog';
 }
 
@@ -160,7 +160,7 @@ $using_index_permalinks = $wp_rewrite->using_index_permalinks();
 if ( $structure_updated ) {
 	$message = __( 'Permalink structure updated.' );
 
-	if ( ! is_multisite() && $permalink_structure && ! $using_index_permalinks ) {
+	if ( ! Load::is_multisite() && $permalink_structure && ! $using_index_permalinks ) {
 		if ( $iis7_permalinks ) {
 			if ( ! $writable ) {
 				$message = sprintf(
@@ -215,7 +215,7 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 	</p>
 
 <?php
-if ( is_multisite() && ! is_subdomain_install() && is_main_site() && 0 === strpos( $permalink_structure, '/blog/' ) ) {
+if ( Load::is_multisite() && ! is_subdomain_install() && is_main_site() && 0 === strpos( $permalink_structure, '/blog/' ) ) {
 	$permalink_structure = preg_replace( '|^/?blog|', '', $permalink_structure );
 	$category_base       = preg_replace( '|^/?blog|', '', $category_base );
 	$tag_base            = preg_replace( '|^/?blog|', '', $tag_base );
@@ -351,7 +351,7 @@ printf( __( 'If you like, you may enter custom structures for your category and 
 
 <?php submit_button(); ?>
 </form>
-<?php if ( ! is_multisite() ) { ?>
+<?php if ( ! Load::is_multisite() ) { ?>
 	<?php
 	if ( $iis7_permalinks ) :
 		if ( isset( $_POST['submit'] ) && $permalink_structure && ! $using_index_permalinks && ! $writable ) :

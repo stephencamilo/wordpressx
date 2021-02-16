@@ -349,11 +349,11 @@ class WP_Comment_Query {
 	/**
 	 * Get a list of comments matching the query vars.
 	 *
+	 * @return int|array List of comments or number of found comments if `$count` argument is true.
+	 *@global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 * @since 4.2.0
 	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
-	 * @return int|array List of comments or number of found comments if `$count` argument is true.
 	 */
 	public function get_comments() {
 		global $wpdb;
@@ -511,11 +511,11 @@ class WP_Comment_Query {
 	/**
 	 * Used internally to get a list of comment IDs matching the query vars.
 	 *
+	 * @return int|array A single count of comment IDs if a count query. An array of comment IDs if a full query.
+	 *@global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 * @since 4.4.0
 	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
-	 * @return int|array A single count of comment IDs if a count query. An array of comment IDs if a full query.
 	 */
 	protected function get_comment_ids() {
 		global $wpdb;
@@ -955,7 +955,7 @@ class WP_Comment_Query {
 	 *
 	 * @since 4.6.0
 	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
+	 * @global WPDB $wpdb WordPress database abstraction object.
 	 */
 	private function set_found_comments() {
 		global $wpdb;
@@ -981,12 +981,13 @@ class WP_Comment_Query {
 	 * Instead of calling `get_children()` separately on each child comment, we do a single set of queries to fetch
 	 * the descendant trees for all matched top-level comments.
 	 *
-	 * @since 4.4.0
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
 	 * @param WP_Comment[] $comments Array of top-level comments whose descendants should be filled in.
+	 *
 	 * @return array
+	 *@since 4.4.0
+	 *
+	 * @global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 */
 	protected function fill_descendants( $comments ) {
 		global $wpdb;
@@ -1097,13 +1098,14 @@ class WP_Comment_Query {
 	/**
 	 * Used internally to generate an SQL string for searching across multiple columns
 	 *
-	 * @since 3.1.0
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
 	 * @param string $string
 	 * @param array  $cols
+	 *
 	 * @return string
+	 *@global WPDB $wpdb WordPress database abstraction object.
+	 *
+	 * @since 3.1.0
+	 *
 	 */
 	protected function get_search_sql( $string, $cols ) {
 		global $wpdb;
@@ -1121,12 +1123,13 @@ class WP_Comment_Query {
 	/**
 	 * Parse and sanitize 'orderby' keys passed to the comment query.
 	 *
-	 * @since 4.2.0
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
 	 * @param string $orderby Alias for the field to order by.
+	 *
 	 * @return string|false Value to used in the ORDER clause. False otherwise.
+	 *@since 4.2.0
+	 *
+	 * @global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 */
 	protected function parse_orderby( $orderby ) {
 		global $wpdb;

@@ -10,13 +10,14 @@
 /**
  * Get the revision UI diff.
  *
- * @since 3.6.0
+ * @param WP_Post|int $post The post object or post ID.
+ * @param int $compare_from The revision ID to compare from.
+ * @param int $compare_to The revision ID to come to.
  *
- * @param WP_Post|int $post         The post object or post ID.
- * @param int         $compare_from The revision ID to compare from.
- * @param int         $compare_to   The revision ID to come to.
  * @return array|bool Associative array of a post's revisioned fields and their diffs.
  *                    Or, false on failure.
+ * @since 3.6.0
+ *
  */
 function wp_get_revision_ui_diff( $post, $compare_from, $compare_to ) {
 	$post = get_post( $post );
@@ -71,13 +72,14 @@ function wp_get_revision_ui_diff( $post, $compare_from, $compare_to ) {
 		 * The dynamic portion of the hook name, `$field`, corresponds to each of the post
 		 * fields of the revision object being iterated over in a foreach statement.
 		 *
+		 * @param string $revision_field The current revision field to compare to or from.
+		 * @param string $field The current revision field.
+		 * @param WP_Post $compare_from The revision post object to compare to or from.
+		 * @param string $context The context of whether the current revision is the old
+		 *                                or the new one. Values are 'to' or 'from'.
+		 *
 		 * @since 3.6.0
 		 *
-		 * @param string  $revision_field The current revision field to compare to or from.
-		 * @param string  $field          The current revision field.
-		 * @param WP_Post $compare_from   The revision post object to compare to or from.
-		 * @param string  $context        The context of whether the current revision is the old
-		 *                                or the new one. Values are 'to' or 'from'.
 		 */
 		$content_from = $compare_from ? apply_filters( "_wp_post_revision_field_{$field}", $compare_from->$field, $field, $compare_from, 'from' ) : '';
 
@@ -93,17 +95,19 @@ function wp_get_revision_ui_diff( $post, $compare_from, $compare_to ) {
 		 *
 		 * Filters the options passed to wp_text_diff() when viewing a post revision.
 		 *
-		 * @since 4.1.0
-		 *
-		 * @param array   $args {
+		 * @param array $args {
 		 *     Associative array of options to pass to wp_text_diff().
 		 *
-		 *     @type bool $show_split_view True for split view (two columns), false for
+		 * @type bool $show_split_view True for split view (two columns), false for
 		 *                                 un-split view (single column). Default true.
 		 * }
-		 * @param string  $field        The current revision field.
+		 *
+		 * @param string $field The current revision field.
 		 * @param WP_Post $compare_from The revision post to compare from.
-		 * @param WP_Post $compare_to   The revision post to compare to.
+		 * @param WP_Post $compare_to The revision post to compare to.
+		 *
+		 * @since 4.1.0
+		 *
 		 */
 		$args = apply_filters( 'revision_text_diff_options', $args, $field, $compare_from, $compare_to );
 
@@ -142,11 +146,12 @@ function wp_get_revision_ui_diff( $post, $compare_from, $compare_to ) {
 	/**
 	 * Filters the fields displayed in the post revision diff UI.
 	 *
+	 * @param array[] $return Array of revision UI fields. Each item is an array of id, name, and diff.
+	 * @param WP_Post $compare_from The revision post to compare from.
+	 * @param WP_Post $compare_to The revision post to compare to.
+	 *
 	 * @since 4.1.0
 	 *
-	 * @param array[] $return       Array of revision UI fields. Each item is an array of id, name, and diff.
-	 * @param WP_Post $compare_from The revision post to compare from.
-	 * @param WP_Post $compare_to   The revision post to compare to.
 	 */
 	return apply_filters( 'wp_get_revision_ui_diff', $return, $compare_from, $compare_to );
 
@@ -155,12 +160,13 @@ function wp_get_revision_ui_diff( $post, $compare_from, $compare_to ) {
 /**
  * Prepare revisions for JavaScript.
  *
+ * @param WP_Post|int $post The post object or post ID.
+ * @param int $selected_revision_id The selected revision ID.
+ * @param int $from Optional. The revision ID to compare from.
+ *
+ * @return array An associative array of revision data and related settings.
  * @since 3.6.0
  *
- * @param WP_Post|int $post                 The post object or post ID.
- * @param int         $selected_revision_id The selected revision ID.
- * @param int         $from                 Optional. The revision ID to compare from.
- * @return array An associative array of revision data and related settings.
  */
 function wp_prepare_revisions_for_js( $post, $selected_revision_id, $from = null ) {
 	$post    = get_post( $post );
@@ -249,24 +255,26 @@ function wp_prepare_revisions_for_js( $post, $selected_revision_id, $from = null
 		/**
 		 * Filters the array of revisions used on the revisions screen.
 		 *
-		 * @since 4.4.0
-		 *
-		 * @param array   $revisions_data {
+		 * @param array $revisions_data {
 		 *     The bootstrapped data for the revisions screen.
 		 *
-		 *     @type int        $id         Revision ID.
-		 *     @type string     $title      Title for the revision's parent WP_Post object.
-		 *     @type int        $author     Revision post author ID.
-		 *     @type string     $date       Date the revision was modified.
-		 *     @type string     $dateShort  Short-form version of the date the revision was modified.
-		 *     @type string     $timeAgo    GMT-aware amount of time ago the revision was modified.
-		 *     @type bool       $autosave   Whether the revision is an autosave.
-		 *     @type bool       $current    Whether the revision is both not an autosave and the post
+		 * @type int $id Revision ID.
+		 * @type string $title Title for the revision's parent WP_Post object.
+		 * @type int $author Revision post author ID.
+		 * @type string $date Date the revision was modified.
+		 * @type string $dateShort Short-form version of the date the revision was modified.
+		 * @type string $timeAgo GMT-aware amount of time ago the revision was modified.
+		 * @type bool $autosave Whether the revision is an autosave.
+		 * @type bool $current Whether the revision is both not an autosave and the post
 		 *                                  modified date matches the revision modified date (GMT-aware).
-		 *     @type bool|false $restoreUrl URL if the revision can be restored, false otherwise.
+		 * @type bool|false $restoreUrl URL if the revision can be restored, false otherwise.
 		 * }
-		 * @param WP_Post $revision       The revision's WP_Post object.
-		 * @param WP_Post $post           The revision's parent WP_Post object.
+		 *
+		 * @param WP_Post $revision The revision's WP_Post object.
+		 * @param WP_Post $post The revision's parent WP_Post object.
+		 *
+		 * @since 4.4.0
+		 *
 		 */
 		$revisions[ $revision->ID ] = apply_filters( 'wp_prepare_revision_for_js', $revisions_data, $revision, $post );
 	}
@@ -352,111 +360,116 @@ function wp_prepare_revisions_for_js( $post, $selected_revision_id, $from = null
  */
 function wp_print_revision_templates() {
 	global $post;
-	?><script id="tmpl-revisions-frame" type="text/html">
-		<div class="revisions-control-frame"></div>
-		<div class="revisions-diff-frame"></div>
-	</script>
+	?>
+    <script id="tmpl-revisions-frame" type="text/html">
+        <div class="revisions-control-frame"></div>
+        <div class="revisions-diff-frame"></div>
+    </script>
 
-	<script id="tmpl-revisions-buttons" type="text/html">
-		<div class="revisions-previous">
-			<input class="button" type="button" value="<?php echo esc_attr_x( 'Previous', 'Button label for a previous revision' ); ?>" />
-		</div>
+    <script id="tmpl-revisions-buttons" type="text/html">
+        <div class="revisions-previous">
+            <input class="button" type="button"
+                   value="<?php echo esc_attr_x( 'Previous', 'Button label for a previous revision' ); ?>"/>
+        </div>
 
-		<div class="revisions-next">
-			<input class="button" type="button" value="<?php echo esc_attr_x( 'Next', 'Button label for a next revision' ); ?>" />
-		</div>
-	</script>
+        <div class="revisions-next">
+            <input class="button" type="button"
+                   value="<?php echo esc_attr_x( 'Next', 'Button label for a next revision' ); ?>"/>
+        </div>
+    </script>
 
-	<script id="tmpl-revisions-checkbox" type="text/html">
-		<div class="revision-toggle-compare-mode">
-			<label>
-				<input type="checkbox" class="compare-two-revisions"
-				<#
-				if ( 'undefined' !== typeof data && data.model.attributes.compareTwoMode ) {
-					#> checked="checked"<#
-				}
-				#>
-				/>
+    <script id="tmpl-revisions-checkbox" type="text/html">
+        <div class="revision-toggle-compare-mode">
+            <label>
+                <input type="checkbox" class="compare-two-revisions"
+                <#
+                if ( 'undefined' !== typeof data && data.model.attributes.compareTwoMode ) {
+                #> checked="checked"<#
+                }
+                #>
+                />
 				<?php esc_html_e( 'Compare any two revisions' ); ?>
-			</label>
-		</div>
-	</script>
+            </label>
+        </div>
+    </script>
 
-	<script id="tmpl-revisions-meta" type="text/html">
-		<# if ( ! _.isUndefined( data.attributes ) ) { #>
-			<div class="diff-title">
-				<# if ( 'from' === data.type ) { #>
-					<strong><?php _ex( 'From:', 'Followed by post revision info' ); ?></strong>
-				<# } else if ( 'to' === data.type ) { #>
-					<strong><?php _ex( 'To:', 'Followed by post revision info' ); ?></strong>
-				<# } #>
-				<div class="author-card<# if ( data.attributes.autosave ) { #> autosave<# } #>">
-					{{{ data.attributes.author.avatar }}}
-					<div class="author-info">
-					<# if ( data.attributes.autosave ) { #>
-						<span class="byline">
+    <script id="tmpl-revisions-meta" type="text/html">
+        <# if ( ! _.isUndefined( data.attributes ) ) { #>
+        <div class="diff-title">
+            <# if ( 'from' === data.type ) { #>
+            <strong><?php _ex( 'From:', 'Followed by post revision info' ); ?></strong>
+            <# } else if ( 'to' === data.type ) { #>
+            <strong><?php _ex( 'To:', 'Followed by post revision info' ); ?></strong>
+            <# } #>
+            <div class="author-card<# if ( data.attributes.autosave ) { #> autosave<# } #>">
+                {{{ data.attributes.author.avatar }}}
+                <div class="author-info">
+                    <# if ( data.attributes.autosave ) { #>
+                    <span class="byline">
 						<?php
 						printf(
-							/* translators: %s: User's display name. */
+						/* translators: %s: User's display name. */
 							__( 'Autosave by %s' ),
 							'<span class="author-name">{{ data.attributes.author.name }}</span>'
 						);
 						?>
 							</span>
-					<# } else if ( data.attributes.current ) { #>
-						<span class="byline">
+                    <# } else if ( data.attributes.current ) { #>
+                    <span class="byline">
 						<?php
 						printf(
-							/* translators: %s: User's display name. */
+						/* translators: %s: User's display name. */
 							__( 'Current Revision by %s' ),
 							'<span class="author-name">{{ data.attributes.author.name }}</span>'
 						);
 						?>
 							</span>
-					<# } else { #>
-						<span class="byline">
+                    <# } else { #>
+                    <span class="byline">
 						<?php
 						printf(
-							/* translators: %s: User's display name. */
+						/* translators: %s: User's display name. */
 							__( 'Revision by %s' ),
 							'<span class="author-name">{{ data.attributes.author.name }}</span>'
 						);
 						?>
 							</span>
-					<# } #>
-						<span class="time-ago">{{ data.attributes.timeAgo }}</span>
-						<span class="date">({{ data.attributes.dateShort }})</span>
-					</div>
-				<# if ( 'to' === data.type && data.attributes.restoreUrl ) { #>
-					<input  <?php if ( wp_check_post_lock( $post->ID ) ) { ?>
-						disabled="disabled"
-					<?php } else { ?>
-						<# if ( data.attributes.current ) { #>
-							disabled="disabled"
-						<# } #>
-					<?php } ?>
-					<# if ( data.attributes.autosave ) { #>
-						type="button" class="restore-revision button button-primary" value="<?php esc_attr_e( 'Restore This Autosave' ); ?>" />
-					<# } else { #>
-						type="button" class="restore-revision button button-primary" value="<?php esc_attr_e( 'Restore This Revision' ); ?>" />
-					<# } #>
-				<# } #>
-			</div>
-		<# if ( 'tooltip' === data.type ) { #>
-			<div class="revisions-tooltip-arrow"><span></span></div>
-		<# } #>
-	<# } #>
-	</script>
+                    <# } #>
+                    <span class="time-ago">{{ data.attributes.timeAgo }}</span>
+                    <span class="date">({{ data.attributes.dateShort }})</span>
+                </div>
+                <# if ( 'to' === data.type && data.attributes.restoreUrl ) { #>
+                <input <?php if ( wp_check_post_lock( $post->ID ) ) { ?>
+                        disabled="disabled"
+				<?php } else { ?>
+                    <# if ( data.attributes.current ) { #>
+                    disabled="disabled"
+                    <# } #>
+				<?php } ?>
+                <# if ( data.attributes.autosave ) { #>
+                type="button" class="restore-revision button button-primary"
+                value="<?php esc_attr_e( 'Restore This Autosave' ); ?>" />
+                <# } else { #>
+                type="button" class="restore-revision button button-primary"
+                value="<?php esc_attr_e( 'Restore This Revision' ); ?>" />
+                <# } #>
+                <# } #>
+            </div>
+            <# if ( 'tooltip' === data.type ) { #>
+            <div class="revisions-tooltip-arrow"><span></span></div>
+            <# } #>
+            <# } #>
+    </script>
 
-	<script id="tmpl-revisions-diff" type="text/html">
-		<div class="loading-indicator"><span class="spinner"></span></div>
-		<div class="diff-error"><?php _e( 'Sorry, something went wrong. The requested comparison could not be loaded.' ); ?></div>
-		<div class="diff">
-		<# _.each( data.fields, function( field ) { #>
-			<h3>{{ field.name }}</h3>
-			{{{ field.diff }}}
-		<# }); #>
-		</div>
-	</script>
+    <script id="tmpl-revisions-diff" type="text/html">
+        <div class="loading-indicator"><span class="spinner"></span></div>
+        <div class="diff-error"><?php _e( 'Sorry, something went wrong. The requested comparison could not be loaded.' ); ?></div>
+        <div class="diff">
+            <# _.each( data.fields, function( field ) { #>
+            <h3>{{ field.name }}</h3>
+            {{{ field.diff }}}
+            <# }); #>
+        </div>
+    </script>
 	<?php
 }

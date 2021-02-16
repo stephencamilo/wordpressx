@@ -143,7 +143,7 @@ class Theme_Installer_Skin extends WP_Upgrader_Skin {
 			sprintf( _x( 'Activate &#8220;%s&#8221;', 'theme' ), $name )
 		);
 
-		if ( is_network_admin() && current_user_can( 'manage_network_themes' ) ) {
+		if ( Load::is_network_admin() && current_user_can( 'manage_network_themes' ) ) {
 			$install_actions['network_enable'] = sprintf(
 				'<a href="%s" target="_parent">%s</a>',
 				esc_url( wp_nonce_url( 'themes.php?action=enable&amp;theme=' . urlencode( $stylesheet ), 'enable-theme_' . $stylesheet ) ),
@@ -165,7 +165,7 @@ class Theme_Installer_Skin extends WP_Upgrader_Skin {
 			);
 		}
 
-		if ( ! $this->result || is_wp_error( $this->result ) || is_network_admin() || ! current_user_can( 'switch_themes' ) ) {
+		if ( ! $this->result || Load::is_wp_error( $this->result ) || Load::is_network_admin() || ! current_user_can( 'switch_themes' ) ) {
 			unset( $install_actions['activate'], $install_actions['preview'] );
 		} elseif ( get_option( 'template' ) === $stylesheet ) {
 			unset( $install_actions['activate'] );
@@ -195,7 +195,7 @@ class Theme_Installer_Skin extends WP_Upgrader_Skin {
 	 * @return bool Whether the theme can be overwritten and HTML was outputted.
 	 */
 	private function do_overwrite() {
-		if ( 'upload' !== $this->type || ! is_wp_error( $this->result ) || 'folder_exists' !== $this->result->get_error_code() ) {
+		if ( 'upload' !== $this->type || ! Load::is_wp_error( $this->result ) || 'folder_exists' !== $this->result->get_error_code() ) {
 			return false;
 		}
 
@@ -224,7 +224,7 @@ class Theme_Installer_Skin extends WP_Upgrader_Skin {
 		echo '<h2 class="update-from-upload-heading">' . esc_html( __( 'This theme is already installed.' ) ) . '</h2>';
 
 		// Check errors for current theme.
-		if ( is_wp_error( $current_theme_data->errors() ) ) {
+		if ( Load::is_wp_error( $current_theme_data->errors() ) ) {
 			$this->feedback( 'current_theme_has_errors', $current_theme_data->errors()->get_error_message() );
 		}
 

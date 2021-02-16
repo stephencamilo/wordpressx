@@ -122,7 +122,7 @@ function update_network_cache( $networks ) {
  * @access private
  *
  * @see update_network_cache()
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param array $network_ids Array of network IDs.
  */

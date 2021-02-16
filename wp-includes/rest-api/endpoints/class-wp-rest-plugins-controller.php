@@ -58,7 +58,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 						'status' => array(
 							'description' => __( 'The plugin activation status.' ),
 							'type'        => 'string',
-							'enum'        => is_multisite() ? array( 'inactive', 'active', 'network-active' ) : array( 'inactive', 'active' ),
+							'enum'        => Load::is_multisite() ? array( 'inactive', 'active', 'network-active' ) : array( 'inactive', 'active' ),
 							'default'     => 'inactive',
 						),
 					),
@@ -135,7 +135,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 		$plugins = array();
 
 		foreach ( get_plugins() as $file => $data ) {
-			if ( is_wp_error( $this->check_read_permission( $file ) ) ) {
+			if ( Load::is_wp_error( $this->check_read_permission( $file ) ) ) {
 				continue;
 			}
 
@@ -170,7 +170,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 
 		$can_read = $this->check_read_permission( $request['plugin'] );
 
-		if ( is_wp_error( $can_read ) ) {
+		if ( Load::is_wp_error( $can_read ) ) {
 			return $can_read;
 		}
 
@@ -190,7 +190,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 
 		$data = $this->get_plugin_data( $request['plugin'] );
 
-		if ( is_wp_error( $data ) ) {
+		if ( Load::is_wp_error( $data ) ) {
 			return $data;
 		}
 
@@ -213,7 +213,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 			return new WP_Error( 'rest_plugin_not_found', __( 'Plugin not found.' ), array( 'status' => 404 ) );
 		}
 
-		if ( ! is_multisite() ) {
+		if ( ! Load::is_multisite() ) {
 			return true;
 		}
 
@@ -276,7 +276,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 
 		// Verify filesystem is accessible first.
 		$filesystem_available = $this->is_filesystem_available();
-		if ( is_wp_error( $filesystem_available ) ) {
+		if ( Load::is_wp_error( $filesystem_available ) ) {
 			return $filesystem_available;
 		}
 
@@ -291,7 +291,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 			)
 		);
 
-		if ( is_wp_error( $api ) ) {
+		if ( Load::is_wp_error( $api ) ) {
 			if ( false !== strpos( $api->get_error_message(), 'Plugin not found.' ) ) {
 				$api->add_data( array( 'status' => 404 ) );
 			} else {
@@ -306,14 +306,14 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 
 		$result = $upgrader->install( $api->download_link );
 
-		if ( is_wp_error( $result ) ) {
+		if ( Load::is_wp_error( $result ) ) {
 			$result->add_data( array( 'status' => 500 ) );
 
 			return $result;
 		}
 
 		// This should be the same as $result above.
-		if ( is_wp_error( $skin->result ) ) {
+		if ( Load::is_wp_error( $skin->result ) ) {
 			$skin->result->add_data( array( 'status' => 500 ) );
 
 			return $skin->result;
@@ -329,7 +329,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 		if ( is_null( $result ) ) {
 			global $wp_filesystem;
 			// Pass through the error from WP_Filesystem if one was raised.
-			if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
+			if ( $wp_filesystem instanceof WP_Filesystem_Base && Load::is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
 				return new WP_Error( 'unable_to_connect_to_filesystem', $wp_filesystem->errors->get_error_message(), array( 'status' => 500 ) );
 			}
 
@@ -345,13 +345,13 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 		if ( 'inactive' !== $request['status'] ) {
 			$can_change_status = $this->plugin_status_permission_check( $file, $request['status'], 'inactive' );
 
-			if ( is_wp_error( $can_change_status ) ) {
+			if ( Load::is_wp_error( $can_change_status ) ) {
 				return $can_change_status;
 			}
 
 			$changed_status = $this->handle_plugin_status( $file, $request['status'], 'inactive' );
 
-			if ( is_wp_error( $changed_status ) ) {
+			if ( Load::is_wp_error( $changed_status ) ) {
 				return $changed_status;
 			}
 		}
@@ -414,7 +414,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 
 		$can_read = $this->check_read_permission( $request['plugin'] );
 
-		if ( is_wp_error( $can_read ) ) {
+		if ( Load::is_wp_error( $can_read ) ) {
 			return $can_read;
 		}
 
@@ -423,7 +423,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 		if ( $request['status'] && $status !== $request['status'] ) {
 			$can_change_status = $this->plugin_status_permission_check( $request['plugin'], $request['status'], $status );
 
-			if ( is_wp_error( $can_change_status ) ) {
+			if ( Load::is_wp_error( $can_change_status ) ) {
 				return $can_change_status;
 			}
 		}
@@ -444,7 +444,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 
 		$data = $this->get_plugin_data( $request['plugin'] );
 
-		if ( is_wp_error( $data ) ) {
+		if ( Load::is_wp_error( $data ) ) {
 			return $data;
 		}
 
@@ -453,7 +453,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 		if ( $request['status'] && $status !== $request['status'] ) {
 			$handled = $this->handle_plugin_status( $request['plugin'], $request['status'], $status );
 
-			if ( is_wp_error( $handled ) ) {
+			if ( Load::is_wp_error( $handled ) ) {
 				return $handled;
 			}
 		}
@@ -492,7 +492,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 
 		$can_read = $this->check_read_permission( $request['plugin'] );
 
-		if ( is_wp_error( $can_read ) ) {
+		if ( Load::is_wp_error( $can_read ) ) {
 			return $can_read;
 		}
 
@@ -513,7 +513,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 
 		$data = $this->get_plugin_data( $request['plugin'] );
 
-		if ( is_wp_error( $data ) ) {
+		if ( Load::is_wp_error( $data ) ) {
 			return $data;
 		}
 
@@ -526,14 +526,14 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 		}
 
 		$filesystem_available = $this->is_filesystem_available();
-		if ( is_wp_error( $filesystem_available ) ) {
+		if ( Load::is_wp_error( $filesystem_available ) ) {
 			return $filesystem_available;
 		}
 
 		$prepared = $this->prepare_item_for_response( $data, $request );
 		$deleted  = delete_plugins( array( $request['plugin'] ) );
 
-		if ( is_wp_error( $deleted ) ) {
+		if ( Load::is_wp_error( $deleted ) ) {
 			$deleted->add_data( array( 'status' => 500 ) );
 
 			return $deleted;
@@ -664,7 +664,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 	 * @return true|WP_Error
 	 */
 	protected function plugin_status_permission_check( $plugin, $new_status, $current_status ) {
-		if ( is_multisite() && ( 'network-active' === $current_status || 'network-active' === $new_status ) && ! current_user_can( 'manage_network_plugins' ) ) {
+		if ( Load::is_multisite() && ( 'network-active' === $current_status || 'network-active' === $new_status ) && ! current_user_can( 'manage_network_plugins' ) ) {
 			return new WP_Error(
 				'rest_cannot_manage_network_plugins',
 				__( 'Sorry, you are not allowed to manage network plugins.' ),
@@ -714,7 +714,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 
 		$network_activate = 'network-active' === $new_status;
 
-		if ( is_multisite() && ! $network_activate && is_network_only_plugin( $plugin ) ) {
+		if ( Load::is_multisite() && ! $network_activate && is_network_only_plugin( $plugin ) ) {
 			return new WP_Error(
 				'rest_network_only_plugin',
 				__( 'Network only plugin must be network activated.' ),
@@ -724,7 +724,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 
 		$activated = activate_plugin( $plugin, '', $network_activate );
 
-		if ( is_wp_error( $activated ) ) {
+		if ( Load::is_wp_error( $activated ) ) {
 			$activated->add_data( array( 'status' => 500 ) );
 
 			return $activated;
@@ -866,7 +866,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 				'status'       => array(
 					'description' => __( 'The plugin activation status.' ),
 					'type'        => 'string',
-					'enum'        => is_multisite() ? array( 'inactive', 'active', 'network-active' ) : array( 'inactive', 'active' ),
+					'enum'        => Load::is_multisite() ? array( 'inactive', 'active', 'network-active' ) : array( 'inactive', 'active' ),
 					'context'     => array( 'view', 'edit', 'embed' ),
 				),
 				'name'         => array(
@@ -964,7 +964,7 @@ class WP_REST_Plugins_Controller extends WP_REST_Controller {
 			'type'        => 'array',
 			'items'       => array(
 				'type' => 'string',
-				'enum' => is_multisite() ? array( 'inactive', 'active', 'network-active' ) : array( 'inactive', 'active' ),
+				'enum' => Load::is_multisite() ? array( 'inactive', 'active', 'network-active' ) : array( 'inactive', 'active' ),
 			),
 		);
 

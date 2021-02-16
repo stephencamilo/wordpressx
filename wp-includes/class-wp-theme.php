@@ -420,7 +420,7 @@ final class WP_Theme implements ArrayAccess {
 			$this->parent = new WP_Theme( $this->template, isset( $theme_root_template ) ? $theme_root_template : $this->theme_root, $this );
 		}
 
-		if ( wp_paused_themes()->get( $this->stylesheet ) && ( ! is_wp_error( $this->errors ) || ! isset( $this->errors->errors['theme_paused'] ) ) ) {
+		if ( wp_paused_themes()->get( $this->stylesheet ) && ( ! Load::is_wp_error( $this->errors ) || ! isset( $this->errors->errors['theme_paused'] ) ) ) {
 			$this->errors = new WP_Error( 'theme_paused', __( 'This theme failed to load properly and was paused within the admin backend.' ) );
 		}
 
@@ -647,7 +647,7 @@ final class WP_Theme implements ArrayAccess {
 	 * @return WP_Error|false WP_Error if there are errors, or false.
 	 */
 	public function errors() {
-		return is_wp_error( $this->errors ) ? $this->errors : false;
+		return Load::is_wp_error( $this->errors ) ? $this->errors : false;
 	}
 
 	/**
@@ -1394,7 +1394,7 @@ final class WP_Theme implements ArrayAccess {
 	 * @return bool Whether the theme is allowed for the network. Returns true in single-site.
 	 */
 	public function is_allowed( $check = 'both', $blog_id = null ) {
-		if ( ! is_multisite() ) {
+		if ( ! Load::is_multisite() ) {
 			return true;
 		}
 
@@ -1494,8 +1494,8 @@ final class WP_Theme implements ArrayAccess {
 	public static function get_allowed_on_site( $blog_id = null ) {
 		static $allowed_themes = array();
 
-		if ( ! $blog_id || ! is_multisite() ) {
-			$blog_id = get_current_blog_id();
+		if ( ! $blog_id || ! Load::is_multisite() ) {
+			$blog_id = Load::get_current_blog_id();
 		}
 
 		if ( isset( $allowed_themes[ $blog_id ] ) ) {
@@ -1510,7 +1510,7 @@ final class WP_Theme implements ArrayAccess {
 			return (array) apply_filters( 'site_allowed_themes', $allowed_themes[ $blog_id ], $blog_id );
 		}
 
-		$current = get_current_blog_id() == $blog_id;
+		$current = Load::get_current_blog_id() == $blog_id;
 
 		if ( $current ) {
 			$allowed_themes[ $blog_id ] = get_option( 'allowedthemes' );
@@ -1544,7 +1544,7 @@ final class WP_Theme implements ArrayAccess {
 				$allowed_themes[ $blog_id ] = $converted;
 			}
 			// Set the option so we never have to go through this pain again.
-			if ( is_admin() && $allowed_themes[ $blog_id ] ) {
+			if ( Load::is_admin() && $allowed_themes[ $blog_id ] ) {
 				if ( $current ) {
 					update_option( 'allowedthemes', $allowed_themes[ $blog_id ] );
 					delete_option( 'allowed_themes' );
@@ -1569,7 +1569,7 @@ final class WP_Theme implements ArrayAccess {
 	 * @param string|string[] $stylesheets Stylesheet name or array of stylesheet names.
 	 */
 	public static function network_enable_theme( $stylesheets ) {
-		if ( ! is_multisite() ) {
+		if ( ! Load::is_multisite() ) {
 			return;
 		}
 
@@ -1593,7 +1593,7 @@ final class WP_Theme implements ArrayAccess {
 	 * @param string|string[] $stylesheets Stylesheet name or array of stylesheet names.
 	 */
 	public static function network_disable_theme( $stylesheets ) {
-		if ( ! is_multisite() ) {
+		if ( ! Load::is_multisite() ) {
 			return;
 		}
 

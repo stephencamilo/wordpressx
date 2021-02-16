@@ -41,13 +41,14 @@ if ( ! function_exists( 'maybe_create_table' ) ) :
 	/**
 	 * Creates a table in the database if it doesn't already exist.
 	 *
-	 * @since 1.0.0
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
 	 * @param string $table_name Database table name.
 	 * @param string $create_ddl SQL statement to create table.
+	 *
 	 * @return bool True on success or if the table already exists. False on failure.
+	 *@global WPDB $wpdb WordPress database abstraction object.
+	 *
+	 * @since 1.0.0
+	 *
 	 */
 	function maybe_create_table( $table_name, $create_ddl ) {
 		global $wpdb;
@@ -76,14 +77,15 @@ if ( ! function_exists( 'maybe_add_column' ) ) :
 	/**
 	 * Adds column to database table, if it doesn't already exist.
 	 *
-	 * @since 1.0.0
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
-	 * @param string $table_name  Database table name.
+	 * @param string $table_name Database table name.
 	 * @param string $column_name Table column name.
 	 * @param string $create_ddl  SQL statement to add column.
+	 *
 	 * @return bool True on success or if the column already exists. False on failure.
+	 *@since 1.0.0
+	 *
+	 * @global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 */
 	function maybe_add_column( $table_name, $column_name, $create_ddl ) {
 		global $wpdb;
@@ -111,14 +113,15 @@ endif;
 /**
  * Drops column from database table, if it exists.
  *
- * @since 1.0.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param string $table_name  Database table name.
+ * @param string $table_name Database table name.
  * @param string $column_name Table column name.
  * @param string $drop_ddl    SQL statement to drop column.
+ *
  * @return bool True on success or if the column doesn't exist. False on failure.
+ *@since 1.0.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function maybe_drop_column( $table_name, $column_name, $drop_ddl ) {
 	global $wpdb;
@@ -158,10 +161,6 @@ function maybe_drop_column( $table_name, $column_name, $drop_ddl ) {
  *      Default
  *      Extra
  *
- * @since 1.0.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string $table_name Database table name.
  * @param string $col_name   Table column name.
  * @param string $col_type   Table column type.
@@ -169,7 +168,12 @@ function maybe_drop_column( $table_name, $column_name, $drop_ddl ) {
  * @param mixed  $key        Optional. Key info.
  * @param mixed  $default    Optional. Default value.
  * @param mixed  $extra      Optional. Extra value.
+ *
  * @return bool True, if matches. False, if not matching.
+ *@since 1.0.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function check_column( $table_name, $col_name, $col_type, $is_null = null, $key = null, $default = null, $extra = null ) {
 	global $wpdb;

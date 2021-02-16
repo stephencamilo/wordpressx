@@ -128,7 +128,7 @@ class WP_REST_Settings_Controller extends WP_REST_Controller {
 		 * Null values are specifically non-destructive, so this will not cause
 		 * overwriting the current invalid value to null.
 		 */
-		if ( is_wp_error( rest_validate_value_from_schema( $value, $schema ) ) ) {
+		if ( Load::is_wp_error( rest_validate_value_from_schema( $value, $schema ) ) ) {
 			return null;
 		}
 
@@ -190,7 +190,7 @@ class WP_REST_Settings_Controller extends WP_REST_Controller {
 				 * delete all options that have invalid values from the
 				 * database.
 				 */
-				if ( is_wp_error( rest_validate_value_from_schema( get_option( $args['option_name'], false ), $args['schema'] ) ) ) {
+				if ( Load::is_wp_error( rest_validate_value_from_schema( get_option( $args['option_name'], false ), $args['schema'] ) ) ) {
 					return new WP_Error(
 						'rest_invalid_stored_value',
 						/* translators: %s: Property name. */

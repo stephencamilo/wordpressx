@@ -17,7 +17,7 @@ require_once ABSPATH . WPINC . '/ms-network.php';
  * @since MU (3.0.0)
  */
 function wpmu_update_blogs_date() {
-	$site_id = get_current_blog_id();
+	$site_id = Load::get_current_blog_id();
 
 	update_blog_details( $site_id, array( 'last_updated' => current_time( 'mysql', true ) ) );
 	/**
@@ -115,15 +115,16 @@ function get_id_from_blogname( $slug ) {
 /**
  * Retrieve the details for a blog from the blogs table and blog options.
  *
- * @since MU (3.0.0)
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param int|string|array $fields  Optional. A blog ID, a blog slug, or an array of fields to query against.
+ * @param int|string|array $fields Optional. A blog ID, a blog slug, or an array of fields to query against.
  *                                  If not specified the current blog ID is used.
  * @param bool             $get_all Whether to retrieve all details or only the details in the blogs table.
  *                                  Default is true.
+ *
  * @return WP_Site|false Blog details on success. False on failure.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since MU (3.0.0)
+ *
  */
 function get_blog_details( $fields = null, $get_all = true ) {
 	global $wpdb;
@@ -172,7 +173,7 @@ function get_blog_details( $fields = null, $get_all = true ) {
 		}
 	} else {
 		if ( ! $fields ) {
-			$blog_id = get_current_blog_id();
+			$blog_id = Load::get_current_blog_id();
 		} elseif ( ! is_numeric( $fields ) ) {
 			$blog_id = get_id_from_blogname( $fields );
 		} else {
@@ -240,7 +241,7 @@ function get_blog_details( $fields = null, $get_all = true ) {
 
 	$switched_blog = false;
 
-	if ( get_current_blog_id() !== $blog_id ) {
+	if ( Load::get_current_blog_id() !== $blog_id ) {
 		switch_to_blog( $blog_id );
 		$switched_blog = true;
 	}
@@ -282,7 +283,7 @@ function get_blog_details( $fields = null, $get_all = true ) {
 function refresh_blog_details( $blog_id = 0 ) {
 	$blog_id = (int) $blog_id;
 	if ( ! $blog_id ) {
-		$blog_id = get_current_blog_id();
+		$blog_id = Load::get_current_blog_id();
 	}
 
 	clean_blog_cache( $blog_id );
@@ -291,13 +292,14 @@ function refresh_blog_details( $blog_id = 0 ) {
 /**
  * Update the details for a blog. Updates the blogs table for a given blog ID.
  *
- * @since MU (3.0.0)
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int   $blog_id Blog ID.
  * @param array $details Array of details keyed by blogs table field names.
+ *
  * @return bool True if update succeeds, false otherwise.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since MU (3.0.0)
+ *
  */
 function update_blog_details( $blog_id, $details = array() ) {
 	global $wpdb;
@@ -312,7 +314,7 @@ function update_blog_details( $blog_id, $details = array() ) {
 
 	$site = wp_update_site( $blog_id, $details );
 
-	if ( is_wp_error( $site ) ) {
+	if ( Load::is_wp_error( $site ) ) {
 		return false;
 	}
 
@@ -329,7 +331,7 @@ function update_blog_details( $blog_id, $details = array() ) {
 function clean_site_details_cache( $site_id = 0 ) {
 	$site_id = (int) $site_id;
 	if ( ! $site_id ) {
-		$site_id = get_current_blog_id();
+		$site_id = Load::get_current_blog_id();
 	}
 
 	wp_cache_delete( $site_id, 'site-details' );
@@ -357,10 +359,10 @@ function get_blog_option( $id, $option, $default = false ) {
 	$id = (int) $id;
 
 	if ( empty( $id ) ) {
-		$id = get_current_blog_id();
+		$id = Load::get_current_blog_id();
 	}
 
-	if ( get_current_blog_id() == $id ) {
+	if ( Load::get_current_blog_id() == $id ) {
 		return get_option( $option, $default );
 	}
 
@@ -404,10 +406,10 @@ function add_blog_option( $id, $option, $value ) {
 	$id = (int) $id;
 
 	if ( empty( $id ) ) {
-		$id = get_current_blog_id();
+		$id = Load::get_current_blog_id();
 	}
 
-	if ( get_current_blog_id() == $id ) {
+	if ( Load::get_current_blog_id() == $id ) {
 		return add_option( $option, $value );
 	}
 
@@ -431,10 +433,10 @@ function delete_blog_option( $id, $option ) {
 	$id = (int) $id;
 
 	if ( empty( $id ) ) {
-		$id = get_current_blog_id();
+		$id = Load::get_current_blog_id();
 	}
 
-	if ( get_current_blog_id() == $id ) {
+	if ( Load::get_current_blog_id() == $id ) {
 		return delete_option( $option );
 	}
 
@@ -463,7 +465,7 @@ function update_blog_option( $id, $option, $value, $deprecated = null ) {
 		_deprecated_argument( __FUNCTION__, '3.1.0' );
 	}
 
-	if ( get_current_blog_id() == $id ) {
+	if ( Load::get_current_blog_id() == $id ) {
 		return update_option( $option, $value );
 	}
 
@@ -483,24 +485,25 @@ function update_blog_option( $id, $option, $value, $deprecated = null ) {
  * Things that aren't switched:
  *  - plugins. See #14941
  *
- * @see restore_current_blog()
+ * @param int  $new_blog_id The ID of the blog to switch to. Default: current blog.
+ * @param bool $deprecated  Not used.
+ *
+ * @return true Always returns true.
+ *@see restore_current_blog()
  * @since MU (3.0.0)
  *
- * @global wpdb            $wpdb               WordPress database abstraction object.
+ * @global WPDB            $wpdb               WordPress database abstraction object.
  * @global int             $blog_id
  * @global array           $_wp_switched_stack
  * @global bool            $switched
  * @global string          $table_prefix
  * @global WP_Object_Cache $wp_object_cache
  *
- * @param int  $new_blog_id The ID of the blog to switch to. Default: current blog.
- * @param bool $deprecated  Not used.
- * @return true Always returns true.
  */
 function switch_to_blog( $new_blog_id, $deprecated = null ) {
 	global $wpdb;
 
-	$prev_blog_id = get_current_blog_id();
+	$prev_blog_id = Load::get_current_blog_id();
 	if ( empty( $new_blog_id ) ) {
 		$new_blog_id = $prev_blog_id;
 	}
@@ -570,17 +573,17 @@ function switch_to_blog( $new_blog_id, $deprecated = null ) {
 /**
  * Restore the current blog, after calling switch_to_blog().
  *
- * @see switch_to_blog()
- * @since MU (3.0.0)
+ * @return bool True on success, false if we're already on the current blog.
+ *@since MU (3.0.0)
  *
- * @global wpdb            $wpdb               WordPress database abstraction object.
+ * @global WPDB            $wpdb               WordPress database abstraction object.
  * @global array           $_wp_switched_stack
  * @global int             $blog_id
  * @global bool            $switched
  * @global string          $table_prefix
  * @global WP_Object_Cache $wp_object_cache
  *
- * @return bool True on success, false if we're already on the current blog.
+ * @see switch_to_blog()
  */
 function restore_current_blog() {
 	global $wpdb;
@@ -590,7 +593,7 @@ function restore_current_blog() {
 	}
 
 	$new_blog_id  = array_pop( $GLOBALS['_wp_switched_stack'] );
-	$prev_blog_id = get_current_blog_id();
+	$prev_blog_id = Load::get_current_blog_id();
 
 	if ( $new_blog_id == $prev_blog_id ) {
 		/** This filter is documented in wp-includes/ms-blogs.php */
@@ -702,16 +705,17 @@ function update_archived( $id, $archived ) {
 /**
  * Update a blog details field.
  *
- * @since MU (3.0.0)
- * @since 5.1.0 Use wp_update_site() internally.
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int    $blog_id    Blog ID.
  * @param string $pref       Field name.
  * @param string $value      Field value.
  * @param null   $deprecated Not used.
+ *
  * @return string|false $value
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since MU (3.0.0)
+ * @since 5.1.0 Use wp_update_site() internally.
+ *
  */
 function update_blog_status( $blog_id, $pref, $value, $deprecated = null ) {
 	global $wpdb;
@@ -733,7 +737,7 @@ function update_blog_status( $blog_id, $pref, $value, $deprecated = null ) {
 		)
 	);
 
-	if ( is_wp_error( $result ) ) {
+	if ( Load::is_wp_error( $result ) ) {
 		return false;
 	}
 
@@ -743,13 +747,14 @@ function update_blog_status( $blog_id, $pref, $value, $deprecated = null ) {
 /**
  * Get a blog details field.
  *
- * @since MU (3.0.0)
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int    $id   Blog ID.
  * @param string $pref Field name.
+ *
  * @return bool|string|null $value
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since MU (3.0.0)
+ *
  */
 function get_blog_status( $id, $pref ) {
 	global $wpdb;
@@ -765,15 +770,16 @@ function get_blog_status( $id, $pref ) {
 /**
  * Get a list of most recently updated blogs.
  *
- * @since MU (3.0.0)
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param mixed $deprecated Not used.
  * @param int   $start      Optional. Number of blogs to offset the query. Used to build LIMIT clause.
  *                          Can be used for pagination. Default 0.
  * @param int   $quantity   Optional. The maximum number of blogs to retrieve. Default 40.
+ *
  * @return array The list of blogs.
+ *@since MU (3.0.0)
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function get_last_updated( $deprecated = '', $start = 0, $quantity = 40 ) {
 	global $wpdb;
@@ -782,7 +788,7 @@ function get_last_updated( $deprecated = '', $start = 0, $quantity = 40 ) {
 		_deprecated_argument( __FUNCTION__, 'MU' ); // Never used.
 	}
 
-	return $wpdb->get_results( $wpdb->prepare( "SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' AND last_updated != '0000-00-00 00:00:00' ORDER BY last_updated DESC limit %d, %d", get_current_network_id(), $start, $quantity ), ARRAY_A );
+	return $wpdb->get_results( $wpdb->prepare( "SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' AND last_updated != '0000-00-00 00:00:00' ORDER BY last_updated DESC limit %d, %d", Load::get_current_network_id(), $start, $quantity ), ARRAY_A );
 }
 
 /**
@@ -895,7 +901,7 @@ function _update_posts_count_on_transition_post_status( $new_status, $old_status
  */
 function wp_count_sites( $network_id = null ) {
 	if ( empty( $network_id ) ) {
-		$network_id = get_current_network_id();
+		$network_id = Load::get_current_network_id();
 	}
 
 	$counts = array();
