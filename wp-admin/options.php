@@ -65,14 +65,14 @@ if ( ! empty( $_GET['adminhash'] ) ) {
 	wp_redirect( admin_url( $redirect ) );
 	exit;
 } elseif ( ! empty( $_GET['dismiss'] ) && 'new_admin_email' === $_GET['dismiss'] ) {
-	check_admin_referer( 'dismiss-' . get_current_blog_id() . '-new_admin_email' );
+	check_admin_referer( 'dismiss-' . Load::get_current_blog_id() . '-new_admin_email' );
 	delete_option( 'adminhash' );
 	delete_option( 'new_admin_email' );
 	wp_redirect( admin_url( 'options-general.php?updated=true' ) );
 	exit;
 }
 
-if ( is_multisite() && ! current_user_can( 'manage_network_options' ) && 'update' != $action ) {
+if ( Load::is_multisite() && ! current_user_can( 'manage_network_options' ) && 'update' != $action ) {
 	wp_die(
 		'<h1>' . __( 'You need a higher level of permission.' ) . '</h1>' .
 		'<p>' . __( 'Sorry, you are not allowed to delete these items.' ) . '</p>',
@@ -161,7 +161,7 @@ if ( get_site_option( 'initial_db_version' ) < 32453 ) {
 	$allowed_options['writing'][] = 'use_balanceTags';
 }
 
-if ( ! is_multisite() ) {
+if ( ! Load::is_multisite() ) {
 	if ( ! defined( 'WP_SITEURL' ) ) {
 		$allowed_options['general'][] = 'siteurl';
 	}
@@ -244,7 +244,7 @@ if ( 'update' === $action ) { // We are saving settings sent from a settings pag
 	}
 
 	if ( 'options' === $option_page ) {
-		if ( is_multisite() && ! current_user_can( 'manage_network_options' ) ) {
+		if ( Load::is_multisite() && ! current_user_can( 'manage_network_options' ) ) {
 			wp_die( __( 'Sorry, you are not allowed to modify unregistered settings for this site.' ) );
 		}
 		$options = explode( ',', wp_unslash( $_POST['page_options'] ) );

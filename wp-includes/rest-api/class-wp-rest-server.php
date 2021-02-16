@@ -436,7 +436,7 @@ class WP_REST_Server {
 
 		$result = $this->check_authentication();
 
-		if ( ! is_wp_error( $result ) ) {
+		if ( ! Load::is_wp_error( $result ) ) {
 			$result = $this->dispatch( $request );
 		}
 
@@ -444,7 +444,7 @@ class WP_REST_Server {
 		$result = rest_ensure_response( $result );
 
 		// ...then convert WP_Error across.
-		if ( is_wp_error( $result ) ) {
+		if ( Load::is_wp_error( $result ) ) {
 			$result = $this->error_to_response( $result );
 		}
 
@@ -978,7 +978,7 @@ class WP_REST_Server {
 		$error   = null;
 		$matched = $this->match_request_to_handler( $request );
 
-		if ( is_wp_error( $matched ) ) {
+		if ( Load::is_wp_error( $matched ) ) {
 			return $this->error_to_response( $matched );
 		}
 
@@ -992,13 +992,13 @@ class WP_REST_Server {
 			);
 		}
 
-		if ( ! is_wp_error( $error ) ) {
+		if ( ! Load::is_wp_error( $error ) ) {
 			$check_required = $request->has_valid_params();
-			if ( is_wp_error( $check_required ) ) {
+			if ( Load::is_wp_error( $check_required ) ) {
 				$error = $check_required;
 			} else {
 				$check_sanitized = $request->sanitize_params();
-				if ( is_wp_error( $check_sanitized ) ) {
+				if ( Load::is_wp_error( $check_sanitized ) ) {
 					$error = $check_sanitized;
 				}
 			}
@@ -1123,10 +1123,10 @@ class WP_REST_Server {
 		$response = apply_filters( 'rest_request_before_callbacks', $response, $handler, $request );
 
 		// Check permission specified on the route.
-		if ( ! is_wp_error( $response ) && ! empty( $handler['permission_callback'] ) ) {
+		if ( ! Load::is_wp_error( $response ) && ! empty( $handler['permission_callback'] ) ) {
 			$permission = call_user_func( $handler['permission_callback'], $request );
 
-			if ( is_wp_error( $permission ) ) {
+			if ( Load::is_wp_error( $permission ) ) {
 				$response = $permission;
 			} elseif ( false === $permission || null === $permission ) {
 				$response = new WP_Error(
@@ -1137,7 +1137,7 @@ class WP_REST_Server {
 			}
 		}
 
-		if ( ! is_wp_error( $response ) ) {
+		if ( ! Load::is_wp_error( $response ) ) {
 			/**
 			 * Filters the REST dispatch request result.
 			 *
@@ -1183,7 +1183,7 @@ class WP_REST_Server {
 		 */
 		$response = apply_filters( 'rest_request_after_callbacks', $response, $handler, $request );
 
-		if ( is_wp_error( $response ) ) {
+		if ( Load::is_wp_error( $response ) ) {
 			$response = $this->error_to_response( $response );
 		} else {
 			$response = rest_ensure_response( $response );
@@ -1492,7 +1492,7 @@ class WP_REST_Server {
 			$matches[] = $match;
 			$error     = null;
 
-			if ( is_wp_error( $match ) ) {
+			if ( Load::is_wp_error( $match ) ) {
 				$error = $match;
 			}
 
@@ -1517,14 +1517,14 @@ class WP_REST_Server {
 
 			if ( ! $error ) {
 				$check_required = $single_request->has_valid_params();
-				if ( is_wp_error( $check_required ) ) {
+				if ( Load::is_wp_error( $check_required ) ) {
 					$error = $check_required;
 				}
 			}
 
 			if ( ! $error ) {
 				$check_sanitized = $single_request->sanitize_params();
-				if ( is_wp_error( $check_sanitized ) ) {
+				if ( Load::is_wp_error( $check_sanitized ) ) {
 					$error = $check_sanitized;
 				}
 			}
@@ -1541,7 +1541,7 @@ class WP_REST_Server {
 
 		if ( $has_error && 'require-all-validate' === $batch_request['validation'] ) {
 			foreach ( $validation as $valid ) {
-				if ( is_wp_error( $valid ) ) {
+				if ( Load::is_wp_error( $valid ) ) {
 					$responses[] = $this->envelope_response( $this->error_to_response( $valid ), false )->get_data();
 				} else {
 					$responses[] = null;
@@ -1570,11 +1570,11 @@ class WP_REST_Server {
 				$match = $matches[ $i ];
 				$error = null;
 
-				if ( is_wp_error( $validation[ $i ] ) ) {
+				if ( Load::is_wp_error( $validation[ $i ] ) ) {
 					$error = $validation[ $i ];
 				}
 
-				if ( is_wp_error( $match ) ) {
+				if ( Load::is_wp_error( $match ) ) {
 					$result = $this->error_to_response( $match );
 				} else {
 					list( $route, $handler ) = $match;

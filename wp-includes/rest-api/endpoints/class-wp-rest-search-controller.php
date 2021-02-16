@@ -126,7 +126,7 @@ class WP_REST_Search_Controller extends WP_REST_Controller {
 	 */
 	public function get_items( $request ) {
 		$handler = $this->get_search_handler( $request );
-		if ( is_wp_error( $handler ) ) {
+		if ( Load::is_wp_error( $handler ) ) {
 			return $handler;
 		}
 
@@ -193,7 +193,7 @@ class WP_REST_Search_Controller extends WP_REST_Controller {
 	 */
 	public function prepare_item_for_response( $id, $request ) {
 		$handler = $this->get_search_handler( $request );
-		if ( is_wp_error( $handler ) ) {
+		if ( Load::is_wp_error( $handler ) ) {
 			return new WP_REST_Response();
 		}
 
@@ -343,7 +343,7 @@ class WP_REST_Search_Controller extends WP_REST_Controller {
 		$subtypes = wp_parse_slug_list( $subtypes );
 
 		$subtypes = rest_parse_request_arg( $subtypes, $request, $parameter );
-		if ( is_wp_error( $subtypes ) ) {
+		if ( Load::is_wp_error( $subtypes ) ) {
 			return $subtypes;
 		}
 
@@ -353,7 +353,7 @@ class WP_REST_Search_Controller extends WP_REST_Controller {
 		}
 
 		$handler = $this->get_search_handler( $request );
-		if ( is_wp_error( $handler ) ) {
+		if ( Load::is_wp_error( $handler ) ) {
 			return $handler;
 		}
 

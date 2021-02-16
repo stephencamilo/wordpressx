@@ -31,7 +31,7 @@ class WP_Fatal_Error_Handler {
 		}
 
 		// Do not trigger the fatal error handler while updates are being installed.
-		if ( wp_is_maintenance_mode() ) {
+		if ( Load::wp_is_maintenance_mode() ) {
 			return;
 		}
 
@@ -48,12 +48,12 @@ class WP_Fatal_Error_Handler {
 
 			$handled = false;
 
-			if ( ! is_multisite() && wp_recovery_mode()->is_initialized() ) {
+			if ( ! Load::is_multisite() && wp_recovery_mode()->is_initialized() ) {
 				$handled = wp_recovery_mode()->handle_error( $error );
 			}
 
 			// Display the PHP error template if headers not sent.
-			if ( is_admin() || ! headers_sent() ) {
+			if ( Load::is_admin() || ! headers_sent() ) {
 				$this->display_error_template( $error, $handled );
 			}
 		} catch ( Exception $e ) {
@@ -169,7 +169,7 @@ class WP_Fatal_Error_Handler {
 	 */
 	protected function display_default_error_template( $error, $handled ) {
 		if ( ! function_exists( '__' ) ) {
-			wp_load_translations_early();
+			Load::wp_load_translations_early();
 		}
 
 		if ( ! function_exists( 'wp_die' ) ) {
@@ -180,9 +180,9 @@ class WP_Fatal_Error_Handler {
 			require_once ABSPATH . WPINC . '/class-wp-error.php';
 		}
 
-		if ( true === $handled && wp_is_recovery_mode() ) {
+		if ( true === $handled && Load::wp_is_recovery_mode() ) {
 			$message = __( 'There has been a critical error on this website, putting it in recovery mode. Please check the Themes and Plugins screens for more details. If you just installed or updated a theme or plugin, check the relevant page for that first.' );
-		} elseif ( is_protected_endpoint() ) {
+		} elseif ( Load::is_protected_endpoint() ) {
 			$message = __( 'There has been a critical error on this website. Please check your site admin email inbox for instructions.' );
 		} else {
 			$message = __( 'There has been a critical error on this website.' );

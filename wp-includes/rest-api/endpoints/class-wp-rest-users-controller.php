@@ -393,7 +393,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 			return $error;
 		}
 
-		if ( is_multisite() && ! is_user_member_of_blog( $user->ID ) ) {
+		if ( Load::is_multisite() && ! is_user_member_of_blog( $user->ID ) ) {
 			return $error;
 		}
 
@@ -410,7 +410,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 	 */
 	public function get_item_permissions_check( $request ) {
 		$user = $this->get_user( $request['id'] );
-		if ( is_wp_error( $user ) ) {
+		if ( Load::is_wp_error( $user ) ) {
 			return $user;
 		}
 
@@ -447,7 +447,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 	 */
 	public function get_item( $request ) {
 		$user = $this->get_user( $request['id'] );
-		if ( is_wp_error( $user ) ) {
+		if ( Load::is_wp_error( $user ) ) {
 			return $user;
 		}
 
@@ -526,17 +526,17 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 		if ( ! empty( $request['roles'] ) && ! empty( $schema['properties']['roles'] ) ) {
 			$check_permission = $this->check_role_update( $request['id'], $request['roles'] );
 
-			if ( is_wp_error( $check_permission ) ) {
+			if ( Load::is_wp_error( $check_permission ) ) {
 				return $check_permission;
 			}
 		}
 
 		$user = $this->prepare_item_for_database( $request );
 
-		if ( is_multisite() ) {
+		if ( Load::is_multisite() ) {
 			$ret = wpmu_validate_user_signup( $user->user_login, $user->user_email );
 
-			if ( is_wp_error( $ret['errors'] ) && $ret['errors']->has_errors() ) {
+			if ( Load::is_wp_error( $ret['errors'] ) && $ret['errors']->has_errors() ) {
 				$error = new WP_Error(
 					'rest_invalid_param',
 					__( 'Invalid user parameter(s).' ),
@@ -558,7 +558,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 			}
 		}
 
-		if ( is_multisite() ) {
+		if ( Load::is_multisite() ) {
 			$user_id = wpmu_create_user( $user->user_login, $user->user_pass, $user->user_email );
 
 			if ( ! $user_id ) {
@@ -572,18 +572,18 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 			$user->ID = $user_id;
 			$user_id  = wp_update_user( wp_slash( (array) $user ) );
 
-			if ( is_wp_error( $user_id ) ) {
+			if ( Load::is_wp_error( $user_id ) ) {
 				return $user_id;
 			}
 
 			$result = add_user_to_blog( get_site()->id, $user_id, '' );
-			if ( is_wp_error( $result ) ) {
+			if ( Load::is_wp_error( $result ) ) {
 				return $result;
 			}
 		} else {
 			$user_id = wp_insert_user( wp_slash( (array) $user ) );
 
-			if ( is_wp_error( $user_id ) ) {
+			if ( Load::is_wp_error( $user_id ) ) {
 				return $user_id;
 			}
 		}
@@ -608,7 +608,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 		if ( ! empty( $schema['properties']['meta'] ) && isset( $request['meta'] ) ) {
 			$meta_update = $this->meta->update_value( $request['meta'], $user_id );
 
-			if ( is_wp_error( $meta_update ) ) {
+			if ( Load::is_wp_error( $meta_update ) ) {
 				return $meta_update;
 			}
 		}
@@ -616,7 +616,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 		$user          = get_user_by( 'id', $user_id );
 		$fields_update = $this->update_additional_fields_for_object( $user, $request );
 
-		if ( is_wp_error( $fields_update ) ) {
+		if ( Load::is_wp_error( $fields_update ) ) {
 			return $fields_update;
 		}
 
@@ -652,7 +652,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 	 */
 	public function update_item_permissions_check( $request ) {
 		$user = $this->get_user( $request['id'] );
-		if ( is_wp_error( $user ) ) {
+		if ( Load::is_wp_error( $user ) ) {
 			return $user;
 		}
 
@@ -695,7 +695,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 	 */
 	public function update_item( $request ) {
 		$user = $this->get_user( $request['id'] );
-		if ( is_wp_error( $user ) ) {
+		if ( Load::is_wp_error( $user ) ) {
 			return $user;
 		}
 
@@ -738,7 +738,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 		if ( ! empty( $request['roles'] ) ) {
 			$check_permission = $this->check_role_update( $id, $request['roles'] );
 
-			if ( is_wp_error( $check_permission ) ) {
+			if ( Load::is_wp_error( $check_permission ) ) {
 				return $check_permission;
 			}
 		}
@@ -750,7 +750,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 
 		$user_id = wp_update_user( wp_slash( (array) $user ) );
 
-		if ( is_wp_error( $user_id ) ) {
+		if ( Load::is_wp_error( $user_id ) ) {
 			return $user_id;
 		}
 
@@ -768,7 +768,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 		if ( ! empty( $schema['properties']['meta'] ) && isset( $request['meta'] ) ) {
 			$meta_update = $this->meta->update_value( $request['meta'], $id );
 
-			if ( is_wp_error( $meta_update ) ) {
+			if ( Load::is_wp_error( $meta_update ) ) {
 				return $meta_update;
 			}
 		}
@@ -776,7 +776,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 		$user          = get_user_by( 'id', $user_id );
 		$fields_update = $this->update_additional_fields_for_object( $user, $request );
 
-		if ( is_wp_error( $fields_update ) ) {
+		if ( Load::is_wp_error( $fields_update ) ) {
 			return $fields_update;
 		}
 
@@ -829,7 +829,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 	 */
 	public function delete_item_permissions_check( $request ) {
 		$user = $this->get_user( $request['id'] );
-		if ( is_wp_error( $user ) ) {
+		if ( Load::is_wp_error( $user ) ) {
 			return $user;
 		}
 
@@ -854,7 +854,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 	 */
 	public function delete_item( $request ) {
 		// We don't support delete requests in multisite.
-		if ( is_multisite() ) {
+		if ( Load::is_multisite() ) {
 			return new WP_Error(
 				'rest_cannot_delete',
 				__( 'The user cannot be deleted.' ),
@@ -864,7 +864,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 
 		$user = $this->get_user( $request['id'] );
 
-		if ( is_wp_error( $user ) ) {
+		if ( Load::is_wp_error( $user ) ) {
 			return $user;
 		}
 
@@ -1198,8 +1198,8 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 			 * Don't let anyone with 'edit_users' (admins) edit their own role to something without it.
 			 * Multisite super admins can freely edit their blog roles -- they possess all caps.
 			 */
-			if ( ! ( is_multisite()
-				&& current_user_can( 'manage_sites' ) )
+			if ( ! ( Load::is_multisite()
+			         && current_user_can( 'manage_sites' ) )
 				&& get_current_user_id() === $user_id
 				&& ! $potential_role->has_cap( 'edit_users' )
 			) {

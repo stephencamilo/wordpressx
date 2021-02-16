@@ -147,7 +147,7 @@ function wp_nav_menu( $args = array() ) {
 	}
 
 	// If the menu exists, get its items.
-	if ( $menu && ! is_wp_error( $menu ) && ! isset( $menu_items ) ) {
+	if ( $menu && ! Load::is_wp_error( $menu ) && ! isset( $menu_items ) ) {
 		$menu_items = wp_get_nav_menu_items( $menu->term_id, array( 'update_post_term_cache' => false ) );
 	}
 
@@ -159,12 +159,12 @@ function wp_nav_menu( $args = array() ) {
 	 *  - Fall back, but only if no theme location was specified.
 	 *  - Otherwise, bail.
 	 */
-	if ( ( ! $menu || is_wp_error( $menu ) || ( isset( $menu_items ) && empty( $menu_items ) && ! $args->theme_location ) )
+	if ( ( ! $menu || Load::is_wp_error( $menu ) || ( isset( $menu_items ) && empty( $menu_items ) && ! $args->theme_location ) )
 		&& isset( $args->fallback_cb ) && $args->fallback_cb && is_callable( $args->fallback_cb ) ) {
 			return call_user_func( $args->fallback_cb, (array) $args );
 	}
 
-	if ( ! $menu || is_wp_error( $menu ) ) {
+	if ( ! $menu || Load::is_wp_error( $menu ) ) {
 		return false;
 	}
 

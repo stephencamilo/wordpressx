@@ -26,18 +26,19 @@
  * not exist based on exact WordPress query. Will instead try to parse the URL
  * or query in an attempt to figure the correct page to go to.
  *
+ * @param string $requested_url Optional. The URL that was requested, used to
+ *                              figure if redirect is needed.
+ * @param bool   $do_redirect   Optional. Redirect to the new URL.
+ *
+ * @return string|void The string of the URL, if redirect needed.
+ *@global WP_Query   $wp_query   WordPress Query object.
+ * @global WPDB       $wpdb       WordPress database abstraction object.
+ * @global WP         $wp         Current WordPress environment instance.
+ *
  * @since 2.3.0
  *
  * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
  * @global bool       $is_IIS
- * @global WP_Query   $wp_query   WordPress Query object.
- * @global wpdb       $wpdb       WordPress database abstraction object.
- * @global WP         $wp         Current WordPress environment instance.
- *
- * @param string $requested_url Optional. The URL that was requested, used to
- *                              figure if redirect is needed.
- * @param bool   $do_redirect   Optional. Redirect to the new URL.
- * @return string|void The string of the URL, if redirect needed.
  */
 function redirect_canonical( $requested_url = null, $do_redirect = true ) {
 	global $wp_rewrite, $is_IIS, $wp_query, $wpdb, $wp;
@@ -57,15 +58,15 @@ function redirect_canonical( $requested_url = null, $do_redirect = true ) {
 		}
 	}
 
-	if ( is_admin() || is_search() || is_preview() || is_trackback() || is_favicon()
-		|| ( $is_IIS && ! iis7_supports_permalinks() )
+	if ( Load::is_admin() || is_search() || is_preview() || is_trackback() || is_favicon()
+	     || ( $is_IIS && ! iis7_supports_permalinks() )
 	) {
 		return;
 	}
 
 	if ( ! $requested_url && isset( $_SERVER['HTTP_HOST'] ) ) {
 		// Build the URL in the address bar.
-		$requested_url  = is_ssl() ? 'https://' : 'http://';
+		$requested_url  = Load::is_ssl() ? 'https://' : 'http://';
 		$requested_url .= $_SERVER['HTTP_HOST'];
 		$requested_url .= $_SERVER['REQUEST_URI'];
 	}
@@ -327,7 +328,7 @@ function redirect_canonical( $requested_url = null, $do_redirect = true ) {
 			if ( $term_count <= 1 && ! empty( $obj->term_id ) ) {
 				$tax_url = get_term_link( (int) $obj->term_id, $obj->taxonomy );
 
-				if ( $tax_url && ! is_wp_error( $tax_url ) ) {
+				if ( $tax_url && ! Load::is_wp_error( $tax_url ) ) {
 					if ( ! empty( $redirect['query'] ) ) {
 						// Strip taxonomy query vars off the URL.
 						$qv_remove = array( 'term', 'taxonomy' );
@@ -381,7 +382,7 @@ function redirect_canonical( $requested_url = null, $do_redirect = true ) {
 			if ( $category_name ) {
 				$category = get_category_by_path( $category_name );
 
-				if ( ! $category || is_wp_error( $category )
+				if ( ! $category || Load::is_wp_error( $category )
 					|| ! has_term( $category->term_id, 'category', $wp_query->get_queried_object_id() )
 				) {
 					$redirect_url = get_permalink( $wp_query->get_queried_object_id() );
@@ -515,7 +516,7 @@ function redirect_canonical( $requested_url = null, $do_redirect = true ) {
 		}
 
 		if ( 'wp-register.php' === basename( $redirect['path'] ) ) {
-			if ( is_multisite() ) {
+			if ( Load::is_multisite() ) {
 				/** This filter is documented in wp-login.php */
 				$redirect_url = apply_filters( 'wp_signup_location', network_site_url( 'wp-signup.php' ) );
 			} else {
@@ -835,11 +836,11 @@ function strip_fragment_from_url( $url ) {
 /**
  * Attempts to guess the correct URL for a 404 request based on query vars.
  *
+ * @return string|false The correct URL if one is found. False on failure.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
  * @since 2.3.0
  *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @return string|false The correct URL if one is found. False on failure.
  */
 function redirect_guess_404_permalink() {
 	global $wpdb;

@@ -421,7 +421,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 	 */
 	public function get_item_permissions_check( $request ) {
 		$post = $this->get_post( $request['id'] );
-		if ( is_wp_error( $post ) ) {
+		if ( Load::is_wp_error( $post ) ) {
 			return $post;
 		}
 
@@ -498,7 +498,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 	 */
 	public function get_item( $request ) {
 		$post = $this->get_post( $request['id'] );
-		if ( is_wp_error( $post ) ) {
+		if ( Load::is_wp_error( $post ) ) {
 			return $post;
 		}
 
@@ -585,7 +585,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 
 		$prepared_post = $this->prepare_item_for_database( $request );
 
-		if ( is_wp_error( $prepared_post ) ) {
+		if ( Load::is_wp_error( $prepared_post ) ) {
 			return $prepared_post;
 		}
 
@@ -593,7 +593,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 
 		$post_id = wp_insert_post( wp_slash( (array) $prepared_post ), true, false );
 
-		if ( is_wp_error( $post_id ) ) {
+		if ( Load::is_wp_error( $post_id ) ) {
 
 			if ( 'db_insert_error' === $post_id->get_error_code() ) {
 				$post_id->add_data( array( 'status' => 500 ) );
@@ -643,14 +643,14 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 
 		$terms_update = $this->handle_terms( $post_id, $request );
 
-		if ( is_wp_error( $terms_update ) ) {
+		if ( Load::is_wp_error( $terms_update ) ) {
 			return $terms_update;
 		}
 
 		if ( ! empty( $schema['properties']['meta'] ) && isset( $request['meta'] ) ) {
 			$meta_update = $this->meta->update_value( $request['meta'], $post_id );
 
-			if ( is_wp_error( $meta_update ) ) {
+			if ( Load::is_wp_error( $meta_update ) ) {
 				return $meta_update;
 			}
 		}
@@ -658,7 +658,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 		$post          = get_post( $post_id );
 		$fields_update = $this->update_additional_fields_for_object( $post, $request );
 
-		if ( is_wp_error( $fields_update ) ) {
+		if ( Load::is_wp_error( $fields_update ) ) {
 			return $fields_update;
 		}
 
@@ -698,7 +698,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 	 */
 	public function update_item_permissions_check( $request ) {
 		$post = $this->get_post( $request['id'] );
-		if ( is_wp_error( $post ) ) {
+		if ( Load::is_wp_error( $post ) ) {
 			return $post;
 		}
 
@@ -749,21 +749,21 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 	 */
 	public function update_item( $request ) {
 		$valid_check = $this->get_post( $request['id'] );
-		if ( is_wp_error( $valid_check ) ) {
+		if ( Load::is_wp_error( $valid_check ) ) {
 			return $valid_check;
 		}
 
 		$post_before = get_post( $request['id'] );
 		$post        = $this->prepare_item_for_database( $request );
 
-		if ( is_wp_error( $post ) ) {
+		if ( Load::is_wp_error( $post ) ) {
 			return $post;
 		}
 
 		// Convert the post object to an array, otherwise wp_update_post() will expect non-escaped input.
 		$post_id = wp_update_post( wp_slash( (array) $post ), true, false );
 
-		if ( is_wp_error( $post_id ) ) {
+		if ( Load::is_wp_error( $post_id ) ) {
 			if ( 'db_update_error' === $post_id->get_error_code() ) {
 				$post_id->add_data( array( 'status' => 500 ) );
 			} else {
@@ -801,14 +801,14 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 
 		$terms_update = $this->handle_terms( $post->ID, $request );
 
-		if ( is_wp_error( $terms_update ) ) {
+		if ( Load::is_wp_error( $terms_update ) ) {
 			return $terms_update;
 		}
 
 		if ( ! empty( $schema['properties']['meta'] ) && isset( $request['meta'] ) ) {
 			$meta_update = $this->meta->update_value( $request['meta'], $post->ID );
 
-			if ( is_wp_error( $meta_update ) ) {
+			if ( Load::is_wp_error( $meta_update ) ) {
 				return $meta_update;
 			}
 		}
@@ -816,7 +816,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 		$post          = get_post( $post_id );
 		$fields_update = $this->update_additional_fields_for_object( $post, $request );
 
-		if ( is_wp_error( $fields_update ) ) {
+		if ( Load::is_wp_error( $fields_update ) ) {
 			return $fields_update;
 		}
 
@@ -848,7 +848,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 	 */
 	public function delete_item_permissions_check( $request ) {
 		$post = $this->get_post( $request['id'] );
-		if ( is_wp_error( $post ) ) {
+		if ( Load::is_wp_error( $post ) ) {
 			return $post;
 		}
 
@@ -873,7 +873,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 	 */
 	public function delete_item( $request ) {
 		$post = $this->get_post( $request['id'] );
-		if ( is_wp_error( $post ) ) {
+		if ( Load::is_wp_error( $post ) ) {
 			return $post;
 		}
 
@@ -1059,7 +1059,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 		// Post ID.
 		if ( isset( $request['id'] ) ) {
 			$existing_post = $this->get_post( $request['id'] );
-			if ( is_wp_error( $existing_post ) ) {
+			if ( Load::is_wp_error( $existing_post ) ) {
 				return $existing_post;
 			}
 
@@ -1115,7 +1115,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 		) {
 			$status = $this->handle_status_param( $request['status'], $post_type );
 
-			if ( is_wp_error( $status ) ) {
+			if ( Load::is_wp_error( $status ) ) {
 				return $status;
 			}
 
@@ -1278,7 +1278,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 		if ( $request['id'] ) {
 			$post = $this->get_post( $request['id'] );
 
-			if ( ! is_wp_error( $post ) && $post->post_status === $status ) {
+			if ( ! Load::is_wp_error( $post ) && $post->post_status === $status ) {
 				return true;
 			}
 		}
@@ -1443,7 +1443,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 
 			$result = wp_set_object_terms( $post_id, $request[ $base ], $taxonomy->name );
 
-			if ( is_wp_error( $result ) ) {
+			if ( Load::is_wp_error( $result ) ) {
 				return $result;
 			}
 		}
@@ -2838,7 +2838,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 
 			if ( current_user_can( $post_type_obj->cap->edit_posts ) || 'private' === $status && current_user_can( $post_type_obj->cap->read_private_posts ) ) {
 				$result = rest_validate_request_arg( $status, $request, $parameter );
-				if ( is_wp_error( $result ) ) {
+				if ( Load::is_wp_error( $result ) ) {
 					return $result;
 				}
 			} else {

@@ -165,7 +165,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller {
 	 */
 	public function get_items_permissions_check( $request ) {
 		$parent = $this->get_parent( $request['parent'] );
-		if ( is_wp_error( $parent ) ) {
+		if ( Load::is_wp_error( $parent ) ) {
 			return $parent;
 		}
 
@@ -217,7 +217,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller {
 	 */
 	public function get_items( $request ) {
 		$parent = $this->get_parent( $request['parent'] );
-		if ( is_wp_error( $parent ) ) {
+		if ( Load::is_wp_error( $parent ) ) {
 			return $parent;
 		}
 
@@ -378,12 +378,12 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller {
 	 */
 	public function get_item( $request ) {
 		$parent = $this->get_parent( $request['parent'] );
-		if ( is_wp_error( $parent ) ) {
+		if ( Load::is_wp_error( $parent ) ) {
 			return $parent;
 		}
 
 		$revision = $this->get_revision( $request['id'] );
-		if ( is_wp_error( $revision ) ) {
+		if ( Load::is_wp_error( $revision ) ) {
 			return $revision;
 		}
 
@@ -401,7 +401,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller {
 	 */
 	public function delete_item_permissions_check( $request ) {
 		$parent = $this->get_parent( $request['parent'] );
-		if ( is_wp_error( $parent ) ) {
+		if ( Load::is_wp_error( $parent ) ) {
 			return $parent;
 		}
 
@@ -416,12 +416,12 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller {
 		}
 
 		$revision = $this->get_revision( $request['id'] );
-		if ( is_wp_error( $revision ) ) {
+		if ( Load::is_wp_error( $revision ) ) {
 			return $revision;
 		}
 
 		$response = $this->get_items_permissions_check( $request );
-		if ( ! $response || is_wp_error( $response ) ) {
+		if ( ! $response || Load::is_wp_error( $response ) ) {
 			return $response;
 		}
 
@@ -446,7 +446,7 @@ class WP_REST_Revisions_Controller extends WP_REST_Controller {
 	 */
 	public function delete_item( $request ) {
 		$revision = $this->get_revision( $request['id'] );
-		if ( is_wp_error( $revision ) ) {
+		if ( Load::is_wp_error( $revision ) ) {
 			return $revision;
 		}
 

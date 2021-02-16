@@ -60,7 +60,7 @@ switch ( $action ) {
 				'spam'                   => 0,
 				'deleted'                => 0,
 				'archived'               => 0,
-				'network_id'             => get_current_network_id(),
+				'network_id'             => Load::get_current_network_id(),
 				'number'                 => 5,
 				'offset'                 => $n,
 				'fields'                 => 'ids',
@@ -91,10 +91,10 @@ switch ( $action ) {
 				)
 			);
 
-			if ( is_wp_error( $response ) ) {
+			if ( Load::is_wp_error( $response ) ) {
 				wp_die(
 					sprintf(
-						/* translators: 1: Site URL, 2: Server error message. */
+					/* translators: 1: Site URL, 2: Server error message. */
 						__( 'Warning! Problem updating %1$s. Your server may not be able to connect to sites running on it. Error message: %2$s' ),
 						$siteurl,
 						'<em>' . $response->get_error_message() . '</em>'
@@ -105,43 +105,48 @@ switch ( $action ) {
 			/**
 			 * Fires after the Multisite DB upgrade for each site is complete.
 			 *
+			 * @param array|WP_Error $response The upgrade response array or WP_Error on failure.
+			 *
 			 * @since MU (3.0.0)
 			 *
-			 * @param array|WP_Error $response The upgrade response array or WP_Error on failure.
 			 */
 			do_action( 'after_mu_upgrade', $response );
 
 			/**
 			 * Fires after each site has been upgraded.
 			 *
+			 * @param int $site_id The Site ID.
+			 *
 			 * @since MU (3.0.0)
 			 *
-			 * @param int $site_id The Site ID.
 			 */
 			do_action( 'wpmu_upgrade_site', $site_id );
 		}
 		echo '</ul>';
-		?><p><?php _e( 'If your browser doesn&#8217;t start loading the next page automatically, click this link:' ); ?> <a class="button" href="upgrade.php?action=upgrade&amp;n=<?php echo ( $n + 5 ); ?>"><?php _e( 'Next Sites' ); ?></a></p>
-		<script type="text/javascript">
-		<!--
-		function nextpage() {
-			location.href = "upgrade.php?action=upgrade&n=<?php echo ( $n + 5 ); ?>";
-		}
-		setTimeout( "nextpage()", 250 );
-		//-->
-		</script>
+		?><p><?php _e( 'If your browser doesn&#8217;t start loading the next page automatically, click this link:' ); ?>
+        <a class="button"
+           href="upgrade.php?action=upgrade&amp;n=<?php echo( $n + 5 ); ?>"><?php _e( 'Next Sites' ); ?></a></p>
+        <script type="text/javascript">
+            <!--
+            function nextpage() {
+                location.href = "upgrade.php?action=upgrade&n=<?php echo( $n + 5 ); ?>";
+            }
+
+            setTimeout("nextpage()", 250);
+            //-->
+        </script>
 		<?php
 		break;
 	case 'show':
 	default:
 		if ( (int) get_site_option( 'wpmu_upgrade_site' ) !== $GLOBALS['wp_db_version'] ) :
 			?>
-		<h2><?php _e( 'Database Update Required' ); ?></h2>
-		<p><?php _e( 'WordPress has been updated! Before we send you on your way, we need to individually upgrade the sites in your network.' ); ?></p>
+            <h2><?php _e( 'Database Update Required' ); ?></h2>
+            <p><?php _e( 'WordPress has been updated! Before we send you on your way, we need to individually upgrade the sites in your network.' ); ?></p>
 		<?php endif; ?>
 
-		<p><?php _e( 'The database update process may take a little while, so please be patient.' ); ?></p>
-		<p><a class="button button-primary" href="upgrade.php?action=upgrade"><?php _e( 'Upgrade Network' ); ?></a></p>
+        <p><?php _e( 'The database update process may take a little while, so please be patient.' ); ?></p>
+        <p><a class="button button-primary" href="upgrade.php?action=upgrade"><?php _e( 'Upgrade Network' ); ?></a></p>
 		<?php
 		/**
 		 * Fires before the footer on the network upgrade screen.

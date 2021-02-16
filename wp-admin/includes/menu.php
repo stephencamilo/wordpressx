@@ -6,7 +6,7 @@
  * @subpackage Administration
  */
 
-if ( is_network_admin() ) {
+if ( Load::is_network_admin() ) {
 
 	/**
 	 * Fires before the administration menu loads in the Network Admin.
@@ -17,7 +17,7 @@ if ( is_network_admin() ) {
 	 * @since 3.1.0
 	 */
 	do_action( '_network_admin_menu' );
-} elseif ( is_user_admin() ) {
+} elseif ( Load::is_user_admin() ) {
 
 	/**
 	 * Fires before the administration menu loads in the User Admin.
@@ -123,24 +123,26 @@ foreach ( $menu as $id => $data ) {
 }
 unset( $id, $data, $subs, $first_sub, $old_parent, $new_parent );
 
-if ( is_network_admin() ) {
+if ( Load::is_network_admin() ) {
 
 	/**
 	 * Fires before the administration menu loads in the Network Admin.
 	 *
+	 * @param string $context Empty context.
+	 *
 	 * @since 3.1.0
 	 *
-	 * @param string $context Empty context.
 	 */
 	do_action( 'network_admin_menu', '' );
-} elseif ( is_user_admin() ) {
+} elseif ( Load::is_user_admin() ) {
 
 	/**
 	 * Fires before the administration menu loads in the User Admin.
 	 *
+	 * @param string $context Empty context.
+	 *
 	 * @since 3.1.0
 	 *
-	 * @param string $context Empty context.
 	 */
 	do_action( 'user_admin_menu', '' );
 } else {
@@ -148,9 +150,10 @@ if ( is_network_admin() ) {
 	/**
 	 * Fires before the administration menu loads in the admin.
 	 *
+	 * @param string $context Empty context.
+	 *
 	 * @since 1.5.0
 	 *
-	 * @param string $context Empty context.
 	 */
 	do_action( 'admin_menu', '' );
 }
@@ -189,15 +192,18 @@ unset( $id, $data, $subs, $first_sub );
 /**
  * @param string $add
  * @param string $class
+ *
  * @return string
  */
 function add_cssclass( $add, $class ) {
 	$class = empty( $class ) ? $add : $class .= ' ' . $add;
+
 	return $class;
 }
 
 /**
  * @param array $menu
+ *
  * @return array
  */
 function add_menu_classes( $menu ) {
@@ -206,7 +212,7 @@ function add_menu_classes( $menu ) {
 	$i         = 0;
 	$mc        = count( $menu );
 	foreach ( $menu as $order => $top ) {
-		$i++;
+		$i ++;
 
 		if ( 0 == $order ) { // Dashboard is always shown/single.
 			$menu[0][4] = add_cssclass( 'menu-top-first', $top[4] );
@@ -238,9 +244,10 @@ function add_menu_classes( $menu ) {
 	/**
 	 * Filters administration menus array with classes added for top-level items.
 	 *
+	 * @param array $menu Associative array of administration menu items.
+	 *
 	 * @since 2.7.0
 	 *
-	 * @param array $menu Associative array of administration menu items.
 	 */
 	return apply_filters( 'add_menu_classes', $menu );
 }
@@ -252,9 +259,10 @@ uksort( $menu, 'strnatcasecmp' ); // Make it all pretty.
  *
  * See the {@see 'menu_order'} filter for reordering menu items.
  *
+ * @param bool $custom Whether custom ordering is enabled. Default false.
+ *
  * @since 2.8.0
  *
- * @param bool $custom Whether custom ordering is enabled. Default false.
  */
 if ( apply_filters( 'custom_menu_order', false ) ) {
 	$menu_order = array();
@@ -272,37 +280,40 @@ if ( apply_filters( 'custom_menu_order', false ) ) {
 	 *
 	 *     add_filter( 'custom_menu_order', '__return_true' );
 	 *
+	 * @param array $menu_order An ordered array of menu items.
+	 *
 	 * @since 2.8.0
 	 *
-	 * @param array $menu_order An ordered array of menu items.
 	 */
 	$menu_order         = apply_filters( 'menu_order', $menu_order );
 	$menu_order         = array_flip( $menu_order );
 	$default_menu_order = array_flip( $default_menu_order );
 
 	/**
-	 * @global array $menu_order
-	 * @global array $default_menu_order
-	 *
 	 * @param array $a
 	 * @param array $b
+	 *
 	 * @return int
+	 * @global array $default_menu_order
+	 *
+	 * @global array $menu_order
 	 */
 	function sort_menu( $a, $b ) {
 		global $menu_order, $default_menu_order;
 		$a = $a[2];
 		$b = $b[2];
 		if ( isset( $menu_order[ $a ] ) && ! isset( $menu_order[ $b ] ) ) {
-			return -1;
+			return - 1;
 		} elseif ( ! isset( $menu_order[ $a ] ) && isset( $menu_order[ $b ] ) ) {
 			return 1;
 		} elseif ( isset( $menu_order[ $a ] ) && isset( $menu_order[ $b ] ) ) {
 			if ( $menu_order[ $a ] == $menu_order[ $b ] ) {
 				return 0;
 			}
-			return ( $menu_order[ $a ] < $menu_order[ $b ] ) ? -1 : 1;
+
+			return ( $menu_order[ $a ] < $menu_order[ $b ] ) ? - 1 : 1;
 		} else {
-			return ( $default_menu_order[ $a ] <= $default_menu_order[ $b ] ) ? -1 : 1;
+			return ( $default_menu_order[ $a ] <= $default_menu_order[ $b ] ) ? - 1 : 1;
 		}
 	}
 

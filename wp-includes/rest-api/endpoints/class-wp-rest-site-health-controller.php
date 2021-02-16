@@ -133,7 +133,7 @@ class WP_REST_Site_Health_Controller extends WP_REST_Controller {
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'get_directory_sizes' ),
 				'permission_callback' => function() {
-					return $this->validate_request_permission( 'debug_enabled' ) && ! is_multisite();
+					return $this->validate_request_permission( 'debug_enabled' ) && ! Load::is_multisite();
 				},
 			)
 		);
@@ -272,7 +272,7 @@ class WP_REST_Site_Health_Controller extends WP_REST_Controller {
 	 */
 	protected function load_admin_textdomain() {
 		// Accounts for inner REST API requests in the admin.
-		if ( ! is_admin() ) {
+		if ( ! Load::is_admin() ) {
 			$locale = determine_locale();
 			load_textdomain( 'default', WP_LANG_DIR . "/admin-$locale.mo" );
 		}

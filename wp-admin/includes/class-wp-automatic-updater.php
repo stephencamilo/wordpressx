@@ -29,11 +29,11 @@ class WP_Automatic_Updater {
 	 */
 	public function is_disabled() {
 		// Background updates are disabled if you don't want file changes.
-		if ( ! wp_is_file_mod_allowed( 'automatic_updater' ) ) {
+		if ( ! Load::wp_is_file_mod_allowed( 'automatic_updater' ) ) {
 			return true;
 		}
 
-		if ( wp_installing() ) {
+		if ( Load::wp_installing() ) {
 			return true;
 		}
 
@@ -127,7 +127,7 @@ class WP_Automatic_Updater {
 	 *
 	 * @since 3.7.0
 	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
+	 * @global WPDB $wpdb WordPress database abstraction object.
 	 *
 	 * @param string $type    The type of update being checked: 'core', 'theme',
 	 *                        'plugin', 'translation'.
@@ -402,8 +402,8 @@ class WP_Automatic_Updater {
 		}
 
 		if ( 'core' === $type ) {
-			if ( is_wp_error( $upgrade_result )
-				&& ( 'up_to_date' === $upgrade_result->get_error_code()
+			if ( Load::is_wp_error( $upgrade_result )
+			     && ( 'up_to_date' === $upgrade_result->get_error_code()
 					|| 'locked' === $upgrade_result->get_error_code() )
 			) {
 				// These aren't actual errors, treat it as a skipped-update instead
@@ -412,7 +412,7 @@ class WP_Automatic_Updater {
 			}
 
 			// Core doesn't output this, so let's append it so we don't get confused.
-			if ( is_wp_error( $upgrade_result ) ) {
+			if ( Load::is_wp_error( $upgrade_result ) ) {
 				$skin->error( __( 'Installation failed.' ), $upgrade_result );
 			} else {
 				$skin->feedback( __( 'WordPress updated successfully.' ) );
@@ -566,7 +566,7 @@ class WP_Automatic_Updater {
 		$core_update = $update_result->item;
 		$result      = $update_result->result;
 
-		if ( ! is_wp_error( $result ) ) {
+		if ( ! Load::is_wp_error( $result ) ) {
 			$this->send_email( 'success', $core_update );
 			return;
 		}
@@ -578,7 +578,7 @@ class WP_Automatic_Updater {
 		$critical = false;
 		if ( 'disk_full' === $error_code || false !== strpos( $error_code, '__copy_dir' ) ) {
 			$critical = true;
-		} elseif ( 'rollback_was_required' === $error_code && is_wp_error( $result->get_error_data()->rollback ) ) {
+		} elseif ( 'rollback_was_required' === $error_code && Load::is_wp_error( $result->get_error_data()->rollback ) ) {
 			// A rollback is only critical if it failed too.
 			$critical        = true;
 			$rollback_result = $result->get_error_data()->rollback;
@@ -820,7 +820,7 @@ class WP_Automatic_Updater {
 
 		$body .= "\n\n" . __( 'The WordPress Team' ) . "\n";
 
-		if ( 'critical' === $type && is_wp_error( $result ) ) {
+		if ( 'critical' === $type && Load::is_wp_error( $result ) ) {
 			$body .= "\n***\n\n";
 			/* translators: %s: WordPress version. */
 			$body .= sprintf( __( 'Your site was running version %s.' ), get_bloginfo( 'version' ) );
@@ -836,7 +836,7 @@ class WP_Automatic_Updater {
 			}
 
 			foreach ( $errors as $error ) {
-				if ( ! is_wp_error( $error ) ) {
+				if ( ! Load::is_wp_error( $error ) ) {
 					continue;
 				}
 
@@ -1270,7 +1270,7 @@ class WP_Automatic_Updater {
 		// Core.
 		if ( isset( $this->update_results['core'] ) ) {
 			$result = $this->update_results['core'][0];
-			if ( $result->result && ! is_wp_error( $result->result ) ) {
+			if ( $result->result && ! Load::is_wp_error( $result->result ) ) {
 				/* translators: %s: WordPress version. */
 				$body[] = sprintf( __( 'SUCCESS: WordPress was successfully updated to %s' ), $result->name );
 			} else {
@@ -1310,7 +1310,7 @@ class WP_Automatic_Updater {
 
 				$body[] = $messages[ $type ];
 				foreach ( $this->update_results[ $type ] as $item ) {
-					if ( ! $item->result || is_wp_error( $item->result ) ) {
+					if ( ! $item->result || Load::is_wp_error( $item->result ) ) {
 						/* translators: %s: Name of plugin / theme / translation. */
 						$body[] = ' * ' . sprintf( __( 'FAILED: %s' ), $item->name );
 						$failures++;
@@ -1363,14 +1363,14 @@ Thanks! -- The WordPress Team"
 				foreach ( $update->messages as $message ) {
 					$body[] = '  ' . html_entity_decode( str_replace( '&#8230;', '...', $message ) );
 				}
-				if ( is_wp_error( $update->result ) ) {
+				if ( Load::is_wp_error( $update->result ) ) {
 					$results = array( 'update' => $update->result );
 					// If we rolled back, we want to know an error that occurred then too.
 					if ( 'rollback_was_required' === $update->result->get_error_code() ) {
 						$results = (array) $update->result->get_error_data();
 					}
 					foreach ( $results as $result_type => $result ) {
-						if ( ! is_wp_error( $result ) ) {
+						if ( ! Load::is_wp_error( $result ) ) {
 							continue;
 						}
 

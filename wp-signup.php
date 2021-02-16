@@ -29,7 +29,7 @@ function do_signup_header() {
 }
 add_action( 'wp_head', 'do_signup_header' );
 
-if ( ! is_multisite() ) {
+if ( ! Load::is_multisite() ) {
 	wp_redirect( wp_registration_url() );
 	die();
 }
@@ -98,7 +98,7 @@ do_action( 'before_signup_form' );
  * @param WP_Error|string $errors     A WP_Error object containing existing errors. Defaults to empty string.
  */
 function show_blog_form( $blogname = '', $blog_title = '', $errors = '' ) {
-	if ( ! is_wp_error( $errors ) ) {
+	if ( ! Load::is_wp_error( $errors ) ) {
 		$errors = new WP_Error();
 	}
 
@@ -249,7 +249,7 @@ function validate_blog_form() {
  * @param WP_Error|string $errors     A WP_Error object containing existing errors. Defaults to empty string.
  */
 function show_user_form( $user_name = '', $user_email = '', $errors = '' ) {
-	if ( ! is_wp_error( $errors ) ) {
+	if ( ! Load::is_wp_error( $errors ) ) {
 		$errors = new WP_Error();
 	}
 
@@ -309,7 +309,7 @@ function validate_user_form() {
 function signup_another_blog( $blogname = '', $blog_title = '', $errors = '' ) {
 	$current_user = wp_get_current_user();
 
-	if ( ! is_wp_error( $errors ) ) {
+	if ( ! Load::is_wp_error( $errors ) ) {
 		$errors = new WP_Error();
 	}
 
@@ -473,9 +473,9 @@ function validate_another_blog_signup() {
 	 */
 	$meta = apply_filters( 'add_signup_meta', $meta_defaults );
 
-	$blog_id = wpmu_create_blog( $domain, $path, $blog_title, $current_user->ID, $meta, get_current_network_id() );
+	$blog_id = wpmu_create_blog( $domain, $path, $blog_title, $current_user->ID, $meta, Load::get_current_network_id() );
 
-	if ( is_wp_error( $blog_id ) ) {
+	if ( Load::is_wp_error( $blog_id ) ) {
 		return false;
 	}
 
@@ -558,7 +558,7 @@ function confirm_another_blog_signup( $domain, $path, $blog_title, $user_name, $
 function signup_user( $user_name = '', $user_email = '', $errors = '' ) {
 	global $active_signup;
 
-	if ( ! is_wp_error( $errors ) ) {
+	if ( ! Load::is_wp_error( $errors ) ) {
 		$errors = new WP_Error();
 	}
 
@@ -694,7 +694,7 @@ function confirm_user_signup( $user_name, $user_email ) {
  * @param WP_Error|string $errors     A WP_Error object containing existing errors. Defaults to empty string.
  */
 function signup_blog( $user_name = '', $user_email = '', $blogname = '', $blog_title = '', $errors = '' ) {
-	if ( ! is_wp_error( $errors ) ) {
+	if ( ! Load::is_wp_error( $errors ) ) {
 		$errors = new WP_Error();
 	}
 

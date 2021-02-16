@@ -176,14 +176,15 @@ class WP_User {
 	/**
 	 * Return only the main user fields
 	 *
-	 * @since 3.3.0
-	 * @since 4.4.0 Added 'ID' as an alias of 'id' for the `$field` parameter.
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
 	 * @param string     $field The field to query against: 'id', 'ID', 'slug', 'email' or 'login'.
 	 * @param string|int $value The field value
+	 *
 	 * @return object|false Raw user object
+	 *@since 3.3.0
+	 * @since 4.4.0 Added 'ID' as an alias of 'id' for the `$field` parameter.
+	 *
+	 * @global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 */
 	public static function get_data_by( $field, $value ) {
 		global $wpdb;
@@ -458,12 +459,13 @@ class WP_User {
 	 * property matching the 'cap_key' exists and is an array. If so, it will be
 	 * used.
 	 *
-	 * @since 2.1.0
-	 * @deprecated 4.9.0 Use WP_User::for_site()
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
 	 * @param string $cap_key Optional capability key
+	 *
+	 *@deprecated 4.9.0 Use WP_User::for_site()
+	 *
+	 * @global WPDB $wpdb WordPress database abstraction object.
+	 *
+	 * @since 2.1.0
 	 */
 	protected function _init_caps( $cap_key = '' ) {
 		global $wpdb;
@@ -496,7 +498,7 @@ class WP_User {
 	 */
 	public function get_role_caps() {
 		$switch_site = false;
-		if ( is_multisite() && get_current_blog_id() != $this->site_id ) {
+		if ( Load::is_multisite() && Load::get_current_blog_id() != $this->site_id ) {
 			$switch_site = true;
 
 			switch_to_blog( $this->site_id );
@@ -661,7 +663,7 @@ class WP_User {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
+	 * @global WPDB $wpdb WordPress database abstraction object.
 	 */
 	public function update_user_level_from_caps() {
 		global $wpdb;
@@ -706,7 +708,7 @@ class WP_User {
 	 *
 	 * @since 2.1.0
 	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
+	 * @global WPDB $wpdb WordPress database abstraction object.
 	 */
 	public function remove_all_caps() {
 		global $wpdb;
@@ -752,7 +754,7 @@ class WP_User {
 		$caps = map_meta_cap( $cap, $this->ID, ...$args );
 
 		// Multisite super admin has all caps by definition, Unless specifically denied.
-		if ( is_multisite() && is_super_admin( $this->ID ) ) {
+		if ( Load::is_multisite() && is_super_admin( $this->ID ) ) {
 			if ( in_array( 'do_not_allow', $caps, true ) ) {
 				return false;
 			}
@@ -829,11 +831,12 @@ class WP_User {
 	/**
 	 * Sets the site to operate on. Defaults to the current site.
 	 *
+	 * @param int $site_id Site ID to initialize user capabilities for. Default is the current site.
+	 *
+	 *@global WPDB $wpdb WordPress database abstraction object.
+	 *
 	 * @since 4.9.0
 	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
-	 * @param int $site_id Site ID to initialize user capabilities for. Default is the current site.
 	 */
 	public function for_site( $site_id = '' ) {
 		global $wpdb;
@@ -841,7 +844,7 @@ class WP_User {
 		if ( ! empty( $site_id ) ) {
 			$this->site_id = absint( $site_id );
 		} else {
-			$this->site_id = get_current_blog_id();
+			$this->site_id = Load::get_current_blog_id();
 		}
 
 		$this->cap_key = $wpdb->get_blog_prefix( $this->site_id ) . 'capabilities';

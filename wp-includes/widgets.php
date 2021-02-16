@@ -720,7 +720,7 @@ function dynamic_sidebar( $index = 1 ) {
 	 */
 	do_action( 'dynamic_sidebar_before', $index, true );
 
-	if ( ! is_admin() && ! empty( $sidebar['before_sidebar'] ) ) {
+	if ( ! Load::is_admin() && ! empty( $sidebar['before_sidebar'] ) ) {
 		echo $sidebar['before_sidebar'];
 	}
 
@@ -825,7 +825,7 @@ function dynamic_sidebar( $index = 1 ) {
 		}
 	}
 
-	if ( ! is_admin() && ! empty( $sidebar['after_sidebar'] ) ) {
+	if ( ! Load::is_admin() && ! empty( $sidebar['after_sidebar'] ) ) {
 		echo $sidebar['after_sidebar'];
 	}
 
@@ -999,7 +999,7 @@ function wp_get_sidebars_widgets( $deprecated = true ) {
 
 	// If loading from front page, consult $_wp_sidebars_widgets rather than options
 	// to see if wp_convert_widget_settings() has made manipulations in memory.
-	if ( ! is_admin() ) {
+	if ( ! Load::is_admin() ) {
 		if ( empty( $_wp_sidebars_widgets ) ) {
 			$_wp_sidebars_widgets = get_option( 'sidebars_widgets', array() );
 		}
@@ -1102,7 +1102,7 @@ function wp_convert_widget_settings( $base_name, $option_name, $settings ) {
 		$settings = array( 2 => $settings );
 
 		// If loading from the front page, update sidebar in memory but don't save to options.
-		if ( is_admin() ) {
+		if ( Load::is_admin() ) {
 			$sidebars_widgets = get_option( 'sidebars_widgets' );
 		} else {
 			if ( empty( $GLOBALS['_wp_sidebars_widgets'] ) ) {
@@ -1123,13 +1123,13 @@ function wp_convert_widget_settings( $base_name, $option_name, $settings ) {
 			}
 		}
 
-		if ( is_admin() && $changed ) {
+		if ( Load::is_admin() && $changed ) {
 			update_option( 'sidebars_widgets', $sidebars_widgets );
 		}
 	}
 
 	$settings['_multiwidget'] = 1;
-	if ( is_admin() ) {
+	if ( Load::is_admin() ) {
 		update_option( $option_name, $settings );
 	}
 
@@ -1520,8 +1520,8 @@ function wp_widget_rss_output( $rss, $args = array() ) {
 		return;
 	}
 
-	if ( is_wp_error( $rss ) ) {
-		if ( is_admin() || current_user_can( 'manage_options' ) ) {
+	if ( Load::is_wp_error( $rss ) ) {
+		if ( Load::is_admin() || current_user_can( 'manage_options' ) ) {
 			echo '<p><strong>' . __( 'RSS Error:' ) . '</strong> ' . $rss->get_error_message() . '</p>';
 		}
 		return;
@@ -1721,7 +1721,7 @@ function wp_widget_rss_process( $widget_rss, $check_feed = true ) {
 		$rss   = fetch_feed( $url );
 		$error = false;
 		$link  = '';
-		if ( is_wp_error( $rss ) ) {
+		if ( Load::is_wp_error( $rss ) ) {
 			$error = $rss->get_error_message();
 		} else {
 			$link = esc_url( strip_tags( $rss->get_permalink() ) );

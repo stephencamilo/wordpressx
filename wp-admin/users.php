@@ -52,7 +52,7 @@ $help = '<p>' . __( 'Hovering over a row in the users list will display action l
 	'<ul>' .
 	'<li>' . __( '<strong>Edit</strong> takes you to the editable profile screen for that user. You can also reach that screen by clicking on the username.' ) . '</li>';
 
-if ( is_multisite() ) {
+if ( Load::is_multisite() ) {
 	$help .= '<li>' . __( '<strong>Remove</strong> allows you to remove a user from your site. It does not delete their content. You can also remove multiple users at once by using bulk actions.' ) . '</li>';
 } else {
 	$help .= '<li>' . __( '<strong>Delete</strong> brings you to the Delete Users screen for confirmation, where you can permanently remove a user from your site and delete their content. You can also delete multiple users at once by using bulk actions.' ) . '</li>';
@@ -134,13 +134,13 @@ switch ( $wp_list_table->current_action() ) {
 
 			// The new role of the current user must also have the promote_users cap or be a multisite super admin.
 			if ( $id == $current_user->ID && ! $wp_roles->role_objects[ $role ]->has_cap( 'promote_users' )
-			&& ! ( is_multisite() && current_user_can( 'manage_network_users' ) ) ) {
+			&& ! ( Load::is_multisite() && current_user_can( 'manage_network_users' ) ) ) {
 					$update = 'err_admin_role';
 					continue;
 			}
 
 			// If the user doesn't already belong to the blog, bail.
-			if ( is_multisite() && ! is_user_member_of_blog( $id ) ) {
+			if ( Load::is_multisite() && ! is_user_member_of_blog( $id ) ) {
 				wp_die(
 					'<h1>' . __( 'Something went wrong.' ) . '</h1>' .
 					'<p>' . __( 'One of the selected users is not a member of this site.' ) . '</p>',
@@ -156,7 +156,7 @@ switch ( $wp_list_table->current_action() ) {
 		exit;
 
 	case 'dodelete':
-		if ( is_multisite() ) {
+		if ( Load::is_multisite() ) {
 			wp_die( __( 'User deletion is not allowed from this screen.' ), 400 );
 		}
 
@@ -214,7 +214,7 @@ switch ( $wp_list_table->current_action() ) {
 		exit;
 
 	case 'delete':
-		if ( is_multisite() ) {
+		if ( Load::is_multisite() ) {
 			wp_die( __( 'User deletion is not allowed from this screen.' ), 400 );
 		}
 
@@ -355,7 +355,7 @@ switch ( $wp_list_table->current_action() ) {
 	case 'doremove':
 		check_admin_referer( 'remove-users' );
 
-		if ( ! is_multisite() ) {
+		if ( ! Load::is_multisite() ) {
 			wp_die( __( 'You can&#8217;t remove users.' ), 400 );
 		}
 
@@ -387,7 +387,7 @@ switch ( $wp_list_table->current_action() ) {
 	case 'remove':
 		check_admin_referer( 'bulk-users' );
 
-		if ( ! is_multisite() ) {
+		if ( ! Load::is_multisite() ) {
 			wp_die( __( 'You can&#8217;t remove users.' ), 400 );
 		}
 
@@ -533,7 +533,7 @@ switch ( $wp_list_table->current_action() ) {
 		endif;
 		?>
 
-		<?php if ( isset( $errors ) && is_wp_error( $errors ) ) : ?>
+		<?php if ( isset( $errors ) && Load::is_wp_error( $errors ) ) : ?>
 		<div class="error">
 			<ul>
 			<?php
@@ -564,7 +564,7 @@ switch ( $wp_list_table->current_action() ) {
 		if ( current_user_can( 'create_users' ) ) {
 			?>
 	<a href="<?php echo admin_url( 'user-new.php' ); ?>" class="page-title-action"><?php echo esc_html_x( 'Add New', 'user' ); ?></a>
-<?php } elseif ( is_multisite() && current_user_can( 'promote_users' ) ) { ?>
+<?php } elseif ( Load::is_multisite() && current_user_can( 'promote_users' ) ) { ?>
 	<a href="<?php echo admin_url( 'user-new.php' ); ?>" class="page-title-action"><?php echo esc_html_x( 'Add Existing', 'user' ); ?></a>
 			<?php
 }

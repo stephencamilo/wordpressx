@@ -291,7 +291,7 @@ class WP_Customize_Setting {
 		if ( ! isset( $this->_previewed_blog_id ) ) {
 			return false;
 		}
-		return ( get_current_blog_id() === $this->_previewed_blog_id );
+		return ( Load::get_current_blog_id() === $this->_previewed_blog_id );
 	}
 
 	/**
@@ -317,7 +317,7 @@ class WP_Customize_Setting {
 	 */
 	public function preview() {
 		if ( ! isset( $this->_previewed_blog_id ) ) {
-			$this->_previewed_blog_id = get_current_blog_id();
+			$this->_previewed_blog_id = Load::get_current_blog_id();
 		}
 
 		// Prevent re-previewing an already-previewed setting.
@@ -585,7 +585,7 @@ class WP_Customize_Setting {
 	 * @return true|WP_Error True if the input was validated, otherwise WP_Error.
 	 */
 	public function validate( $value ) {
-		if ( is_wp_error( $value ) ) {
+		if ( Load::is_wp_error( $value ) ) {
 			return $value;
 		}
 		if ( is_null( $value ) ) {
@@ -609,7 +609,7 @@ class WP_Customize_Setting {
 		 */
 		$validity = apply_filters( "customize_validate_{$this->id}", $validity, $value, $this );
 
-		if ( is_wp_error( $validity ) && ! $validity->has_errors() ) {
+		if ( Load::is_wp_error( $validity ) && ! $validity->has_errors() ) {
 			$validity = true;
 		}
 		return $validity;

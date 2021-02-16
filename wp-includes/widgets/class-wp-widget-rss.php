@@ -66,7 +66,7 @@ class WP_Widget_RSS extends WP_Widget {
 		$desc  = '';
 		$link  = '';
 
-		if ( ! is_wp_error( $rss ) ) {
+		if ( ! Load::is_wp_error( $rss ) ) {
 			$desc = esc_attr( strip_tags( html_entity_decode( $rss->get_description(), ENT_QUOTES, get_option( 'blog_charset' ) ) ) );
 			if ( empty( $title ) ) {
 				$title = strip_tags( $rss->get_title() );
@@ -115,7 +115,7 @@ class WP_Widget_RSS extends WP_Widget {
 
 		echo $args['after_widget'];
 
-		if ( ! is_wp_error( $rss ) ) {
+		if ( ! Load::is_wp_error( $rss ) ) {
 			$rss->__destruct();
 		}
 		unset( $rss );

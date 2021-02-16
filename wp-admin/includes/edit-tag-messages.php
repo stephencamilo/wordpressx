@@ -42,9 +42,10 @@ $messages['post_tag'] = array(
 /**
  * Filters the messages displayed when a tag is updated.
  *
+ * @param array $messages The messages to be displayed.
+ *
  * @since 3.7.0
  *
- * @param array $messages The messages to be displayed.
  */
 $messages = apply_filters( 'term_updated_messages', $messages );
 

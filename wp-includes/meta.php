@@ -13,10 +13,6 @@
 /**
  * Adds metadata for the specified object.
  *
- * @since 2.9.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string $meta_type  Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
  *                           or any other object type with an associated meta table.
  * @param int    $object_id  ID of the object metadata is for.
@@ -25,7 +21,12 @@
  * @param bool   $unique     Optional. Whether the specified metadata key should be unique for the object.
  *                           If true, and the object already has a value for the specified metadata key,
  *                           no change will be made. Default false.
+ *
  * @return int|false The meta ID on success, false on failure.
+ *@since 2.9.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function add_metadata( $meta_type, $object_id, $meta_key, $meta_value, $unique = false ) {
 	global $wpdb;
@@ -139,11 +140,7 @@ function add_metadata( $meta_type, $object_id, $meta_key, $meta_value, $unique =
  * Updates metadata for the specified object. If no value already exists for the specified object
  * ID and metadata key, the metadata will be added.
  *
- * @since 2.9.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param string $meta_type  Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
+ * @param string $meta_type Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
  *                           or any other object type with an associated meta table.
  * @param int    $object_id  ID of the object metadata is for.
  * @param string $meta_key   Metadata key.
@@ -151,10 +148,15 @@ function add_metadata( $meta_type, $object_id, $meta_key, $meta_value, $unique =
  * @param mixed  $prev_value Optional. Previous value to check before updating.
  *                           If specified, only update existing metadata entries with
  *                           this value. Otherwise, update all entries. Default empty.
+ *
  * @return int|bool The new meta field ID if a field with the given key didn't exist
  *                  and was therefore added, true on successful update,
  *                  false on failure or if the value passed to the function
  *                  is the same as the one that is already in the database.
+ *@since 2.9.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function update_metadata( $meta_type, $object_id, $meta_key, $meta_value, $prev_value = '' ) {
 	global $wpdb;
@@ -313,11 +315,7 @@ function update_metadata( $meta_type, $object_id, $meta_key, $meta_value, $prev_
 /**
  * Deletes metadata for the specified object.
  *
- * @since 2.9.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param string $meta_type  Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
+ * @param string $meta_type Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
  *                           or any other object type with an associated meta table.
  * @param int    $object_id  ID of the object metadata is for.
  * @param string $meta_key   Metadata key.
@@ -330,7 +328,12 @@ function update_metadata( $meta_type, $object_id, $meta_key, $meta_value, $prev_
  * @param bool   $delete_all Optional. If true, delete matching metadata entries for all objects,
  *                           ignoring the specified object_id. Otherwise, only delete
  *                           matching metadata entries for the specified object_id. Default false.
+ *
  * @return bool True on successful delete, false on failure.
+ *@since 2.9.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function delete_metadata( $meta_type, $object_id, $meta_key, $meta_value = '', $delete_all = false ) {
 	global $wpdb;
@@ -695,13 +698,10 @@ function metadata_exists( $meta_type, $object_id, $meta_key ) {
 /**
  * Retrieves metadata by meta ID.
  *
- * @since 3.3.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string $meta_type Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
  *                          or any other object type with an associated meta table.
  * @param int    $meta_id   ID for a specific meta row.
+ *
  * @return stdClass|false {
  *     Metadata object, or boolean `false` if the metadata doesn't exist.
  *
@@ -714,6 +714,10 @@ function metadata_exists( $meta_type, $object_id, $meta_key ) {
  *     @type string $term_id    Optional. The object ID when the meta type is 'term'.
  *     @type string $user_id    Optional. The object ID when the meta type is 'user'.
  * }
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 3.3.0
+ *
  */
 function get_metadata_by_mid( $meta_type, $meta_id ) {
 	global $wpdb;
@@ -767,16 +771,17 @@ function get_metadata_by_mid( $meta_type, $meta_id ) {
 /**
  * Updates metadata by meta ID.
  *
- * @since 3.3.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param string $meta_type  Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
+ * @param string $meta_type Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
  *                           or any other object type with an associated meta table.
  * @param int    $meta_id    ID for a specific meta row.
  * @param string $meta_value Metadata value. Must be serializable if non-scalar.
  * @param string $meta_key   Optional. You can provide a meta key to update it. Default false.
+ *
  * @return bool True on successful update, false on failure.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 3.3.0
+ *
  */
 function update_metadata_by_mid( $meta_type, $meta_id, $meta_value, $meta_key = false ) {
 	global $wpdb;
@@ -884,14 +889,15 @@ function update_metadata_by_mid( $meta_type, $meta_id, $meta_value, $meta_key = 
 /**
  * Deletes metadata by meta ID.
  *
- * @since 3.3.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string $meta_type Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
  *                          or any other object type with an associated meta table.
  * @param int    $meta_id   ID for a specific meta row.
+ *
  * @return bool True on successful delete, false on failure.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 3.3.0
+ *
  */
 function delete_metadata_by_mid( $meta_type, $meta_id ) {
 	global $wpdb;
@@ -990,14 +996,15 @@ function delete_metadata_by_mid( $meta_type, $meta_id ) {
 /**
  * Updates the metadata cache for the specified objects.
  *
- * @since 2.9.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param string       $meta_type  Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
+ * @param string $meta_type  Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
  *                                 or any other object type with an associated meta table.
  * @param string|int[] $object_ids Array or comma delimited list of object IDs to update cache for.
+ *
  * @return array|false Metadata cache for the specified objects, or false on failure.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 2.9.0
+ *
  */
 function update_meta_cache( $meta_type, $object_ids ) {
 	global $wpdb;
@@ -1128,13 +1135,14 @@ function get_meta_sql( $meta_query, $type, $primary_table, $primary_id_column, $
 /**
  * Retrieves the name of the metadata table for the specified object type.
  *
- * @since 2.9.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param string $type Type of object metadata is for. Accepts 'post', 'comment', 'term', 'user',
  *                     or any other object type with an associated meta table.
+ *
  * @return string|false Metadata table name, or false if no metadata table exists
+ *@since 2.9.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function _get_meta_table( $type ) {
 	global $wpdb;
@@ -1370,7 +1378,7 @@ function register_meta( $object_type, $meta_key, $args, $deprecated = null ) {
 		}
 
 		$check = rest_validate_value_from_schema( $args['default'], $schema );
-		if ( is_wp_error( $check ) ) {
+		if ( Load::is_wp_error( $check ) ) {
 			_doing_it_wrong( __FUNCTION__, __( 'When registering a default meta value the data must match the type provided.' ), '5.5.0' );
 
 			return false;
@@ -1410,7 +1418,7 @@ function register_meta( $object_type, $meta_key, $args, $deprecated = null ) {
 function filter_default_metadata( $value, $object_id, $meta_key, $single, $meta_type ) {
 	global $wp_meta_keys;
 
-	if ( wp_installing() ) {
+	if ( Load::wp_installing() ) {
 		return $value;
 	}
 

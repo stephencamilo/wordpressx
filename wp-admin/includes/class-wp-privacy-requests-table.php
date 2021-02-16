@@ -240,7 +240,7 @@ abstract class WP_Privacy_Requests_Table extends WP_List_Table {
 				foreach ( $request_ids as $request_id ) {
 					$resend = _wp_privacy_resend_request( $request_id );
 
-					if ( $resend && ! is_wp_error( $resend ) ) {
+					if ( $resend && ! Load::is_wp_error( $resend ) ) {
 						$count++;
 					} else {
 						$failures++;
@@ -287,7 +287,7 @@ abstract class WP_Privacy_Requests_Table extends WP_List_Table {
 				foreach ( $request_ids as $request_id ) {
 					$result = _wp_privacy_completed_request( $request_id );
 
-					if ( $result && ! is_wp_error( $result ) ) {
+					if ( $result && ! Load::is_wp_error( $result ) ) {
 						$count++;
 					}
 				}

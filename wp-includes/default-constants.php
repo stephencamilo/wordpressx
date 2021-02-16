@@ -5,10 +5,12 @@
  * @package WordPress
  */
 
+use Core\WPIncludes\Load;
+
 /**
  * Defines initial WordPress constants.
  *
- * @see wp_debug_mode()
+ * @see Load::wp_debug_mode()
  *
  * @since 3.0.0
  *
@@ -35,13 +37,13 @@ function wp_initial_constants() {
 	}
 
 	$current_limit     = ini_get( 'memory_limit' );
-	$current_limit_int = wp_convert_hr_to_bytes( $current_limit );
+	$current_limit_int = Load::wp_convert_hr_to_bytes( $current_limit );
 
 	// Define memory limits.
 	if ( ! defined( 'WP_MEMORY_LIMIT' ) ) {
-		if ( false === wp_is_ini_value_changeable( 'memory_limit' ) ) {
+		if ( false === Load::wp_is_ini_value_changeable( 'memory_limit' ) ) {
 			define( 'WP_MEMORY_LIMIT', $current_limit );
-		} elseif ( is_multisite() ) {
+		} elseif ( Load::is_multisite() ) {
 			define( 'WP_MEMORY_LIMIT', '64M' );
 		} else {
 			define( 'WP_MEMORY_LIMIT', '40M' );
@@ -49,7 +51,7 @@ function wp_initial_constants() {
 	}
 
 	if ( ! defined( 'WP_MAX_MEMORY_LIMIT' ) ) {
-		if ( false === wp_is_ini_value_changeable( 'memory_limit' ) ) {
+		if ( false === Load::wp_is_ini_value_changeable( 'memory_limit' ) ) {
 			define( 'WP_MAX_MEMORY_LIMIT', $current_limit );
 		} elseif ( -1 === $current_limit_int || $current_limit_int > 268435456 /* = 256M */ ) {
 			define( 'WP_MAX_MEMORY_LIMIT', $current_limit );
@@ -59,7 +61,7 @@ function wp_initial_constants() {
 	}
 
 	// Set memory limits.
-	$wp_limit_int = wp_convert_hr_to_bytes( WP_MEMORY_LIMIT );
+	$wp_limit_int = Load::wp_convert_hr_to_bytes( WP_MEMORY_LIMIT );
 	if ( -1 !== $current_limit_int && ( -1 === $wp_limit_int || $wp_limit_int > $current_limit_int ) ) {
 		ini_set( 'memory_limit', WP_MEMORY_LIMIT );
 	}
@@ -74,7 +76,7 @@ function wp_initial_constants() {
 
 	// Add define( 'WP_DEBUG', true ); to wp-config.php to enable display of notices during development.
 	if ( ! defined( 'WP_DEBUG' ) ) {
-		if ( 'development' === wp_get_environment_type() ) {
+		if ( 'development' === Load::wp_get_environment_type() ) {
 			define( 'WP_DEBUG', true );
 		} else {
 			define( 'WP_DEBUG', false );

@@ -417,7 +417,7 @@ class WP_Http {
 		 * @param string         $url         The request URL.
 		 */
 		do_action( 'http_api_debug', $response, 'response', 'Requests', $parsed_args, $url );
-		if ( is_wp_error( $response ) ) {
+		if ( Load::is_wp_error( $response ) ) {
 			return $response;
 		}
 
@@ -582,7 +582,7 @@ class WP_Http {
 		/** This action is documented in wp-includes/class-http.php */
 		do_action( 'http_api_debug', $response, 'response', $class, $args, $url );
 
-		if ( is_wp_error( $response ) ) {
+		if ( Load::is_wp_error( $response ) ) {
 			return $response;
 		}
 

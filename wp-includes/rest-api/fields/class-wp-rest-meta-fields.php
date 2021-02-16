@@ -155,7 +155,7 @@ abstract class WP_REST_Meta_Fields {
 				if ( $args['single'] ) {
 					$current = get_metadata( $this->get_meta_type(), $object_id, $meta_key, true );
 
-					if ( is_wp_error( rest_validate_value_from_schema( $current, $args['schema'] ) ) ) {
+					if ( Load::is_wp_error( rest_validate_value_from_schema( $current, $args['schema'] ) ) ) {
 						return new WP_Error(
 							'rest_invalid_stored_value',
 							/* translators: %s: Custom field key. */
@@ -166,7 +166,7 @@ abstract class WP_REST_Meta_Fields {
 				}
 
 				$result = $this->delete_meta_value( $object_id, $meta_key, $name );
-				if ( is_wp_error( $result ) ) {
+				if ( Load::is_wp_error( $result ) ) {
 					return $result;
 				}
 				continue;
@@ -184,7 +184,7 @@ abstract class WP_REST_Meta_Fields {
 			}
 
 			$is_valid = rest_validate_value_from_schema( $value, $args['schema'], 'meta.' . $name );
-			if ( is_wp_error( $is_valid ) ) {
+			if ( Load::is_wp_error( $is_valid ) ) {
 				$is_valid->add_data( array( 'status' => 400 ) );
 				return $is_valid;
 			}
@@ -197,7 +197,7 @@ abstract class WP_REST_Meta_Fields {
 				$result = $this->update_multi_meta_value( $object_id, $meta_key, $name, $value );
 			}
 
-			if ( is_wp_error( $result ) ) {
+			if ( Load::is_wp_error( $result ) ) {
 				return $result;
 			}
 		}
@@ -537,7 +537,7 @@ abstract class WP_REST_Meta_Fields {
 			$value = static::get_empty_value_for_type( $schema['type'] );
 		}
 
-		if ( is_wp_error( rest_validate_value_from_schema( $value, $schema ) ) ) {
+		if ( Load::is_wp_error( rest_validate_value_from_schema( $value, $schema ) ) ) {
 			return null;
 		}
 

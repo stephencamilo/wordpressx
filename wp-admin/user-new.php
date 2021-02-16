@@ -9,7 +9,7 @@
 /** WordPress Administration Bootstrap */
 require_once __DIR__ . '/admin.php';
 
-if ( is_multisite() ) {
+if ( Load::is_multisite() ) {
 	if ( ! current_user_can( 'create_users' ) && ! current_user_can( 'promote_users' ) ) {
 		wp_die(
 			'<h1>' . __( 'You need a higher level of permission.' ) . '</h1>' .
@@ -25,7 +25,7 @@ if ( is_multisite() ) {
 	);
 }
 
-if ( is_multisite() ) {
+if ( Load::is_multisite() ) {
 	add_filter( 'wpmu_signup_user_notification_email', 'admin_created_user_email' );
 }
 
@@ -74,7 +74,7 @@ if ( isset( $_REQUEST['action'] ) && 'adduser' === $_REQUEST['action'] ) {
 				)
 			);
 
-			if ( ! is_wp_error( $result ) ) {
+			if ( ! Load::is_wp_error( $result ) ) {
 				$redirect = add_query_arg(
 					array(
 						'update'  => 'addnoconfirmation',
@@ -185,10 +185,10 @@ Please click the following link to confirm the invite:
 		);
 	}
 
-	if ( ! is_multisite() ) {
+	if ( ! Load::is_multisite() ) {
 		$user_id = edit_user();
 
-		if ( is_wp_error( $user_id ) ) {
+		if ( Load::is_wp_error( $user_id ) ) {
 			$add_user_errors = $user_id;
 		} else {
 			if ( current_user_can( 'list_users' ) ) {
@@ -203,7 +203,7 @@ Please click the following link to confirm the invite:
 		// Adding a new user to this site.
 		$new_user_email = wp_unslash( $_REQUEST['email'] );
 		$user_details   = wpmu_validate_user_signup( $_REQUEST['user_login'], $new_user_email );
-		if ( is_wp_error( $user_details['errors'] ) && $user_details['errors']->has_errors() ) {
+		if ( Load::is_wp_error( $user_details['errors'] ) && $user_details['errors']->has_errors() ) {
 			$add_user_errors = $user_details['errors'];
 		} else {
 			/** This filter is documented in wp-includes/user.php */
@@ -216,14 +216,14 @@ Please click the following link to confirm the invite:
 				$new_user_login,
 				$new_user_email,
 				array(
-					'add_to_blog' => get_current_blog_id(),
+					'add_to_blog' => Load::get_current_blog_id(),
 					'new_role'    => $_REQUEST['role'],
 				)
 			);
 			if ( isset( $_POST['noconfirmation'] ) && current_user_can( 'manage_network_users' ) ) {
 				$key      = $wpdb->get_var( $wpdb->prepare( "SELECT activation_key FROM {$wpdb->signups} WHERE user_login = %s AND user_email = %s", $new_user_login, $new_user_email ) );
 				$new_user = wpmu_activate_signup( $key );
-				if ( is_wp_error( $new_user ) ) {
+				if ( Load::is_wp_error( $new_user ) ) {
 					$redirect = add_query_arg( array( 'update' => 'addnoconfirmation' ), 'user-new.php' );
 				} elseif ( ! is_user_member_of_blog( $new_user['user_id'] ) ) {
 					$redirect = add_query_arg( array( 'update' => 'created_could_not_add' ), 'user-new.php' );
@@ -249,13 +249,13 @@ $title       = __( 'Add New User' );
 $parent_file = 'users.php';
 
 $do_both = false;
-if ( is_multisite() && current_user_can( 'promote_users' ) && current_user_can( 'create_users' ) ) {
+if ( Load::is_multisite() && current_user_can( 'promote_users' ) && current_user_can( 'create_users' ) ) {
 	$do_both = true;
 }
 
 $help = '<p>' . __( 'To add a new user to your site, fill in the form on this screen and click the Add New User button at the bottom.' ) . '</p>';
 
-if ( is_multisite() ) {
+if ( Load::is_multisite() ) {
 	$help .= '<p>' . __( 'Because this is a multisite installation, you may add accounts that already exist on the Network by specifying a username or email, and defining a role. For more options, such as specifying a password, you have to be a Network Administrator and use the hover link under an existing user&#8217;s name to Edit the user profile under Network Admin > All Users.' ) . '</p>' .
 	'<p>' . __( 'New users will receive an email letting them know they&#8217;ve been added as a user for your site. This email will also contain their password. Check the box if you don&#8217;t want the user to receive a welcome email.' ) . '</p>';
 } else {
@@ -305,8 +305,8 @@ wp_enqueue_script( 'user-profile' );
  *
  * @param bool $enable Whether to enable auto-complete for non-super admins. Default false.
  */
-if ( is_multisite() && current_user_can( 'promote_users' ) && ! wp_is_large_network( 'users' )
-	&& ( current_user_can( 'manage_network_users' ) || apply_filters( 'autocomplete_users_for_site_admins', false ) )
+if ( Load::is_multisite() && current_user_can( 'promote_users' ) && ! wp_is_large_network( 'users' )
+     && ( current_user_can( 'manage_network_users' ) || apply_filters( 'autocomplete_users_for_site_admins', false ) )
 ) {
 	wp_enqueue_script( 'user-suggest' );
 }
@@ -315,7 +315,7 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 
 if ( isset( $_GET['update'] ) ) {
 	$messages = array();
-	if ( is_multisite() ) {
+	if ( Load::is_multisite() ) {
 		$edit_link = '';
 		if ( ( isset( $_GET['user_id'] ) ) ) {
 			$user_id_new = absint( $_GET['user_id'] );
@@ -374,7 +374,7 @@ if ( current_user_can( 'create_users' ) ) {
 ?>
 </h1>
 
-<?php if ( isset( $errors ) && is_wp_error( $errors ) ) : ?>
+<?php if ( isset( $errors ) && Load::is_wp_error( $errors ) ) : ?>
 	<div class="error">
 		<ul>
 		<?php
@@ -394,7 +394,7 @@ if ( ! empty( $messages ) ) {
 }
 ?>
 
-<?php if ( isset( $add_user_errors ) && is_wp_error( $add_user_errors ) ) : ?>
+<?php if ( isset( $add_user_errors ) && Load::is_wp_error( $add_user_errors ) ) : ?>
 	<div class="error">
 		<?php
 		foreach ( $add_user_errors->get_error_messages() as $message ) {
@@ -406,7 +406,7 @@ if ( ! empty( $messages ) ) {
 <div id="ajax-response"></div>
 
 <?php
-if ( is_multisite() && current_user_can( 'promote_users' ) ) {
+if ( Load::is_multisite() && current_user_can( 'promote_users' ) ) {
 	if ( $do_both ) {
 		echo '<h2 id="add-existing-user">' . __( 'Add Existing User' ) . '</h2>';
 	}
@@ -511,7 +511,7 @@ if ( current_user_can( 'create_users' ) ) {
 		<th scope="row"><label for="email"><?php _e( 'Email' ); ?> <span class="description"><?php _e( '(required)' ); ?></span></label></th>
 		<td><input name="email" type="email" id="email" value="<?php echo esc_attr( $new_user_email ); ?>" /></td>
 	</tr>
-	<?php if ( ! is_multisite() ) { ?>
+	<?php if ( ! Load::is_multisite() ) { ?>
 	<tr class="form-field">
 		<th scope="row"><label for="first_name"><?php _e( 'First Name' ); ?> </label></th>
 		<td><input name="first_name" type="text" id="first_name" value="<?php echo esc_attr( $new_user_firstname ); ?>" /></td>
@@ -612,7 +612,7 @@ if ( current_user_can( 'create_users' ) ) {
 		</td>
 	</tr>
 	<?php } ?>
-	<?php if ( is_multisite() && current_user_can( 'manage_network_users' ) ) { ?>
+	<?php if ( Load::is_multisite() && current_user_can( 'manage_network_users' ) ) { ?>
 	<tr>
 		<th scope="row"><?php _e( 'Skip Confirmation Email' ); ?></th>
 		<td>

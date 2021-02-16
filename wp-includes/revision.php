@@ -225,13 +225,14 @@ function wp_save_post_revision( $post_id ) {
  * If the optional $user_id is passed, returns the autosave for that user, otherwise
  * returns the latest autosave.
  *
- * @since 2.6.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int $post_id The post ID.
  * @param int $user_id Optional The post author ID.
+ *
  * @return WP_Post|false The autosaved data or false on failure or when no autosave exists.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 2.6.0
+ *
  */
 function wp_get_post_autosave( $post_id, $user_id = 0 ) {
 	global $wpdb;
@@ -332,7 +333,7 @@ function _wp_put_post_revision( $post = null, $autosave = false ) {
 	$post = wp_slash( $post ); // Since data is from DB.
 
 	$revision_id = wp_insert_post( $post );
-	if ( is_wp_error( $revision_id ) ) {
+	if ( Load::is_wp_error( $revision_id ) ) {
 		return $revision_id;
 	}
 
@@ -419,7 +420,7 @@ function wp_restore_post_revision( $revision_id, $fields = null ) {
 	$update = wp_slash( $update ); // Since data is from DB.
 
 	$post_id = wp_update_post( $update );
-	if ( ! $post_id || is_wp_error( $post_id ) ) {
+	if ( ! $post_id || Load::is_wp_error( $post_id ) ) {
 		return $post_id;
 	}
 
@@ -712,14 +713,15 @@ function _wp_get_post_revision_version( $revision ) {
 /**
  * Upgrade the revisions author, add the current post as a revision and set the revisions version to 1
  *
+ * @param WP_Post $post      Post object
+ * @param array   $revisions Current revisions of the post
+ *
+ * @return bool true if the revisions were upgraded, false if problems
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
  * @since 3.6.0
  * @access private
  *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param WP_Post $post      Post object
- * @param array   $revisions Current revisions of the post
- * @return bool true if the revisions were upgraded, false if problems
  */
 function _wp_upgrade_revisions_of_post( $post, $revisions ) {
 	global $wpdb;

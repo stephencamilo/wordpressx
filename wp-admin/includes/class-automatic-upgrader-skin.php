@@ -71,7 +71,7 @@ class Automatic_Upgrader_Skin extends WP_Upgrader_Skin {
 	 * @param mixed                 ...$args Optional text replacements.
 	 */
 	public function feedback( $data, ...$args ) {
-		if ( is_wp_error( $data ) ) {
+		if ( Load::is_wp_error( $data ) ) {
 			$string = $data->get_error_message();
 		} elseif ( is_array( $data ) ) {
 			return;

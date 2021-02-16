@@ -11,13 +11,15 @@
  * Fetches an instance of a WP_List_Table class.
  *
  * @access private
- * @since 3.1.0
- *
- * @global string $hook_suffix
  *
  * @param string $class The type of the list table, which is the class name.
- * @param array  $args  Optional. Arguments to pass to the class. Accepts 'screen'.
+ * @param array $args Optional. Arguments to pass to the class. Accepts 'screen'.
+ *
  * @return WP_List_Table|bool List table object on success, false if the class does not exist.
+ * @global string $hook_suffix
+ *
+ * @since 3.1.0
+ *
  */
 function _get_list_table( $class, $args = array() ) {
 	$core_classes = array(
@@ -67,14 +69,15 @@ function _get_list_table( $class, $args = array() ) {
 /**
  * Register column headers for a particular screen.
  *
+ * @param string $screen The handle for the screen to register column headers for. This is
+ *                          usually the hook name returned by the `add_*_page()` functions.
+ * @param string[] $columns An array of columns with column IDs as the keys and translated
+ *                          column names as the values.
+ *
  * @see get_column_headers(), print_column_headers(), get_hidden_columns()
  *
  * @since 2.7.0
  *
- * @param string    $screen The handle for the screen to register column headers for. This is
- *                          usually the hook name returned by the `add_*_page()` functions.
- * @param string[] $columns An array of columns with column IDs as the keys and translated
- *                          column names as the values.
  */
 function register_column_headers( $screen, $columns ) {
 	new _WP_List_Table_Compat( $screen, $columns );
@@ -83,10 +86,11 @@ function register_column_headers( $screen, $columns ) {
 /**
  * Prints column headers for a particular screen.
  *
+ * @param string|WP_Screen $screen The screen hook name or screen object.
+ * @param bool $with_id Whether to set the ID attribute or not.
+ *
  * @since 2.7.0
  *
- * @param string|WP_Screen $screen  The screen hook name or screen object.
- * @param bool             $with_id Whether to set the ID attribute or not.
  */
 function print_column_headers( $screen, $with_id = true ) {
 	$wp_list_table = new _WP_List_Table_Compat( $screen );

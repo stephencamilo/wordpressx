@@ -53,11 +53,11 @@ $theme_field_defaults = array(
 /**
  * Retrieve list of WordPress theme features (aka theme tags).
  *
- * @since 2.8.0
- *
+ * @return array
  * @deprecated 3.1.0 Use get_theme_feature_list() instead.
  *
- * @return array
+ * @since 2.8.0
+ *
  */
 function install_themes_feature_list() {
 	_deprecated_function( __FUNCTION__, '3.1.0', 'get_theme_feature_list()' );
@@ -72,7 +72,7 @@ function install_themes_feature_list() {
 	}
 
 	$feature_list = themes_api( 'feature_list', array() );
-	if ( is_wp_error( $feature_list ) ) {
+	if ( Load::is_wp_error( $feature_list ) ) {
 		return array();
 	}
 
@@ -84,9 +84,10 @@ function install_themes_feature_list() {
 /**
  * Display search form for searching themes.
  *
+ * @param bool $type_selector
+ *
  * @since 2.8.0
  *
- * @param bool $type_selector
  */
 function install_theme_search_form( $type_selector = true ) {
 	$type = isset( $_REQUEST['type'] ) ? wp_unslash( $_REQUEST['type'] ) : 'term';
@@ -95,36 +96,36 @@ function install_theme_search_form( $type_selector = true ) {
 		echo '<p class="install-help">' . __( 'Search for themes by keyword.' ) . '</p>';
 	}
 	?>
-<form id="search-themes" method="get">
-	<input type="hidden" name="tab" value="search" />
-	<?php if ( $type_selector ) : ?>
-	<label class="screen-reader-text" for="typeselector"><?php _e( 'Type of search' ); ?></label>
-	<select	name="type" id="typeselector">
-	<option value="term" <?php selected( 'term', $type ); ?>><?php _e( 'Keyword' ); ?></option>
-	<option value="author" <?php selected( 'author', $type ); ?>><?php _e( 'Author' ); ?></option>
-	<option value="tag" <?php selected( 'tag', $type ); ?>><?php _ex( 'Tag', 'Theme Installer' ); ?></option>
-	</select>
-	<label class="screen-reader-text" for="s">
-		<?php
-		switch ( $type ) {
-			case 'term':
-				_e( 'Search by keyword' );
-				break;
-			case 'author':
-				_e( 'Search by author' );
-				break;
-			case 'tag':
-				_e( 'Search by tag' );
-				break;
-		}
-		?>
-	</label>
-	<?php else : ?>
-	<label class="screen-reader-text" for="s"><?php _e( 'Search by keyword' ); ?></label>
-	<?php endif; ?>
-	<input type="search" name="s" id="s" size="30" value="<?php echo esc_attr( $term ); ?>" autofocus="autofocus" />
-	<?php submit_button( __( 'Search' ), '', 'search', false ); ?>
-</form>
+    <form id="search-themes" method="get">
+        <input type="hidden" name="tab" value="search"/>
+		<?php if ( $type_selector ) : ?>
+            <label class="screen-reader-text" for="typeselector"><?php _e( 'Type of search' ); ?></label>
+            <select name="type" id="typeselector">
+                <option value="term" <?php selected( 'term', $type ); ?>><?php _e( 'Keyword' ); ?></option>
+                <option value="author" <?php selected( 'author', $type ); ?>><?php _e( 'Author' ); ?></option>
+                <option value="tag" <?php selected( 'tag', $type ); ?>><?php _ex( 'Tag', 'Theme Installer' ); ?></option>
+            </select>
+            <label class="screen-reader-text" for="s">
+				<?php
+				switch ( $type ) {
+					case 'term':
+						_e( 'Search by keyword' );
+						break;
+					case 'author':
+						_e( 'Search by author' );
+						break;
+					case 'tag':
+						_e( 'Search by tag' );
+						break;
+				}
+				?>
+            </label>
+		<?php else : ?>
+            <label class="screen-reader-text" for="s"><?php _e( 'Search by keyword' ); ?></label>
+		<?php endif; ?>
+        <input type="search" name="s" id="s" size="30" value="<?php echo esc_attr( $term ); ?>" autofocus="autofocus"/>
+		<?php submit_button( __( 'Search' ), '', 'search', false ); ?>
+    </form>
 	<?php
 }
 
@@ -136,41 +137,42 @@ function install_theme_search_form( $type_selector = true ) {
 function install_themes_dashboard() {
 	install_theme_search_form( false );
 	?>
-<h4><?php _e( 'Feature Filter' ); ?></h4>
-<p class="install-help"><?php _e( 'Find a theme based on specific features.' ); ?></p>
+    <h4><?php _e( 'Feature Filter' ); ?></h4>
+    <p class="install-help"><?php _e( 'Find a theme based on specific features.' ); ?></p>
 
-<form method="get">
-	<input type="hidden" name="tab" value="search" />
-	<?php
-	$feature_list = get_theme_feature_list();
-	echo '<div class="feature-filter">';
-
-	foreach ( (array) $feature_list as $feature_name => $features ) {
-		$feature_name = esc_html( $feature_name );
-		echo '<div class="feature-name">' . $feature_name . '</div>';
-
-		echo '<ol class="feature-group">';
-		foreach ( $features as $feature => $feature_name ) {
-			$feature_name = esc_html( $feature_name );
-			$feature      = esc_attr( $feature );
-			?>
-
-<li>
-	<input type="checkbox" name="features[]" id="feature-id-<?php echo $feature; ?>" value="<?php echo $feature; ?>" />
-	<label for="feature-id-<?php echo $feature; ?>"><?php echo $feature_name; ?></label>
-</li>
-
-<?php	} ?>
-</ol>
-<br class="clear" />
+    <form method="get">
+        <input type="hidden" name="tab" value="search"/>
 		<?php
-	}
-	?>
+		$feature_list = get_theme_feature_list();
+		echo '<div class="feature-filter">';
 
-</div>
-<br class="clear" />
-	<?php submit_button( __( 'Find Themes' ), '', 'search' ); ?>
-</form>
+		foreach ( (array) $feature_list as $feature_name => $features ) {
+			$feature_name = esc_html( $feature_name );
+			echo '<div class="feature-name">' . $feature_name . '</div>';
+
+			echo '<ol class="feature-group">';
+			foreach ( $features as $feature => $feature_name ) {
+				$feature_name = esc_html( $feature_name );
+				$feature      = esc_attr( $feature );
+				?>
+
+                <li>
+                    <input type="checkbox" name="features[]" id="feature-id-<?php echo $feature; ?>"
+                           value="<?php echo $feature; ?>"/>
+                    <label for="feature-id-<?php echo $feature; ?>"><?php echo $feature_name; ?></label>
+                </li>
+
+			<?php } ?>
+            </ol>
+            <br class="clear"/>
+			<?php
+		}
+		?>
+
+        </div>
+        <br class="clear"/>
+		<?php submit_button( __( 'Find Themes' ), '', 'search' ); ?>
+    </form>
 	<?php
 }
 
@@ -179,24 +181,26 @@ function install_themes_dashboard() {
  */
 function install_themes_upload() {
 	?>
-<p class="install-help"><?php _e( 'If you have a theme in a .zip format, you may install or update it by uploading it here.' ); ?></p>
-<form method="post" enctype="multipart/form-data" class="wp-upload-form" action="<?php echo self_admin_url( 'update.php?action=upload-theme' ); ?>">
-	<?php wp_nonce_field( 'theme-upload' ); ?>
-	<label class="screen-reader-text" for="themezip"><?php _e( 'Theme zip file' ); ?></label>
-	<input type="file" id="themezip" name="themezip" accept=".zip"/>
-	<?php submit_button( __( 'Install Now' ), '', 'install-theme-submit', false ); ?>
-</form>
+    <p class="install-help"><?php _e( 'If you have a theme in a .zip format, you may install or update it by uploading it here.' ); ?></p>
+    <form method="post" enctype="multipart/form-data" class="wp-upload-form"
+          action="<?php echo self_admin_url( 'update.php?action=upload-theme' ); ?>">
+		<?php wp_nonce_field( 'theme-upload' ); ?>
+        <label class="screen-reader-text" for="themezip"><?php _e( 'Theme zip file' ); ?></label>
+        <input type="file" id="themezip" name="themezip" accept=".zip"/>
+		<?php submit_button( __( 'Install Now' ), '', 'install-theme-submit', false ); ?>
+    </form>
 	<?php
 }
 
 /**
  * Prints a theme on the Install Themes pages.
  *
- * @deprecated 3.4.0
+ * @param object $theme
  *
  * @global WP_Theme_Install_List_Table $wp_list_table
  *
- * @param object $theme
+ * @deprecated 3.4.0
+ *
  */
 function display_theme( $theme ) {
 	_deprecated_function( __FUNCTION__, '3.4.0' );
@@ -238,7 +242,7 @@ function install_theme_information() {
 
 	$theme = themes_api( 'theme_information', array( 'slug' => wp_unslash( $_REQUEST['theme'] ) ) );
 
-	if ( is_wp_error( $theme ) ) {
+	if ( Load::is_wp_error( $theme ) ) {
 		wp_die( $theme );
 	}
 

@@ -63,7 +63,7 @@ if ( ! empty( $action ) ) {
 			true
 		);
 
-		if ( is_wp_error( $privacy_policy_page_id ) ) {
+		if ( Load::is_wp_error( $privacy_policy_page_id ) ) {
 			add_settings_error(
 				'page_for_privacy_policy',
 				'page_for_privacy_policy',

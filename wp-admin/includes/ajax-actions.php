@@ -35,11 +35,12 @@ function wp_ajax_nopriv_heartbeat() {
 		/**
 		 * Filters Heartbeat Ajax response in no-privilege environments.
 		 *
+		 * @param array $response The no-priv Heartbeat response.
+		 * @param array $data The $_POST data sent.
+		 * @param string $screen_id The screen ID.
+		 *
 		 * @since 3.6.0
 		 *
-		 * @param array  $response  The no-priv Heartbeat response.
-		 * @param array  $data      The $_POST data sent.
-		 * @param string $screen_id The screen ID.
 		 */
 		$response = apply_filters( 'heartbeat_nopriv_received', $response, $data, $screen_id );
 	}
@@ -47,10 +48,11 @@ function wp_ajax_nopriv_heartbeat() {
 	/**
 	 * Filters Heartbeat Ajax response in no-privilege environments when no data is passed.
 	 *
+	 * @param array $response The no-priv Heartbeat response.
+	 * @param string $screen_id The screen ID.
+	 *
 	 * @since 3.6.0
 	 *
-	 * @param array  $response  The no-priv Heartbeat response.
-	 * @param string $screen_id The screen ID.
 	 */
 	$response = apply_filters( 'heartbeat_nopriv_send', $response, $screen_id );
 
@@ -59,10 +61,11 @@ function wp_ajax_nopriv_heartbeat() {
 	 *
 	 * Allows the transport to be easily replaced with long-polling.
 	 *
+	 * @param array $response The no-priv Heartbeat response.
+	 * @param string $screen_id The screen ID.
+	 *
 	 * @since 3.6.0
 	 *
-	 * @param array  $response  The no-priv Heartbeat response.
-	 * @param string $screen_id The screen ID.
 	 */
 	do_action( 'heartbeat_nopriv_tick', $response, $screen_id );
 
@@ -91,7 +94,7 @@ function wp_ajax_fetch_list() {
 	}
 
 	if ( ! $wp_list_table->ajax_user_can() ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$wp_list_table->ajax_response();
@@ -117,7 +120,7 @@ function wp_ajax_ajax_tag_search() {
 	}
 
 	if ( ! current_user_can( $tax->cap->assign_terms ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$s = wp_unslash( $_GET['q'] );
@@ -137,11 +140,12 @@ function wp_ajax_ajax_tag_search() {
 	/**
 	 * Filters the minimum number of characters required to fire a tag search via Ajax.
 	 *
+	 * @param int $characters The minimum number of characters required. Default 2.
+	 * @param WP_Taxonomy $tax The taxonomy object.
+	 * @param string $s The search term.
+	 *
 	 * @since 4.0.0
 	 *
-	 * @param int         $characters The minimum number of characters required. Default 2.
-	 * @param WP_Taxonomy $tax        The taxonomy object.
-	 * @param string      $s          The search term.
 	 */
 	$term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $s );
 
@@ -173,7 +177,7 @@ function wp_ajax_ajax_tag_search() {
  */
 function wp_ajax_wp_compression_test() {
 	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	if ( ini_get( 'zlib.output_compression' ) || 'ob_gzhandler' === ini_get( 'output_handler' ) ) {
@@ -194,7 +198,7 @@ function wp_ajax_wp_compression_test() {
 			wp_die();
 		} elseif ( 2 == $_GET['test'] ) {
 			if ( ! isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) ) {
-				wp_die( -1 );
+				wp_die( - 1 );
 			}
 
 			if ( false !== stripos( $_SERVER['HTTP_ACCEPT_ENCODING'], 'deflate' ) && function_exists( 'gzdeflate' ) && ! $force_gzip ) {
@@ -204,7 +208,7 @@ function wp_ajax_wp_compression_test() {
 				header( 'Content-Encoding: gzip' );
 				$out = gzencode( $test_str, 1 );
 			} else {
-				wp_die( -1 );
+				wp_die( - 1 );
 			}
 
 			echo $out;
@@ -229,7 +233,7 @@ function wp_ajax_wp_compression_test() {
 function wp_ajax_imgedit_preview() {
 	$post_id = (int) $_GET['postid'];
 	if ( empty( $post_id ) || ! current_user_can( 'edit_post', $post_id ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	check_ajax_referer( "image_editor-$post_id" );
@@ -237,7 +241,7 @@ function wp_ajax_imgedit_preview() {
 	include_once ABSPATH . 'wp-admin/includes/image-edit.php';
 
 	if ( ! stream_preview_image( $post_id ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	wp_die();
@@ -261,13 +265,13 @@ function wp_ajax_oembed_cache() {
  * @since 3.4.0
  */
 function wp_ajax_autocomplete_user() {
-	if ( ! is_multisite() || ! current_user_can( 'promote_users' ) || wp_is_large_network( 'users' ) ) {
-		wp_die( -1 );
+	if ( ! Load::is_multisite() || ! current_user_can( 'promote_users' ) || wp_is_large_network( 'users' ) ) {
+		wp_die( - 1 );
 	}
 
 	/** This filter is documented in wp-admin/user-new.php */
 	if ( ! current_user_can( 'manage_network_users' ) && ! apply_filters( 'autocomplete_users_for_site_admins', false ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$return = array();
@@ -292,7 +296,7 @@ function wp_ajax_autocomplete_user() {
 	if ( isset( $_REQUEST['site_id'] ) ) {
 		$id = absint( $_REQUEST['site_id'] );
 	} else {
-		$id = get_current_blog_id();
+		$id = Load::get_current_blog_id();
 	}
 
 	$include_blog_users = ( 'search' === $type ? get_users(
@@ -348,7 +352,7 @@ function wp_ajax_get_community_events() {
 	$events         = $events_client->get_events( $search, $timezone );
 	$ip_changed     = false;
 
-	if ( is_wp_error( $events ) ) {
+	if ( Load::is_wp_error( $events ) ) {
 		wp_send_json_error(
 			array(
 				'error' => $events->get_error_message(),
@@ -421,13 +425,14 @@ function wp_ajax_logged_in() {
  *
  * Contrary to normal success Ajax response ("1"), die with time() on success.
  *
+ * @param int $comment_id
+ * @param int $delta
+ *
  * @since 2.7.0
  * @access private
  *
- * @param int $comment_id
- * @param int $delta
  */
-function _wp_ajax_delete_comment_response( $comment_id, $delta = -1 ) {
+function _wp_ajax_delete_comment_response( $comment_id, $delta = - 1 ) {
 	$total    = isset( $_POST['_total'] ) ? (int) $_POST['_total'] : 0;
 	$per_page = isset( $_POST['_per_page'] ) ? (int) $_POST['_per_page'] : 0;
 	$page     = isset( $_POST['_page'] ) ? (int) $_POST['_page'] : 0;
@@ -461,12 +466,12 @@ function _wp_ajax_delete_comment_response( $comment_id, $delta = -1 ) {
 					'time'                 => $time,
 					'in_moderation'        => $counts->moderated,
 					'i18n_comments_text'   => sprintf(
-						/* translators: %s: Number of comments. */
+					/* translators: %s: Number of comments. */
 						_n( '%s Comment', '%s Comments', $counts->approved ),
 						number_format_i18n( $counts->approved )
 					),
 					'i18n_moderation_text' => sprintf(
-						/* translators: %s: Number of comments. */
+					/* translators: %s: Number of comments. */
 						_n( '%s Comment in moderation', '%s Comments in moderation', $counts->moderated ),
 						number_format_i18n( $counts->moderated )
 					),
@@ -537,7 +542,7 @@ function _wp_ajax_delete_comment_response( $comment_id, $delta = -1 ) {
 				'time'                 => $time,
 				'in_moderation'        => $counts->moderated,
 				'i18n_moderation_text' => sprintf(
-					/* translators: %s: Number of comments. */
+				/* translators: %s: Number of comments. */
 					_n( '%s Comment in moderation', '%s Comments in moderation', $counts->moderated ),
 					number_format_i18n( $counts->moderated )
 				),
@@ -563,7 +568,7 @@ function _wp_ajax_add_hierarchical_term() {
 	check_ajax_referer( $action, '_ajax_nonce-add-' . $taxonomy->name );
 
 	if ( ! current_user_can( $taxonomy->cap->edit_terms ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$names  = explode( ',', $_POST[ 'new' . $taxonomy->name ] );
@@ -592,7 +597,7 @@ function _wp_ajax_add_hierarchical_term() {
 
 		$cat_id = wp_insert_term( $cat_name, $taxonomy->name, array( 'parent' => $parent ) );
 
-		if ( ! $cat_id || is_wp_error( $cat_id ) ) {
+		if ( ! $cat_id || Load::is_wp_error( $cat_id ) ) {
 			continue;
 		} else {
 			$cat_id = $cat_id['term_id'];
@@ -622,7 +627,7 @@ function _wp_ajax_add_hierarchical_term() {
 			'what'     => $taxonomy->name,
 			'id'       => $cat_id,
 			'data'     => str_replace( array( "\n", "\t" ), '', $data ),
-			'position' => -1,
+			'position' => - 1,
 		);
 	}
 
@@ -632,7 +637,7 @@ function _wp_ajax_add_hierarchical_term() {
 
 		while ( $parent->parent ) { // Get the top parent.
 			$parent = get_term( $parent->parent, $taxonomy->name );
-			if ( is_wp_error( $parent ) ) {
+			if ( Load::is_wp_error( $parent ) ) {
 				break;
 			}
 			$term_id = $parent->term_id;
@@ -656,7 +661,7 @@ function _wp_ajax_add_hierarchical_term() {
 			'what'     => $taxonomy->name,
 			'id'       => $term_id,
 			'data'     => str_replace( array( "\n", "\t" ), '', $data ),
-			'position' => -1,
+			'position' => - 1,
 		);
 	}
 
@@ -696,12 +701,12 @@ function wp_ajax_delete_comment() {
 	}
 
 	if ( ! current_user_can( 'edit_comment', $comment->comment_ID ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	check_ajax_referer( "delete-comment_$id" );
 	$status = wp_get_comment_status( $comment );
-	$delta  = -1;
+	$delta  = - 1;
 
 	if ( isset( $_POST['trash'] ) && 1 == $_POST['trash'] ) {
 		if ( 'trash' === $status ) {
@@ -740,7 +745,7 @@ function wp_ajax_delete_comment() {
 	} elseif ( isset( $_POST['delete'] ) && 1 == $_POST['delete'] ) {
 		$r = wp_delete_comment( $comment );
 	} else {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	if ( $r ) {
@@ -761,13 +766,13 @@ function wp_ajax_delete_tag() {
 	check_ajax_referer( "delete-tag_$tag_id" );
 
 	if ( ! current_user_can( 'delete_term', $tag_id ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$taxonomy = ! empty( $_POST['taxonomy'] ) ? $_POST['taxonomy'] : 'post_tag';
 	$tag      = get_term( $tag_id, $taxonomy );
 
-	if ( ! $tag || is_wp_error( $tag ) ) {
+	if ( ! $tag || Load::is_wp_error( $tag ) ) {
 		wp_die( 1 );
 	}
 
@@ -789,11 +794,11 @@ function wp_ajax_delete_link() {
 	check_ajax_referer( "delete-bookmark_$id" );
 
 	if ( ! current_user_can( 'manage_links' ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$link = get_bookmark( $id );
-	if ( ! $link || is_wp_error( $link ) ) {
+	if ( ! $link || Load::is_wp_error( $link ) ) {
 		wp_die( 1 );
 	}
 
@@ -820,7 +825,7 @@ function wp_ajax_delete_meta() {
 	}
 
 	if ( is_protected_meta( $meta->meta_key, 'post' ) || ! current_user_can( 'delete_post_meta', $meta->post_id, $meta->meta_key ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	if ( delete_meta( $meta->meta_id ) ) {
@@ -833,9 +838,10 @@ function wp_ajax_delete_meta() {
 /**
  * Ajax handler for deleting a post.
  *
+ * @param string $action Action to perform.
+ *
  * @since 3.1.0
  *
- * @param string $action Action to perform.
  */
 function wp_ajax_delete_post( $action ) {
 	if ( empty( $action ) ) {
@@ -846,7 +852,7 @@ function wp_ajax_delete_post( $action ) {
 	check_ajax_referer( "{$action}_$id" );
 
 	if ( ! current_user_can( 'delete_post', $id ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	if ( ! get_post( $id ) ) {
@@ -863,9 +869,10 @@ function wp_ajax_delete_post( $action ) {
 /**
  * Ajax handler for sending a post to the Trash.
  *
+ * @param string $action Action to perform.
+ *
  * @since 3.1.0
  *
- * @param string $action Action to perform.
  */
 function wp_ajax_trash_post( $action ) {
 	if ( empty( $action ) ) {
@@ -876,7 +883,7 @@ function wp_ajax_trash_post( $action ) {
 	check_ajax_referer( "{$action}_$id" );
 
 	if ( ! current_user_can( 'delete_post', $id ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	if ( ! get_post( $id ) ) {
@@ -899,9 +906,10 @@ function wp_ajax_trash_post( $action ) {
 /**
  * Ajax handler to restore a post from the Trash.
  *
+ * @param string $action Action to perform.
+ *
  * @since 3.1.0
  *
- * @param string $action Action to perform.
  */
 function wp_ajax_untrash_post( $action ) {
 	if ( empty( $action ) ) {
@@ -914,9 +922,10 @@ function wp_ajax_untrash_post( $action ) {
 /**
  * Ajax handler to delete a page.
  *
+ * @param string $action Action to perform.
+ *
  * @since 3.1.0
  *
- * @param string $action Action to perform.
  */
 function wp_ajax_delete_page( $action ) {
 	if ( empty( $action ) ) {
@@ -927,7 +936,7 @@ function wp_ajax_delete_page( $action ) {
 	check_ajax_referer( "{$action}_$id" );
 
 	if ( ! current_user_can( 'delete_page', $id ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	if ( ! get_post( $id ) ) {
@@ -965,7 +974,7 @@ function wp_ajax_dim_comment() {
 	}
 
 	if ( ! current_user_can( 'edit_comment', $comment->comment_ID ) && ! current_user_can( 'moderate_comments' ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$current = wp_get_comment_status( $comment );
@@ -982,7 +991,7 @@ function wp_ajax_dim_comment() {
 		$result = wp_set_comment_status( $comment, 'hold', true );
 	}
 
-	if ( is_wp_error( $result ) ) {
+	if ( Load::is_wp_error( $result ) ) {
 		$x = new WP_Ajax_Response(
 			array(
 				'what' => 'comment',
@@ -1000,9 +1009,10 @@ function wp_ajax_dim_comment() {
 /**
  * Ajax handler for adding a link category.
  *
+ * @param string $action Action to perform.
+ *
  * @since 3.1.0
  *
- * @param string $action Action to perform.
  */
 function wp_ajax_add_link_category( $action ) {
 	if ( empty( $action ) ) {
@@ -1013,7 +1023,7 @@ function wp_ajax_add_link_category( $action ) {
 	$tax = get_taxonomy( 'link_category' );
 
 	if ( ! current_user_can( $tax->cap->manage_terms ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$names = explode( ',', wp_unslash( $_POST['newcat'] ) );
@@ -1029,7 +1039,7 @@ function wp_ajax_add_link_category( $action ) {
 
 		$cat_id = wp_insert_term( $cat_name, 'link_category' );
 
-		if ( ! $cat_id || is_wp_error( $cat_id ) ) {
+		if ( ! $cat_id || Load::is_wp_error( $cat_id ) ) {
 			continue;
 		} else {
 			$cat_id = $cat_id['term_id'];
@@ -1042,7 +1052,7 @@ function wp_ajax_add_link_category( $action ) {
 				'what'     => 'link-category',
 				'id'       => $cat_id,
 				'data'     => "<li id='link-category-$cat_id'><label for='in-link-category-$cat_id' class='selectit'><input value='" . esc_attr( $cat_id ) . "' type='checkbox' checked='checked' name='link_category[]' id='in-link-category-$cat_id'/> $cat_name</label></li>",
-				'position' => -1,
+				'position' => - 1,
 			)
 		);
 	}
@@ -1060,21 +1070,21 @@ function wp_ajax_add_tag() {
 	$tax      = get_taxonomy( $taxonomy );
 
 	if ( ! current_user_can( $tax->cap->edit_terms ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$x = new WP_Ajax_Response();
 
 	$tag = wp_insert_term( $_POST['tag-name'], $taxonomy, $_POST );
 
-	if ( $tag && ! is_wp_error( $tag ) ) {
+	if ( $tag && ! Load::is_wp_error( $tag ) ) {
 		$tag = get_term( $tag['term_id'], $taxonomy );
 	}
 
-	if ( ! $tag || is_wp_error( $tag ) ) {
+	if ( ! $tag || Load::is_wp_error( $tag ) ) {
 		$message = __( 'An error has occurred. Please reload the page and try again.' );
 
-		if ( is_wp_error( $tag ) && $tag->get_error_message() ) {
+		if ( Load::is_wp_error( $tag ) && $tag->get_error_message() ) {
 			$message = $tag->get_error_message();
 		}
 
@@ -1139,7 +1149,7 @@ function wp_ajax_get_tagcloud() {
 	}
 
 	if ( ! current_user_can( $tax->cap->assign_terms ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$tags = get_terms(
@@ -1155,7 +1165,7 @@ function wp_ajax_get_tagcloud() {
 		wp_die( $tax->labels->not_found );
 	}
 
-	if ( is_wp_error( $tags ) ) {
+	if ( Load::is_wp_error( $tags ) ) {
 		wp_die( $tags->get_error_message() );
 	}
 
@@ -1184,11 +1194,12 @@ function wp_ajax_get_tagcloud() {
 /**
  * Ajax handler for getting comments.
  *
- * @since 3.1.0
+ * @param string $action Action to perform.
  *
  * @global int $post_id
  *
- * @param string $action Action to perform.
+ * @since 3.1.0
+ *
  */
 function wp_ajax_get_comments( $action ) {
 	global $post_id;
@@ -1207,13 +1218,13 @@ function wp_ajax_get_comments( $action ) {
 	}
 
 	if ( empty( $post_id ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$wp_list_table = _get_list_table( 'WP_Post_Comments_List_Table', array( 'screen' => 'edit-comments' ) );
 
 	if ( ! current_user_can( 'edit_post', $post_id ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$wp_list_table->prepare_items();
@@ -1247,9 +1258,10 @@ function wp_ajax_get_comments( $action ) {
 /**
  * Ajax handler for replying to a comment.
  *
+ * @param string $action Action to perform.
+ *
  * @since 3.1.0
  *
- * @param string $action Action to perform.
  */
 function wp_ajax_replyto_comment( $action ) {
 	if ( empty( $action ) ) {
@@ -1262,11 +1274,11 @@ function wp_ajax_replyto_comment( $action ) {
 	$post            = get_post( $comment_post_ID );
 
 	if ( ! $post ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	if ( ! current_user_can( 'edit_post', $comment_post_ID ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	if ( empty( $post->post_status ) ) {
@@ -1320,7 +1332,7 @@ function wp_ajax_replyto_comment( $action ) {
 
 		if ( $parent && '0' === $parent->comment_approved && $parent->comment_post_ID == $comment_post_ID ) {
 			if ( ! current_user_can( 'edit_comment', $parent->comment_ID ) ) {
-				wp_die( -1 );
+				wp_die( - 1 );
 			}
 
 			if ( wp_set_comment_status( $parent, 'approve' ) ) {
@@ -1331,7 +1343,7 @@ function wp_ajax_replyto_comment( $action ) {
 
 	$comment_id = wp_new_comment( $commentdata );
 
-	if ( is_wp_error( $comment_id ) ) {
+	if ( Load::is_wp_error( $comment_id ) ) {
 		wp_die( $comment_id->get_error_message() );
 	}
 
@@ -1368,12 +1380,12 @@ function wp_ajax_replyto_comment( $action ) {
 	$response['supplemental'] = array(
 		'in_moderation'        => $counts->moderated,
 		'i18n_comments_text'   => sprintf(
-			/* translators: %s: Number of comments. */
+		/* translators: %s: Number of comments. */
 			_n( '%s Comment', '%s Comments', $counts->approved ),
 			number_format_i18n( $counts->approved )
 		),
 		'i18n_moderation_text' => sprintf(
-			/* translators: %s: Number of comments. */
+		/* translators: %s: Number of comments. */
 			_n( '%s Comment in moderation', '%s Comments in moderation', $counts->moderated ),
 			number_format_i18n( $counts->moderated )
 		),
@@ -1400,7 +1412,7 @@ function wp_ajax_edit_comment() {
 	$comment_id = (int) $_POST['comment_ID'];
 
 	if ( ! current_user_can( 'edit_comment', $comment_id ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	if ( '' === $_POST['content'] ) {
@@ -1412,7 +1424,7 @@ function wp_ajax_edit_comment() {
 	}
 
 	$updated = edit_comment();
-	if ( is_wp_error( $updated ) ) {
+	if ( Load::is_wp_error( $updated ) ) {
 		wp_die( $updated->get_error_message() );
 	}
 
@@ -1423,7 +1435,7 @@ function wp_ajax_edit_comment() {
 	$comment = get_comment( $comment_id );
 
 	if ( empty( $comment->comment_ID ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	ob_start();
@@ -1453,7 +1465,7 @@ function wp_ajax_add_menu_item() {
 	check_ajax_referer( 'add-menu_item', 'menu-settings-column-nonce' );
 
 	if ( ! current_user_can( 'edit_theme_options' ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	require_once ABSPATH . 'wp-admin/includes/nav-menu.php';
@@ -1493,7 +1505,7 @@ function wp_ajax_add_menu_item() {
 	}
 
 	$item_ids = wp_save_nav_menu_items( 0, $menu_items_data );
-	if ( is_wp_error( $item_ids ) ) {
+	if ( Load::is_wp_error( $item_ids ) ) {
 		wp_die( 0 );
 	}
 
@@ -1545,7 +1557,7 @@ function wp_ajax_add_meta() {
 
 	if ( isset( $_POST['metakeyselect'] ) || isset( $_POST['metakeyinput'] ) ) {
 		if ( ! current_user_can( 'edit_post', $pid ) ) {
-			wp_die( -1 );
+			wp_die( - 1 );
 		}
 
 		if ( isset( $_POST['metakeyselect'] ) && '#NONE#' === $_POST['metakeyselect'] && empty( $_POST['metakeyinput'] ) ) {
@@ -1566,7 +1578,7 @@ function wp_ajax_add_meta() {
 			$pid = edit_post( $post_data );
 
 			if ( $pid ) {
-				if ( is_wp_error( $pid ) ) {
+				if ( Load::is_wp_error( $pid ) ) {
 					$x = new WP_Ajax_Response(
 						array(
 							'what' => 'meta',
@@ -1623,7 +1635,7 @@ function wp_ajax_add_meta() {
 			! current_user_can( 'edit_post_meta', $meta->post_id, $meta->meta_key ) ||
 			! current_user_can( 'edit_post_meta', $meta->post_id, $key )
 		) {
-			wp_die( -1 );
+			wp_die( - 1 );
 		}
 
 		if ( $meta->meta_value != $value || $meta->meta_key != $key ) {
@@ -1657,9 +1669,10 @@ function wp_ajax_add_meta() {
 /**
  * Ajax handler for adding a user.
  *
+ * @param string $action Action to perform.
+ *
  * @since 3.1.0
  *
- * @param string $action Action to perform.
  */
 function wp_ajax_add_user( $action ) {
 	if ( empty( $action ) ) {
@@ -1669,14 +1682,14 @@ function wp_ajax_add_user( $action ) {
 	check_ajax_referer( $action );
 
 	if ( ! current_user_can( 'create_users' ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$user_id = edit_user();
 
 	if ( ! $user_id ) {
 		wp_die( 0 );
-	} elseif ( is_wp_error( $user_id ) ) {
+	} elseif ( Load::is_wp_error( $user_id ) ) {
 		$x = new WP_Ajax_Response(
 			array(
 				'what' => 'user',
@@ -1698,7 +1711,7 @@ function wp_ajax_add_user( $action ) {
 			'data'         => $wp_list_table->single_row( $user_object, '', $role ),
 			'supplemental' => array(
 				'show-link' => sprintf(
-					/* translators: %s: The new user. */
+				/* translators: %s: The new user. */
 					__( 'User %s added' ),
 					'<a href="#user-' . $user_id . '">' . $user_object->user_login . '</a>'
 				),
@@ -1730,7 +1743,7 @@ function wp_ajax_closed_postboxes() {
 
 	$user = wp_get_current_user();
 	if ( ! $user ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	if ( is_array( $closed ) ) {
@@ -1761,7 +1774,7 @@ function wp_ajax_hidden_columns() {
 
 	$user = wp_get_current_user();
 	if ( ! $user ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$hidden = ! empty( $_POST['hidden'] ) ? explode( ',', $_POST['hidden'] ) : array();
@@ -1779,7 +1792,7 @@ function wp_ajax_update_welcome_panel() {
 	check_ajax_referer( 'welcome-panel-nonce', 'welcomepanelnonce' );
 
 	if ( ! current_user_can( 'edit_theme_options' ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	update_user_meta( get_current_user_id(), 'show_welcome_panel', empty( $_POST['visible'] ) ? 0 : 1 );
@@ -1794,7 +1807,7 @@ function wp_ajax_update_welcome_panel() {
  */
 function wp_ajax_menu_get_metabox() {
 	if ( ! current_user_can( 'edit_theme_options' ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	require_once ABSPATH . 'wp-admin/includes/nav-menu.php';
@@ -1881,7 +1894,7 @@ function wp_ajax_wp_link_ajax() {
  */
 function wp_ajax_menu_locations_save() {
 	if ( ! current_user_can( 'edit_theme_options' ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	check_ajax_referer( 'add-menu_item', 'menu-settings-column-nonce' );
@@ -1916,7 +1929,7 @@ function wp_ajax_meta_box_order() {
 
 	$user = wp_get_current_user();
 	if ( ! $user ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	if ( $order ) {
@@ -1937,7 +1950,7 @@ function wp_ajax_meta_box_order() {
  */
 function wp_ajax_menu_quick_search() {
 	if ( ! current_user_can( 'edit_theme_options' ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	require_once ABSPATH . 'wp-admin/includes/nav-menu.php';
@@ -2081,7 +2094,7 @@ function wp_ajax_inline_save() {
 		while ( $parent > 0 ) {
 			$parent_post = get_post( $parent );
 			$parent      = $parent_post->post_parent;
-			$level++;
+			$level ++;
 		}
 	}
 
@@ -2106,13 +2119,13 @@ function wp_ajax_inline_save_tax() {
 	}
 
 	if ( ! isset( $_POST['tax_ID'] ) || ! (int) $_POST['tax_ID'] ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$id = (int) $_POST['tax_ID'];
 
 	if ( ! current_user_can( 'edit_term', $id ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$wp_list_table = _get_list_table( 'WP_Terms_List_Table', array( 'screen' => 'edit-' . $taxonomy ) );
@@ -2122,16 +2135,16 @@ function wp_ajax_inline_save_tax() {
 
 	$updated = wp_update_term( $id, $taxonomy, $_POST );
 
-	if ( $updated && ! is_wp_error( $updated ) ) {
+	if ( $updated && ! Load::is_wp_error( $updated ) ) {
 		$tag = get_term( $updated['term_id'], $taxonomy );
-		if ( ! $tag || is_wp_error( $tag ) ) {
-			if ( is_wp_error( $tag ) && $tag->get_error_message() ) {
+		if ( ! $tag || Load::is_wp_error( $tag ) ) {
+			if ( Load::is_wp_error( $tag ) && $tag->get_error_message() ) {
 				wp_die( $tag->get_error_message() );
 			}
 			wp_die( __( 'Item not updated.' ) );
 		}
 	} else {
-		if ( is_wp_error( $updated ) && $updated->get_error_message() ) {
+		if ( Load::is_wp_error( $updated ) && $updated->get_error_message() ) {
 			wp_die( $updated->get_error_message() );
 		}
 		wp_die( __( 'Item not updated.' ) );
@@ -2143,7 +2156,7 @@ function wp_ajax_inline_save_tax() {
 	while ( $parent > 0 ) {
 		$parent_tag = get_term( $parent, $taxonomy );
 		$parent     = $parent_tag->parent;
-		$level++;
+		$level ++;
 	}
 
 	$wp_list_table->single_row( $tag, $level );
@@ -2227,7 +2240,7 @@ function wp_ajax_widgets_order() {
 	check_ajax_referer( 'save-sidebar-widgets', 'savewidgets' );
 
 	if ( ! current_user_can( 'edit_theme_options' ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	unset( $_POST['savewidgets'], $_POST['action'] );
@@ -2257,7 +2270,7 @@ function wp_ajax_widgets_order() {
 		wp_die( 1 );
 	}
 
-	wp_die( -1 );
+	wp_die( - 1 );
 }
 
 /**
@@ -2275,7 +2288,7 @@ function wp_ajax_save_widget() {
 	check_ajax_referer( 'save-sidebar-widgets', 'savewidgets' );
 
 	if ( ! current_user_can( 'edit_theme_options' ) || ! isset( $_POST['id_base'] ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	unset( $_POST['savewidgets'], $_POST['action'] );
@@ -2344,7 +2357,7 @@ function wp_ajax_save_widget() {
 			}
 
 			ob_start();
-				call_user_func_array( $control['callback'], $control['params'] );
+			call_user_func_array( $control['callback'], $control['params'] );
 			ob_end_clean();
 			break;
 		}
@@ -2390,7 +2403,7 @@ function wp_ajax_delete_inactive_widgets() {
 	check_ajax_referer( 'remove-inactive-widgets', 'removeinactivewidgets' );
 
 	if ( ! current_user_can( 'edit_theme_options' ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	unset( $_POST['removeinactivewidgets'], $_POST['action'] );
@@ -2524,12 +2537,15 @@ function wp_ajax_upload_attachment() {
 
 	$post_data = ! empty( $_REQUEST['post_data'] ) ? _wp_get_allowed_postdata( _wp_translate_postdata( false, (array) $_REQUEST['post_data'] ) ) : array();
 
-	if ( is_wp_error( $post_data ) ) {
+	if ( Load::is_wp_error( $post_data ) ) {
 		wp_die( $post_data->get_error_message() );
 	}
 
 	// If the context is custom header or background, make sure the uploaded file is an image.
-	if ( isset( $post_data['context'] ) && in_array( $post_data['context'], array( 'custom-header', 'custom-background' ), true ) ) {
+	if ( isset( $post_data['context'] ) && in_array( $post_data['context'], array(
+			'custom-header',
+			'custom-background'
+		), true ) ) {
 		$wp_filetype = wp_check_filetype_and_ext( $_FILES['async-upload']['tmp_name'], $_FILES['async-upload']['name'] );
 
 		if ( ! wp_match_mime_types( 'image', $wp_filetype['type'] ) ) {
@@ -2549,7 +2565,7 @@ function wp_ajax_upload_attachment() {
 
 	$attachment_id = media_handle_upload( 'async-upload', $post_id, $post_data );
 
-	if ( is_wp_error( $attachment_id ) ) {
+	if ( Load::is_wp_error( $attachment_id ) ) {
 		echo wp_json_encode(
 			array(
 				'success' => false,
@@ -2597,7 +2613,7 @@ function wp_ajax_image_editor() {
 	$attachment_id = (int) $_POST['postid'];
 
 	if ( empty( $attachment_id ) || ! current_user_can( 'edit_post', $attachment_id ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	check_ajax_referer( "image_editor-$attachment_id" );
@@ -2653,7 +2669,7 @@ function wp_ajax_set_post_thumbnail() {
 
 	$post_ID = (int) $_POST['post_id'];
 	if ( ! current_user_can( 'edit_post', $post_ID ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$thumbnail_id = (int) $_POST['thumbnail_id'];
@@ -2692,13 +2708,13 @@ function wp_ajax_get_post_thumbnail_html() {
 	check_ajax_referer( "update-post_$post_ID" );
 
 	if ( ! current_user_can( 'edit_post', $post_ID ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$thumbnail_id = (int) $_POST['thumbnail_id'];
 
 	// For backward compatibility, -1 refers to no featured image.
-	if ( -1 === $thumbnail_id ) {
+	if ( - 1 === $thumbnail_id ) {
 		$thumbnail_id = null;
 	}
 
@@ -2744,7 +2760,7 @@ function wp_ajax_set_attachment_thumbnail() {
 		}
 
 		if ( set_post_thumbnail( $post_id, $thumbnail_id ) ) {
-			$success++;
+			$success ++;
 		}
 	}
 
@@ -2794,7 +2810,7 @@ function wp_ajax_wp_fullscreen_save_post() {
 
 	$post_id = edit_post();
 
-	if ( is_wp_error( $post_id ) ) {
+	if ( Load::is_wp_error( $post_id ) ) {
 		wp_send_json_error();
 	}
 
@@ -2839,7 +2855,7 @@ function wp_ajax_wp_remove_post_lock() {
 	check_ajax_referer( 'update-post_' . $post_id );
 
 	if ( ! current_user_can( 'edit_post', $post_id ) ) {
-		wp_die( -1 );
+		wp_die( - 1 );
 	}
 
 	$active_lock = array_map( 'absint', explode( ':', $_POST['active_post_lock'] ) );
@@ -2851,10 +2867,11 @@ function wp_ajax_wp_remove_post_lock() {
 	/**
 	 * Filters the post lock window duration.
 	 *
-	 * @since 3.3.0
-	 *
 	 * @param int $interval The interval in seconds the post lock duration
 	 *                      should last, plus 5 seconds. Default 150.
+	 *
+	 * @since 3.3.0
+	 *
 	 */
 	$new_lock = ( time() - apply_filters( 'wp_check_post_lock_window', 150 ) + 5 ) . ':' . $active_lock[1];
 	update_post_meta( $post_id, '_edit_lock', $new_lock, implode( ':', $active_lock ) );
@@ -2982,11 +2999,12 @@ function wp_ajax_query_attachments() {
 	 * Filters the arguments passed to WP_Query during an Ajax
 	 * call for querying attachments.
 	 *
-	 * @since 3.7.0
+	 * @param array $query An array of query variables.
 	 *
 	 * @see WP_Query::parse_query()
 	 *
-	 * @param array $query An array of query variables.
+	 * @since 3.7.0
+	 *
 	 */
 	$query = apply_filters( 'ajax_query_attachments_args', $query );
 	$query = new WP_Query( $query );
@@ -3280,7 +3298,7 @@ function wp_ajax_send_attachment_to_editor() {
  *
  * @since 3.5.0
  *
- * @global WP_Post  $post     Global post object.
+ * @global WP_Post $post Global post object.
  * @global WP_Embed $wp_embed
  */
 function wp_ajax_send_link_to_editor() {
@@ -3371,11 +3389,12 @@ function wp_ajax_heartbeat() {
 		/**
 		 * Filters the nonces to send to the New/Edit Post screen.
 		 *
+		 * @param array $response The Heartbeat response.
+		 * @param array $data The $_POST data sent.
+		 * @param string $screen_id The screen ID.
+		 *
 		 * @since 4.3.0
 		 *
-		 * @param array  $response  The Heartbeat response.
-		 * @param array  $data      The $_POST data sent.
-		 * @param string $screen_id The screen ID.
 		 */
 		$response = apply_filters( 'wp_refresh_nonces', $response, $data, $screen_id );
 
@@ -3390,11 +3409,12 @@ function wp_ajax_heartbeat() {
 		/**
 		 * Filters the Heartbeat response received.
 		 *
+		 * @param array $response The Heartbeat response.
+		 * @param array $data The $_POST data sent.
+		 * @param string $screen_id The screen ID.
+		 *
 		 * @since 3.6.0
 		 *
-		 * @param array  $response  The Heartbeat response.
-		 * @param array  $data      The $_POST data sent.
-		 * @param string $screen_id The screen ID.
 		 */
 		$response = apply_filters( 'heartbeat_received', $response, $data, $screen_id );
 	}
@@ -3402,10 +3422,11 @@ function wp_ajax_heartbeat() {
 	/**
 	 * Filters the Heartbeat response sent.
 	 *
+	 * @param array $response The Heartbeat response.
+	 * @param string $screen_id The screen ID.
+	 *
 	 * @since 3.6.0
 	 *
-	 * @param array  $response  The Heartbeat response.
-	 * @param string $screen_id The screen ID.
 	 */
 	$response = apply_filters( 'heartbeat_send', $response, $screen_id );
 
@@ -3414,10 +3435,11 @@ function wp_ajax_heartbeat() {
 	 *
 	 * Allows the transport to be easily replaced with long-polling.
 	 *
+	 * @param array $response The Heartbeat response.
+	 * @param string $screen_id The screen ID.
+	 *
 	 * @since 3.6.0
 	 *
-	 * @param array  $response  The Heartbeat response.
-	 * @param string $screen_id The screen ID.
 	 */
 	do_action( 'heartbeat_tick', $response, $screen_id );
 
@@ -3516,7 +3538,8 @@ function wp_ajax_query_themes() {
 			'fields'   => array_merge(
 				(array) $theme_field_defaults,
 				array(
-					'reviews_url' => true, // Explicitly request the reviews URL to be linked from the Add Themes screen.
+					'reviews_url' => true,
+					// Explicitly request the reviews URL to be linked from the Add Themes screen.
 				)
 			),
 		)
@@ -3536,7 +3559,7 @@ function wp_ajax_query_themes() {
 
 	$api = themes_api( 'query_themes', $args );
 
-	if ( is_wp_error( $api ) ) {
+	if ( Load::is_wp_error( $api ) ) {
 		wp_send_json_error();
 	}
 
@@ -3552,7 +3575,7 @@ function wp_ajax_query_themes() {
 		);
 
 		if ( current_user_can( 'switch_themes' ) ) {
-			if ( is_multisite() ) {
+			if ( Load::is_multisite() ) {
 				$theme->activate_url = add_query_arg(
 					array(
 						'action'   => 'enable',
@@ -3573,7 +3596,7 @@ function wp_ajax_query_themes() {
 			}
 		}
 
-		if ( ! is_multisite() && current_user_can( 'edit_theme_options' ) && current_user_can( 'customize' ) ) {
+		if ( ! Load::is_multisite() && current_user_can( 'edit_theme_options' ) && current_user_can( 'customize' ) ) {
 			$theme->customize_url = add_query_arg(
 				array(
 					'return' => urlencode( network_admin_url( 'theme-install.php', 'relative' ) ),
@@ -3610,10 +3633,10 @@ function wp_ajax_query_themes() {
  *
  * @since 4.0.0
  *
- * @global WP_Post    $post       Global post object.
- * @global WP_Embed   $wp_embed   Embed API instance.
+ * @global WP_Post $post Global post object.
+ * @global WP_Embed $wp_embed Embed API instance.
  * @global WP_Scripts $wp_scripts
- * @global int        $content_width
+ * @global int $content_width
  */
 function wp_ajax_parse_embed() {
 	global $post, $wp_embed, $content_width;
@@ -3660,7 +3683,7 @@ function wp_ajax_parse_embed() {
 		$wp_embed->usecache = false;
 	}
 
-	if ( is_ssl() && 0 === strpos( $url, 'http://' ) ) {
+	if ( Load::is_ssl() && 0 === strpos( $url, 'http://' ) ) {
 		// Admin is ssl and the user pasted non-ssl URL.
 		// Check if the provider supports ssl embeds and use that for the preview.
 		$ssl_shortcode = preg_replace( '%^(\\[embed[^\\]]*\\])http://%i', '$1https://', $shortcode );
@@ -3717,8 +3740,8 @@ function wp_ajax_parse_embed() {
 		$parsed = $styles . $html . $scripts;
 	}
 
-	if ( ! empty( $no_ssl_support ) || ( is_ssl() && ( preg_match( '%<(iframe|script|embed) [^>]*src="http://%', $parsed ) ||
-		preg_match( '%<link [^>]*href="http://%', $parsed ) ) ) ) {
+	if ( ! empty( $no_ssl_support ) || ( Load::is_ssl() && ( preg_match( '%<(iframe|script|embed) [^>]*src="http://%', $parsed ) ||
+	                                                         preg_match( '%<link [^>]*href="http://%', $parsed ) ) ) ) {
 		// Admin is ssl and the embed is not. Iframes, scripts, and other "active content" will be blocked.
 		wp_send_json_error(
 			array(
@@ -3750,7 +3773,7 @@ function wp_ajax_parse_embed() {
 /**
  * @since 4.0.0
  *
- * @global WP_Post    $post       Global post object.
+ * @global WP_Post $post Global post object.
  * @global WP_Scripts $wp_scripts
  */
 function wp_ajax_parse_media_shortcode() {
@@ -3873,7 +3896,7 @@ function wp_ajax_crop_image() {
 	$data    = array_map( 'absint', $_POST['cropDetails'] );
 	$cropped = wp_crop_image( $attachment_id, $data['x1'], $data['y1'], $data['width'], $data['height'], $data['dst_width'], $data['dst_height'] );
 
-	if ( ! $cropped || is_wp_error( $cropped ) ) {
+	if ( ! $cropped || Load::is_wp_error( $cropped ) ) {
 		wp_send_json_error( array( 'message' => __( 'Image could not be processed.' ) ) );
 	}
 
@@ -3913,11 +3936,12 @@ function wp_ajax_crop_image() {
 			 *
 			 * Allows to add filters to modify the way a cropped image is saved.
 			 *
+			 * @param string $context The Customizer control requesting the cropped image.
+			 * @param int $attachment_id The attachment ID of the original image.
+			 * @param string $cropped Path to the cropped image file.
+			 *
 			 * @since 4.3.0
 			 *
-			 * @param string $context       The Customizer control requesting the cropped image.
-			 * @param int    $attachment_id The attachment ID of the original image.
-			 * @param string $cropped       Path to the cropped image file.
 			 */
 			do_action( 'wp_ajax_crop_image_pre_save', $context, $attachment_id, $cropped );
 
@@ -3944,11 +3968,12 @@ function wp_ajax_crop_image() {
 			/**
 			 * Filters the cropped image attachment metadata.
 			 *
-			 * @since 4.3.0
+			 * @param array $metadata Attachment metadata.
 			 *
 			 * @see wp_generate_attachment_metadata()
 			 *
-			 * @param array $metadata Attachment metadata.
+			 * @since 4.3.0
+			 *
 			 */
 			$metadata = apply_filters( 'wp_ajax_cropped_attachment_metadata', $metadata );
 			wp_update_attachment_metadata( $attachment_id, $metadata );
@@ -3956,10 +3981,11 @@ function wp_ajax_crop_image() {
 			/**
 			 * Filters the attachment ID for a cropped image.
 			 *
+			 * @param int $attachment_id The attachment ID of the cropped image.
+			 * @param string $context The Customizer control requesting the cropped image.
+			 *
 			 * @since 4.3.0
 			 *
-			 * @param int    $attachment_id The attachment ID of the cropped image.
-			 * @param string $context       The Customizer control requesting the cropped image.
 			 */
 			$attachment_id = apply_filters( 'wp_ajax_cropped_attachment_id', $attachment_id, $context );
 	}
@@ -4042,7 +4068,7 @@ function wp_ajax_install_theme() {
 		)
 	);
 
-	if ( is_wp_error( $api ) ) {
+	if ( Load::is_wp_error( $api ) ) {
 		$status['errorMessage'] = $api->get_error_message();
 		wp_send_json_error( $status );
 	}
@@ -4055,11 +4081,11 @@ function wp_ajax_install_theme() {
 		$status['debug'] = $skin->get_upgrade_messages();
 	}
 
-	if ( is_wp_error( $result ) ) {
+	if ( Load::is_wp_error( $result ) ) {
 		$status['errorCode']    = $result->get_error_code();
 		$status['errorMessage'] = $result->get_error_message();
 		wp_send_json_error( $status );
-	} elseif ( is_wp_error( $skin->result ) ) {
+	} elseif ( Load::is_wp_error( $skin->result ) ) {
 		$status['errorCode']    = $skin->result->get_error_code();
 		$status['errorMessage'] = $skin->result->get_error_message();
 		wp_send_json_error( $status );
@@ -4073,7 +4099,7 @@ function wp_ajax_install_theme() {
 		$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.' );
 
 		// Pass through the error from WP_Filesystem if one was raised.
-		if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
+		if ( $wp_filesystem instanceof WP_Filesystem_Base && Load::is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
 			$status['errorMessage'] = esc_html( $wp_filesystem->errors->get_error_message() );
 		}
 
@@ -4083,7 +4109,7 @@ function wp_ajax_install_theme() {
 	$status['themeName'] = wp_get_theme( $slug )->get( 'Name' );
 
 	if ( current_user_can( 'switch_themes' ) ) {
-		if ( is_multisite() ) {
+		if ( Load::is_multisite() ) {
 			$status['activateUrl'] = add_query_arg(
 				array(
 					'action'   => 'enable',
@@ -4104,7 +4130,7 @@ function wp_ajax_install_theme() {
 		}
 	}
 
-	if ( ! is_multisite() && current_user_can( 'edit_theme_options' ) && current_user_can( 'customize' ) ) {
+	if ( ! Load::is_multisite() && current_user_can( 'edit_theme_options' ) && current_user_can( 'customize' ) ) {
 		$status['customizeUrl'] = add_query_arg(
 			array(
 				'return' => urlencode( network_admin_url( 'theme-install.php', 'relative' ) ),
@@ -4175,7 +4201,7 @@ function wp_ajax_update_theme() {
 		$status['debug'] = $skin->get_upgrade_messages();
 	}
 
-	if ( is_wp_error( $skin->result ) ) {
+	if ( Load::is_wp_error( $skin->result ) ) {
 		$status['errorCode']    = $skin->result->get_error_code();
 		$status['errorMessage'] = $skin->result->get_error_message();
 		wp_send_json_error( $status );
@@ -4203,7 +4229,7 @@ function wp_ajax_update_theme() {
 		$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.' );
 
 		// Pass through the error from WP_Filesystem if one was raised.
-		if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
+		if ( $wp_filesystem instanceof WP_Filesystem_Base && Load::is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
 			$status['errorMessage'] = esc_html( $wp_filesystem->errors->get_error_message() );
 		}
 
@@ -4267,7 +4293,7 @@ function wp_ajax_delete_theme() {
 		$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.' );
 
 		// Pass through the error from WP_Filesystem if one was raised.
-		if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
+		if ( $wp_filesystem instanceof WP_Filesystem_Base && Load::is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
 			$status['errorMessage'] = esc_html( $wp_filesystem->errors->get_error_message() );
 		}
 
@@ -4278,7 +4304,7 @@ function wp_ajax_delete_theme() {
 
 	$result = delete_theme( $stylesheet );
 
-	if ( is_wp_error( $result ) ) {
+	if ( Load::is_wp_error( $result ) ) {
 		$status['errorMessage'] = $result->get_error_message();
 		wp_send_json_error( $status );
 	} elseif ( false === $result ) {
@@ -4334,7 +4360,7 @@ function wp_ajax_install_plugin() {
 		)
 	);
 
-	if ( is_wp_error( $api ) ) {
+	if ( Load::is_wp_error( $api ) ) {
 		$status['errorMessage'] = $api->get_error_message();
 		wp_send_json_error( $status );
 	}
@@ -4349,11 +4375,11 @@ function wp_ajax_install_plugin() {
 		$status['debug'] = $skin->get_upgrade_messages();
 	}
 
-	if ( is_wp_error( $result ) ) {
+	if ( Load::is_wp_error( $result ) ) {
 		$status['errorCode']    = $result->get_error_code();
 		$status['errorMessage'] = $result->get_error_message();
 		wp_send_json_error( $status );
-	} elseif ( is_wp_error( $skin->result ) ) {
+	} elseif ( Load::is_wp_error( $skin->result ) ) {
 		$status['errorCode']    = $skin->result->get_error_code();
 		$status['errorMessage'] = $skin->result->get_error_message();
 		wp_send_json_error( $status );
@@ -4367,7 +4393,7 @@ function wp_ajax_install_plugin() {
 		$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.' );
 
 		// Pass through the error from WP_Filesystem if one was raised.
-		if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
+		if ( $wp_filesystem instanceof WP_Filesystem_Base && Load::is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
 			$status['errorMessage'] = esc_html( $wp_filesystem->errors->get_error_message() );
 		}
 
@@ -4391,7 +4417,7 @@ function wp_ajax_install_plugin() {
 		);
 	}
 
-	if ( is_multisite() && current_user_can( 'manage_network_plugins' ) && 'import' !== $pagenow ) {
+	if ( Load::is_multisite() && current_user_can( 'manage_network_plugins' ) && 'import' !== $pagenow ) {
 		$status['activateUrl'] = add_query_arg( array( 'networkwide' => 1 ), $status['activateUrl'] );
 	}
 
@@ -4455,7 +4481,7 @@ function wp_ajax_update_plugin() {
 		$status['debug'] = $skin->get_upgrade_messages();
 	}
 
-	if ( is_wp_error( $skin->result ) ) {
+	if ( Load::is_wp_error( $skin->result ) ) {
 		$status['errorCode']    = $skin->result->get_error_code();
 		$status['errorMessage'] = $skin->result->get_error_message();
 		wp_send_json_error( $status );
@@ -4494,7 +4520,7 @@ function wp_ajax_update_plugin() {
 		$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.' );
 
 		// Pass through the error from WP_Filesystem if one was raised.
-		if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
+		if ( $wp_filesystem instanceof WP_Filesystem_Base && Load::is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
 			$status['errorMessage'] = esc_html( $wp_filesystem->errors->get_error_message() );
 		}
 
@@ -4563,7 +4589,7 @@ function wp_ajax_delete_plugin() {
 		$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.' );
 
 		// Pass through the error from WP_Filesystem if one was raised.
-		if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
+		if ( $wp_filesystem instanceof WP_Filesystem_Base && Load::is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
 			$status['errorMessage'] = esc_html( $wp_filesystem->errors->get_error_message() );
 		}
 
@@ -4572,7 +4598,7 @@ function wp_ajax_delete_plugin() {
 
 	$result = delete_plugins( array( $plugin ) );
 
-	if ( is_wp_error( $result ) ) {
+	if ( Load::is_wp_error( $result ) ) {
 		$status['errorMessage'] = $result->get_error_message();
 		wp_send_json_error( $status );
 	} elseif ( false === $result ) {
@@ -4700,7 +4726,7 @@ function wp_ajax_search_install_plugins() {
 function wp_ajax_edit_theme_plugin_file() {
 	$r = wp_edit_theme_plugin_file( wp_unslash( $_POST ) ); // Validation of args is done in wp_edit_theme_plugin_file().
 
-	if ( is_wp_error( $r ) ) {
+	if ( Load::is_wp_error( $r ) ) {
 		wp_send_json_error(
 			array_merge(
 				array(
@@ -4771,21 +4797,21 @@ function wp_ajax_wp_privacy_export_personal_data() {
 	/**
 	 * Filters the array of exporter callbacks.
 	 *
-	 * @since 4.9.6
-	 *
 	 * @param array $args {
 	 *     An array of callable exporters of personal data. Default empty array.
 	 *
-	 *     @type array ...$0 {
+	 * @type array ...$0 {
 	 *         Array of personal data exporters.
 	 *
-	 *         @type callable $callback               Callable exporter function that accepts an
+	 * @type callable $callback Callable exporter function that accepts an
 	 *                                                email address and a page and returns an array
 	 *                                                of name => value pairs of personal data.
-	 *         @type string   $exporter_friendly_name Translated user facing friendly name for the
+	 * @type string $exporter_friendly_name Translated user facing friendly name for the
 	 *                                                exporter.
 	 *     }
 	 * }
+	 * @since 4.9.6
+	 *
 	 */
 	$exporters = apply_filters( 'wp_privacy_personal_data_exporters', array() );
 
@@ -4813,14 +4839,14 @@ function wp_ajax_wp_privacy_export_personal_data() {
 
 		if ( ! is_array( $exporter ) ) {
 			wp_send_json_error(
-				/* translators: %s: Exporter array index. */
+			/* translators: %s: Exporter array index. */
 				sprintf( __( 'Expected an array describing the exporter at index %s.' ), $exporter_key )
 			);
 		}
 
 		if ( ! array_key_exists( 'exporter_friendly_name', $exporter ) ) {
 			wp_send_json_error(
-				/* translators: %s: Exporter array index. */
+			/* translators: %s: Exporter array index. */
 				sprintf( __( 'Exporter array at index %s does not include a friendly name.' ), $exporter_key )
 			);
 		}
@@ -4829,14 +4855,14 @@ function wp_ajax_wp_privacy_export_personal_data() {
 
 		if ( ! array_key_exists( 'callback', $exporter ) ) {
 			wp_send_json_error(
-				/* translators: %s: Exporter friendly name. */
+			/* translators: %s: Exporter friendly name. */
 				sprintf( __( 'Exporter does not include a callback: %s.' ), esc_html( $exporter_friendly_name ) )
 			);
 		}
 
 		if ( ! is_callable( $exporter['callback'] ) ) {
 			wp_send_json_error(
-				/* translators: %s: Exporter friendly name. */
+			/* translators: %s: Exporter friendly name. */
 				sprintf( __( 'Exporter callback is not a valid callback: %s.' ), esc_html( $exporter_friendly_name ) )
 			);
 		}
@@ -4844,34 +4870,34 @@ function wp_ajax_wp_privacy_export_personal_data() {
 		$callback = $exporter['callback'];
 		$response = call_user_func( $callback, $email_address, $page );
 
-		if ( is_wp_error( $response ) ) {
+		if ( Load::is_wp_error( $response ) ) {
 			wp_send_json_error( $response );
 		}
 
 		if ( ! is_array( $response ) ) {
 			wp_send_json_error(
-				/* translators: %s: Exporter friendly name. */
+			/* translators: %s: Exporter friendly name. */
 				sprintf( __( 'Expected response as an array from exporter: %s.' ), esc_html( $exporter_friendly_name ) )
 			);
 		}
 
 		if ( ! array_key_exists( 'data', $response ) ) {
 			wp_send_json_error(
-				/* translators: %s: Exporter friendly name. */
+			/* translators: %s: Exporter friendly name. */
 				sprintf( __( 'Expected data in response array from exporter: %s.' ), esc_html( $exporter_friendly_name ) )
 			);
 		}
 
 		if ( ! is_array( $response['data'] ) ) {
 			wp_send_json_error(
-				/* translators: %s: Exporter friendly name. */
+			/* translators: %s: Exporter friendly name. */
 				sprintf( __( 'Expected data array in response array from exporter: %s.' ), esc_html( $exporter_friendly_name ) )
 			);
 		}
 
 		if ( ! array_key_exists( 'done', $response ) ) {
 			wp_send_json_error(
-				/* translators: %s: Exporter friendly name. */
+			/* translators: %s: Exporter friendly name. */
 				sprintf( __( 'Expected done (boolean) in response array from exporter: %s.' ), esc_html( $exporter_friendly_name ) )
 			);
 		}
@@ -4890,19 +4916,20 @@ function wp_ajax_wp_privacy_export_personal_data() {
 	 *
 	 * Allows the export response to be consumed by destinations in addition to Ajax.
 	 *
+	 * @param array $response The personal data for the given exporter and page.
+	 * @param int $exporter_index The index of the exporter that provided this data.
+	 * @param string $email_address The email address associated with this personal data.
+	 * @param int $page The page for this response.
+	 * @param int $request_id The privacy request post ID associated with this request.
+	 * @param bool $send_as_email Whether the final results of the export should be emailed to the user.
+	 * @param string $exporter_key The key (slug) of the exporter that provided this data.
+	 *
 	 * @since 4.9.6
 	 *
-	 * @param array  $response        The personal data for the given exporter and page.
-	 * @param int    $exporter_index  The index of the exporter that provided this data.
-	 * @param string $email_address   The email address associated with this personal data.
-	 * @param int    $page            The page for this response.
-	 * @param int    $request_id      The privacy request post ID associated with this request.
-	 * @param bool   $send_as_email   Whether the final results of the export should be emailed to the user.
-	 * @param string $exporter_key    The key (slug) of the exporter that provided this data.
 	 */
 	$response = apply_filters( 'wp_privacy_personal_data_export_page', $response, $exporter_index, $email_address, $page, $request_id, $send_as_email, $exporter_key );
 
-	if ( is_wp_error( $response ) ) {
+	if ( Load::is_wp_error( $response ) ) {
 		wp_send_json_error( $response );
 	}
 
@@ -4961,22 +4988,22 @@ function wp_ajax_wp_privacy_erase_personal_data() {
 	/**
 	 * Filters the array of personal data eraser callbacks.
 	 *
-	 * @since 4.9.6
-	 *
 	 * @param array $args {
 	 *     An array of callable erasers of personal data. Default empty array.
 	 *
-	 *     @type array ...$0 {
+	 * @type array ...$0 {
 	 *         Array of personal data exporters.
 	 *
-	 *         @type callable $callback               Callable eraser that accepts an email address and
+	 * @type callable $callback Callable eraser that accepts an email address and
 	 *                                                a page and returns an array with boolean values for
 	 *                                                whether items were removed or retained and any messages
 	 *                                                from the eraser, as well as if additional pages are
 	 *                                                available.
-	 *         @type string   $exporter_friendly_name Translated user facing friendly name for the eraser.
+	 * @type string $exporter_friendly_name Translated user facing friendly name for the eraser.
 	 *     }
 	 * }
+	 * @since 4.9.6
+	 *
 	 */
 	$erasers = apply_filters( 'wp_privacy_personal_data_erasers', array() );
 
@@ -5014,7 +5041,7 @@ function wp_ajax_wp_privacy_erase_personal_data() {
 		if ( ! array_key_exists( 'callback', $eraser ) ) {
 			wp_send_json_error(
 				sprintf(
-					/* translators: %s: Eraser friendly name. */
+				/* translators: %s: Eraser friendly name. */
 					__( 'Eraser does not include a callback: %s.' ),
 					esc_html( $eraser_friendly_name )
 				)
@@ -5024,7 +5051,7 @@ function wp_ajax_wp_privacy_erase_personal_data() {
 		if ( ! is_callable( $eraser['callback'] ) ) {
 			wp_send_json_error(
 				sprintf(
-					/* translators: %s: Eraser friendly name. */
+				/* translators: %s: Eraser friendly name. */
 					__( 'Eraser callback is not valid: %s.' ),
 					esc_html( $eraser_friendly_name )
 				)
@@ -5034,14 +5061,14 @@ function wp_ajax_wp_privacy_erase_personal_data() {
 		$callback = $eraser['callback'];
 		$response = call_user_func( $callback, $email_address, $page );
 
-		if ( is_wp_error( $response ) ) {
+		if ( Load::is_wp_error( $response ) ) {
 			wp_send_json_error( $response );
 		}
 
 		if ( ! is_array( $response ) ) {
 			wp_send_json_error(
 				sprintf(
-					/* translators: 1: Eraser friendly name, 2: Eraser array index. */
+				/* translators: 1: Eraser friendly name, 2: Eraser array index. */
 					__( 'Did not receive array from %1$s eraser (index %2$d).' ),
 					esc_html( $eraser_friendly_name ),
 					$eraser_index
@@ -5052,7 +5079,7 @@ function wp_ajax_wp_privacy_erase_personal_data() {
 		if ( ! array_key_exists( 'items_removed', $response ) ) {
 			wp_send_json_error(
 				sprintf(
-					/* translators: 1: Eraser friendly name, 2: Eraser array index. */
+				/* translators: 1: Eraser friendly name, 2: Eraser array index. */
 					__( 'Expected items_removed key in response array from %1$s eraser (index %2$d).' ),
 					esc_html( $eraser_friendly_name ),
 					$eraser_index
@@ -5063,7 +5090,7 @@ function wp_ajax_wp_privacy_erase_personal_data() {
 		if ( ! array_key_exists( 'items_retained', $response ) ) {
 			wp_send_json_error(
 				sprintf(
-					/* translators: 1: Eraser friendly name, 2: Eraser array index. */
+				/* translators: 1: Eraser friendly name, 2: Eraser array index. */
 					__( 'Expected items_retained key in response array from %1$s eraser (index %2$d).' ),
 					esc_html( $eraser_friendly_name ),
 					$eraser_index
@@ -5074,7 +5101,7 @@ function wp_ajax_wp_privacy_erase_personal_data() {
 		if ( ! array_key_exists( 'messages', $response ) ) {
 			wp_send_json_error(
 				sprintf(
-					/* translators: 1: Eraser friendly name, 2: Eraser array index. */
+				/* translators: 1: Eraser friendly name, 2: Eraser array index. */
 					__( 'Expected messages key in response array from %1$s eraser (index %2$d).' ),
 					esc_html( $eraser_friendly_name ),
 					$eraser_index
@@ -5085,7 +5112,7 @@ function wp_ajax_wp_privacy_erase_personal_data() {
 		if ( ! is_array( $response['messages'] ) ) {
 			wp_send_json_error(
 				sprintf(
-					/* translators: 1: Eraser friendly name, 2: Eraser array index. */
+				/* translators: 1: Eraser friendly name, 2: Eraser array index. */
 					__( 'Expected messages key to reference an array in response array from %1$s eraser (index %2$d).' ),
 					esc_html( $eraser_friendly_name ),
 					$eraser_index
@@ -5096,7 +5123,7 @@ function wp_ajax_wp_privacy_erase_personal_data() {
 		if ( ! array_key_exists( 'done', $response ) ) {
 			wp_send_json_error(
 				sprintf(
-					/* translators: 1: Eraser friendly name, 2: Eraser array index. */
+				/* translators: 1: Eraser friendly name, 2: Eraser array index. */
 					__( 'Expected done flag in response array from %1$s eraser (index %2$d).' ),
 					esc_html( $eraser_friendly_name ),
 					$eraser_index
@@ -5120,18 +5147,19 @@ function wp_ajax_wp_privacy_erase_personal_data() {
 	 *
 	 * Allows the erasure response to be consumed by destinations in addition to Ajax.
 	 *
+	 * @param array $response The personal data for the given exporter and page.
+	 * @param int $eraser_index The index of the eraser that provided this data.
+	 * @param string $email_address The email address associated with this personal data.
+	 * @param int $page The page for this response.
+	 * @param int $request_id The privacy request post ID associated with this request.
+	 * @param string $eraser_key The key (slug) of the eraser that provided this data.
+	 *
 	 * @since 4.9.6
 	 *
-	 * @param array  $response        The personal data for the given exporter and page.
-	 * @param int    $eraser_index    The index of the eraser that provided this data.
-	 * @param string $email_address   The email address associated with this personal data.
-	 * @param int    $page            The page for this response.
-	 * @param int    $request_id      The privacy request post ID associated with this request.
-	 * @param string $eraser_key      The key (slug) of the eraser that provided this data.
 	 */
 	$response = apply_filters( 'wp_privacy_personal_data_erasure_page', $response, $eraser_index, $email_address, $page, $request_id, $eraser_key );
 
-	if ( is_wp_error( $response ) ) {
+	if ( Load::is_wp_error( $response ) ) {
 		wp_send_json_error( $response );
 	}
 
@@ -5275,7 +5303,7 @@ function wp_ajax_health_check_get_sizes() {
 
 	check_ajax_referer( 'health-check-site-status-result' );
 
-	if ( ! current_user_can( 'view_site_health_checks' ) || is_multisite() ) {
+	if ( ! current_user_can( 'view_site_health_checks' ) || Load::is_multisite() ) {
 		wp_send_json_error();
 	}
 

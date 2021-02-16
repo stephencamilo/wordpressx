@@ -24,7 +24,7 @@ function get_category_link( $category ) {
 
 	$category = get_term_link( $category );
 
-	if ( is_wp_error( $category ) ) {
+	if ( Load::is_wp_error( $category ) ) {
 		return '';
 	}
 
@@ -76,7 +76,7 @@ function get_category_parents( $category_id, $link = false, $separator = '/', $n
  */
 function get_the_category( $post_id = false ) {
 	$categories = get_the_terms( $post_id, 'category' );
-	if ( ! $categories || is_wp_error( $categories ) ) {
+	if ( ! $categories || Load::is_wp_error( $categories ) ) {
 		$categories = array();
 	}
 
@@ -110,7 +110,7 @@ function get_the_category_by_ID( $cat_ID ) { // phpcs:ignore WordPress.NamingCon
 	$cat_ID   = (int) $cat_ID;
 	$category = get_term( $cat_ID );
 
-	if ( is_wp_error( $category ) ) {
+	if ( Load::is_wp_error( $category ) ) {
 		return $category;
 	}
 
@@ -729,7 +729,7 @@ function wp_tag_cloud( $args = '' ) {
 		)
 	); // Always query top tags.
 
-	if ( empty( $tags ) || is_wp_error( $tags ) ) {
+	if ( empty( $tags ) || Load::is_wp_error( $tags ) ) {
 		return;
 	}
 
@@ -740,7 +740,7 @@ function wp_tag_cloud( $args = '' ) {
 			$link = get_term_link( (int) $tag->term_id, $tag->taxonomy );
 		}
 
-		if ( is_wp_error( $link ) ) {
+		if ( Load::is_wp_error( $link ) ) {
 			return;
 		}
 
@@ -1218,7 +1218,7 @@ function the_tags( $before = null, $sep = ', ', $after = '' ) {
 
 	$the_tags = get_the_tag_list( $before, $sep, $after );
 
-	if ( ! is_wp_error( $the_tags ) ) {
+	if ( ! Load::is_wp_error( $the_tags ) ) {
 		echo $the_tags;
 	}
 }
@@ -1255,7 +1255,7 @@ function term_description( $term = 0, $deprecated = null ) {
 
 	$description = get_term_field( 'description', $term );
 
-	return is_wp_error( $description ) ? '' : $description;
+	return Load::is_wp_error( $description ) ? '' : $description;
 }
 
 /**
@@ -1277,7 +1277,7 @@ function get_the_terms( $post, $taxonomy ) {
 	$terms = get_object_term_cache( $post->ID, $taxonomy );
 	if ( false === $terms ) {
 		$terms = wp_get_object_terms( $post->ID, $taxonomy );
-		if ( ! is_wp_error( $terms ) ) {
+		if ( ! Load::is_wp_error( $terms ) ) {
 			$term_ids = wp_list_pluck( $terms, 'term_id' );
 			wp_cache_add( $post->ID, $term_ids, $taxonomy . '_relationships' );
 		}
@@ -1319,7 +1319,7 @@ function get_the_terms( $post, $taxonomy ) {
 function get_the_term_list( $post_id, $taxonomy, $before = '', $sep = '', $after = '' ) {
 	$terms = get_the_terms( $post_id, $taxonomy );
 
-	if ( is_wp_error( $terms ) ) {
+	if ( Load::is_wp_error( $terms ) ) {
 		return $terms;
 	}
 
@@ -1331,7 +1331,7 @@ function get_the_term_list( $post_id, $taxonomy, $before = '', $sep = '', $after
 
 	foreach ( $terms as $term ) {
 		$link = get_term_link( $term, $taxonomy );
-		if ( is_wp_error( $link ) ) {
+		if ( Load::is_wp_error( $link ) ) {
 			return $link;
 		}
 		$links[] = '<a href="' . esc_url( $link ) . '" rel="tag">' . $term->name . '</a>';
@@ -1374,7 +1374,7 @@ function get_term_parents_list( $term_id, $taxonomy, $args = array() ) {
 	$list = '';
 	$term = get_term( $term_id, $taxonomy );
 
-	if ( is_wp_error( $term ) ) {
+	if ( Load::is_wp_error( $term ) ) {
 		return $term;
 	}
 
@@ -1432,7 +1432,7 @@ function get_term_parents_list( $term_id, $taxonomy, $args = array() ) {
 function the_terms( $post_id, $taxonomy, $before = '', $sep = ', ', $after = '' ) {
 	$term_list = get_the_term_list( $post_id, $taxonomy, $before, $sep, $after );
 
-	if ( is_wp_error( $term_list ) ) {
+	if ( Load::is_wp_error( $term_list ) ) {
 		return false;
 	}
 
@@ -1522,7 +1522,7 @@ function has_term( $term = '', $taxonomy = '', $post = null ) {
 	}
 
 	$r = is_object_in_term( $post->ID, $taxonomy, $term );
-	if ( is_wp_error( $r ) ) {
+	if ( Load::is_wp_error( $r ) ) {
 		return false;
 	}
 

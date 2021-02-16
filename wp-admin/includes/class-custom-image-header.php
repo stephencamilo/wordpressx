@@ -834,7 +834,7 @@ endif;
 		} elseif ( $width > $max_width ) {
 			$oitar = $width / $max_width;
 			$image = wp_crop_image( $attachment_id, 0, 0, $width, $height, $max_width, $height / $oitar, false, str_replace( wp_basename( $file ), 'midsize-' . wp_basename( $file ), $file ) );
-			if ( ! $image || is_wp_error( $image ) ) {
+			if ( ! $image || Load::is_wp_error( $image ) ) {
 				wp_die( __( 'Image could not be processed. Please go back and try again.' ), __( 'Image Processing Error' ) );
 			}
 
@@ -977,7 +977,7 @@ endif;
 			$cropped = get_attached_file( $attachment_id );
 		}
 
-		if ( ! $cropped || is_wp_error( $cropped ) ) {
+		if ( ! $cropped || Load::is_wp_error( $cropped ) ) {
 			wp_die( __( 'Image could not be processed. Please go back and try again.' ), __( 'Image Processing Error' ) );
 		}
 
@@ -1313,7 +1313,7 @@ endif;
 			(int) $dimensions['dst_height']
 		);
 
-		if ( ! $cropped || is_wp_error( $cropped ) ) {
+		if ( ! $cropped || Load::is_wp_error( $cropped ) ) {
 			wp_send_json_error( array( 'message' => __( 'Image could not be processed. Please go back and try again.' ) ) );
 		}
 

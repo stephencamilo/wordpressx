@@ -32,7 +32,7 @@ function render_block_core_categories( $attributes ) {
 		$items_markup             = wp_dropdown_categories( $args );
 		$type                     = 'dropdown';
 
-		if ( ! is_admin() ) {
+		if ( ! Load::is_admin() ) {
 			// Inject the dropdown script immediately after the select dropdown.
 			$items_markup = preg_replace(
 				'#(?<=</select>)#',

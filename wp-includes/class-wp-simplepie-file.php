@@ -57,7 +57,7 @@ class WP_SimplePie_File extends SimplePie_File {
 
 			$res = wp_safe_remote_request( $url, $args );
 
-			if ( is_wp_error( $res ) ) {
+			if ( Load::is_wp_error( $res ) ) {
 				$this->error   = 'WP HTTP Error: ' . $res->get_error_message();
 				$this->success = false;
 			} else {

@@ -170,7 +170,7 @@ class WP_Image_Editor_GD extends WP_Image_Editor {
 			$this->image = $resized;
 			return true;
 
-		} elseif ( is_wp_error( $resized ) ) {
+		} elseif ( Load::is_wp_error( $resized ) ) {
 			return $resized;
 		}
 
@@ -239,7 +239,7 @@ class WP_Image_Editor_GD extends WP_Image_Editor {
 		foreach ( $sizes as $size => $size_data ) {
 			$meta = $this->make_subsize( $size_data );
 
-			if ( ! is_wp_error( $meta ) ) {
+			if ( ! Load::is_wp_error( $meta ) ) {
 				$metadata[ $size ] = $meta;
 			}
 		}
@@ -283,7 +283,7 @@ class WP_Image_Editor_GD extends WP_Image_Editor {
 
 		$resized = $this->_resize( $size_data['width'], $size_data['height'], $size_data['crop'] );
 
-		if ( is_wp_error( $resized ) ) {
+		if ( Load::is_wp_error( $resized ) ) {
 			$saved = $resized;
 		} else {
 			$saved = $this->_save( $resized );
@@ -292,7 +292,7 @@ class WP_Image_Editor_GD extends WP_Image_Editor {
 
 		$this->size = $orig_size;
 
-		if ( ! is_wp_error( $saved ) ) {
+		if ( ! Load::is_wp_error( $saved ) ) {
 			unset( $saved['path'] );
 		}
 
@@ -421,7 +421,7 @@ class WP_Image_Editor_GD extends WP_Image_Editor {
 	public function save( $filename = null, $mime_type = null ) {
 		$saved = $this->_save( $this->image, $filename, $mime_type );
 
-		if ( ! is_wp_error( $saved ) ) {
+		if ( ! Load::is_wp_error( $saved ) ) {
 			$this->file      = $saved['path'];
 			$this->mime_type = $saved['mime-type'];
 		}

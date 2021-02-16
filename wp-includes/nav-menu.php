@@ -34,7 +34,7 @@ function wp_get_nav_menu_object( $menu ) {
 		}
 	}
 
-	if ( ! $menu_obj || is_wp_error( $menu_obj ) ) {
+	if ( ! $menu_obj || Load::is_wp_error( $menu_obj ) ) {
 		$menu_obj = false;
 	}
 
@@ -68,7 +68,7 @@ function is_nav_menu( $menu ) {
 
 	if (
 		$menu_obj &&
-		! is_wp_error( $menu_obj ) &&
+		! Load::is_wp_error( $menu_obj ) &&
 		! empty( $menu_obj->taxonomy ) &&
 		'nav_menu' === $menu_obj->taxonomy
 	) {
@@ -236,7 +236,7 @@ function wp_get_nav_menu_name( $location ) {
  * @return bool Whether the given ID is that of a nav menu item.
  */
 function is_nav_menu_item( $menu_item_id = 0 ) {
-	return ( ! is_wp_error( $menu_item_id ) && ( 'nav_menu_item' === get_post_type( $menu_item_id ) ) );
+	return ( ! Load::is_wp_error( $menu_item_id ) && ( 'nav_menu_item' === get_post_type( $menu_item_id ) ) );
 }
 
 /**
@@ -286,7 +286,7 @@ function wp_delete_nav_menu( $menu ) {
 	}
 	set_theme_mod( 'nav_menu_locations', $locations );
 
-	if ( $result && ! is_wp_error( $result ) ) {
+	if ( $result && ! Load::is_wp_error( $result ) ) {
 
 		/**
 		 * Fires after a navigation menu has been successfully deleted.
@@ -329,7 +329,7 @@ function wp_update_nav_menu_object( $menu_id = 0, $menu_data = array() ) {
 	$_possible_existing = get_term_by( 'name', $menu_data['menu-name'], 'nav_menu' );
 	if (
 		$_possible_existing &&
-		! is_wp_error( $_possible_existing ) &&
+		! Load::is_wp_error( $_possible_existing ) &&
 		isset( $_possible_existing->term_id ) &&
 		$_possible_existing->term_id != $menu_id
 	) {
@@ -344,7 +344,7 @@ function wp_update_nav_menu_object( $menu_id = 0, $menu_data = array() ) {
 	}
 
 	// Menu doesn't already exist, so create a new menu.
-	if ( ! $_menu || is_wp_error( $_menu ) ) {
+	if ( ! $_menu || Load::is_wp_error( $_menu ) ) {
 		$menu_exists = get_term_by( 'name', $menu_data['menu-name'], 'nav_menu' );
 
 		if ( $menu_exists ) {
@@ -360,7 +360,7 @@ function wp_update_nav_menu_object( $menu_id = 0, $menu_data = array() ) {
 
 		$_menu = wp_insert_term( $menu_data['menu-name'], 'nav_menu', $args );
 
-		if ( is_wp_error( $_menu ) ) {
+		if ( Load::is_wp_error( $_menu ) ) {
 			return $_menu;
 		}
 
@@ -385,7 +385,7 @@ function wp_update_nav_menu_object( $menu_id = 0, $menu_data = array() ) {
 
 	$update_response = wp_update_term( $menu_id, 'nav_menu', $args );
 
-	if ( is_wp_error( $update_response ) ) {
+	if ( Load::is_wp_error( $update_response ) ) {
 		return $update_response;
 	}
 
@@ -431,7 +431,7 @@ function wp_update_nav_menu_item( $menu_id = 0, $menu_item_db_id = 0, $menu_item
 		return new WP_Error( 'invalid_menu_id', __( 'Invalid menu ID.' ) );
 	}
 
-	if ( is_wp_error( $menu ) ) {
+	if ( Load::is_wp_error( $menu ) ) {
 		return $menu;
 	}
 
@@ -520,7 +520,7 @@ function wp_update_nav_menu_item( $menu_id = 0, $menu_item_db_id = 0, $menu_item
 		$post['ID']          = 0;
 		$post['post_status'] = 'publish' === $args['menu-item-status'] ? 'publish' : 'draft';
 		$menu_item_db_id     = wp_insert_post( $post );
-		if ( ! $menu_item_db_id || is_wp_error( $menu_item_db_id ) ) {
+		if ( ! $menu_item_db_id || Load::is_wp_error( $menu_item_db_id ) ) {
 			return $menu_item_db_id;
 		}
 
@@ -678,7 +678,7 @@ function wp_get_nav_menu_items( $menu, $args = array() ) {
 	static $fetched = array();
 
 	$items = get_objects_in_term( $menu->term_id, 'nav_menu' );
-	if ( is_wp_error( $items ) ) {
+	if ( Load::is_wp_error( $items ) ) {
 		return false;
 	}
 
@@ -701,7 +701,7 @@ function wp_get_nav_menu_items( $menu, $args = array() ) {
 	}
 
 	// Get all posts and terms at once to prime the caches.
-	if ( empty( $fetched[ $menu->term_id ] ) && ! wp_using_ext_object_cache() ) {
+	if ( empty( $fetched[ $menu->term_id ] ) && ! Load::wp_using_ext_object_cache() ) {
 		$fetched[ $menu->term_id ] = true;
 		$posts                     = array();
 		$terms                     = array();
@@ -747,7 +747,7 @@ function wp_get_nav_menu_items( $menu, $args = array() ) {
 
 	$items = array_map( 'wp_setup_nav_menu_item', $items );
 
-	if ( ! is_admin() ) { // Remove invalid items only on front end.
+	if ( ! Load::is_admin() ) { // Remove invalid items only on front end.
 		$items = array_filter( $items, '_is_valid_nav_menu_item' );
 	}
 
@@ -878,7 +878,7 @@ function wp_setup_nav_menu_item( $menu_item ) {
 
 				$original_object = get_term( (int) $menu_item->object_id, $menu_item->object );
 
-				if ( $original_object && ! is_wp_error( $original_object ) ) {
+				if ( $original_object && ! Load::is_wp_error( $original_object ) ) {
 					$menu_item->url = get_term_link( (int) $menu_item->object_id, $menu_item->object );
 					$original_title = $original_object->name;
 				} else {

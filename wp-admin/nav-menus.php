@@ -78,7 +78,7 @@ switch ( $action ) {
 		if ( is_nav_menu_item( $menu_item_id ) ) {
 			$menus = isset( $_REQUEST['menu'] ) ? array( (int) $_REQUEST['menu'] ) : wp_get_object_terms( $menu_item_id, 'nav_menu', array( 'fields' => 'ids' ) );
 
-			if ( ! is_wp_error( $menus ) && ! empty( $menus[0] ) ) {
+			if ( ! Load::is_wp_error( $menus ) && ! empty( $menus[0] ) ) {
 				$menu_id            = (int) $menus[0];
 				$ordered_menu_items = wp_get_nav_menu_items( $menu_id );
 				$menu_item_data     = (array) wp_setup_nav_menu_item( get_post( $menu_item_id ) );
@@ -114,7 +114,7 @@ switch ( $action ) {
 
 						$parent_object = wp_setup_nav_menu_item( get_post( $parent_db_id ) );
 
-						if ( ! is_wp_error( $parent_object ) ) {
+						if ( ! Load::is_wp_error( $parent_object ) ) {
 							$parent_data                        = (array) $parent_object;
 							$menu_item_data['menu_item_parent'] = $parent_data['menu_item_parent'];
 							update_post_meta( $menu_item_data['ID'], '_menu_item_menu_item_parent', (int) $menu_item_data['menu_item_parent'] );
@@ -156,7 +156,7 @@ switch ( $action ) {
 				$menus = wp_get_object_terms( $menu_item_id, 'nav_menu', array( 'fields' => 'ids' ) );
 			}
 
-			if ( ! is_wp_error( $menus ) && ! empty( $menus[0] ) ) {
+			if ( ! Load::is_wp_error( $menus ) && ! empty( $menus[0] ) ) {
 				$menu_id            = (int) $menus[0];
 				$ordered_menu_items = wp_get_nav_menu_items( $menu_id );
 				$menu_item_data     = (array) wp_setup_nav_menu_item( get_post( $menu_item_id ) );
@@ -193,7 +193,7 @@ switch ( $action ) {
 
 						$parent_object = wp_setup_nav_menu_item( get_post( $parent_db_id ) );
 
-						if ( ! is_wp_error( $parent_object ) ) {
+						if ( ! Load::is_wp_error( $parent_object ) ) {
 							$parent_data = (array) $parent_object;
 
 							/*
@@ -282,7 +282,7 @@ switch ( $action ) {
 			break;
 		}
 
-		if ( is_wp_error( $deletion ) ) {
+		if ( Load::is_wp_error( $deletion ) ) {
 			$messages[] = '<div id="message" class="error notice is-dismissible"><p>' . $deletion->get_error_message() . '</p></div>';
 		} else {
 			$messages[] = '<div id="message" class="updated notice is-dismissible"><p>' . __( 'The menu has been successfully deleted.' ) . '</p></div>';
@@ -300,7 +300,7 @@ switch ( $action ) {
 
 			$deletion = wp_delete_nav_menu( $menu_id_to_delete );
 
-			if ( is_wp_error( $deletion ) ) {
+			if ( Load::is_wp_error( $deletion ) ) {
 				$messages[]     = '<div id="message" class="error notice is-dismissible"><p>' . $deletion->get_error_message() . '</p></div>';
 				$deletion_error = true;
 			}
@@ -328,7 +328,7 @@ switch ( $action ) {
 			if ( $new_menu_title ) {
 				$_nav_menu_selected_id = wp_update_nav_menu_object( 0, array( 'menu-name' => $new_menu_title ) );
 
-				if ( is_wp_error( $_nav_menu_selected_id ) ) {
+				if ( Load::is_wp_error( $_nav_menu_selected_id ) ) {
 					$messages[] = '<div id="message" class="error notice is-dismissible"><p>' . $_nav_menu_selected_id->get_error_message() . '</p></div>';
 				} else {
 					$_menu_object            = wp_get_nav_menu_object( $_nav_menu_selected_id );
@@ -406,10 +406,10 @@ switch ( $action ) {
 				$menu_title = $_menu_object->name;
 			}
 
-			if ( ! is_wp_error( $_menu_object ) ) {
+			if ( ! Load::is_wp_error( $_menu_object ) ) {
 				$_nav_menu_selected_id = wp_update_nav_menu_object( $nav_menu_selected_id, array( 'menu-name' => $menu_title ) );
 
-				if ( is_wp_error( $_nav_menu_selected_id ) ) {
+				if ( Load::is_wp_error( $_nav_menu_selected_id ) ) {
 					$_menu_object = $_nav_menu_selected_id;
 					$messages[]   = '<div id="message" class="error notice is-dismissible"><p>' . $_nav_menu_selected_id->get_error_message() . '</p></div>';
 				} else {
@@ -419,7 +419,7 @@ switch ( $action ) {
 			}
 
 			// Update menu items.
-			if ( ! is_wp_error( $_menu_object ) ) {
+			if ( ! Load::is_wp_error( $_menu_object ) ) {
 				$messages = array_merge( $messages, wp_nav_menu_update_menu_items( $_nav_menu_selected_id, $nav_menu_selected_title ) );
 
 				// If the menu ID changed, redirect to the new URL.
@@ -537,7 +537,7 @@ if ( $nav_menu_selected_id !== $recently_edited && is_nav_menu( $nav_menu_select
 // If there's a menu, get its name.
 if ( ! $nav_menu_selected_title && is_nav_menu( $nav_menu_selected_id ) ) {
 	$_menu_object            = wp_get_nav_menu_object( $nav_menu_selected_id );
-	$nav_menu_selected_title = ! is_wp_error( $_menu_object ) ? $_menu_object->name : '';
+	$nav_menu_selected_title = ! Load::is_wp_error( $_menu_object ) ? $_menu_object->name : '';
 }
 
 // Generate truncated menu names.
@@ -989,7 +989,7 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 								</div>
 
 								<?php
-								if ( isset( $edit_markup ) && ! is_wp_error( $edit_markup ) ) {
+								if ( isset( $edit_markup ) && ! Load::is_wp_error( $edit_markup ) ) {
 									echo $edit_markup;
 								} else {
 									?>

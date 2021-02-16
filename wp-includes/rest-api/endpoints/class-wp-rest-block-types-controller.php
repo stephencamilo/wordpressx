@@ -164,12 +164,12 @@ class WP_REST_Block_Types_Controller extends WP_REST_Controller {
 	 */
 	public function get_item_permissions_check( $request ) {
 		$check = $this->check_read_permission();
-		if ( is_wp_error( $check ) ) {
+		if ( Load::is_wp_error( $check ) ) {
 			return $check;
 		}
 		$block_name = sprintf( '%s/%s', $request['namespace'], $request['name'] );
 		$block_type = $this->get_block( $block_name );
-		if ( is_wp_error( $block_type ) ) {
+		if ( Load::is_wp_error( $block_type ) ) {
 			return $block_type;
 		}
 
@@ -224,7 +224,7 @@ class WP_REST_Block_Types_Controller extends WP_REST_Controller {
 	public function get_item( $request ) {
 		$block_name = sprintf( '%s/%s', $request['namespace'], $request['name'] );
 		$block_type = $this->get_block( $block_name );
-		if ( is_wp_error( $block_type ) ) {
+		if ( Load::is_wp_error( $block_type ) ) {
 			return $block_type;
 		}
 		$data = $this->prepare_item_for_response( $block_type, $request );

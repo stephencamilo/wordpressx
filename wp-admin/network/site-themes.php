@@ -129,12 +129,13 @@ if ( $action ) {
 				 *
 				 * The dynamic portion of the hook name, `$screen`, refers to the current screen ID.
 				 *
+				 * @param string $redirect_url The redirect URL.
+				 * @param string $action The action being taken.
+				 * @param array $items The items to take the action on.
+				 * @param int $site_id The site ID.
+				 *
 				 * @since 4.7.0
 				 *
-				 * @param string $redirect_url The redirect URL.
-				 * @param string $action       The action being taken.
-				 * @param array  $items        The items to take the action on.
-				 * @param int    $site_id      The site ID.
 				 */
 				$referer = apply_filters( "handle_network_bulk_actions-{$screen}", $referer, $action, $themes, $id ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 			} else {
@@ -175,55 +176,57 @@ $submenu_file = 'sites.php';
 require_once ABSPATH . 'wp-admin/admin-header.php'; ?>
 
 <div class="wrap">
-<h1 id="edit-site"><?php echo $title; ?></h1>
-<p class="edit-site-actions"><a href="<?php echo esc_url( get_home_url( $id, '/' ) ); ?>"><?php _e( 'Visit' ); ?></a> | <a href="<?php echo esc_url( get_admin_url( $id ) ); ?>"><?php _e( 'Dashboard' ); ?></a></p>
-<?php
+    <h1 id="edit-site"><?php echo $title; ?></h1>
+    <p class="edit-site-actions"><a
+                href="<?php echo esc_url( get_home_url( $id, '/' ) ); ?>"><?php _e( 'Visit' ); ?></a> | <a
+                href="<?php echo esc_url( get_admin_url( $id ) ); ?>"><?php _e( 'Dashboard' ); ?></a></p>
+	<?php
 
-network_edit_site_nav(
-	array(
-		'blog_id'  => $id,
-		'selected' => 'site-themes',
-	)
-);
+	network_edit_site_nav(
+		array(
+			'blog_id'  => $id,
+			'selected' => 'site-themes',
+		)
+	);
 
-if ( isset( $_GET['enabled'] ) ) {
-	$enabled = absint( $_GET['enabled'] );
-	if ( 1 === $enabled ) {
-		$message = __( 'Theme enabled.' );
-	} else {
-		/* translators: %s: Number of themes. */
-		$message = _n( '%s theme enabled.', '%s themes enabled.', $enabled );
+	if ( isset( $_GET['enabled'] ) ) {
+		$enabled = absint( $_GET['enabled'] );
+		if ( 1 === $enabled ) {
+			$message = __( 'Theme enabled.' );
+		} else {
+			/* translators: %s: Number of themes. */
+			$message = _n( '%s theme enabled.', '%s themes enabled.', $enabled );
+		}
+		echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf( $message, number_format_i18n( $enabled ) ) . '</p></div>';
+	} elseif ( isset( $_GET['disabled'] ) ) {
+		$disabled = absint( $_GET['disabled'] );
+		if ( 1 === $disabled ) {
+			$message = __( 'Theme disabled.' );
+		} else {
+			/* translators: %s: Number of themes. */
+			$message = _n( '%s theme disabled.', '%s themes disabled.', $disabled );
+		}
+		echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf( $message, number_format_i18n( $disabled ) ) . '</p></div>';
+	} elseif ( isset( $_GET['error'] ) && 'none' === $_GET['error'] ) {
+		echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'No theme selected.' ) . '</p></div>';
 	}
-	echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf( $message, number_format_i18n( $enabled ) ) . '</p></div>';
-} elseif ( isset( $_GET['disabled'] ) ) {
-	$disabled = absint( $_GET['disabled'] );
-	if ( 1 === $disabled ) {
-		$message = __( 'Theme disabled.' );
-	} else {
-		/* translators: %s: Number of themes. */
-		$message = _n( '%s theme disabled.', '%s themes disabled.', $disabled );
-	}
-	echo '<div id="message" class="updated notice is-dismissible"><p>' . sprintf( $message, number_format_i18n( $disabled ) ) . '</p></div>';
-} elseif ( isset( $_GET['error'] ) && 'none' === $_GET['error'] ) {
-	echo '<div id="message" class="error notice is-dismissible"><p>' . __( 'No theme selected.' ) . '</p></div>';
-}
-?>
+	?>
 
-<p><?php _e( 'Network enabled themes are not shown on this screen.' ); ?></p>
+    <p><?php _e( 'Network enabled themes are not shown on this screen.' ); ?></p>
 
-<form method="get">
-<?php $wp_list_table->search_box( __( 'Search Installed Themes' ), 'theme' ); ?>
-<input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>" />
-</form>
+    <form method="get">
+		<?php $wp_list_table->search_box( __( 'Search Installed Themes' ), 'theme' ); ?>
+        <input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>"/>
+    </form>
 
-<?php $wp_list_table->views(); ?>
+	<?php $wp_list_table->views(); ?>
 
-<form method="post" action="site-themes.php?action=update-site">
-	<input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>" />
+    <form method="post" action="site-themes.php?action=update-site">
+        <input type="hidden" name="id" value="<?php echo esc_attr( $id ); ?>"/>
 
-<?php $wp_list_table->display(); ?>
+		<?php $wp_list_table->display(); ?>
 
-</form>
+    </form>
 
 </div>
 <?php require_once ABSPATH . 'wp-admin/admin-footer.php'; ?>

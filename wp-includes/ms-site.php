@@ -10,10 +10,6 @@
 /**
  * Inserts a new site into the database.
  *
- * @since 5.1.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param array $data {
  *     Data for the new site that should be inserted.
  *
@@ -40,6 +36,10 @@
  *                                Passed to the `wp_initialize_site` hook.
  * }
  * @return int|WP_Error The new site's ID on success, or error object on failure.
+ *@since 5.1.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function wp_insert_site( array $data ) {
 	global $wpdb;
@@ -49,7 +49,7 @@ function wp_insert_site( array $data ) {
 	$defaults = array(
 		'domain'       => '',
 		'path'         => '/',
-		'network_id'   => get_current_network_id(),
+		'network_id'   => Load::get_current_network_id(),
 		'registered'   => $now,
 		'last_updated' => $now,
 		'public'       => 1,
@@ -61,7 +61,7 @@ function wp_insert_site( array $data ) {
 	);
 
 	$prepared_data = wp_prepare_site_data( $data, $defaults );
-	if ( is_wp_error( $prepared_data ) ) {
+	if ( Load::is_wp_error( $prepared_data ) ) {
 		return $prepared_data;
 	}
 
@@ -146,13 +146,14 @@ function wp_insert_site( array $data ) {
 /**
  * Updates a site in the database.
  *
- * @since 5.1.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int   $site_id ID of the site that should be updated.
  * @param array $data    Site data to update. See {@see wp_insert_site()} for the list of supported keys.
+ *
  * @return int|WP_Error The updated site's ID on success, or error object on failure.
+ *@global WPDB $wpdb WordPress database abstraction object.
+ *
+ * @since 5.1.0
+ *
  */
 function wp_update_site( $site_id, array $data ) {
 	global $wpdb;
@@ -172,7 +173,7 @@ function wp_update_site( $site_id, array $data ) {
 	unset( $defaults['blog_id'], $defaults['site_id'] );
 
 	$data = wp_prepare_site_data( $data, $defaults, $old_site );
-	if ( is_wp_error( $data ) ) {
+	if ( Load::is_wp_error( $data ) ) {
 		return $data;
 	}
 
@@ -200,12 +201,13 @@ function wp_update_site( $site_id, array $data ) {
 /**
  * Deletes a site from the database.
  *
- * @since 5.1.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int $site_id ID of the site that should be deleted.
+ *
  * @return WP_Site|WP_Error The deleted site object on success, or error object on failure.
+ *@since 5.1.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function wp_delete_site( $site_id ) {
 	global $wpdb;
@@ -307,7 +309,7 @@ function wp_delete_site( $site_id ) {
  */
 function get_site( $site = null ) {
 	if ( empty( $site ) ) {
-		$site = get_current_blog_id();
+		$site = Load::get_current_blog_id();
 	}
 
 	if ( $site instanceof WP_Site ) {
@@ -337,15 +339,16 @@ function get_site( $site = null ) {
 /**
  * Adds any sites from the given IDs to the cache that do not already exist in cache.
  *
+ * @param array $ids               ID list.
+ * @param bool  $update_meta_cache Optional. Whether to update the meta cache. Default true.
+ *
+ * @see update_site_cache()
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  * @since 4.6.0
  * @since 5.1.0 Introduced the `$update_meta_cache` parameter.
  * @access private
  *
- * @see update_site_cache()
- * @global wpdb $wpdb WordPress database abstraction object.
- *
- * @param array $ids               ID list.
- * @param bool  $update_meta_cache Optional. Whether to update the meta cache. Default true.
  */
 function _prime_site_caches( $ids, $update_meta_cache = true ) {
 	global $wpdb;
@@ -651,11 +654,6 @@ function wp_validate_site_data( $errors, $data, $old_site = null ) {
  * This process includes creating the site's database tables and
  * populating them with defaults.
  *
- * @since 5.1.0
- *
- * @global wpdb     $wpdb     WordPress database abstraction object.
- * @global WP_Roles $wp_roles WordPress role management object.
- *
  * @param int|WP_Site $site_id Site ID or object.
  * @param array       $args    {
  *     Optional. Arguments to modify the initialization behavior.
@@ -669,6 +667,11 @@ function wp_validate_site_data( $errors, $data, $old_site = null ) {
  *                           Default empty array.
  * }
  * @return bool|WP_Error True on success, or error object on failure.
+ *@since 5.1.0
+ *
+ * @global WPDB     $wpdb     WordPress database abstraction object.
+ * @global WP_Roles $wp_roles WordPress role management object.
+ *
  */
 function wp_initialize_site( $site_id, array $args = array() ) {
 	global $wpdb, $wp_roles;
@@ -713,13 +716,13 @@ function wp_initialize_site( $site_id, array $args = array() ) {
 	 */
 	$args = apply_filters( 'wp_initialize_site_args', $args, $site, $network );
 
-	$orig_installing = wp_installing();
+	$orig_installing = Load::wp_installing();
 	if ( ! $orig_installing ) {
-		wp_installing( true );
+		Load::wp_installing( true );
 	}
 
 	$switch = false;
-	if ( get_current_blog_id() !== $site->id ) {
+	if ( Load::get_current_blog_id() !== $site->id ) {
 		$switch = true;
 		switch_to_blog( $site->id );
 	}
@@ -784,7 +787,7 @@ function wp_initialize_site( $site_id, array $args = array() ) {
 		restore_current_blog();
 	}
 
-	wp_installing( $orig_installing );
+	Load::wp_installing( $orig_installing );
 
 	return true;
 }
@@ -794,12 +797,13 @@ function wp_initialize_site( $site_id, array $args = array() ) {
  *
  * This process includes dropping the site's database tables and deleting its uploads directory.
  *
- * @since 5.1.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int|WP_Site $site_id Site ID or object.
+ *
  * @return bool|WP_Error True on success, or error object on failure.
+ *@since 5.1.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function wp_uninitialize_site( $site_id ) {
 	global $wpdb;
@@ -832,7 +836,7 @@ function wp_uninitialize_site( $site_id ) {
 	}
 
 	$switch = false;
-	if ( get_current_blog_id() !== $site->id ) {
+	if ( Load::get_current_blog_id() !== $site->id ) {
 		$switch = true;
 		switch_to_blog( $site->id );
 	}
@@ -916,12 +920,13 @@ function wp_uninitialize_site( $site_id ) {
  *
  * A site is considered initialized when its database tables are present.
  *
- * @since 5.1.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param int|WP_Site $site_id Site ID or object.
+ *
  * @return bool True if the site is initialized, false otherwise.
+ *@since 5.1.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function wp_is_site_initialized( $site_id ) {
 	global $wpdb;
@@ -949,7 +954,7 @@ function wp_is_site_initialized( $site_id ) {
 	}
 
 	$switch = false;
-	if ( get_current_blog_id() !== $site_id ) {
+	if ( Load::get_current_blog_id() !== $site_id ) {
 		$switch = true;
 		remove_action( 'switch_blog', 'wp_switch_roles_and_user', 1 );
 		switch_to_blog( $site_id );
@@ -1321,12 +1326,13 @@ function wp_cache_set_sites_last_changed() {
 /**
  * Aborts calls to site meta if it is not supported.
  *
- * @since 5.1.0
- *
- * @global wpdb $wpdb WordPress database abstraction object.
- *
  * @param mixed $check Skip-value for whether to proceed site meta function execution.
+ *
  * @return mixed Original value of $check, or false if site meta is not supported.
+ *@since 5.1.0
+ *
+ * @global WPDB $wpdb WordPress database abstraction object.
+ *
  */
 function wp_check_site_meta_support_prefilter( $check ) {
 	if ( ! is_site_meta_supported() ) {

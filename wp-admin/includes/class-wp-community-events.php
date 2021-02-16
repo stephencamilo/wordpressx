@@ -110,7 +110,7 @@ class WP_Community_Events {
 		$response_body  = json_decode( wp_remote_retrieve_body( $response ), true );
 		$response_error = null;
 
-		if ( is_wp_error( $response ) ) {
+		if ( Load::is_wp_error( $response ) ) {
 			$response_error = $response;
 		} elseif ( 200 !== $response_code ) {
 			$response_error = new WP_Error(
@@ -125,7 +125,7 @@ class WP_Community_Events {
 			);
 		}
 
-		if ( is_wp_error( $response_error ) ) {
+		if ( Load::is_wp_error( $response_error ) ) {
 			return $response_error;
 		} else {
 			$expiration = false;

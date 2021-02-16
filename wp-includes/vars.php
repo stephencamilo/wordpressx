@@ -15,16 +15,18 @@
  * @package WordPress
  */
 
+use Core\WPIncludes\Load;
+
 global $pagenow,
 	$is_lynx, $is_gecko, $is_winIE, $is_macIE, $is_opera, $is_NS4, $is_safari, $is_chrome, $is_iphone, $is_IE, $is_edge,
 	$is_apache, $is_IIS, $is_iis7, $is_nginx;
 
 // On which page are we?
-if ( is_admin() ) {
+if ( Load::is_admin() ) {
 	// wp-admin pages are checked more carefully.
-	if ( is_network_admin() ) {
+	if ( Load::is_network_admin() ) {
 		preg_match( '#/wp-admin/network/?(.*?)$#i', $_SERVER['PHP_SELF'], $self_matches );
-	} elseif ( is_user_admin() ) {
+	} elseif ( Load::is_user_admin() ) {
 		preg_match( '#/wp-admin/user/?(.*?)$#i', $_SERVER['PHP_SELF'], $self_matches );
 	} else {
 		preg_match( '#/wp-admin/?(.*?)$#i', $_SERVER['PHP_SELF'], $self_matches );
@@ -69,7 +71,7 @@ if ( isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
 		$is_edge = true;
 	} elseif ( stripos( $_SERVER['HTTP_USER_AGENT'], 'chrome' ) !== false ) {
 		if ( stripos( $_SERVER['HTTP_USER_AGENT'], 'chromeframe' ) !== false ) {
-			$is_admin = is_admin();
+			$is_admin = Load::is_admin();
 			/**
 			 * Filters whether Google Chrome Frame should be used, if available.
 			 *

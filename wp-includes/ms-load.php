@@ -386,7 +386,7 @@ function ms_load_current_site_and_network( $domain, $path, $subdomain = false ) 
 	}
 
 	// During activation of a new subdomain, the requested site does not yet exist.
-	if ( empty( $current_blog ) && wp_installing() ) {
+	if ( empty( $current_blog ) && Load::wp_installing() ) {
 		$current_blog          = new stdClass;
 		$current_blog->blog_id = 1;
 		$blog_id               = 1;
@@ -396,7 +396,7 @@ function ms_load_current_site_and_network( $domain, $path, $subdomain = false ) 
 	// No site has been found, bail.
 	if ( empty( $current_blog ) ) {
 		// We're going to redirect to the network URL, with some possible modifications.
-		$scheme      = is_ssl() ? 'https' : 'http';
+		$scheme      = Load::is_ssl() ? 'https' : 'http';
 		$destination = "$scheme://{$current_site->domain}{$current_site->path}";
 
 		/**
@@ -454,7 +454,7 @@ function ms_load_current_site_and_network( $domain, $path, $subdomain = false ) 
  * @since 3.0.0
  * @since 4.4.0 The `$domain` and `$path` parameters were added.
  *
- * @global wpdb $wpdb WordPress database abstraction object.
+ * @global WPDB $wpdb WordPress database abstraction object.
  *
  * @param string $domain The requested domain for the error to reference.
  * @param string $path   The requested path for the error to reference.
@@ -462,11 +462,11 @@ function ms_load_current_site_and_network( $domain, $path, $subdomain = false ) 
 function ms_not_installed( $domain, $path ) {
 	global $wpdb;
 
-	if ( ! is_admin() ) {
+	if ( ! Load::is_admin() ) {
 		dead_db();
 	}
 
-	wp_load_translations_early();
+	Load::wp_load_translations_early();
 
 	$title = __( 'Error establishing a database connection' );
 

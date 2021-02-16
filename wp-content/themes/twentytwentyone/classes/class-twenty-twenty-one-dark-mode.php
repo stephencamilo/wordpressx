@@ -357,7 +357,7 @@ class Twenty_Twenty_One_Dark_Mode {
 			#dark-mode-toggler[aria-pressed="true"] > span::before {
 				content: '<?php esc_attr_e( 'On', 'twentytwentyone' ); ?>';
 			}
-			<?php if ( is_admin() || wp_is_json_request() ) : ?>
+			<?php if ( Load::is_admin() || Load::wp_is_json_request() ) : ?>
 				.components-editor-notices__pinned ~ .edit-post-visual-editor #dark-mode-toggler {
 					z-index: 20;
 				}

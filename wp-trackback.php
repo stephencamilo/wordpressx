@@ -134,7 +134,7 @@ if ( ! empty( $tb_url ) && ! empty( $title ) ) {
 
 	$result = wp_new_comment( $commentdata );
 
-	if ( is_wp_error( $result ) ) {
+	if ( Load::is_wp_error( $result ) ) {
 		trackback_response( 1, $result->get_error_message() );
 	}
 
