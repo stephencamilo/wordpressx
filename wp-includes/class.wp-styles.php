@@ -1,4 +1,6 @@
 <?php
+
+use Core\WPIncludes\Load;
 /**
  * Dependencies API: WP_Styles class
  *
@@ -15,7 +17,7 @@
  *
  * @see WP_Dependencies
  */
-class WP_Styles extends WP_Dependencies {
+class WP_Styles extends \WP_Dependencies {
 	/**
 	 * Base URL for styles.
 	 *
@@ -118,7 +120,7 @@ class WP_Styles extends WP_Dependencies {
 	 */
 	public function __construct() {
 		if (
-			function_exists( array( "\Load", "is_admin" ) ) && ! Load::is_admin()
+			function_exists( "\Core\WPIncludes\Load::is_admin"  ) && ! Load::is_admin()
 		&&
 			function_exists( 'current_theme_supports' ) && ! current_theme_supports( 'html5', 'style' )
 		) {

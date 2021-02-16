@@ -1,4 +1,6 @@
 <?php
+
+use Core\WPIncludes\Load;
 /**
  * HTTP API: WP_Http class
  *
@@ -6,7 +8,9 @@
  * @subpackage HTTP
  * @since 2.7.0
  */
-
+if (!defined('ABSPATH')) {
+	define('ABSPATH', dirname(__DIR__) . '/');
+}
 if ( ! class_exists( 'Requests' ) ) {
 	require ABSPATH . WPINC . '/class-requests.php';
 

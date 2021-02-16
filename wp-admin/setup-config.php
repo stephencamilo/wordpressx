@@ -2,6 +2,9 @@
 
 namespace Root;
 
+use SetupConfig;
+use Core\WPIncludes\Load;
+
 if (!defined('ABSPATH')) {
 	define('ABSPATH', dirname(__DIR__) . '/');
 }
@@ -73,7 +76,7 @@ switch ($step) {
 			$loaded_language = wp_download_language_pack($language);
 			if ($loaded_language) {
 				load_default_textdomain($loaded_language);
-				$GLOBALS['wp_locale'] = new WP_Locale();
+				$GLOBALS['wp_locale'] = new \WP_Locale();
 			}
 		}
 		SetupConfig::setup_config_display_header();
@@ -123,7 +126,7 @@ switch ($step) {
 		break;
 	case 1:
 		load_default_textdomain($language);
-		$GLOBALS['wp_locale'] = new WP_Locale();
+		$GLOBALS['wp_locale'] = new \WP_Locale();
 		SetupConfig::setup_config_display_header();
 		$autofocus = wp_is_mobile() ? '' : ' autofocus';
 	?>
@@ -173,7 +176,7 @@ switch ($step) {
 
 	case 2:
 		load_default_textdomain($language);
-		$GLOBALS['wp_locale'] = new WP_Locale();
+		$GLOBALS['wp_locale'] = new \WP_Locale();
 		$dbname = trim(wp_unslash($_POST['dbname']));
 		$uname  = trim(wp_unslash($_POST['uname']));
 		$pwd    = trim(wp_unslash($_POST['pwd']));
@@ -224,7 +227,7 @@ switch ($step) {
 				}
 				$secret_keys[] = $key;
 			}
-		} catch (Exception $ex) {
+		} catch (\Exception $ex) {
 			$no_api = isset($_POST['noapi']);
 
 			if (!$no_api) {
