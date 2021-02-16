@@ -5523,7 +5523,10 @@ function wp_guess_url() {
 		}
 
 		$schema = Load::is_ssl() ? 'https://' : 'http://'; // set_url_scheme() is not defined yet.
-		$url    = $schema . $_SERVER['HTTP_HOST'] . $path;
+		$url = '';
+		if(array_key_exists('HTTP_HOST', $_SERVER)) {
+			$url    = $schema . $_SERVER['HTTP_HOST'] . $path;
+		}
 	}
 
 	return rtrim( $url, '/' );

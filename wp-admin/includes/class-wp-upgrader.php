@@ -1,4 +1,6 @@
 <?php
+
+use Core\WPIncludes\Load;
 /**
  * Upgrade API: WP_Upgrader class
  *

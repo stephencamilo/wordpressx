@@ -1,4 +1,6 @@
 <?php
+
+use Core\WPIncludes\Load;
 /**
  * Core Administration API
  *

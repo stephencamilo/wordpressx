@@ -1,4 +1,6 @@
 <?php
+
+use Core\WPIncludes\Load;
 /**
  * General template tags that can go anywhere in a template.
  *

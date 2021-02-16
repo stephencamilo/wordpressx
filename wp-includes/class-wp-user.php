@@ -1,4 +1,6 @@
 <?php
+
+use Core\WPIncludes\Load;
 /**
  * User API: WP_User class
  *
